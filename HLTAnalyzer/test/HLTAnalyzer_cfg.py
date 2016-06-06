@@ -10,8 +10,9 @@ for fil in fileList:
 
 process.source = cms.Source("PoolSource",
                     fileNames = cms.untracked.vstring(
-                        finalList
-                        #'file:/afs/cern.ch/work/d/deguio/Analysis/DiJetScouting/triggerStudies/CMSSW_8_0_9_Mjj_trigger/src/OpenPaths/myResults.root',
+                        #finalList
+
+                        'file:/afs/cern.ch/work/d/deguio/Analysis/DiJetScouting/triggerStudies/CMSSW_8_0_9_Mjj_trigger/src/OpenPaths_0606/myResults.root',
                         #'file:/tmp/deguio/HLTPhysics_Run274200/HLTPhysics_Run274200.root',
                         #'file:/tmp/deguio/HLTPhysics_Run274200/myResults_600.root'
                     ),
@@ -42,11 +43,21 @@ process.MyAnalysis =cms.EDAnalyzer("MyHLTAnalyzer",
 
                        #paths to monitor
                        hltPaths                = cms.untracked.vstring(
-                                                                       'HLT_AK4CaloJet100_v', #common prescale reference
+                                                                       #from TriggerResults::HLT
                                                                        'DST_HT250_CaloScouting_v',
+                                                                       'DST_HT250_CaloBTagScouting_v',
                                                                        'DST_HT410_PFScouting_v',
+                                                                       'DST_HT410_BTagScouting_v',
+                                                                       #from TriggerResults::TEST
+                                                                       'DST_HT250_CaloScouting_v2_ref',
+                                                                       'DST_HT250_CaloBTagScouting_v1_ref',
+                                                                       'DST_HT410_PFScouting_v1_ref',
+                                                                       'DST_HT410_BTagScouting_v1_ref',
+                                                                       # from TriggerResults::TEST
                                                                        'DST_DiPFWideJetMass200_PFScouting_v',
-                                                                       'DST_DiCaloWideJetMass200_CaloScouting_v'
+                                                                       'DST_DiPFWideJetMass200_BTagScouting_v',
+                                                                       'DST_DiCaloWideJetMass200_CaloScouting_v',
+                                                                       'DST_DiCaloWideJetMass200_CaloBTagScouting_v'
                                                                       )
                        )
                        
