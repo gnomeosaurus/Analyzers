@@ -10,9 +10,9 @@ for fil in fileList:
 
 process.source = cms.Source("PoolSource",
                     fileNames = cms.untracked.vstring(
-                        #finalList
+                        finalList
 
-                        'file:/afs/cern.ch/work/d/deguio/Analysis/DiJetScouting/triggerStudies/CMSSW_8_0_9_Mjj_trigger/src/OpenPaths_0606/myResults.root',
+                        #'file:/afs/cern.ch/work/d/deguio/Analysis/DiJetScouting/triggerStudies/CMSSW_8_0_9_Mjj_trigger/src/OpenPaths_0606/myResults.root',
                         #'file:/tmp/deguio/HLTPhysics_Run274200/HLTPhysics_Run274200.root',
                         #'file:/tmp/deguio/HLTPhysics_Run274200/myResults_600.root'
                     ),
@@ -33,6 +33,7 @@ process.MyAnalysis =cms.EDAnalyzer("MyHLTAnalyzer",
                        triggerResult_2         = cms.untracked.InputTag("TriggerResults::TEST"),
                        triggerSummary          = cms.untracked.InputTag("hltDiCaloWideJetMass200::TEST"),
                        caloJetTag              = cms.untracked.InputTag("hltAK4CaloJetsCorrectedIDPassed::TEST"),
+                       PFJetTag                = cms.untracked.InputTag("hltAK4PFJetsCorrected::TEST"),
 
                        #params for wide jet mass calculation
                        minMass                 = cms.untracked.double(200),  

@@ -49,7 +49,10 @@ private:
   
   void fillHltResults(const edm::Handle<edm::TriggerResults> &, 
 		      const edm::TriggerNames &);
-  void fillMjj(const edm::Handle<reco::CaloJetCollection> &);
+
+  template<typename jetCollection>
+  void fillMjj(const edm::Handle<jetCollection> &, float &);
+
   void beginEvent();
 
 
@@ -62,7 +65,8 @@ private:
   int evt_;
   int lumi_;
   //  int nVtx_;
-  float mjj_;
+  float caloMjj_;
+  float PFMjj_;
   //  float dEta_;
   //  float dPhi_;
   std::vector<int>* hltAccept_;
@@ -77,6 +81,7 @@ private:
   edm::InputTag triggerEventTag_;
   edm::EDGetTokenT<trigger::TriggerFilterObjectWithRefs> triggerEventToken_;
   edm::EDGetTokenT<reco::CaloJetCollection>         caloJetToken_;
+  edm::EDGetTokenT<reco::PFJetCollection>           PFJetToken_;
 
   double minMass_;
   double fatJetDeltaR_;
@@ -95,6 +100,7 @@ MyHLTAnalyzer::MyHLTAnalyzer(const edm::ParameterSet& cfg):
   triggerEventTag_          (cfg.getUntrackedParameter<edm::InputTag>("triggerSummary")),
   triggerEventToken_        (consumes<trigger::TriggerFilterObjectWithRefs>(triggerEventTag_)),
   caloJetToken_             (consumes<reco::CaloJetCollection>(cfg.getUntrackedParameter<edm::InputTag>("caloJetTag"))),
+  PFJetToken_               (consumes<reco::PFJetCollection>(cfg.getUntrackedParameter<edm::InputTag>("PFJetTag"))),
   //params for wide jet calculation
   minMass_                  (cfg.getUntrackedParameter<double>("minMass")),
   fatJetDeltaR_             (cfg.getUntrackedParameter<double>("fatJetDeltaR")),
@@ -111,7 +117,8 @@ void MyHLTAnalyzer::beginEvent()
   evt_  = -1;
   lumi_ = -1;
   run_  = -1;
-  mjj_  = -1;
+  caloMjj_  = -1;
+  PFMjj_  = -1;
 
   hltNames_->clear();
   hltAccept_->clear();
@@ -135,12 +142,12 @@ void MyHLTAnalyzer::fillHltResults(const edm::Handle<edm::TriggerResults>   & tr
 
 
 
-
-void MyHLTAnalyzer::fillMjj(const edm::Handle<reco::CaloJetCollection> & jets)
+template<typename jetCollection>
+void MyHLTAnalyzer::fillMjj(const edm::Handle<jetCollection> & jets, float & mjj)
 {
   // Selected jets
   reco::CaloJetCollection recojets;
-  reco::CaloJetCollection::const_iterator i = jets->begin();
+  typename jetCollection::const_iterator i = jets->begin();
   for(;i != jets->end(); i++){
     if(std::abs(i->eta()) < maxJetEta_ && i->pt() >= minJetPt_){ 
       reco::CaloJet jet(i->p4(), i->vertex(), reco::CaloJet::Specific()); 
@@ -194,7 +201,7 @@ void MyHLTAnalyzer::fillMjj(const edm::Handle<reco::CaloJetCollection> & jets)
   fj1 += fj2;
 
   //FILL HERE THE MJJ IN THE TUPLE
-  mjj_ = fj1.mass();
+  mjj = fj1.mass();
   return;
 }
 
@@ -209,7 +216,9 @@ void MyHLTAnalyzer::beginJob() {
   outTree_->Branch("lumi",    &lumi_,      "lumi_/I");
   //  outTree_->Branch("nvtx",    &nVtx_,      "nVtx_/I");
 
-  outTree_->Branch("mjj",     &mjj_,       "mjj_/F");
+  outTree_->Branch("caloMjj",   &caloMjj_,     "caloMjj_/F");
+  outTree_->Branch("PFMjj",     &PFMjj_,       "PFMjj_/F");
+
   //  outTree_->Branch("dEta",    &dEta_,      "dEta_/F");
   //  outTree_->Branch("dPhi",    &dPhi_,      "dPhi_/F");
 
@@ -261,9 +270,15 @@ void MyHLTAnalyzer::analyze (const edm::Event &event, const edm::EventSetup &eve
   edm::Handle<reco::CaloJetCollection> caloJets;
   event.getByToken(caloJetToken_,caloJets);
 
+  edm::Handle<reco::PFJetCollection> PFJets;
+  event.getByToken(PFJetToken_,PFJets);
+
   // not available for every event
   if(caloJets.isValid())
-    fillMjj(caloJets);
+    fillMjj(caloJets,caloMjj_);
+
+  if(PFJets.isValid())
+    fillMjj(PFJets,PFMjj_);
 
   outTree_->Fill();  
 }
