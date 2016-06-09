@@ -25,11 +25,20 @@ int ntuAnalyzer(std::string fileName)
   setGlobalStyle();
   
   //###############################
-  unsigned int HT250Calo  = 0; //index of DST_HT250_CaloScouting_v
+  //## run274200 ##
+  unsigned int HT250Calo  = 1; //index of DST_HT250_CaloScouting_v
   float HT250Calo_rate = 1928;
 
-  unsigned int HT410PF = 2; //index of DST_HT410_PFScouting_v
+  unsigned int HT410PF = 3; //index of DST_HT410_PFScouting_v
   float HT410PF_rate = 294;
+
+  unsigned int MJJ200Calo = 10; //index of DST_DiCaloWideJetMass200_CaloScouting_v
+  unsigned int HTT200 = 0; //index if L1_HTT200
+  unsigned int HTT240 = 1; //index if L1_HTT240
+  unsigned int HTT270 = 2; //index if L1_HTT270
+  unsigned int HTT280 = 3; //index if L1_HTT280
+  unsigned int DoubleJetC100 = 7; //index if L1_DoubleJetC100
+  unsigned int DoubleJetC112 = 8; //index if L1_DoubleJetC112
 
   float instLumi = 0.4; //E34
   float targetLumi = 1; //E34
@@ -37,6 +46,8 @@ int ntuAnalyzer(std::string fileName)
 
   float PDRate = 59300; //unprescaled rate of HLTPhysics accordingly to: https://cmswbm2.web.cern.ch/cmswbm2/cmsdb/servlet/DatasetSummary?RUN=274200 and prescale of 9000
   
+
+  unsigned int L1scenario = HTT280;
   //###############################
 
   TChain* tt = new TChain("MyAnalysis/HLTree");
@@ -46,14 +57,17 @@ int ntuAnalyzer(std::string fileName)
   TBranch* b_caloMjj;
   TBranch* b_PFMjj;
   TBranch* b_hltAccept;
+  TBranch* b_l1Accept;
 
   float caloMjj = 0;
   float PFMjj = 0;
   std::vector<int>* hltAccept = 0;
+  std::vector<int>* l1Accept = 0;
 
   tt->SetBranchAddress("caloMjj", &caloMjj, &b_caloMjj);
   tt->SetBranchAddress("PFMjj", &PFMjj, &b_PFMjj);
   tt->SetBranchAddress("hltAccept", &hltAccept, &b_hltAccept);
+  tt->SetBranchAddress("l1Accept", &l1Accept, &b_l1Accept);
 
   int nentries = tt->GetEntries();
   std::cout << "Number of entries: " << nentries << std::endl;
@@ -76,10 +90,11 @@ int ntuAnalyzer(std::string fileName)
   TEfficiency* mjj450_eff = new TEfficiency("mjj450_eff","mjj450_eff",nBins,min,max);
   mjj450_eff->SetMarkerColor(kRed);
   mjj450_eff->SetLineColor(kRed);
-  mjj450_eff->SetLineWidth(2.);
+  mjj450_eff->SetLineWidth(2);
   mjj450_eff->SetTitle("turnOn;Mjj [GeV]");
-  TEfficiency* mjj280_eff = new TEfficiency("mjj280_eff","mjj280_eff",nBins,min,max);
-  mjj280_eff->SetLineWidth(2);
+  TEfficiency* mjj200_eff = new TEfficiency("mjj200_eff","mjj200_eff",nBins,min,max);
+  mjj200_eff->SetLineWidth(2);
+  mjj200_eff->SetTitle("turnOn;Mjj [GeV]");
   TEfficiency* pf410_eff = new TEfficiency("pf410_eff","pf410_eff",nBins,min,max);
   pf410_eff->SetMarkerColor(kOrange+1);
   pf410_eff->SetLineColor(kOrange+1);
@@ -91,25 +106,27 @@ int ntuAnalyzer(std::string fileName)
   for (Long64_t jentry=0; jentry<nentries;++jentry)
     {
       tt->GetEntry(jentry);
-      mjj450_eff->Fill(caloMjj>450 || hltAccept->at(HT410PF)==1, PFMjj);
-      mjj280_eff->Fill(caloMjj>200 || hltAccept->at(HT250Calo)==1, caloMjj); //this is illustrative
+
+      mjj450_eff->Fill((caloMjj>450 && l1Accept(L1scenario)) || hltAccept->at(HT410PF)==1, PFMjj);
+      mjj200_eff->Fill((caloMjj>200 && l1Accept(L1scenario)) || hltAccept->at(HT250Calo)==1, caloMjj);
+      //for comparison
       pf410_eff->Fill(hltAccept->at(HT410PF)==1, PFMjj);
       calo250_eff->Fill(hltAccept->at(HT250Calo)==1, caloMjj);
     }
 
   mjj450_eff->Fit(f1,"r");
-  mjj280_eff->Fit(f2,"r");
+  mjj200_eff->Fit(f2,"r");
 
 
   TLegend* leg0 = new TLegend(0.62, 0.78, 0.83, 0.89);
   leg0->AddEntry(mjj450_eff,"MJJ450PF || HT410PF","L");
-  leg0->AddEntry(mjj280_eff,"MJJ200Calo || HT250Calo","L");
+  leg0->AddEntry(mjj200_eff,"MJJ200Calo || HT250Calo","L");
   leg0->AddEntry(pf410_eff,"HT410_PF","P");
   leg0->AddEntry(calo250_eff,"HT250_Calo","P");
 
-  TCanvas* c0 = new TCanvas();
+  TCanvas* c1 = new TCanvas();
   mjj450_eff->Draw();
-  mjj280_eff->Draw("sames");
+  mjj200_eff->Draw("sames");
   pf410_eff->Draw("sames");
   calo250_eff->Draw("sames");
   leg0->Draw("sames");
@@ -124,8 +141,6 @@ int ntuAnalyzer(std::string fileName)
   TGraphErrors* totRateVsCut = new TGraphErrors();
   TGraphErrors* pureRateVsCut450 = new TGraphErrors();
   TGraphErrors* pureRateVsCut280 = new TGraphErrors();
-  TGraphErrors* totRateVsCut_proj = new TGraphErrors();
-  TGraphErrors* pureRateVsCut_proj = new TGraphErrors();
 
   //loops
   int bin = 0;
@@ -142,11 +157,12 @@ int ntuAnalyzer(std::string fileName)
 	  if (hltAccept->at(HT250Calo) == 1)
 	    ++HT250Calo_Passed;
 
-	  if (caloMjj > cut && !hltAccept->at(HT410PF))
+	  //if (caloMjj > cut && !hltAccept->at(HT410PF))
+	  if (caloMjj > cut && l1Accept->at(L1scenario) && !hltAccept->at(HT410PF))
 	    ++excl410_passed;
-	  if (caloMjj > cut && !hltAccept->at(HT250Calo))
+	  if (caloMjj > cut && l1Accept->at(L1scenario) && !hltAccept->at(HT250Calo))
 	    ++excl250_passed;
-	  if (caloMjj > cut)
+	  if (caloMjj > cut && l1Accept->at(L1scenario))
 	    ++mjjPassed;
 
 	  // if (hltAccept->at(HT250Calo) == 0 && mjj > cut)
@@ -154,6 +170,7 @@ int ntuAnalyzer(std::string fileName)
 	}
       // float mjjTotalRate = (float)mjjPassed/(float)HT250Calo_Passed*HT250Calo_rate;
       // float mjjPureRate = (float)exclPassed/(float)HT250Calo_Passed*HT250Calo_rate;
+
       float sigmaMjjPassed = sqrt((float)mjjPassed);
       float sigmaNentries = sqrt((float)nentries);
       float sigmaExcl410_passed = sqrt((float)excl410_passed);
@@ -177,9 +194,6 @@ int ntuAnalyzer(std::string fileName)
       pureRateVsCut280->SetPoint(bin,cut,mjj280_PureRate);
       pureRateVsCut280->SetPointError(bin,0.,mjj280_PureRateE);
 
-      // totRateVsCut_proj->SetPoint(bin,cut,mjjTotalRate/instLumi*targetLumi);
-      // pureRateVsCut_proj->SetPoint(bin,cut,mjjPureRate/instLumi*targetLumi);
-
       ++bin;
     }
 
@@ -190,7 +204,6 @@ int ntuAnalyzer(std::string fileName)
   leg->AddEntry(pureRateVsCut280,"pure rate wrt HT250Calo","P");
 
   totRateVsCut->SetTitle("Rate Ref");
-  totRateVsCut_proj->SetTitle("Rate target");
 
   totRateVsCut->GetXaxis()->SetTitle("Mjj cut threshold [GeV]");
   totRateVsCut->GetYaxis()->SetTitle("Rate @4E33 [Hz]");
@@ -198,11 +211,6 @@ int ntuAnalyzer(std::string fileName)
   pureRateVsCut450->SetLineColor(kRed);
   pureRateVsCut280->SetMarkerColor(kOrange+1);
   pureRateVsCut280->SetLineColor(kOrange+1);
-
-  totRateVsCut_proj->GetXaxis()->SetTitle("Mjj cut threshold [GeV]");
-  totRateVsCut_proj->GetYaxis()->SetTitle("Rate [Hz]");
-  pureRateVsCut_proj->SetMarkerColor(kRed);
-  pureRateVsCut_proj->SetLineColor(kRed);
 
   TCanvas* c2 = new TCanvas();
   c2->cd();
@@ -224,12 +232,6 @@ int ntuAnalyzer(std::string fileName)
   axis->SetLabelSize(0.03);
   axis->SetTitle("Rate @1E34 [Hz]");
   axis->Draw();
-
-
-  // TCanvas* c3 = new TCanvas();
-  // totRateVsCut_proj->Draw("AP");
-  // pureRateVsCut_proj->Draw("P,sames");
-  // leg->Draw("sames");
 
 
   return 0;
