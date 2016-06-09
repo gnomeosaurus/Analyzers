@@ -26,6 +26,9 @@
 #include "DataFormats/JetReco/interface/CaloJetCollection.h"
 #include "DataFormats/JetReco/interface/PFJetCollection.h"
 
+#include "L1Trigger/L1TGlobal/interface/L1TGlobalUtil.h"
+
+
 #include <map>
 #include <string>
 #include <iomanip>
@@ -73,6 +76,9 @@ private:
   std::vector<int>* hltWasrun_;
   std::vector<std::string>* hltNames_;
 
+  std::vector<std::string>* l1Names_;
+  std::vector<int>* l1Accept_;
+
   // Trigger process
   edm::InputTag triggerResultTag_1_;
   edm::InputTag triggerResultTag_2_;
@@ -83,6 +89,8 @@ private:
   edm::EDGetTokenT<reco::CaloJetCollection>         caloJetToken_;
   edm::EDGetTokenT<reco::PFJetCollection>           PFJetToken_;
 
+  l1t::L1TGlobalUtil *l1GtUtils_;
+
   double minMass_;
   double fatJetDeltaR_;
   double maxDeltaEta_;
@@ -90,6 +98,8 @@ private:
   double minJetPt_;
 
   std::vector<std::string> hltPaths_;
+  edm::EDGetToken algToken_;
+  std::vector<std::string> l1Paths_;
 };
 
 MyHLTAnalyzer::MyHLTAnalyzer(const edm::ParameterSet& cfg): 
@@ -108,8 +118,12 @@ MyHLTAnalyzer::MyHLTAnalyzer(const edm::ParameterSet& cfg):
   maxJetEta_                (cfg.getUntrackedParameter<double>("maxJetEta")),
   minJetPt_                 (cfg.getUntrackedParameter<double>("minJetPt")),
   
-  hltPaths_                 (cfg.getUntrackedParameter<std::vector<std::string> >("hltPaths"))
+  hltPaths_                 (cfg.getUntrackedParameter<std::vector<std::string> >("hltPaths")),
+
+  algToken_                 (consumes<BXVector<GlobalAlgBlk>>(cfg.getParameter<edm::InputTag>("AlgInputTag"))),
+  l1Paths_                  (cfg.getUntrackedParameter<std::vector<std::string> >("l1Paths"))
 {
+  l1GtUtils_ = new l1t::L1TGlobalUtil(cfg,consumesCollector());
 }
 
 void MyHLTAnalyzer::beginEvent()
@@ -123,6 +137,8 @@ void MyHLTAnalyzer::beginEvent()
   hltNames_->clear();
   hltAccept_->clear();
   hltWasrun_->clear();
+  l1Names_->clear();
+  l1Accept_->clear();
 }
   
 void MyHLTAnalyzer::fillHltResults(const edm::Handle<edm::TriggerResults>   & triggerResults, 
@@ -231,6 +247,9 @@ void MyHLTAnalyzer::beginJob() {
   outTree_->Branch("hltAccept", "std::vector<int>", &hltAccept_);
   outTree_->Branch("hltWasrun", "std::vector<int>", &hltWasrun_);
 
+  outTree_->Branch("l1Names",  "std::vector<std::string>", &l1Names_);
+  outTree_->Branch("l1Accept", "std::vector<int>", &l1Accept_);
+
 }
 
 void MyHLTAnalyzer::endJob() 
@@ -238,6 +257,8 @@ void MyHLTAnalyzer::endJob()
   delete hltNames_;
   delete hltAccept_;
   delete hltWasrun_;
+  delete l1Names_;
+  delete l1Accept_;
 }
 
 
@@ -249,7 +270,7 @@ void MyHLTAnalyzer::analyze (const edm::Event &event, const edm::EventSetup &eve
   lumi_            = event.id().luminosityBlock();
   run_             = event.id().run();
   
-
+  //fill HLT
   edm::Handle<edm::TriggerResults>   triggerResults_1;
   edm::Handle<edm::TriggerResults>   triggerResults_2;
   edm::Handle<trigger::TriggerFilterObjectWithRefs> triggerEvent;
@@ -267,6 +288,19 @@ void MyHLTAnalyzer::analyze (const edm::Event &event, const edm::EventSetup &eve
   fillHltResults(triggerResults_1,triggerNames_1);  
   fillHltResults(triggerResults_2,triggerNames_2);  
 
+  //fill L1
+  l1GtUtils_->retrieveL1(event,eventSetup,algToken_);
+  for( unsigned int iseed = 0; iseed < l1Paths_.size(); iseed++ ) {
+    bool l1htbit = 0;
+    l1GtUtils_->getFinalDecisionByName(l1Paths_[iseed], l1htbit);
+    
+    l1Names_ ->push_back(l1Paths_[iseed]);
+    l1Accept_->push_back( l1htbit );
+  }
+
+
+
+  //fill Jets
   edm::Handle<reco::CaloJetCollection> caloJets;
   event.getByToken(caloJetToken_,caloJets);
 

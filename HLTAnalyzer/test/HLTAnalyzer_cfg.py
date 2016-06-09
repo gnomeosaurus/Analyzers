@@ -10,11 +10,8 @@ for fil in fileList:
 
 process.source = cms.Source("PoolSource",
                     fileNames = cms.untracked.vstring(
-                        finalList
-
-                        #'file:/afs/cern.ch/work/d/deguio/Analysis/DiJetScouting/triggerStudies/CMSSW_8_0_9_Mjj_trigger/src/OpenPaths_0606/myResults.root',
-                        #'file:/tmp/deguio/HLTPhysics_Run274200/HLTPhysics_Run274200.root',
-                        #'file:/tmp/deguio/HLTPhysics_Run274200/myResults_600.root'
+                        #finalList
+                        'file:/afs/cern.ch/work/d/deguio/Analysis/DiJetScouting/triggerStudies/CMSSW_8_0_9_Mjj_trigger/src/OpenPaths_0706/myResults.root',
                     ),
                     secondaryFileNames = cms.untracked.vstring(),
 #                     lumisToProcess = cms.untracked.VLuminosityBlockRange('258158:1-258158:1786'),
@@ -27,13 +24,13 @@ process.GlobalTag.globaltag = '80X_dataRun2_HLT_v12'
 process.load("Configuration.StandardSequences.MagneticField_AutoFromDBCurrent_cff")
 process.load('Configuration.Geometry.GeometryRecoDB_cff')
 
-
 process.MyAnalysis =cms.EDAnalyzer("MyHLTAnalyzer",
                        triggerResult_1         = cms.untracked.InputTag("TriggerResults::HLT"),
                        triggerResult_2         = cms.untracked.InputTag("TriggerResults::TEST"),
                        triggerSummary          = cms.untracked.InputTag("hltDiCaloWideJetMass200::TEST"),
                        caloJetTag              = cms.untracked.InputTag("hltAK4CaloJetsCorrectedIDPassed::TEST"),
                        PFJetTag                = cms.untracked.InputTag("hltAK4PFJetsCorrected::TEST"),
+                                   
 
                        #params for wide jet mass calculation
                        minMass                 = cms.untracked.double(200),  
@@ -58,8 +55,13 @@ process.MyAnalysis =cms.EDAnalyzer("MyHLTAnalyzer",
                                                                        'DST_DiPFWideJetMass200_PFScouting_v',
                                                                        'DST_DiPFWideJetMass200_BTagScouting_v',
                                                                        'DST_DiCaloWideJetMass200_CaloScouting_v',
-                                                                       'DST_DiCaloWideJetMass200_CaloBTagScouting_v'
-                                                                      )
+                                                                       'DST_DiCaloWideJetMass200_CaloBTagScouting_v',
+                                                                       'DST_L1HTT_CaloScouting_PFScouting_v'
+                                                                      ),
+                        l1Paths                 = cms.untracked.vstring('L1_HTT200','L1_HTT240','L1_HTT270','L1_HTT280','L1_HTT300','L1_HTT320','L1_ZeroBias','L1_DoubleJetC100','L1_DoubleJetC112'),
+                        AlgInputTag = cms.InputTag("hltGtStage2Digis"),
+                        l1tAlgBlkInputTag = cms.InputTag("hltGtStage2Digis"),
+                        l1tExtBlkInputTag = cms.InputTag("hltGtStage2Digis")
                        )
                        
 process.mypath  = cms.Path(process.MyAnalysis)
@@ -68,9 +70,12 @@ process.TFileService = cms.Service("TFileService",
                                    fileName = cms.string("hlTree.root"),
                                    closeFileFast = cms.untracked.bool(False)
                                    )
-
  
 process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(-1))   
+process.options =  cms.untracked.PSet(
+                   #allowUnscheduled = cms.untracked.bool(True),
+                   wantSummary = cms.untracked.bool(True),
+                   )
 
 
 process.MessageLogger = cms.Service("MessageLogger",
