@@ -15,6 +15,8 @@ void setGlobalStyle()
 
   tdrStyle->SetPadGridX(true);
   tdrStyle->SetPadGridY(true);
+
+  tdrStyle->SetMarkerSize(0.5);
 }
 
 
@@ -57,12 +59,19 @@ int ntuAnalyzer(std::string fileName)
   std::cout << "Number of entries: " << nentries << std::endl;
 
   //book graphs and plots
-  float min = 100.;
+  float min = 150.;
   float max = 1000.;
-  int nBins = 18;
+  int nBins = 17;
 
   TF1* f1 = new TF1("f1","[0]*TMath::Erf((x-[1])/[2])-[0]*TMath::Erf((-x-[1])/[2])",min,max);
+  f1->SetParameters(0.5,350,10);  
+  f1->FixParameter(0,0.5);
   f1->SetLineWidth(2.);
+  f1->SetLineColor(kRed);
+
+  TF1* f2 = (TF1*)f1->Clone("f2");
+  f2->SetParameters(0.5,150,10);
+  f2->SetLineColor(kBlack);
 
   TEfficiency* mjj450_eff = new TEfficiency("mjj450_eff","mjj450_eff",nBins,min,max);
   mjj450_eff->SetMarkerColor(kRed);
@@ -82,28 +91,25 @@ int ntuAnalyzer(std::string fileName)
   for (Long64_t jentry=0; jentry<nentries;++jentry)
     {
       tt->GetEntry(jentry);
-      mjj450_eff->Fill(caloMjj>450, PFMjj);
-      mjj280_eff->Fill(caloMjj>280, caloMjj); //this is illustrative
+      mjj450_eff->Fill(caloMjj>450 || hltAccept->at(HT410PF)==1, PFMjj);
+      mjj280_eff->Fill(caloMjj>200 || hltAccept->at(HT250Calo)==1, caloMjj); //this is illustrative
       pf410_eff->Fill(hltAccept->at(HT410PF)==1, PFMjj);
-      calo250_eff->Fill(hltAccept->at(HT250Calo)==1, PFMjj);
+      calo250_eff->Fill(hltAccept->at(HT250Calo)==1, caloMjj);
     }
 
-  f1->SetParameters(0.5,400,50);  
   mjj450_eff->Fit(f1,"r");
-
-  // f1->SetParameters(0.5,280,10);
-  // mjj280_eff->Fit(f1,"r");
+  mjj280_eff->Fit(f2,"r");
 
 
   TLegend* leg0 = new TLegend(0.62, 0.78, 0.83, 0.89);
-  leg0->AddEntry(mjj450_eff,"MJJ450","L");
-  leg0->AddEntry(mjj280_eff,"MJJ280","L");
+  leg0->AddEntry(mjj450_eff,"MJJ450PF || HT410PF","L");
+  leg0->AddEntry(mjj280_eff,"MJJ200Calo || HT250Calo","L");
   leg0->AddEntry(pf410_eff,"HT410_PF","P");
   leg0->AddEntry(calo250_eff,"HT250_Calo","P");
 
   TCanvas* c0 = new TCanvas();
   mjj450_eff->Draw();
-  mjj280_eff->Draw("L,sames");
+  mjj280_eff->Draw("sames");
   pf410_eff->Draw("sames");
   calo250_eff->Draw("sames");
   leg0->Draw("sames");
@@ -115,15 +121,15 @@ int ntuAnalyzer(std::string fileName)
   //##############################################
 
   //book graphs and plots
-  TGraph* totRateVsCut = new TGraph();
-  TGraph* pureRateVsCut450 = new TGraph();
-  TGraph* pureRateVsCut280 = new TGraph();
-  TGraph* totRateVsCut_proj = new TGraph();
-  TGraph* pureRateVsCut_proj = new TGraph();
+  TGraphErrors* totRateVsCut = new TGraphErrors();
+  TGraphErrors* pureRateVsCut450 = new TGraphErrors();
+  TGraphErrors* pureRateVsCut280 = new TGraphErrors();
+  TGraphErrors* totRateVsCut_proj = new TGraphErrors();
+  TGraphErrors* pureRateVsCut_proj = new TGraphErrors();
 
   //loops
   int bin = 0;
-  for (int cut = 100; cut < 600; cut=cut+5)
+  for (int cut = 100; cut < 550; cut=cut+10)
     {
       int mjjPassed = 0;
       int HT250Calo_Passed = 0;
@@ -148,13 +154,28 @@ int ntuAnalyzer(std::string fileName)
 	}
       // float mjjTotalRate = (float)mjjPassed/(float)HT250Calo_Passed*HT250Calo_rate;
       // float mjjPureRate = (float)exclPassed/(float)HT250Calo_Passed*HT250Calo_rate;
+      float sigmaMjjPassed = sqrt((float)mjjPassed);
+      float sigmaNentries = sqrt((float)nentries);
+      float sigmaExcl410_passed = sqrt((float)excl410_passed);
+      float sigmaExcl250_passed = sqrt((float)excl250_passed);
+
       float mjjTotalRate = (float)mjjPassed/(float)nentries*PDRate;
+      float mjjTotalRateE = PDRate*sqrt(pow((sigmaMjjPassed/nentries),2)+pow((sigmaNentries*mjjPassed/nentries/nentries),2));
+
       float mjj450_PureRate = (float)excl410_passed/(float)nentries*PDRate;
+      float mjj450_PureRateE = PDRate*sqrt(pow((sigmaExcl410_passed/nentries),2)+pow((sigmaNentries*excl410_passed/nentries/nentries),2));
+      
       float mjj280_PureRate = (float)excl250_passed/(float)nentries*PDRate;
+      float mjj280_PureRateE = PDRate*sqrt(pow((sigmaExcl250_passed/nentries),2)+pow((sigmaNentries*excl250_passed/nentries/nentries),2));
 
       totRateVsCut->SetPoint(bin,cut,mjjTotalRate);
+      totRateVsCut->SetPointError(bin,0.,mjjTotalRateE);
+
       pureRateVsCut450->SetPoint(bin,cut,mjj450_PureRate);
+      pureRateVsCut450->SetPointError(bin,0.,mjj450_PureRateE);
+
       pureRateVsCut280->SetPoint(bin,cut,mjj280_PureRate);
+      pureRateVsCut280->SetPointError(bin,0.,mjj280_PureRateE);
 
       // totRateVsCut_proj->SetPoint(bin,cut,mjjTotalRate/instLumi*targetLumi);
       // pureRateVsCut_proj->SetPoint(bin,cut,mjjPureRate/instLumi*targetLumi);
@@ -172,13 +193,16 @@ int ntuAnalyzer(std::string fileName)
   totRateVsCut_proj->SetTitle("Rate target");
 
   totRateVsCut->GetXaxis()->SetTitle("Mjj cut threshold [GeV]");
-  totRateVsCut->GetYaxis()->SetTitle("Rate [Hz]");
+  totRateVsCut->GetYaxis()->SetTitle("Rate @4E33 [Hz]");
   pureRateVsCut450->SetMarkerColor(kRed);
+  pureRateVsCut450->SetLineColor(kRed);
   pureRateVsCut280->SetMarkerColor(kOrange+1);
+  pureRateVsCut280->SetLineColor(kOrange+1);
 
   totRateVsCut_proj->GetXaxis()->SetTitle("Mjj cut threshold [GeV]");
   totRateVsCut_proj->GetYaxis()->SetTitle("Rate [Hz]");
   pureRateVsCut_proj->SetMarkerColor(kRed);
+  pureRateVsCut_proj->SetLineColor(kRed);
 
   TCanvas* c2 = new TCanvas();
   c2->cd();
@@ -186,14 +210,20 @@ int ntuAnalyzer(std::string fileName)
   pureRateVsCut450->Draw("P,sames");
   pureRateVsCut280->Draw("P,sames");
   leg->Draw("sames");
+  c2->Update();
 
+  TGaxis *axis = new TGaxis(gPad->GetUxmax(),gPad->GetUymin(),gPad->GetUxmax(), gPad->GetUymax(),
+    			    (totRateVsCut->GetYaxis()->GetBinLowEdge(1))*lumiScaleFactor,
+			    (totRateVsCut->GetYaxis()->GetBinLowEdge(totRateVsCut->GetYaxis()->GetNbins())+totRateVsCut->GetYaxis()->GetBinWidth(1))*lumiScaleFactor,510,"+L");
 
-  // TGaxis *axis = new TGaxis(gPad->GetUxmax(),gPad->GetUymin(),gPad->GetUxmax(), gPad->GetUymax(),
-  //  			    (totRateVsCut->GetYaxis()->GetBinLowEdge(1))*lumiScaleFactor,
-  // 			    (totRateVsCut->GetYaxis()->GetBinLowEdge(totRateVsCut->GetYaxis()->GetNbins())+totRateVsCut->GetYaxis()->GetBinWidth(1))*lumiScaleFactor,510,"+L");
-  //  axis->SetLineColor(kRed);
-  //  axis->SetTextColor(kRed);
-  //  axis->Draw("same");
+  c2->SetTicky(0);
+  axis->SetLineColor(kRed);
+  axis->SetLabelColor(kRed);
+  axis->SetTextColor(kRed);
+  axis->SetTitleOffset(1.3);
+  axis->SetLabelSize(0.03);
+  axis->SetTitle("Rate @1E34 [Hz]");
+  axis->Draw();
 
 
   // TCanvas* c3 = new TCanvas();
