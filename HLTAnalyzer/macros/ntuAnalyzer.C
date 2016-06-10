@@ -55,20 +55,44 @@ int ntuAnalyzer(std::string fileName)
   tt->Add(fileName.c_str());
 
   //set branches
+  TBranch* b_lumi;
+  
   TBranch* b_caloMjj;
   TBranch* b_PFMjj;
   TBranch* b_hltAccept;
   TBranch* b_l1Accept;
   TBranch* b_l1Names;
+  TBranch* b_jet1Pt;
+  TBranch* b_jet2Pt;
+  TBranch* b_jet1Eta;
+  TBranch* b_jet2Eta;
+  TBranch* b_deltaEta;
 
+  int lumi = 0;
   float caloMjj = 0;
   float PFMjj = 0;
+  float jet1Pt_ = 0;
+  float jet2Pt_ = 0;
+  float jet1Eta_ = -999;
+  float jet2Eta_ = -999;
+  float deltaEta_ = -999;
+    
+  
   std::vector<int>* hltAccept = 0;
   std::vector<int>* l1Accept = 0;
   std::vector<string>* l1Names = 0;
 
+  tt->SetBranchAddress("lumi", &lumi, &b_lumi);
+
   tt->SetBranchAddress("caloMjj", &caloMjj, &b_caloMjj);
   tt->SetBranchAddress("PFMjj", &PFMjj, &b_PFMjj);
+
+  tt->SetBranchAddress("jet1Pt", &jet1Pt_, &b_jet1Pt);
+  tt->SetBranchAddress("jet2Pt", &jet2Pt_, &b_jet2Pt);
+  tt->SetBranchAddress("jet1Eta", &jet1Eta_, &b_jet1Eta);
+  tt->SetBranchAddress("jet2Eta", &jet2Eta_, &b_jet2Eta);
+  tt->SetBranchAddress("deltaEta", &deltaEta_, &b_deltaEta);
+
   tt->SetBranchAddress("hltAccept", &hltAccept, &b_hltAccept);
   tt->SetBranchAddress("l1Accept", &l1Accept, &b_l1Accept);
   tt->SetBranchAddress("l1Names", &l1Names, &b_l1Names);
@@ -113,6 +137,17 @@ int ntuAnalyzer(std::string fileName)
     {
       tt->GetEntry(jentry);
 
+      //remove low rate lumis.
+      //see: https://cmswbm2.web.cern.ch/cmswbm2/cmsdb/servlet/ChartHLTTriggerRates?RUNID=274200&PATHID=2043408&LSLENGTH=23.31040958&TRIGGER_PATH=DST_HT250_CaloScouting_v2
+      //if(lumi > 539 && lumi < 553) continue;
+      
+      //analysis cuts needed to compare with the analysis
+      if (jet1Pt_ < 60.) continue;
+      if (jet2Pt_ < 30.) continue;
+      if (fabs(jet1Eta_) > 2.5) continue;
+      if (fabs(jet2Eta_) > 2.5) continue;
+      if (deltaEta_ > 1.3) continue;
+
       mjj450_eff->Fill((caloMjj>450 && l1Accept->at(L1scenario)) || hltAccept->at(HT410PF)==1, PFMjj);
       mjj200_eff->Fill((caloMjj>200 && l1Accept->at(L1scenario)) || hltAccept->at(HT250Calo)==1, caloMjj);
       //for comparison
@@ -130,14 +165,14 @@ int ntuAnalyzer(std::string fileName)
 
 
   TLegend* leg0 = new TLegend(0.62, 0.78, 0.83, 0.89);
-  leg0->AddEntry(mjj450_eff,"MJJ450PF || HT410PF","L");
+  //leg0->AddEntry(mjj450_eff,"MJJ450PF || HT410PF","L");
   leg0->AddEntry(mjj200_eff,"MJJ200Calo || HT250Calo","L");
   leg0->AddEntry(pf410_eff,"HT410_PF","P");
   leg0->AddEntry(calo250_eff,"HT250_Calo","P");
 
   TCanvas* c1 = new TCanvas();
-  mjj450_eff->Draw();
-  mjj200_eff->Draw("sames");
+  mjj200_eff->Draw();
+  //mjj450_eff->Draw("sames");
   pf410_eff->Draw("sames");
   calo250_eff->Draw("sames");
   leg0->Draw("sames");
@@ -167,7 +202,7 @@ int ntuAnalyzer(std::string fileName)
   l1axis->Draw();
   
   
-  //return 0;
+  return 0;
 
   //##############################################
   //##############################################
@@ -235,7 +270,7 @@ int ntuAnalyzer(std::string fileName)
   //plotting and styling
   TLegend* leg = new TLegend(0.62, 0.78, 0.83, 0.89);
   leg->AddEntry(totRateVsCut,"total rate","P");
-  leg->AddEntry(pureRateVsCut450,"pure rate wrt HT410PF","P");
+  //leg->AddEntry(pureRateVsCut450,"pure rate wrt HT410PF","P");
   leg->AddEntry(pureRateVsCut280,"pure rate wrt HT250Calo","P");
 
   totRateVsCut->SetTitle("Rate Ref");
@@ -250,7 +285,7 @@ int ntuAnalyzer(std::string fileName)
   TCanvas* c3 = new TCanvas();
   c3->cd();
   totRateVsCut->Draw("AP");
-  pureRateVsCut450->Draw("P,sames");
+  //pureRateVsCut450->Draw("P,sames");
   pureRateVsCut280->Draw("P,sames");
   leg->Draw("sames");
   c3->Update();

@@ -70,6 +70,12 @@ private:
   //  int nVtx_;
   float caloMjj_;
   float PFMjj_;
+  float deltaEta_;
+
+  float jet1Pt_;
+  float jet1Eta_;
+  float jet2Pt_;
+  float jet2Eta_;
   //  float dEta_;
   //  float dPhi_;
   std::vector<int>* hltAccept_;
@@ -133,6 +139,12 @@ void MyHLTAnalyzer::beginEvent()
   run_  = -1;
   caloMjj_  = -1;
   PFMjj_  = -1;
+  deltaEta_ = -999;
+
+  jet1Pt_ = -1;
+  jet1Eta_ = -999;
+  jet2Pt_ = -1;
+  jet2Eta_ = -999;
 
   hltNames_->clear();
   hltAccept_->clear();
@@ -216,7 +228,14 @@ void MyHLTAnalyzer::fillMjj(const edm::Handle<jetCollection> & jets, float & mjj
 
   fj1 += fj2;
 
-  //FILL HERE THE MJJ IN THE TUPLE
+  //FILL HERE THE JET VARIABLES IN THE TUPLE
+  deltaEta_ = DeltaEta;
+  jet1Pt_ = j1.pt();
+  jet1Eta_ = j1.eta();
+  jet2Pt_ = j2.pt();
+  jet2Eta_ = j2.eta();
+
+
   mjj = fj1.mass();
   return;
 }
@@ -234,6 +253,13 @@ void MyHLTAnalyzer::beginJob() {
 
   outTree_->Branch("caloMjj",   &caloMjj_,     "caloMjj_/F");
   outTree_->Branch("PFMjj",     &PFMjj_,       "PFMjj_/F");
+  outTree_->Branch("deltaEta",  &deltaEta_,    "deltaEta_/F");
+
+  outTree_->Branch("jet1Pt",   &jet1Pt_,     "jet1Pt_/F");
+  outTree_->Branch("jet1Eta",  &jet1Eta_,    "jet1Eta_/F");
+  outTree_->Branch("jet2Pt",   &jet2Pt_,     "jet2Pt_/F");
+  outTree_->Branch("jet2Eta",  &jet2Eta_,    "jet2Eta_/F");
+
 
   //  outTree_->Branch("dEta",    &dEta_,      "dEta_/F");
   //  outTree_->Branch("dPhi",    &dPhi_,      "dPhi_/F");
