@@ -10,8 +10,8 @@ for fil in fileList:
 
 process.source = cms.Source("PoolSource",
                     fileNames = cms.untracked.vstring(
-                        #finalList
-                        'file:/afs/cern.ch/work/d/deguio/Analysis/DiJetScouting/triggerStudies/CMSSW_8_0_9_Mjj_trigger/src/OpenPaths_0706/myResults.root',
+                        finalList
+                        #'file:/afs/cern.ch/work/d/deguio/Analysis/DiJetScouting/triggerStudies/CMSSW_8_0_9_Mjj_trigger/src/OpenPaths_0706/myResults.root',
                     ),
                     secondaryFileNames = cms.untracked.vstring(),
 #                     lumisToProcess = cms.untracked.VLuminosityBlockRange('258158:1-258158:1786'),
@@ -67,7 +67,7 @@ process.MyAnalysis =cms.EDAnalyzer("MyHLTAnalyzer",
 process.mypath  = cms.Path(process.MyAnalysis)
 
 process.TFileService = cms.Service("TFileService",
-                                   fileName = cms.string("hlTree.root"),
+                                   fileName = cms.string("hlTree_run274200.root"),
                                    closeFileFast = cms.untracked.bool(False)
                                    )
  

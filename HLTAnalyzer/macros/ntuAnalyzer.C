@@ -33,6 +33,7 @@ int ntuAnalyzer(std::string fileName)
   float HT410PF_rate = 294;
 
   unsigned int MJJ200Calo = 10; //index of DST_DiCaloWideJetMass200_CaloScouting_v
+  
   unsigned int HTT200 = 0; //index if L1_HTT200
   unsigned int HTT240 = 1; //index if L1_HTT240
   unsigned int HTT270 = 2; //index if L1_HTT270
@@ -47,7 +48,7 @@ int ntuAnalyzer(std::string fileName)
   float PDRate = 59300; //unprescaled rate of HLTPhysics accordingly to: https://cmswbm2.web.cern.ch/cmswbm2/cmsdb/servlet/DatasetSummary?RUN=274200 and prescale of 9000
   
 
-  unsigned int L1scenario = HTT280;
+  unsigned int L1scenario = HTT240;
   //###############################
 
   TChain* tt = new TChain("MyAnalysis/HLTree");
@@ -58,16 +59,19 @@ int ntuAnalyzer(std::string fileName)
   TBranch* b_PFMjj;
   TBranch* b_hltAccept;
   TBranch* b_l1Accept;
+  TBranch* b_l1Names;
 
   float caloMjj = 0;
   float PFMjj = 0;
   std::vector<int>* hltAccept = 0;
   std::vector<int>* l1Accept = 0;
+  std::vector<string>* l1Names = 0;
 
   tt->SetBranchAddress("caloMjj", &caloMjj, &b_caloMjj);
   tt->SetBranchAddress("PFMjj", &PFMjj, &b_PFMjj);
   tt->SetBranchAddress("hltAccept", &hltAccept, &b_hltAccept);
   tt->SetBranchAddress("l1Accept", &l1Accept, &b_l1Accept);
+  tt->SetBranchAddress("l1Names", &l1Names, &b_l1Names);
 
   int nentries = tt->GetEntries();
   std::cout << "Number of entries: " << nentries << std::endl;
@@ -102,16 +106,23 @@ int ntuAnalyzer(std::string fileName)
   calo250_eff->SetMarkerColor(kBlue);
   calo250_eff->SetLineColor(kBlue);
 
+  TH1F* l1 = new TH1F("l1","l1",9,0.,9.);
+  
   //loop
   for (Long64_t jentry=0; jentry<nentries;++jentry)
     {
       tt->GetEntry(jentry);
 
-      mjj450_eff->Fill((caloMjj>450 && l1Accept(L1scenario)) || hltAccept->at(HT410PF)==1, PFMjj);
-      mjj200_eff->Fill((caloMjj>200 && l1Accept(L1scenario)) || hltAccept->at(HT250Calo)==1, caloMjj);
+      mjj450_eff->Fill((caloMjj>450 && l1Accept->at(L1scenario)) || hltAccept->at(HT410PF)==1, PFMjj);
+      mjj200_eff->Fill((caloMjj>200 && l1Accept->at(L1scenario)) || hltAccept->at(HT250Calo)==1, caloMjj);
       //for comparison
       pf410_eff->Fill(hltAccept->at(HT410PF)==1, PFMjj);
       calo250_eff->Fill(hltAccept->at(HT250Calo)==1, caloMjj);
+
+      //l1 and hlt rates
+      for(unsigned int ii=0; ii<l1Names->size(); ++ii)
+	if (l1Accept->at(ii)==1)
+	  l1->Fill(ii);
     }
 
   mjj450_eff->Fit(f1,"r");
@@ -131,7 +142,31 @@ int ntuAnalyzer(std::string fileName)
   calo250_eff->Draw("sames");
   leg0->Draw("sames");
 
+  TCanvas* c2 = new TCanvas();
+  l1->Scale(PDRate/nentries);
 
+  for(unsigned int ii=0; ii<l1Names->size(); ++ii)
+    l1->GetXaxis()->SetBinLabel(ii+1,l1Names->at(ii).c_str());
+  l1->GetYaxis()->SetTitle("L1 Rate @4E33 [Hz]");
+  l1->SetMaximum(l1->GetMaximum()+200);
+  
+  l1->Draw();
+  c2->Update();
+
+  TGaxis *l1axis = new TGaxis(gPad->GetUxmax(),gPad->GetUymin(),gPad->GetUxmax(), gPad->GetUymax(),
+			      l1->GetMinimum()*lumiScaleFactor,
+			      l1->GetMaximum()*lumiScaleFactor,510,"+L");
+
+  c2->SetTicky(0);
+  l1axis->SetLineColor(kRed);
+  l1axis->SetLabelColor(kRed);
+  l1axis->SetTextColor(kRed);
+  l1axis->SetTitleOffset(1.3);
+  l1axis->SetLabelSize(0.03);
+  l1axis->SetTitle("L1 Rate @1E34 [Hz]");
+  l1axis->Draw();
+  
+  
   //return 0;
 
   //##############################################
@@ -212,19 +247,19 @@ int ntuAnalyzer(std::string fileName)
   pureRateVsCut280->SetMarkerColor(kOrange+1);
   pureRateVsCut280->SetLineColor(kOrange+1);
 
-  TCanvas* c2 = new TCanvas();
-  c2->cd();
+  TCanvas* c3 = new TCanvas();
+  c3->cd();
   totRateVsCut->Draw("AP");
   pureRateVsCut450->Draw("P,sames");
   pureRateVsCut280->Draw("P,sames");
   leg->Draw("sames");
-  c2->Update();
+  c3->Update();
 
   TGaxis *axis = new TGaxis(gPad->GetUxmax(),gPad->GetUymin(),gPad->GetUxmax(), gPad->GetUymax(),
     			    (totRateVsCut->GetYaxis()->GetBinLowEdge(1))*lumiScaleFactor,
 			    (totRateVsCut->GetYaxis()->GetBinLowEdge(totRateVsCut->GetYaxis()->GetNbins())+totRateVsCut->GetYaxis()->GetBinWidth(1))*lumiScaleFactor,510,"+L");
 
-  c2->SetTicky(0);
+  c3->SetTicky(0);
   axis->SetLineColor(kRed);
   axis->SetLabelColor(kRed);
   axis->SetTextColor(kRed);
