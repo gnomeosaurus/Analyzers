@@ -54,7 +54,7 @@ private:
 		      const edm::TriggerNames &);
 
   template<typename jetCollection>
-  void fillMjj(const edm::Handle<jetCollection> &, float &);
+  void fillMjj(const edm::Handle<jetCollection> &, float &, float &, float &, float &, float &, float &);
 
   void beginEvent();
 
@@ -70,14 +70,20 @@ private:
   //  int nVtx_;
   float caloMjj_;
   float PFMjj_;
-  float deltaEta_;
 
-  float jet1Pt_;
-  float jet1Eta_;
-  float jet2Pt_;
-  float jet2Eta_;
-  //  float dEta_;
-  //  float dPhi_;
+  float caloDeltaEta_;
+  float PFDeltaEta_;
+
+  float caloJet1Pt_;
+  float caloJet1Eta_;
+  float caloJet2Pt_;
+  float caloJet2Eta_;
+
+  float PFJet1Pt_;
+  float PFJet1Eta_;
+  float PFJet2Pt_;
+  float PFJet2Eta_;
+
   std::vector<int>* hltAccept_;
   std::vector<int>* hltWasrun_;
   std::vector<std::string>* hltNames_;
@@ -137,14 +143,22 @@ void MyHLTAnalyzer::beginEvent()
   evt_  = -1;
   lumi_ = -1;
   run_  = -1;
+
   caloMjj_  = -1;
   PFMjj_  = -1;
-  deltaEta_ = -999;
 
-  jet1Pt_ = -1;
-  jet1Eta_ = -999;
-  jet2Pt_ = -1;
-  jet2Eta_ = -999;
+  caloDeltaEta_ = -999;
+  PFDeltaEta_ = -999;
+
+  caloJet1Pt_ = -1;
+  caloJet1Eta_ = -999;
+  caloJet2Pt_ = -1;
+  caloJet2Eta_ = -999;
+
+  PFJet1Pt_ = -1;
+  PFJet1Eta_ = -999;
+  PFJet2Pt_ = -1;
+  PFJet2Eta_ = -999;
 
   hltNames_->clear();
   hltAccept_->clear();
@@ -171,7 +185,7 @@ void MyHLTAnalyzer::fillHltResults(const edm::Handle<edm::TriggerResults>   & tr
 
 
 template<typename jetCollection>
-void MyHLTAnalyzer::fillMjj(const edm::Handle<jetCollection> & jets, float & mjj)
+void MyHLTAnalyzer::fillMjj(const edm::Handle<jetCollection> & jets, float & mjj, float & jet1Pt, float & jet2Pt, float & jet1Eta, float & jet2Eta, float & deltaEta)
 {
   // Selected jets
   reco::CaloJetCollection recojets;
@@ -229,11 +243,11 @@ void MyHLTAnalyzer::fillMjj(const edm::Handle<jetCollection> & jets, float & mjj
   fj1 += fj2;
 
   //FILL HERE THE JET VARIABLES IN THE TUPLE
-  deltaEta_ = DeltaEta;
-  jet1Pt_ = j1.pt();
-  jet1Eta_ = j1.eta();
-  jet2Pt_ = j2.pt();
-  jet2Eta_ = j2.eta();
+  deltaEta = DeltaEta;
+  jet1Pt = j1.pt();
+  jet1Eta = j1.eta();
+  jet2Pt = j2.pt();
+  jet2Eta = j2.eta();
 
 
   mjj = fj1.mass();
@@ -253,16 +267,19 @@ void MyHLTAnalyzer::beginJob() {
 
   outTree_->Branch("caloMjj",   &caloMjj_,     "caloMjj_/F");
   outTree_->Branch("PFMjj",     &PFMjj_,       "PFMjj_/F");
-  outTree_->Branch("deltaEta",  &deltaEta_,    "deltaEta_/F");
 
-  outTree_->Branch("jet1Pt",   &jet1Pt_,     "jet1Pt_/F");
-  outTree_->Branch("jet1Eta",  &jet1Eta_,    "jet1Eta_/F");
-  outTree_->Branch("jet2Pt",   &jet2Pt_,     "jet2Pt_/F");
-  outTree_->Branch("jet2Eta",  &jet2Eta_,    "jet2Eta_/F");
+  outTree_->Branch("caloDeltaEta",  &caloDeltaEta_,    "caloDeltaEta_/F");
+  outTree_->Branch("PFDeltaEta",    &PFDeltaEta_,      "PFDeltaEta_/F");
 
+  outTree_->Branch("caloJet1Pt",   &caloJet1Pt_,     "caloJet1Pt_/F");
+  outTree_->Branch("caloJet1Eta",  &caloJet1Eta_,    "caloJet1Eta_/F");
+  outTree_->Branch("caloJet2Pt",   &caloJet2Pt_,     "caloJet2Pt_/F");
+  outTree_->Branch("caloJet2Eta",  &caloJet2Eta_,    "caloJet2Eta_/F");
 
-  //  outTree_->Branch("dEta",    &dEta_,      "dEta_/F");
-  //  outTree_->Branch("dPhi",    &dPhi_,      "dPhi_/F");
+  outTree_->Branch("PFJet1Pt",   &PFJet1Pt_,     "PFJet1Pt_/F");
+  outTree_->Branch("PFJet1Eta",  &PFJet1Eta_,    "PFJet1Eta_/F");
+  outTree_->Branch("PFJet2Pt",   &PFJet2Pt_,     "PFJet2Pt_/F");
+  outTree_->Branch("PFJet2Eta",  &PFJet2Eta_,    "PFJet2Eta_/F");
 
 
   hltNames_ = new std::vector<std::string>;
@@ -335,10 +352,10 @@ void MyHLTAnalyzer::analyze (const edm::Event &event, const edm::EventSetup &eve
 
   // not available for every event
   if(caloJets.isValid())
-    fillMjj(caloJets,caloMjj_);
+    fillMjj(caloJets,caloMjj_,caloJet1Pt_,caloJet2Pt_,caloJet1Eta_,caloJet2Eta_, caloDeltaEta_);
 
   if(PFJets.isValid())
-    fillMjj(PFJets,PFMjj_);
+    fillMjj(PFJets,PFMjj_,PFJet1Pt_,PFJet2Pt_,PFJet1Eta_,PFJet2Eta_, PFDeltaEta_);
 
   outTree_->Fill();  
 }

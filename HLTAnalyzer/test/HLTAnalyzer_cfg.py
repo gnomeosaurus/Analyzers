@@ -2,16 +2,20 @@ import FWCore.ParameterSet.Config as cms
 
 process = cms.Process("ANALYSIS")
 
-import glob
-fileList = glob.glob("/tmp/deguio/HLTPhysics_Run274200/myResult*.root")
+import glob, os
+fileList = glob.glob("/tmp/deguio/ZeroBias_274200/myResult*.root")
+#fileList = glob.glob("/tmp/deguio/ZeroBias_274198-274443//myResult*.root")
 finalList = []
 for fil in fileList:
+    if os.path.getsize(fil) == 0: #failed copy
+        continue;
     finalList.append("file:"+fil)
 
 process.source = cms.Source("PoolSource",
                     fileNames = cms.untracked.vstring(
-                        finalList
-                        #'file:/afs/cern.ch/work/d/deguio/Analysis/DiJetScouting/triggerStudies/CMSSW_8_0_9_Mjj_trigger/src/OpenPaths_0706/myResults.root',
+                        #finalList
+                        'file:/afs/cern.ch/work/d/deguio/Analysis/DiJetScouting/triggerStudies/CMSSW_8_0_9_Mjj_trigger/src/OpenPaths_1306_2/myResults.root',
+                        #'file:/tmp/deguio/myResults_95.root'
                     ),
                     secondaryFileNames = cms.untracked.vstring(),
 #                     lumisToProcess = cms.untracked.VLuminosityBlockRange('258158:1-258158:1786'),
@@ -42,11 +46,13 @@ process.MyAnalysis =cms.EDAnalyzer("MyHLTAnalyzer",
                        #paths to monitor
                        hltPaths                = cms.untracked.vstring(
                                                                        #from TriggerResults::HLT
+                                                                       'HLT_ZeroBias_v',
                                                                        'DST_HT250_CaloScouting_v',
                                                                        'DST_HT250_CaloBTagScouting_v',
                                                                        'DST_HT410_PFScouting_v',
                                                                        'DST_HT410_BTagScouting_v',
                                                                        #from TriggerResults::TEST
+                                                                       'HLT_ZeroBias_v2_ref',
                                                                        'DST_HT250_CaloScouting_v2_ref',
                                                                        'DST_HT250_CaloBTagScouting_v1_ref',
                                                                        'DST_HT410_PFScouting_v1_ref',
@@ -67,7 +73,7 @@ process.MyAnalysis =cms.EDAnalyzer("MyHLTAnalyzer",
 process.mypath  = cms.Path(process.MyAnalysis)
 
 process.TFileService = cms.Service("TFileService",
-                                   fileName = cms.string("hlTree_run274200.root"),
+                                   fileName = cms.string("hlTree_ZeroBias_274200.root"),
                                    closeFileFast = cms.untracked.bool(False)
                                    )
  

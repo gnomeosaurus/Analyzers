@@ -26,13 +26,13 @@ int ntuAnalyzer(std::string fileName)
   
   //###############################
   //## run274200 ##
-  unsigned int HT250Calo  = 1; //index of DST_HT250_CaloScouting_v
+  unsigned int HT250Calo  = 9; //index of DST_HT250_CaloScouting_v
   float HT250Calo_rate = 1928;
 
-  unsigned int HT410PF = 3; //index of DST_HT410_PFScouting_v
+  unsigned int HT410PF = 7; //index of DST_HT410_PFScouting_v
   float HT410PF_rate = 294;
 
-  unsigned int MJJ200Calo = 10; //index of DST_DiCaloWideJetMass200_CaloScouting_v
+  unsigned int MJJ200Calo = 12; //index of DST_DiCaloWideJetMass200_CaloScouting_v
   
   unsigned int HTT200 = 0; //index if L1_HTT200
   unsigned int HTT240 = 1; //index if L1_HTT240
@@ -59,24 +59,39 @@ int ntuAnalyzer(std::string fileName)
   
   TBranch* b_caloMjj;
   TBranch* b_PFMjj;
+
   TBranch* b_hltAccept;
   TBranch* b_l1Accept;
   TBranch* b_l1Names;
-  TBranch* b_jet1Pt;
-  TBranch* b_jet2Pt;
-  TBranch* b_jet1Eta;
-  TBranch* b_jet2Eta;
-  TBranch* b_deltaEta;
+
+  TBranch* b_caloJet1Pt;
+  TBranch* b_caloJet2Pt;
+  TBranch* b_caloJet1Eta;
+  TBranch* b_caloJet2Eta;
+  TBranch* b_caloDeltaEta;
+
+  TBranch* b_PFJet1Pt;
+  TBranch* b_PFJet2Pt;
+  TBranch* b_PFJet1Eta;
+  TBranch* b_PFJet2Eta;
+  TBranch* b_PFDeltaEta;
 
   int lumi = 0;
   float caloMjj = 0;
   float PFMjj = 0;
-  float jet1Pt_ = 0;
-  float jet2Pt_ = 0;
-  float jet1Eta_ = -999;
-  float jet2Eta_ = -999;
-  float deltaEta_ = -999;
-    
+
+  float caloJet1Pt_ = 0;
+  float caloJet2Pt_ = 0;
+  float caloJet1Eta_ = -999;
+  float caloJet2Eta_ = -999;
+  float caloDeltaEta_ = -999;
+
+  float PFJet1Pt_ = 0;
+  float PFJet2Pt_ = 0;
+  float PFJet1Eta_ = -999;
+  float PFJet2Eta_ = -999;
+  float PFDeltaEta_ = -999;
+
   
   std::vector<int>* hltAccept = 0;
   std::vector<int>* l1Accept = 0;
@@ -87,11 +102,17 @@ int ntuAnalyzer(std::string fileName)
   tt->SetBranchAddress("caloMjj", &caloMjj, &b_caloMjj);
   tt->SetBranchAddress("PFMjj", &PFMjj, &b_PFMjj);
 
-  tt->SetBranchAddress("jet1Pt", &jet1Pt_, &b_jet1Pt);
-  tt->SetBranchAddress("jet2Pt", &jet2Pt_, &b_jet2Pt);
-  tt->SetBranchAddress("jet1Eta", &jet1Eta_, &b_jet1Eta);
-  tt->SetBranchAddress("jet2Eta", &jet2Eta_, &b_jet2Eta);
-  tt->SetBranchAddress("deltaEta", &deltaEta_, &b_deltaEta);
+  tt->SetBranchAddress("caloJet1Pt", &caloJet1Pt_, &b_caloJet1Pt);
+  tt->SetBranchAddress("caloJet2Pt", &caloJet2Pt_, &b_caloJet2Pt);
+  tt->SetBranchAddress("caloJet1Eta", &caloJet1Eta_, &b_caloJet1Eta);
+  tt->SetBranchAddress("caloJet2Eta", &caloJet2Eta_, &b_caloJet2Eta);
+  tt->SetBranchAddress("caloDeltaEta", &caloDeltaEta_, &b_caloDeltaEta);
+
+  tt->SetBranchAddress("PFJet1Pt", &PFJet1Pt_, &b_PFJet1Pt);
+  tt->SetBranchAddress("PFJet2Pt", &PFJet2Pt_, &b_PFJet2Pt);
+  tt->SetBranchAddress("PFJet1Eta", &PFJet1Eta_, &b_PFJet1Eta);
+  tt->SetBranchAddress("PFJet2Eta", &PFJet2Eta_, &b_PFJet2Eta);
+  tt->SetBranchAddress("PFDeltaEta", &PFDeltaEta_, &b_PFDeltaEta);
 
   tt->SetBranchAddress("hltAccept", &hltAccept, &b_hltAccept);
   tt->SetBranchAddress("l1Accept", &l1Accept, &b_l1Accept);
@@ -101,9 +122,9 @@ int ntuAnalyzer(std::string fileName)
   std::cout << "Number of entries: " << nentries << std::endl;
 
   //book graphs and plots
-  float min = 150.;
+  float min = 0.;
   float max = 1000.;
-  int nBins = 17;
+  int nBins = 20;
 
   TF1* f1 = new TF1("f1","[0]*TMath::Erf((x-[1])/[2])-[0]*TMath::Erf((-x-[1])/[2])",min,max);
   f1->SetParameters(0.5,350,10);  
@@ -129,8 +150,12 @@ int ntuAnalyzer(std::string fileName)
   TEfficiency* calo250_eff = new TEfficiency("calo250_eff","calo250_eff",nBins,min,max);
   calo250_eff->SetMarkerColor(kBlue);
   calo250_eff->SetLineColor(kBlue);
+  TEfficiency* HTT240_eff = new TEfficiency("HTT240_eff","HTT240_eff",nBins,min,max);
+  HTT240_eff->SetMarkerColor(kGreen+2);
+  HTT240_eff->SetLineColor(kGreen+2);
 
   TH1F* l1 = new TH1F("l1","l1",9,0.,9.);
+  TH1F* l2 = new TH1F("l2","l2",9,0.,9.);
   
   //loop
   for (Long64_t jentry=0; jentry<nentries;++jentry)
@@ -140,24 +165,34 @@ int ntuAnalyzer(std::string fileName)
       //remove low rate lumis.
       //see: https://cmswbm2.web.cern.ch/cmswbm2/cmsdb/servlet/ChartHLTTriggerRates?RUNID=274200&PATHID=2043408&LSLENGTH=23.31040958&TRIGGER_PATH=DST_HT250_CaloScouting_v2
       //if(lumi > 539 && lumi < 553) continue;
-      
-      //analysis cuts needed to compare with the analysis
-      if (jet1Pt_ < 60.) continue;
-      if (jet2Pt_ < 30.) continue;
-      if (fabs(jet1Eta_) > 2.5) continue;
-      if (fabs(jet2Eta_) > 2.5) continue;
-      if (deltaEta_ > 1.3) continue;
-
-      mjj450_eff->Fill((caloMjj>450 && l1Accept->at(L1scenario)) || hltAccept->at(HT410PF)==1, PFMjj);
-      mjj200_eff->Fill((caloMjj>200 && l1Accept->at(L1scenario)) || hltAccept->at(HT250Calo)==1, caloMjj);
-      //for comparison
-      pf410_eff->Fill(hltAccept->at(HT410PF)==1, PFMjj);
-      calo250_eff->Fill(hltAccept->at(HT250Calo)==1, caloMjj);
 
       //l1 and hlt rates
       for(unsigned int ii=0; ii<l1Names->size(); ++ii)
 	if (l1Accept->at(ii)==1)
 	  l1->Fill(ii);
+      
+      
+      //analysis cuts needed to compare to the analysis
+      if (caloJet1Pt_ < 60.) continue;
+      if (caloJet2Pt_ < 30.) continue;
+      if (fabs(caloJet1Eta_) > 2.5) continue;
+      if (fabs(caloJet2Eta_) > 2.5) continue;
+      if (caloDeltaEta_ > 1.3) continue;
+
+      mjj450_eff->Fill((caloMjj>450 && l1Accept->at(L1scenario)) || hltAccept->at(HT410PF)==1, PFMjj);
+      mjj200_eff->Fill((caloMjj>200 && l1Accept->at(L1scenario)) || hltAccept->at(HT250Calo)==1, caloMjj);
+
+      //for comparison
+      pf410_eff->Fill((hltAccept->at(HT410PF)==1 && l1Accept->at(L1scenario)), PFMjj);
+      calo250_eff->Fill((hltAccept->at(HT250Calo)==1 && l1Accept->at(L1scenario)), caloMjj);
+      HTT240_eff->Fill(l1Accept->at(HTT240), caloMjj);
+
+
+      //l1 and hlt rates
+      for(unsigned int ii=0; ii<l1Names->size(); ++ii)
+	if (l1Accept->at(ii)==1)
+	  l2->Fill(ii);
+
     }
 
   mjj450_eff->Fit(f1,"r");
@@ -169,37 +204,41 @@ int ntuAnalyzer(std::string fileName)
   leg0->AddEntry(mjj200_eff,"MJJ200Calo || HT250Calo","L");
   leg0->AddEntry(pf410_eff,"HT410_PF","P");
   leg0->AddEntry(calo250_eff,"HT250_Calo","P");
+  leg0->AddEntry(HTT240_eff,"HTT240","P");
 
   TCanvas* c1 = new TCanvas();
   mjj200_eff->Draw();
   //mjj450_eff->Draw("sames");
   pf410_eff->Draw("sames");
   calo250_eff->Draw("sames");
+  HTT240_eff->Draw("sames");
   leg0->Draw("sames");
 
   TCanvas* c2 = new TCanvas();
-  l1->Scale(PDRate/nentries);
+  //l1->Scale(PDRate/nentries);
 
   for(unsigned int ii=0; ii<l1Names->size(); ++ii)
     l1->GetXaxis()->SetBinLabel(ii+1,l1Names->at(ii).c_str());
-  l1->GetYaxis()->SetTitle("L1 Rate @4E33 [Hz]");
+  //l1->GetYaxis()->SetTitle("L1 Rate @4E33 [Hz]");
   l1->SetMaximum(l1->GetMaximum()+200);
+  l2->SetLineColor(kRed);
   
   l1->Draw();
+  l2->Draw("same");
   c2->Update();
 
-  TGaxis *l1axis = new TGaxis(gPad->GetUxmax(),gPad->GetUymin(),gPad->GetUxmax(), gPad->GetUymax(),
-			      l1->GetMinimum()*lumiScaleFactor,
-			      l1->GetMaximum()*lumiScaleFactor,510,"+L");
+  // TGaxis *l1axis = new TGaxis(gPad->GetUxmax(),gPad->GetUymin(),gPad->GetUxmax(), gPad->GetUymax(),
+  // 			      l1->GetMinimum()*lumiScaleFactor,
+  // 			      l1->GetMaximum()*lumiScaleFactor,510,"+L");
 
-  c2->SetTicky(0);
-  l1axis->SetLineColor(kRed);
-  l1axis->SetLabelColor(kRed);
-  l1axis->SetTextColor(kRed);
-  l1axis->SetTitleOffset(1.3);
-  l1axis->SetLabelSize(0.03);
-  l1axis->SetTitle("L1 Rate @1E34 [Hz]");
-  l1axis->Draw();
+  // c2->SetTicky(0);
+  // l1axis->SetLineColor(kRed);
+  // l1axis->SetLabelColor(kRed);
+  // l1axis->SetTextColor(kRed);
+  // l1axis->SetTitleOffset(1.3);
+  // l1axis->SetLabelSize(0.03);
+  // l1axis->SetTitle("L1 Rate @1E34 [Hz]");
+  // l1axis->Draw();
   
   
   return 0;
