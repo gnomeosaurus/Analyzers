@@ -2,21 +2,10 @@ import FWCore.ParameterSet.Config as cms
 
 process = cms.Process("ANALYSIS")
 
-import glob, os
-fileList = glob.glob("/tmp/deguio/ZeroBias_274200/myResult*.root")
-#fileList = glob.glob("/tmp/deguio/ZeroBias_274198-274443//myResult*.root")
-finalList = []
-for fil in fileList:
-    if os.path.getsize(fil) == 0: #failed copy
-        continue;
-    finalList.append("file:"+fil)
-
 process.source = cms.Source("PoolSource",
                     fileNames = cms.untracked.vstring(
-                        #finalList
                         'file:/afs/cern.ch/work/d/deguio/Analysis/DiJetScouting/triggerStudies/CMSSW_8_0_9_Mjj_trigger/src/OpenPaths_1306_2/myResults.root',
-                        #'file:/tmp/deguio/myResults_95.root'
-                    ),
+                        ),
                     secondaryFileNames = cms.untracked.vstring(),
 #                     lumisToProcess = cms.untracked.VLuminosityBlockRange('258158:1-258158:1786'),
 
@@ -73,7 +62,7 @@ process.MyAnalysis =cms.EDAnalyzer("MyHLTAnalyzer",
 process.mypath  = cms.Path(process.MyAnalysis)
 
 process.TFileService = cms.Service("TFileService",
-                                   fileName = cms.string("hlTree_ZeroBias_274200.root"),
+                                   fileName = cms.string("hlTree_TEST.root"),
                                    closeFileFast = cms.untracked.bool(False)
                                    )
  

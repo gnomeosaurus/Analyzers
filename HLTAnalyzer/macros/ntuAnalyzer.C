@@ -26,10 +26,10 @@ int ntuAnalyzer(std::string fileName)
   
   //###############################
   //## run274200 ##
-  unsigned int HT250Calo  = 9; //index of DST_HT250_CaloScouting_v
+  unsigned int HT250Calo  = 1; //index of DST_HT250_CaloScouting_v   old:1 ref:9
   float HT250Calo_rate = 1928;
 
-  unsigned int HT410PF = 7; //index of DST_HT410_PFScouting_v
+  unsigned int HT410PF = 3; //index of DST_HT410_PFScouting_v   old:3 ref:7
   float HT410PF_rate = 294;
 
   unsigned int MJJ200Calo = 12; //index of DST_DiCaloWideJetMass200_CaloScouting_v
@@ -127,7 +127,7 @@ int ntuAnalyzer(std::string fileName)
   int nBins = 20;
 
   TF1* f1 = new TF1("f1","[0]*TMath::Erf((x-[1])/[2])-[0]*TMath::Erf((-x-[1])/[2])",min,max);
-  f1->SetParameters(0.5,350,10);  
+  f1->SetParameters(0.5,350,40);  
   f1->FixParameter(0,0.5);
   f1->SetLineWidth(2.);
   f1->SetLineColor(kRed);
@@ -136,6 +136,9 @@ int ntuAnalyzer(std::string fileName)
   f2->SetParameters(0.5,150,10);
   f2->SetLineColor(kBlack);
 
+  TH1F* caloMjjSpectrum = new TH1F("caloMjjSpectrum","caloMjjSpectrum",nBins,min,max);
+  TH1F* PFMjjSpectrum = new TH1F("PFMjjSpectrum","PFMjjSpectrum",nBins,min,max);
+  
   TEfficiency* mjj450_eff = new TEfficiency("mjj450_eff","mjj450_eff",nBins,min,max);
   mjj450_eff->SetMarkerColor(kRed);
   mjj450_eff->SetLineColor(kRed);
@@ -173,48 +176,70 @@ int ntuAnalyzer(std::string fileName)
       
       
       //analysis cuts needed to compare to the analysis
-      if (caloJet1Pt_ < 60.) continue;
-      if (caloJet2Pt_ < 30.) continue;
-      if (fabs(caloJet1Eta_) > 2.5) continue;
-      if (fabs(caloJet2Eta_) > 2.5) continue;
-      if (caloDeltaEta_ > 1.3) continue;
+      //calo analysis
+      if (caloJet1Pt_ > 60. &&
+	  caloJet2Pt_ > 30. &&
+	  fabs(caloJet1Eta_) < 2.5 &&
+	  fabs(caloJet2Eta_) < 2.5 &&
+	  caloDeltaEta_ < 1.3)
+	{
+	  caloMjjSpectrum->Fill(caloMjj);
+	  mjj200_eff->Fill((caloMjj>200 && l1Accept->at(L1scenario)) || hltAccept->at(HT250Calo)==1, caloMjj);
+	  calo250_eff->Fill((hltAccept->at(HT250Calo)==1 && l1Accept->at(L1scenario)), caloMjj);
 
-      mjj450_eff->Fill((caloMjj>450 && l1Accept->at(L1scenario)) || hltAccept->at(HT410PF)==1, PFMjj);
-      mjj200_eff->Fill((caloMjj>200 && l1Accept->at(L1scenario)) || hltAccept->at(HT250Calo)==1, caloMjj);
+	  //references
+	  HTT240_eff->Fill(l1Accept->at(HTT240), caloMjj);
+	  //l1 and hlt rates
+	  for(unsigned int ii=0; ii<l1Names->size(); ++ii)
+	    if (l1Accept->at(ii)==1)
+	      l2->Fill(ii);
+	}
 
-      //for comparison
-      pf410_eff->Fill((hltAccept->at(HT410PF)==1 && l1Accept->at(L1scenario)), PFMjj);
-      calo250_eff->Fill((hltAccept->at(HT250Calo)==1 && l1Accept->at(L1scenario)), caloMjj);
-      HTT240_eff->Fill(l1Accept->at(HTT240), caloMjj);
-
-
-      //l1 and hlt rates
-      for(unsigned int ii=0; ii<l1Names->size(); ++ii)
-	if (l1Accept->at(ii)==1)
-	  l2->Fill(ii);
-
+      //PF analysis
+      if (PFJet1Pt_ > 60. &&
+	  PFJet2Pt_ > 30. &&
+	  fabs(PFJet1Eta_) < 2.5 &&
+	  fabs(PFJet2Eta_) < 2.5 &&
+	  PFDeltaEta_ < 1.3)
+	{
+	  PFMjjSpectrum->Fill(PFMjj);
+	  mjj450_eff->Fill((caloMjj>450 && l1Accept->at(L1scenario)) || hltAccept->at(HT410PF)==1, PFMjj);
+	  pf410_eff->Fill((hltAccept->at(HT410PF)==1 && l1Accept->at(L1scenario)), PFMjj);
+	}
     }
 
   mjj450_eff->Fit(f1,"r");
   mjj200_eff->Fit(f2,"r");
 
 
+  caloMjjSpectrum->Scale(1./caloMjjSpectrum->GetBinContent(caloMjjSpectrum->GetMaximumBin()));
+  PFMjjSpectrum->Scale(1./PFMjjSpectrum->GetBinContent(PFMjjSpectrum->GetMaximumBin()));
+
+			      
+  
   TLegend* leg0 = new TLegend(0.62, 0.78, 0.83, 0.89);
-  //leg0->AddEntry(mjj450_eff,"MJJ450PF || HT410PF","L");
   leg0->AddEntry(mjj200_eff,"MJJ200Calo || HT250Calo","L");
-  leg0->AddEntry(pf410_eff,"HT410_PF","P");
   leg0->AddEntry(calo250_eff,"HT250_Calo","P");
   leg0->AddEntry(HTT240_eff,"HTT240","P");
 
+  TLegend* leg1 = new TLegend(0.62, 0.78, 0.83, 0.89);
+  leg1->AddEntry(mjj450_eff,"MJJ450PF || HT410PF","L");
+  leg1->AddEntry(pf410_eff,"HT410_PF","P");
+
   TCanvas* c1 = new TCanvas();
   mjj200_eff->Draw();
-  //mjj450_eff->Draw("sames");
-  pf410_eff->Draw("sames");
   calo250_eff->Draw("sames");
   HTT240_eff->Draw("sames");
+  caloMjjSpectrum->Draw("L,sames");
   leg0->Draw("sames");
 
   TCanvas* c2 = new TCanvas();
+  mjj450_eff->Draw();
+  pf410_eff->Draw("sames");
+  PFMjjSpectrum->Draw("L,sames");
+  leg1->Draw("sames");
+
+  TCanvas* c3 = new TCanvas();
   //l1->Scale(PDRate/nentries);
 
   for(unsigned int ii=0; ii<l1Names->size(); ++ii)
@@ -225,7 +250,7 @@ int ntuAnalyzer(std::string fileName)
   
   l1->Draw();
   l2->Draw("same");
-  c2->Update();
+  c3->Update();
 
   // TGaxis *l1axis = new TGaxis(gPad->GetUxmax(),gPad->GetUymin(),gPad->GetUxmax(), gPad->GetUymax(),
   // 			      l1->GetMinimum()*lumiScaleFactor,
@@ -241,19 +266,20 @@ int ntuAnalyzer(std::string fileName)
   // l1axis->Draw();
   
   
-  return 0;
+  //return 0;
 
   //##############################################
   //##############################################
 
   //book graphs and plots
   TGraphErrors* totRateVsCut = new TGraphErrors();
+  totRateVsCut->SetMinimum(0);
   TGraphErrors* pureRateVsCut450 = new TGraphErrors();
   TGraphErrors* pureRateVsCut280 = new TGraphErrors();
 
   //loops
   int bin = 0;
-  for (int cut = 100; cut < 550; cut=cut+10)
+  for (int cut = 420; cut < 500; cut=cut+10)
     {
       int mjjPassed = 0;
       int HT250Calo_Passed = 0;
@@ -309,7 +335,7 @@ int ntuAnalyzer(std::string fileName)
   //plotting and styling
   TLegend* leg = new TLegend(0.62, 0.78, 0.83, 0.89);
   leg->AddEntry(totRateVsCut,"total rate","P");
-  //leg->AddEntry(pureRateVsCut450,"pure rate wrt HT410PF","P");
+  leg->AddEntry(pureRateVsCut450,"pure rate wrt HT410PF","P");
   leg->AddEntry(pureRateVsCut280,"pure rate wrt HT250Calo","P");
 
   totRateVsCut->SetTitle("Rate Ref");
@@ -321,19 +347,19 @@ int ntuAnalyzer(std::string fileName)
   pureRateVsCut280->SetMarkerColor(kOrange+1);
   pureRateVsCut280->SetLineColor(kOrange+1);
 
-  TCanvas* c3 = new TCanvas();
-  c3->cd();
+  TCanvas* c4 = new TCanvas();
+  c4->cd();
   totRateVsCut->Draw("AP");
-  //pureRateVsCut450->Draw("P,sames");
+  pureRateVsCut450->Draw("P,sames");
   pureRateVsCut280->Draw("P,sames");
   leg->Draw("sames");
-  c3->Update();
+  c4->Update();
 
   TGaxis *axis = new TGaxis(gPad->GetUxmax(),gPad->GetUymin(),gPad->GetUxmax(), gPad->GetUymax(),
     			    (totRateVsCut->GetYaxis()->GetBinLowEdge(1))*lumiScaleFactor,
 			    (totRateVsCut->GetYaxis()->GetBinLowEdge(totRateVsCut->GetYaxis()->GetNbins())+totRateVsCut->GetYaxis()->GetBinWidth(1))*lumiScaleFactor,510,"+L");
 
-  c3->SetTicky(0);
+  c4->SetTicky(0);
   axis->SetLineColor(kRed);
   axis->SetLabelColor(kRed);
   axis->SetTextColor(kRed);
