@@ -27,6 +27,7 @@
 #include "DataFormats/JetReco/interface/PFJetCollection.h"
 
 #include "L1Trigger/L1TGlobal/interface/L1TGlobalUtil.h"
+#include "DataFormats/L1Trigger/interface/Jet.h"
 
 
 #include <map>
@@ -53,6 +54,9 @@ private:
   void fillHltResults(const edm::Handle<edm::TriggerResults> &, 
 		      const edm::TriggerNames &);
 
+  void fillL1Jets(const edm::Handle<l1t::JetBxCollection> &,
+		  const edm::Event   &);
+
   template<typename jetCollection>
   void fillMjj(const edm::Handle<jetCollection> &, float &, float &, float &, float &, float &, float &);
 
@@ -70,9 +74,11 @@ private:
   //  int nVtx_;
   float caloMjj_;
   float PFMjj_;
+  float l1Mjj_;
 
   float caloDeltaEta_;
   float PFDeltaEta_;
+  float l1DeltaEta_;
 
   float caloJet1Pt_;
   float caloJet1Eta_;
@@ -83,6 +89,11 @@ private:
   float PFJet1Eta_;
   float PFJet2Pt_;
   float PFJet2Eta_;
+
+  float l1Jet1Pt_;
+  float l1Jet1Eta_;
+  float l1Jet2Pt_;
+  float l1Jet2Eta_;
 
   std::vector<int>* hltAccept_;
   std::vector<int>* hltWasrun_;
@@ -98,6 +109,7 @@ private:
   edm::EDGetTokenT<edm::TriggerResults>   triggerResultToken_2_;
   edm::InputTag triggerEventTag_;
   edm::EDGetTokenT<trigger::TriggerFilterObjectWithRefs> triggerEventToken_;
+  edm::EDGetTokenT<l1t::JetBxCollection> l1CandToken_;
   edm::EDGetTokenT<reco::CaloJetCollection>         caloJetToken_;
   edm::EDGetTokenT<reco::PFJetCollection>           PFJetToken_;
 
@@ -108,6 +120,9 @@ private:
   double maxDeltaEta_;
   double maxJetEta_;
   double minJetPt_;
+  double maxL1DeltaEta_;
+  double maxL1JetEta_;
+  double minL1JetPt_;
 
   std::vector<std::string> hltPaths_;
   edm::EDGetToken algToken_;
@@ -121,6 +136,7 @@ MyHLTAnalyzer::MyHLTAnalyzer(const edm::ParameterSet& cfg):
   triggerResultToken_2_     (consumes<edm::TriggerResults>(triggerResultTag_2_)),
   triggerEventTag_          (cfg.getUntrackedParameter<edm::InputTag>("triggerSummary")),
   triggerEventToken_        (consumes<trigger::TriggerFilterObjectWithRefs>(triggerEventTag_)),
+  l1CandToken_              (consumes<l1t::JetBxCollection>(cfg.getUntrackedParameter<edm::InputTag>("l1CandTag"))),
   caloJetToken_             (consumes<reco::CaloJetCollection>(cfg.getUntrackedParameter<edm::InputTag>("caloJetTag"))),
   PFJetToken_               (consumes<reco::PFJetCollection>(cfg.getUntrackedParameter<edm::InputTag>("PFJetTag"))),
   //params for wide jet calculation
@@ -129,6 +145,9 @@ MyHLTAnalyzer::MyHLTAnalyzer(const edm::ParameterSet& cfg):
   maxDeltaEta_              (cfg.getUntrackedParameter<double>("maxDeltaEta")),
   maxJetEta_                (cfg.getUntrackedParameter<double>("maxJetEta")),
   minJetPt_                 (cfg.getUntrackedParameter<double>("minJetPt")),
+  maxL1DeltaEta_            (cfg.getUntrackedParameter<double>("maxL1DeltaEta")),
+  maxL1JetEta_              (cfg.getUntrackedParameter<double>("maxL1JetEta")),
+  minL1JetPt_               (cfg.getUntrackedParameter<double>("minL1JetPt")),
   
   hltPaths_                 (cfg.getUntrackedParameter<std::vector<std::string> >("hltPaths")),
 
@@ -146,9 +165,11 @@ void MyHLTAnalyzer::beginEvent()
 
   caloMjj_  = -1;
   PFMjj_  = -1;
+  l1Mjj_  = -1;
 
   caloDeltaEta_ = -999;
   PFDeltaEta_ = -999;
+  l1DeltaEta_ = -999;
 
   caloJet1Pt_ = -1;
   caloJet1Eta_ = -999;
@@ -159,6 +180,11 @@ void MyHLTAnalyzer::beginEvent()
   PFJet1Eta_ = -999;
   PFJet2Pt_ = -1;
   PFJet2Eta_ = -999;
+
+  l1Jet1Pt_ = -1;
+  l1Jet1Eta_ = -999;
+  l1Jet2Pt_ = -1;
+  l1Jet2Eta_ = -999;
 
   hltNames_->clear();
   hltAccept_->clear();
@@ -180,6 +206,62 @@ void MyHLTAnalyzer::fillHltResults(const edm::Handle<edm::TriggerResults>   & tr
 	  hltWasrun_->push_back(triggerResults->wasrun(itrig));
 	  break;
 	}
+}
+
+void MyHLTAnalyzer::fillL1Jets(const edm::Handle<l1t::JetBxCollection> & l1cands,
+			       const edm::Event                        & event  )
+{
+  // Selected jets
+  std::vector<l1t::Jet> l1jets;
+  //select only BX=0
+  auto i = l1cands->begin(0);
+  for(;i != l1cands->end(0); i++){
+    if(std::abs(i->eta()) < maxL1JetEta_ && i->pt() >= minL1JetPt_){
+      l1t::Jet jet(i->p4());
+      l1jets.push_back(jet);
+      //std::cout << "  et:  "  << jet.et() << "  eta:  "  << jet.eta() << "  phi:  "  << jet.phi() << "\n";
+    }
+  }
+
+  // events with at least two jets
+  if(l1jets.size() < 2) return;
+
+  math::PtEtaPhiMLorentzVector j1(0.1, 0., 0., 0.);
+  math::PtEtaPhiMLorentzVector j2(0.1, 0., 0., 0.);
+  double jetPt1 = 0.;
+  double jetPt2 = 0.;
+
+  // look for the two highest-pT jet
+  auto l1jet ( l1jets.begin() );
+  for (; l1jet != l1jets.end() ; l1jet++) {
+    if(l1jet->pt() > jetPt1) {
+      // downgrade the 1st jet to 2nd jet
+      j2 = j1;
+      jetPt2 = j2.pt();
+      // promote this jet to 1st jet
+      j1 = l1jet->p4();
+      jetPt1 = l1jet->pt();
+    } else if(l1jet->pt() > jetPt2) {
+      // promote this jet to 2nd jet
+      j2 = l1jet->p4();
+      jetPt2 = l1jet->pt();
+    }
+  }
+
+  // apply DeltaEta cut
+  double DeltaEta = std::abs(j1.eta() - j2.eta());
+  if(DeltaEta > maxL1DeltaEta_) return;
+
+  //FILL HERE THE JET VARIABLES IN THE TUPLE
+  l1DeltaEta_ = DeltaEta;
+  l1Jet1Pt_ = j1.pt();
+  l1Jet1Eta_ = j1.eta();
+  l1Jet2Pt_ = j2.pt();
+  l1Jet2Eta_ = j2.eta();
+
+
+  l1Mjj_ = (j1+j2).mass();
+  return;
 }
 
 
@@ -267,9 +349,11 @@ void MyHLTAnalyzer::beginJob() {
 
   outTree_->Branch("caloMjj",   &caloMjj_,     "caloMjj_/F");
   outTree_->Branch("PFMjj",     &PFMjj_,       "PFMjj_/F");
+  outTree_->Branch("l1Mjj",     &l1Mjj_,       "l1Mjj_/F");
 
   outTree_->Branch("caloDeltaEta",  &caloDeltaEta_,    "caloDeltaEta_/F");
   outTree_->Branch("PFDeltaEta",    &PFDeltaEta_,      "PFDeltaEta_/F");
+  outTree_->Branch("l1DeltaEta",    &l1DeltaEta_,      "l1DeltaEta_/F");
 
   outTree_->Branch("caloJet1Pt",   &caloJet1Pt_,     "caloJet1Pt_/F");
   outTree_->Branch("caloJet1Eta",  &caloJet1Eta_,    "caloJet1Eta_/F");
@@ -281,6 +365,11 @@ void MyHLTAnalyzer::beginJob() {
   outTree_->Branch("PFJet2Pt",   &PFJet2Pt_,     "PFJet2Pt_/F");
   outTree_->Branch("PFJet2Eta",  &PFJet2Eta_,    "PFJet2Eta_/F");
 
+  outTree_->Branch("l1Jet1Pt",   &l1Jet1Pt_,     "l1Jet1Pt_/F");
+  outTree_->Branch("l1Jet1Eta",  &l1Jet1Eta_,    "l1Jet1Eta_/F");
+  outTree_->Branch("l1Jet2Pt",   &l1Jet2Pt_,     "l1Jet2Pt_/F");
+  outTree_->Branch("l1Jet2Eta",  &l1Jet2Eta_,    "l1Jet2Eta_/F");
+
 
   hltNames_ = new std::vector<std::string>;
   hltAccept_ = new std::vector<int>;
@@ -289,6 +378,9 @@ void MyHLTAnalyzer::beginJob() {
   outTree_->Branch("hltNames",  "std::vector<std::string>", &hltNames_);
   outTree_->Branch("hltAccept", "std::vector<int>", &hltAccept_);
   outTree_->Branch("hltWasrun", "std::vector<int>", &hltWasrun_);
+
+  l1Names_ = new std::vector<std::string>;
+  l1Accept_ = new std::vector<int>;
 
   outTree_->Branch("l1Names",  "std::vector<std::string>", &l1Names_);
   outTree_->Branch("l1Accept", "std::vector<int>", &l1Accept_);
@@ -313,7 +405,7 @@ void MyHLTAnalyzer::analyze (const edm::Event &event, const edm::EventSetup &eve
   lumi_            = event.id().luminosityBlock();
   run_             = event.id().run();
   
-  //fill HLT
+  //fill HLT results
   edm::Handle<edm::TriggerResults>   triggerResults_1;
   edm::Handle<edm::TriggerResults>   triggerResults_2;
   edm::Handle<trigger::TriggerFilterObjectWithRefs> triggerEvent;
@@ -331,7 +423,7 @@ void MyHLTAnalyzer::analyze (const edm::Event &event, const edm::EventSetup &eve
   fillHltResults(triggerResults_1,triggerNames_1);  
   fillHltResults(triggerResults_2,triggerNames_2);  
 
-  //fill L1
+  //fill L1 results
   l1GtUtils_->retrieveL1(event,eventSetup,algToken_);
   for( unsigned int iseed = 0; iseed < l1Paths_.size(); iseed++ ) {
     bool l1htbit = 0;
@@ -340,23 +432,27 @@ void MyHLTAnalyzer::analyze (const edm::Event &event, const edm::EventSetup &eve
     l1Names_ ->push_back(l1Paths_[iseed]);
     l1Accept_->push_back( l1htbit );
   }
-
-
+  
+  //fill L1 jet candidates (not available for all events)
+  edm::Handle<l1t::JetBxCollection> l1cands;
+  event.getByToken(l1CandToken_, l1cands);
+  if(l1cands.isValid())
+    fillL1Jets(l1cands, event);
 
   //fill Jets
   edm::Handle<reco::CaloJetCollection> caloJets;
   event.getByToken(caloJetToken_,caloJets);
-
+  
   edm::Handle<reco::PFJetCollection> PFJets;
   event.getByToken(PFJetToken_,PFJets);
 
   // not available for every event
   if(caloJets.isValid())
     fillMjj(caloJets,caloMjj_,caloJet1Pt_,caloJet2Pt_,caloJet1Eta_,caloJet2Eta_, caloDeltaEta_);
-
+  
   if(PFJets.isValid())
     fillMjj(PFJets,PFMjj_,PFJet1Pt_,PFJet2Pt_,PFJet1Eta_,PFJet2Eta_, PFDeltaEta_);
-
+  
   outTree_->Fill();  
 }
 

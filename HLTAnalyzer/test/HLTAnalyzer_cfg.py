@@ -4,7 +4,7 @@ process = cms.Process("ANALYSIS")
 
 process.source = cms.Source("PoolSource",
                     fileNames = cms.untracked.vstring(
-                        'file:/afs/cern.ch/work/d/deguio/Analysis/DiJetScouting/triggerStudies/CMSSW_8_0_9_Mjj_trigger/src/OpenPaths_1306_2/myResults.root',
+                        'file:/afs/cern.ch/work/d/deguio/Analysis/DiJetScouting/triggerStudies/CMSSW_8_0_9_Mjj_trigger/src/OpenPaths_2406/myResults.root',
                         ),
                     secondaryFileNames = cms.untracked.vstring(),
 #                     lumisToProcess = cms.untracked.VLuminosityBlockRange('258158:1-258158:1786'),
@@ -21,6 +21,7 @@ process.MyAnalysis =cms.EDAnalyzer("MyHLTAnalyzer",
                        triggerResult_1         = cms.untracked.InputTag("TriggerResults::HLT"),
                        triggerResult_2         = cms.untracked.InputTag("TriggerResults::TEST"),
                        triggerSummary          = cms.untracked.InputTag("hltDiCaloWideJetMass200::TEST"),
+                       l1CandTag               = cms.untracked.InputTag("hltCaloStage2Digis","Jet","TEST"),
                        caloJetTag              = cms.untracked.InputTag("hltAK4CaloJetsCorrectedIDPassed::TEST"),
                        PFJetTag                = cms.untracked.InputTag("hltAK4PFJetsCorrected::TEST"),
                                    
@@ -28,9 +29,14 @@ process.MyAnalysis =cms.EDAnalyzer("MyHLTAnalyzer",
                        #params for wide jet mass calculation
                        minMass                 = cms.untracked.double(200),  
                        fatJetDeltaR            = cms.untracked.double(1.1),
+
                        maxDeltaEta             = cms.untracked.double(1.5),
                        maxJetEta               = cms.untracked.double(3.0),
                        minJetPt                = cms.untracked.double(30.0),
+
+                       maxL1DeltaEta           = cms.untracked.double(2.5),
+                       maxL1JetEta             = cms.untracked.double(3.0),
+                       minL1JetPt              = cms.untracked.double(30.0),
 
                        #paths to monitor
                        hltPaths                = cms.untracked.vstring(
@@ -53,11 +59,43 @@ process.MyAnalysis =cms.EDAnalyzer("MyHLTAnalyzer",
                                                                        'DST_DiCaloWideJetMass200_CaloBTagScouting_v',
                                                                        'DST_L1HTT_CaloScouting_PFScouting_v'
                                                                       ),
-                        l1Paths                 = cms.untracked.vstring('L1_HTT200','L1_HTT240','L1_HTT270','L1_HTT280','L1_HTT300','L1_HTT320','L1_ZeroBias','L1_DoubleJetC100','L1_DoubleJetC112'),
+                       l1Paths                 = cms.untracked.vstring('L1_HTT200',
+                                                                       'L1_HTT240',
+                                                                       'L1_HTT270',
+                                                                       'L1_HTT280',
+                                                                       'L1_HTT300',
+                                                                       'L1_HTT320',
+                                                                       'L1_ZeroBias',
+                                                                       'L1_DoubleJetC80',
+                                                                       'L1_DoubleJetC100',
+                                                                       'L1_DoubleJetC112',
+                                                                       'L1_DoubleIsoTau26er',
+                                                                       'L1_DoubleIsoTau28er',
+                                                                       'L1_DoubleIsoTau30er',
+                                                                       'L1_DoubleIsoTau32er'),
                         AlgInputTag = cms.InputTag("hltGtStage2Digis"),
                         l1tAlgBlkInputTag = cms.InputTag("hltGtStage2Digis"),
                         l1tExtBlkInputTag = cms.InputTag("hltGtStage2Digis")
                        )
+
+
+#needed if I want to run on raw directly
+process.hltCaloStage2Digis = cms.EDProducer("L1TRawToDigi",
+    CTP7 = cms.untracked.bool(False),
+    FWId = cms.uint32(0),
+    FWOverride = cms.bool(False),
+    FedIds = cms.vint32(1360, 1366),
+    InputLabel = cms.InputTag("rawDataCollector"),
+    MTF7 = cms.untracked.bool(False),
+    Setup = cms.string('stage2::CaloSetup'),
+    debug = cms.untracked.bool(False),
+    lenAMC13Header = cms.untracked.int32(8),
+    lenAMC13Trailer = cms.untracked.int32(8),
+    lenAMCHeader = cms.untracked.int32(8),
+    lenAMCTrailer = cms.untracked.int32(0),
+    lenSlinkHeader = cms.untracked.int32(8),
+    lenSlinkTrailer = cms.untracked.int32(8)
+)
                        
 process.mypath  = cms.Path(process.MyAnalysis)
 
