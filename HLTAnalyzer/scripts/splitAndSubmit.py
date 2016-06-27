@@ -6,7 +6,7 @@ import optparse
 import datetime
 import time
 
-usage = "usage:  python python splitAndSubmit.py -t HLTAnalyzer_template_cfg.py -p ./ -q 8nh -i fileList.txt -o myTree --split 2"
+usage = "usage: python splitAndSubmit.py -t HLTAnalyzer_template_cfg.py -p ./ -q 1nh -i fileList.txt -o myTree --split 10"
 
 parser = optparse.OptionParser(usage)
 parser.add_option("-t", "--template", dest="template",
@@ -84,12 +84,12 @@ for line in  ins:
         
         os.system("echo cd "+pwd+" > launch.sh")
         os.system("echo 'eval `scramv1 runtime -sh`\n' >> launch.sh")
-        os.system("echo cd /tmp/deguio >> launch.sh")
+        os.system("echo cd - >> launch.sh")
         os.system("echo cmsRun "+workingDir+"/"+str(jobCount)+"/config.py >> launch.sh")
         os.system("echo mv "+opt.output+"_"+str(jobCount)+".root "+workingDir+" >> launch.sh")
         os.system("chmod 755 launch.sh")
         os.system("mv launch.sh "+workingDir+"/"+str(jobCount))
-        njobs_list.append("bsub -q"+opt.queue+" -o "+workingDir+"/"+str(jobCount)+" "+workingDir+"/"+str(jobCount)+"/launch.sh")
+        njobs_list.append("bsub -q"+opt.queue+" -o "+workingDir+"/"+str(jobCount)+"/log.out -e "+workingDir+"/"+str(jobCount)+"/log.err "+workingDir+"/"+str(jobCount)+"/launch.sh")
         
 for job in njobs_list:
     print job
