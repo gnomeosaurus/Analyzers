@@ -259,8 +259,8 @@ void MyHLTAnalyzer::fillL1Jets(const edm::Handle<l1t::JetBxCollection> & l1cands
   l1Jet2Pt_ = j2.pt();
   l1Jet2Eta_ = j2.eta();
 
-
-  l1Mjj_ = (j1+j2).mass();
+  //as mich as possible similar to L1 math
+  l1Mjj_ = sqrt(2*j1.pt()*j2.pt()*(cosh(j1.eta()-j2.eta()) - cos(j1.phi()-j2.phi())));
   return;
 }
 
