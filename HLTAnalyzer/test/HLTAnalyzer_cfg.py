@@ -4,6 +4,7 @@ process = cms.Process("ANALYSIS")
 
 process.source = cms.Source("PoolSource",
                     fileNames = cms.untracked.vstring(
+                        #'file:/tmp/deguio/myResults_999.root',
                         'file:/afs/cern.ch/work/d/deguio/Analysis/DiJetScouting/triggerStudies/CMSSW_8_0_9_Mjj_trigger/src/OpenPaths_2406/myResults.root',
                         ),
                     secondaryFileNames = cms.untracked.vstring(),
@@ -34,9 +35,9 @@ process.MyAnalysis =cms.EDAnalyzer("MyHLTAnalyzer",
                        maxJetEta               = cms.untracked.double(3.0),
                        minJetPt                = cms.untracked.double(30.0),
 
-                       maxL1DeltaEta           = cms.untracked.double(2.5),
-                       maxL1JetEta             = cms.untracked.double(3.0),
-                       minL1JetPt              = cms.untracked.double(30.0),
+                       maxL1DeltaEta           = cms.untracked.double(100.0),
+                       maxL1JetEta             = cms.untracked.double(100.0),
+                       minL1JetPt              = cms.untracked.double(1.0),
 
                        #paths to monitor
                        hltPaths                = cms.untracked.vstring(

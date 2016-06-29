@@ -31,9 +31,9 @@ process.MyAnalysis =cms.EDAnalyzer("MyHLTAnalyzer",
                        maxJetEta               = cms.untracked.double(3.0),
                        minJetPt                = cms.untracked.double(30.0),
 
-                       maxL1DeltaEta           = cms.untracked.double(2.5),
-                       maxL1JetEta             = cms.untracked.double(3.0),
-                       minL1JetPt              = cms.untracked.double(30.0),
+                       maxL1DeltaEta           = cms.untracked.double(100.0),
+                       maxL1JetEta             = cms.untracked.double(100.0),
+                       minL1JetPt              = cms.untracked.double(1.0),
 
                        #paths to monitor
                        hltPaths                = cms.untracked.vstring(
