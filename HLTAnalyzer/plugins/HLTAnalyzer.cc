@@ -54,11 +54,10 @@ private:
   void fillHltResults(const edm::Handle<edm::TriggerResults> &, 
 		      const edm::TriggerNames &);
 
-  void fillL1Jets(const edm::Handle<l1t::JetBxCollection> &,
-		  const edm::Event   &);
+  void fillL1Jets(const edm::Handle<l1t::JetBxCollection> &);
 
   template<typename jetCollection>
-  void fillMjj(const edm::Handle<jetCollection> &, float &, float &, float &, float &, float &, float &, float &, float &);
+    void fillMjj(const edm::Handle<jetCollection> &, std::string );
 
   void beginEvent();
 
@@ -74,10 +73,14 @@ private:
   //  int nVtx_;
   float caloMjj_;
   float PFMjj_;
+  float caloWMjj_;
+  float PFWMjj_;
   float l1Mjj_;
 
   float caloDeltaEta_;
   float PFDeltaEta_;
+  float caloWDeltaEta_;
+  float PFWDeltaEta_;
   float l1DeltaEta_;
 
   float caloJet1Pt_;
@@ -86,6 +89,12 @@ private:
   float caloJet2Pt_;
   float caloJet2Eta_;
   float caloJet2Phi_;
+  float caloWJet1Pt_;
+  float caloWJet1Eta_;
+  float caloWJet1Phi_;
+  float caloWJet2Pt_;
+  float caloWJet2Eta_;
+  float caloWJet2Phi_;
 
   float PFJet1Pt_;
   float PFJet1Eta_;
@@ -93,6 +102,12 @@ private:
   float PFJet2Pt_;
   float PFJet2Eta_;
   float PFJet2Phi_;
+  float PFWJet1Pt_;
+  float PFWJet1Eta_;
+  float PFWJet1Phi_;
+  float PFWJet2Pt_;
+  float PFWJet2Eta_;
+  float PFWJet2Phi_;
 
   float l1Jet1Pt_;
   float l1Jet1Eta_;
@@ -175,10 +190,14 @@ void MyHLTAnalyzer::beginEvent()
 
   caloMjj_  = -1;
   PFMjj_  = -1;
+  caloWMjj_  = -1;
+  PFWMjj_  = -1;
   l1Mjj_  = -1;
 
   caloDeltaEta_ = -999;
   PFDeltaEta_ = -999;
+  caloWDeltaEta_ = -999;
+  PFWDeltaEta_ = -999;
   l1DeltaEta_ = -999;
 
   caloJet1Pt_ = -1;
@@ -187,6 +206,12 @@ void MyHLTAnalyzer::beginEvent()
   caloJet2Pt_ = -1;
   caloJet2Eta_ = -999;
   caloJet2Phi_ = -999;
+  caloWJet1Pt_ = -1;
+  caloWJet1Eta_ = -999;
+  caloWJet1Phi_ = -999;
+  caloWJet2Pt_ = -1;
+  caloWJet2Eta_ = -999;
+  caloWJet2Phi_ = -999;
 
   PFJet1Pt_ = -1;
   PFJet1Eta_ = -999;
@@ -194,6 +219,12 @@ void MyHLTAnalyzer::beginEvent()
   PFJet2Pt_ = -1;
   PFJet2Eta_ = -999;
   PFJet2Phi_ = -999;
+  PFWJet1Pt_ = -1;
+  PFWJet1Eta_ = -999;
+  PFWJet1Phi_ = -999;
+  PFWJet2Pt_ = -1;
+  PFWJet2Eta_ = -999;
+  PFWJet2Phi_ = -999;
 
   l1Jet1Pt_ = -1;
   l1Jet1Eta_ = -999;
@@ -228,8 +259,7 @@ void MyHLTAnalyzer::fillHltResults(const edm::Handle<edm::TriggerResults>   & tr
 	}
 }
 
-void MyHLTAnalyzer::fillL1Jets(const edm::Handle<l1t::JetBxCollection> & l1cands,
-			       const edm::Event                        & event  )
+void MyHLTAnalyzer::fillL1Jets(const edm::Handle<l1t::JetBxCollection> & l1cands)
 {
   // Selected jets
   std::vector<l1t::Jet> l1jets;
@@ -293,7 +323,7 @@ void MyHLTAnalyzer::fillL1Jets(const edm::Handle<l1t::JetBxCollection> & l1cands
 
 
 template<typename jetCollection>
-void MyHLTAnalyzer::fillMjj(const edm::Handle<jetCollection> & jets, float & mjj, float & jet1Pt, float & jet2Pt, float & jet1Eta, float & jet2Eta, float & jet1Phi, float & jet2Phi, float & deltaEta)
+void MyHLTAnalyzer::fillMjj(const edm::Handle<jetCollection> & jets, std::string type)
 {
   // Selected jets
   reco::CaloJetCollection recojets;
@@ -348,19 +378,50 @@ void MyHLTAnalyzer::fillMjj(const edm::Handle<jetCollection> & jets, float & mjj
     }
   }
 
-  fj1 += fj2;
 
   //FILL HERE THE JET VARIABLES IN THE TUPLE
-  deltaEta = DeltaEta;
-  jet1Pt = j1.pt();
-  jet1Eta = j1.eta();
-  jet1Phi = j1.phi();
-  jet2Pt = j2.pt();
-  jet2Eta = j2.eta();
-  jet2Phi = j2.phi();
-
-
-  mjj = fj1.mass();
+  if(type.compare(std::string("calo")) == 0)
+    {
+      //fill wide calo jets
+      caloWJet1Pt_  = fj1.pt();
+      caloWJet1Eta_ = fj1.eta();
+      caloWJet1Phi_ = fj1.phi();
+      caloWJet2Pt_  = fj2.pt();
+      caloWJet2Eta_ = fj2.eta();
+      caloWJet2Phi_ = fj2.phi();
+      caloWDeltaEta_ = std::abs(fj1.eta() - fj2.eta());
+      caloWMjj_ = (fj1+fj2).mass();
+      //fill calo jets
+      caloJet1Pt_  = j1.pt();
+      caloJet1Eta_ = j1.eta();
+      caloJet1Phi_ = j1.phi();
+      caloJet2Pt_  = j2.pt();
+      caloJet2Eta_ = j2.eta();
+      caloJet2Phi_ = j2.phi();
+      caloDeltaEta_ = std::abs(j1.eta() - j2.eta());
+      caloMjj_ = (j1+j2).mass();
+    }
+  else if(type.compare(std::string("PF")) == 0)
+    {
+      //fill wide pf jets
+      PFWJet1Pt_  = fj1.pt();
+      PFWJet1Eta_ = fj1.eta();
+      PFWJet1Phi_ = fj1.phi();
+      PFWJet2Pt_  = fj2.pt();
+      PFWJet2Eta_ = fj2.eta();
+      PFWJet2Phi_ = fj2.phi();
+      PFWDeltaEta_ = std::abs(fj1.eta() - fj2.eta());
+      PFWMjj_ = (fj1+fj2).mass();      
+      //fill pf jets
+      PFJet1Pt_  = j1.pt();
+      PFJet1Eta_ = j1.eta();
+      PFJet1Phi_ = j1.phi();
+      PFJet2Pt_  = j2.pt();
+      PFJet2Eta_ = j2.eta();
+      PFJet2Phi_ = j2.phi();
+      PFDeltaEta_ = std::abs(j1.eta() - j2.eta());
+      PFMjj_ = (j1+j2).mass();
+    }
   return;
 }
 
@@ -377,10 +438,14 @@ void MyHLTAnalyzer::beginJob() {
 
   outTree_->Branch("caloMjj",   &caloMjj_,     "caloMjj_/F");
   outTree_->Branch("PFMjj",     &PFMjj_,       "PFMjj_/F");
+  outTree_->Branch("caloWMjj",   &caloWMjj_,     "caloWMjj_/F");
+  outTree_->Branch("PFWMjj",     &PFWMjj_,       "PFWMjj_/F");
   outTree_->Branch("l1Mjj",     &l1Mjj_,       "l1Mjj_/F");
 
   outTree_->Branch("caloDeltaEta",  &caloDeltaEta_,    "caloDeltaEta_/F");
   outTree_->Branch("PFDeltaEta",    &PFDeltaEta_,      "PFDeltaEta_/F");
+  outTree_->Branch("caloWDeltaEta",  &caloWDeltaEta_,    "caloWDeltaEta_/F");
+  outTree_->Branch("PFWDeltaEta",    &PFWDeltaEta_,      "PFWDeltaEta_/F");
   outTree_->Branch("l1DeltaEta",    &l1DeltaEta_,      "l1DeltaEta_/F");
 
   outTree_->Branch("caloJet1Pt",   &caloJet1Pt_,     "caloJet1Pt_/F");
@@ -389,6 +454,12 @@ void MyHLTAnalyzer::beginJob() {
   outTree_->Branch("caloJet2Pt",   &caloJet2Pt_,     "caloJet2Pt_/F");
   outTree_->Branch("caloJet2Eta",  &caloJet2Eta_,    "caloJet2Eta_/F");
   outTree_->Branch("caloJet2Phi",  &caloJet2Phi_,    "caloJet2Phi_/F");
+  outTree_->Branch("caloWJet1Pt",   &caloWJet1Pt_,     "caloWJet1Pt_/F");
+  outTree_->Branch("caloWJet1Eta",  &caloWJet1Eta_,    "caloWJet1Eta_/F");
+  outTree_->Branch("caloWJet1Phi",  &caloWJet1Phi_,    "caloWJet1Phi_/F");
+  outTree_->Branch("caloWJet2Pt",   &caloWJet2Pt_,     "caloWJet2Pt_/F");
+  outTree_->Branch("caloWJet2Eta",  &caloWJet2Eta_,    "caloWJet2Eta_/F");
+  outTree_->Branch("caloWJet2Phi",  &caloWJet2Phi_,    "caloWJet2Phi_/F");
 
   outTree_->Branch("PFJet1Pt",   &PFJet1Pt_,     "PFJet1Pt_/F");
   outTree_->Branch("PFJet1Eta",  &PFJet1Eta_,    "PFJet1Eta_/F");
@@ -396,6 +467,12 @@ void MyHLTAnalyzer::beginJob() {
   outTree_->Branch("PFJet2Pt",   &PFJet2Pt_,     "PFJet2Pt_/F");
   outTree_->Branch("PFJet2Eta",  &PFJet2Eta_,    "PFJet2Eta_/F");
   outTree_->Branch("PFJet2Phi",  &PFJet2Phi_,    "PFJet2Phi_/F");
+  outTree_->Branch("PFWJet1Pt",   &PFWJet1Pt_,     "PFWJet1Pt_/F");
+  outTree_->Branch("PFWJet1Eta",  &PFWJet1Eta_,    "PFWJet1Eta_/F");
+  outTree_->Branch("PFWJet1Phi",  &PFWJet1Phi_,    "PFWJet1Phi_/F");
+  outTree_->Branch("PFWJet2Pt",   &PFWJet2Pt_,     "PFWJet2Pt_/F");
+  outTree_->Branch("PFWJet2Eta",  &PFWJet2Eta_,    "PFWJet2Eta_/F");
+  outTree_->Branch("PFWJet2Phi",  &PFWJet2Phi_,    "PFWJet2Phi_/F");
 
   outTree_->Branch("l1Jet1Pt",   &l1Jet1Pt_,     "l1Jet1Pt_/F");
   outTree_->Branch("l1Jet1Eta",  &l1Jet1Eta_,    "l1Jet1Eta_/F");
@@ -479,7 +556,7 @@ void MyHLTAnalyzer::analyze (const edm::Event &event, const edm::EventSetup &eve
   edm::Handle<l1t::JetBxCollection> l1cands;
   event.getByToken(l1CandToken_, l1cands);
   if(l1cands.isValid())
-    fillL1Jets(l1cands, event);
+    fillL1Jets(l1cands);
 
   //fill Jets
   edm::Handle<reco::CaloJetCollection> caloJets;
@@ -490,10 +567,10 @@ void MyHLTAnalyzer::analyze (const edm::Event &event, const edm::EventSetup &eve
 
   // not available for every event
   if(caloJets.isValid())
-    fillMjj(caloJets,caloMjj_,caloJet1Pt_,caloJet2Pt_,caloJet1Eta_,caloJet2Eta_,caloJet1Phi_,caloJet2Phi_,caloDeltaEta_);
+    fillMjj(caloJets, std::string("calo"));
   
   if(PFJets.isValid())
-    fillMjj(PFJets,PFMjj_,PFJet1Pt_,PFJet2Pt_,PFJet1Eta_,PFJet2Eta_,PFJet1Phi_,PFJet2Phi_, PFDeltaEta_);
+    fillMjj(PFJets, std::string("PF"));
   
   outTree_->Fill();  
 }
