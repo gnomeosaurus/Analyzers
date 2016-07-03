@@ -26,10 +26,10 @@ int ntuAnalyzer(std::string fileName)
   
   //###############################
   //## run274200 ##
-  unsigned int HT250Calo  = 1; //index of DST_HT250_CaloScouting_v   old:1 ref:9
+  unsigned int HT250Calo  = 9; //index of DST_HT250_CaloScouting_v   old:1 ref:9
   float HT250Calo_rate = 1928;
 
-  unsigned int HT410PF = 3; //index of DST_HT410_PFScouting_v   old:3 ref:7
+  unsigned int HT410PF = 7; //index of DST_HT410_PFScouting_v   old:3 ref:7
   float HT410PF_rate = 294;
 
   unsigned int MJJ200Calo = 12; //index of DST_DiCaloWideJetMass200_CaloScouting_v
@@ -40,6 +40,7 @@ int ntuAnalyzer(std::string fileName)
   unsigned int HTT280 = 3; //index if L1_HTT280
   unsigned int DoubleJetC100 = 7; //index if L1_DoubleJetC100
   unsigned int DoubleJetC112 = 8; //index if L1_DoubleJetC112
+  unsigned int DoubleIsoTau28er = 11; //index if L1_DoubleJetC112
 
   float instLumi = 0.4; //E34
   float targetLumi = 1; //E34
@@ -157,8 +158,8 @@ int ntuAnalyzer(std::string fileName)
   HTT240_eff->SetMarkerColor(kGreen+2);
   HTT240_eff->SetLineColor(kGreen+2);
 
-  TH1F* l1 = new TH1F("l1","l1",9,0.,9.);
-  TH1F* l2 = new TH1F("l2","l2",9,0.,9.);
+  TH1F* l1 = new TH1F("l1","l1",14,0.,14.);
+  TH1F* l2 = new TH1F("l2","l2",14,0.,14.);
   
   //loop
   for (Long64_t jentry=0; jentry<nentries;++jentry)
@@ -184,11 +185,11 @@ int ntuAnalyzer(std::string fileName)
 	  caloDeltaEta_ < 1.3)
 	{
 	  caloMjjSpectrum->Fill(caloMjj);
-	  mjj200_eff->Fill((caloMjj>200 && l1Accept->at(L1scenario)) || hltAccept->at(HT250Calo)==1, caloMjj);
-	  calo250_eff->Fill((hltAccept->at(HT250Calo)==1 && l1Accept->at(L1scenario)), caloMjj);
+	  mjj200_eff->Fill((caloMjj>200 && l1Accept->at(L1scenario)==1) || hltAccept->at(HT250Calo)==1, caloMjj);
+	  calo250_eff->Fill((hltAccept->at(HT250Calo)==1 && l1Accept->at(L1scenario)==1), caloMjj);
 
 	  //references
-	  HTT240_eff->Fill(l1Accept->at(HTT240), caloMjj);
+	  HTT240_eff->Fill(l1Accept->at(HTT240)==1, caloMjj);
 	  //l1 and hlt rates
 	  for(unsigned int ii=0; ii<l1Names->size(); ++ii)
 	    if (l1Accept->at(ii)==1)
@@ -203,8 +204,8 @@ int ntuAnalyzer(std::string fileName)
 	  PFDeltaEta_ < 1.3)
 	{
 	  PFMjjSpectrum->Fill(PFMjj);
-	  mjj450_eff->Fill((caloMjj>450 && l1Accept->at(L1scenario)) || hltAccept->at(HT410PF)==1, PFMjj);
-	  pf410_eff->Fill((hltAccept->at(HT410PF)==1 && l1Accept->at(L1scenario)), PFMjj);
+	  mjj450_eff->Fill((caloMjj>450 && l1Accept->at(L1scenario)==1) || hltAccept->at(HT410PF)==1, PFMjj);
+	  pf410_eff->Fill((hltAccept->at(HT410PF)==1 && l1Accept->at(L1scenario)==1), PFMjj);
 	}
     }
 
@@ -279,7 +280,7 @@ int ntuAnalyzer(std::string fileName)
 
   //loops
   int bin = 0;
-  for (int cut = 420; cut < 500; cut=cut+10)
+  for (int cut = 350; cut < 500; cut=cut+10)
     {
       int mjjPassed = 0;
       int HT250Calo_Passed = 0;
@@ -293,11 +294,11 @@ int ntuAnalyzer(std::string fileName)
 	    ++HT250Calo_Passed;
 
 	  //if (caloMjj > cut && !hltAccept->at(HT410PF))
-	  if (caloMjj > cut && l1Accept->at(L1scenario) && !hltAccept->at(HT410PF))
+	  if (caloMjj > cut && l1Accept->at(L1scenario) == 1 && hltAccept->at(HT410PF)==0)
 	    ++excl410_passed;
-	  if (caloMjj > cut && l1Accept->at(L1scenario) && !hltAccept->at(HT250Calo))
+	  if (caloMjj > cut && l1Accept->at(L1scenario)==1 && hltAccept->at(HT250Calo)==0)
 	    ++excl250_passed;
-	  if (caloMjj > cut && l1Accept->at(L1scenario))
+	  if (caloMjj > cut && l1Accept->at(L1scenario)==1)
 	    ++mjjPassed;
 
 	  // if (hltAccept->at(HT250Calo) == 0 && mjj > cut)
