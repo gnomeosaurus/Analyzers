@@ -266,7 +266,7 @@ void MyMiniAODAnalyzer::beginJob() {
   // outTree_->Branch("PFJetPt",     "std::vector<std::float>",     &PFJetPt_);
   // outTree_->Branch("PFJetEta",    "std::vector<std::float>",     &PFJetEta_);
   // outTree_->Branch("PFJetPhi",    "std::vector<std::float>",     &PFJetPhi_);
-  outTree_->Branch("nVtx",           "std::vector<std::int>",       &nVtx_);
+  // outTree_->Branch("nVtx",           "std::vector<std::int>",       &nVtx_);
 
   qPFJetPt_ = new std::vector<float>;
   qPFJetEta_ = new std::vector<float>;

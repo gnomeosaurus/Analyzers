@@ -47,7 +47,7 @@ process.MyAnalysis =cms.EDAnalyzer("MyMiniAODAnalyzer",
 process.mypath  = cms.Path(process.MyAnalysis)
 
 process.TFileService = cms.Service("TFileService",
-                                   fileName = cms.string("miniAODTree_TEST.root"),
+                                   fileName = cms.string("miniAODTree.root"),
                                    closeFileFast = cms.untracked.bool(False)
                                    )
  
