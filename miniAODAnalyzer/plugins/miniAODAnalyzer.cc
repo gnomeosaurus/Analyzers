@@ -21,16 +21,34 @@
 #include <fstream>
 #include <iomanip>
 #include "TTree.h"
+#include "Python.h"
 
-#include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/json_parser.hpp>
+
+
+// python script
+static const std::string __script = "\
+import os, numpy as np\n\
+outArray = None\n\
+def fillArray(*values):\n\
+  print \"!!!fillArray!!!\"\n\
+  global outArray\n\
+  outArray = np.array(values).astype(np.float32)\n\
+  return\n\
+def saveFile(fout):\n\
+  print \"!!!saveFile!!! \"+fout\n\
+  np.savetxt(fout,outArray)\n\
+  return\n\
+def myprint(text):\n\
+  print 'text passed: '+text+'. it works!'\n\
+  return\n\
+";
 
 
 class MyMiniAODAnalyzer : public edm::EDAnalyzer {
   
 public:
   MyMiniAODAnalyzer(const edm::ParameterSet& cfg);
-  virtual ~MyMiniAODAnalyzer() {};
+  virtual ~MyMiniAODAnalyzer();
   
   virtual void analyze (const edm::Event& event, const edm::EventSetup & eventSetup);
   virtual void beginJob();
@@ -45,11 +63,26 @@ private:
   template<typename jetCollection>
   void fillJets(const edm::Handle<jetCollection> &, std::string );
   void initialize();
-  void computeQuantiles(std::vector<float>*, std::vector<float>*, std::vector<double>);
+  template<typename T>
+  void computeQuantiles(std::vector<T>*, std::vector<T>*, std::vector<double>);
   std::map<int, std::vector<std::pair<int, int> > > readJSONFile(const std::string&);
   bool AcceptEventByRunAndLumiSection(const int& , const int& ,std::map<int, std::vector<std::pair<int, int> > >&);
 
   
+  // // python objects
+  // PyObject* _pyContext;
+  // // python functions
+  // PyObject* _pyPrint;
+
+  // PyObject* _pyFillArray;      //function
+  // PyObject* _pyPt;             //function arguments
+  // PyObject* _pyEta;            //function arguments
+  // PyObject* _pyPhi;  //function arguments
+  // PyObject* _pyArray;          //array
+
+  // PyObject* _pySaveFile;
+
+
   /// file service and tree
   edm::Service<TFileService> outfile_;
 
@@ -57,17 +90,20 @@ private:
   int    runId_;
   int    lumiId_;
   float  lumi_;
-  //  int nVtx_;
+  int    isSig_;
 
   std::vector<float>* PFJetPt_;
   std::vector<float>* PFJetEta_;
   std::vector<float>* PFJetPhi_;
+  std::vector<int>*   nVtx_;
 
   std::vector<float>* qPFJetPt_;
   std::vector<float>* qPFJetEta_;
   std::vector<float>* qPFJetPhi_;
+  std::vector<int>*   qNVtx_;
 
   edm::EDGetTokenT<pat::JetCollection>    PFJetToken_;
+  edm::EDGetTokenT<reco::VertexCollection>   vtxToken_;
 
   double maxJetEta_;
   double minJetPt_;
@@ -87,8 +123,11 @@ private:
   std::map<std::string,jsonMapType> qualityMaps;
 };
 
+
+
 MyMiniAODAnalyzer::MyMiniAODAnalyzer(const edm::ParameterSet& cfg): 
   PFJetToken_               (consumes<pat::JetCollection>(cfg.getUntrackedParameter<edm::InputTag>("PFJetTag"))),
+  vtxToken_                 (consumes<reco::VertexCollection>(cfg.getUntrackedParameter<edm::InputTag>("vtx"))),
   //params for wide jet calculation
   maxJetEta_                (cfg.getUntrackedParameter<double>("maxJetEta")),
   minJetPt_                 (cfg.getUntrackedParameter<double>("minJetPt")),
@@ -97,22 +136,57 @@ MyMiniAODAnalyzer::MyMiniAODAnalyzer(const edm::ParameterSet& cfg):
   subsystemNames_           (cfg.getUntrackedParameter<std::vector<std::string> >("subsystems")),
   qualityFiles_             (cfg.getUntrackedParameter<std::vector<std::string> >("qualityFiles"))
 {
+  // // initialize python
+  // Py_Initialize();
+  // PyEval_InitThreads();
+
+  // // run the __script
+  // PyObject* pyMainModule = PyImport_AddModule("__main__");
+  // PyObject *pyMainDict = PyModule_GetDict(pyMainModule);
+  // _pyContext = PyDict_Copy(pyMainDict);
+  // PyRun_String(__script.c_str(), Py_file_input, _pyContext, _pyContext);
+
+  // // functions
+  // _pyPrint     = PyDict_GetItemString(_pyContext, "myprint");
+  // _pyFillArray = PyDict_GetItemString(_pyContext, "fillArray");
+  // _pySaveFile  = PyDict_GetItemString(_pyContext, "saveFile");
+
+  
+  // _pyFillArrayArgs = PyTuple_New(3);
+
+
+  // //test print
+  // if (PyCallable_Check(_pyPrint))
+  //   {
+  //     PyObject* pValue=Py_BuildValue("(z)",(char*)"something");
+  //     PyErr_Print();
+  //     printf("Let's give this a shot!\n");
+  //     PyObject* presult=PyObject_CallObject(_pyPrint,pValue);
+  //     PyErr_Print();
+  //   }
+  // else
+  //   {
+  //     std::cout << "function not callable" << std::endl;
+  //     PyErr_Print();
+  //   }
 }
 
 void MyMiniAODAnalyzer::initialize()
 {
   lumiId_ = -1;
-  lumi_ = -1;
-  runId_  = -1;
-  //nVtx_ = -1;
+  lumi_  = -1;
+  runId_ = -1;
+  isSig_ = -1;
 
   PFJetPt_->clear();
   PFJetEta_->clear();
   PFJetPhi_->clear();
+  nVtx_->clear();
 
   qPFJetPt_->clear();
   qPFJetEta_->clear();
   qPFJetPhi_->clear();
+  qNVtx_->clear();
 
   subsystemQuality_->clear();
 }
@@ -139,10 +213,12 @@ void MyMiniAODAnalyzer::fillJets(const edm::Handle<jetCollection> & jets, std::s
   return;
 }
  
-void MyMiniAODAnalyzer::computeQuantiles(std::vector<float>* myDistr, std::vector<float>* myQuan, std::vector<double> qq)
+
+template<typename T>
+void MyMiniAODAnalyzer::computeQuantiles(std::vector<T>* myDistr, std::vector<T>* myQuan, std::vector<double> qq)
 {
   //need to sort the distr to compute quantiles
-  std::vector<float> dummyDistr = *myDistr;
+  std::vector<T> dummyDistr = *myDistr;
   std::sort(dummyDistr.begin(), dummyDistr.end());
 
   //scan the vector and find quantiles
@@ -155,6 +231,11 @@ void MyMiniAODAnalyzer::computeQuantiles(std::vector<float>* myDistr, std::vecto
       float prob = ((float)itr+1.)/(float)dummyDistr.size();
       if(prob >= qq[qItr])
 	{
+	  //fill pyTuple
+	  //PyTuple_SetItem(_pyFillArrayArgs, pos, PyFloat_FromDouble(dummyDistr.at(itr)));
+	  //PyObject* dummyVal = Py_BuildValue("(f)",PyFloat_FromDouble(dummyDistr.at(itr)));
+
+	  //fill root tree
 	  myQuan->push_back(dummyDistr.at(itr));
 	  ++qItr;
 	}
@@ -176,21 +257,25 @@ void MyMiniAODAnalyzer::beginJob() {
   outTree_->Branch("runId",     &runId_,       "runId_/I");
   outTree_->Branch("lumiId",    &lumiId_,      "lumiId_/I");
   outTree_->Branch("lumi",      &lumi_,        "lumi_/F");
-  //  outTree_->Branch("nvtx",    &nVtx_,      "nVtx_/I");
+  outTree_->Branch("isSig",     &isSig_,       "isSig_/I");
 
   PFJetPt_ = new std::vector<float>;
   PFJetEta_ = new std::vector<float>;
   PFJetPhi_ = new std::vector<float>;
-  outTree_->Branch("PFJetPt",     "std::vector<std::float>",     &PFJetPt_);
-  outTree_->Branch("PFJetEta",    "std::vector<std::float>",     &PFJetEta_);
-  outTree_->Branch("PFJetPhi",    "std::vector<std::float>",     &PFJetPhi_);
+  nVtx_     = new std::vector<int>;
+  // outTree_->Branch("PFJetPt",     "std::vector<std::float>",     &PFJetPt_);
+  // outTree_->Branch("PFJetEta",    "std::vector<std::float>",     &PFJetEta_);
+  // outTree_->Branch("PFJetPhi",    "std::vector<std::float>",     &PFJetPhi_);
+  outTree_->Branch("nVtx",           "std::vector<std::int>",       &nVtx_);
 
   qPFJetPt_ = new std::vector<float>;
   qPFJetEta_ = new std::vector<float>;
   qPFJetPhi_ = new std::vector<float>;
+  qNVtx_     = new std::vector<int>;
   outTree_->Branch("qPFJetPt",     "std::vector<std::float>",     &qPFJetPt_);
   outTree_->Branch("qPFJetEta",    "std::vector<std::float>",     &qPFJetEta_);
   outTree_->Branch("qPFJetPhi",    "std::vector<std::float>",     &qPFJetPhi_);
+  outTree_->Branch("qNVtx",        "std::vector<std::int>",       &qNVtx_);
 
   subsystemQuality_ = new std::vector<bool>;
   outTree_->Branch("subsystemQuality", "std::vector<bool>",        &subsystemQuality_);
@@ -217,6 +302,22 @@ void MyMiniAODAnalyzer::beginJob() {
 
 void MyMiniAODAnalyzer::endJob() 
 {
+
+  // if (PyCallable_Check(_pySaveFile))
+  //   {
+  //     PyObject* oName=Py_BuildValue("(z)",(char*)"outTest.txt");
+  //     PyErr_Print();
+  //     std::cout << "saving file..." << std::endl;
+  //     PyObject* presult=PyObject_CallObject(_pySaveFile,oName);
+  //     PyErr_Print();
+  //   }
+  // else
+  //   {
+  //     std::cout << "_pySaveFile function not callable" << std::endl;
+  //     PyErr_Print();
+  //   }
+
+
   delete PFJetPt_;
   delete PFJetEta_;
   delete PFJetPhi_;
@@ -224,8 +325,21 @@ void MyMiniAODAnalyzer::endJob()
   delete qPFJetPt_;
   delete qPFJetEta_;
   delete qPFJetPhi_;
+  delete qNVtx_;
 
   delete subsystemQuality_;
+
+}
+
+MyMiniAODAnalyzer::~MyMiniAODAnalyzer()
+{
+  // cleanup python objects
+  // Py_DECREF(_pyFillArrayArgs);
+  // Py_DECREF(_pyFillArray);
+  // Py_DECREF(_pySaveFile);
+  // Py_DECREF(_pyPrint);
+  // Py_DECREF(_pyContext);
+  // Py_Finalize();
 }
 
 void MyMiniAODAnalyzer::beginLuminosityBlock (const edm::LuminosityBlock & lumi, const edm::EventSetup &eventSetup) 
@@ -237,8 +351,18 @@ void MyMiniAODAnalyzer::beginLuminosityBlock (const edm::LuminosityBlock & lumi,
   lumi_              = lumiMap[runId_][lumiId_];
 
   //store quality info
+  unsigned int totQuality = 0;
   for(unsigned int itr = 0; itr < subsystemNames_.size(); ++itr)
-    subsystemQuality_->push_back(AcceptEventByRunAndLumiSection(runId_, lumiId_, qualityMaps[subsystemNames_.at(itr)]));
+    {
+      bool qq = AcceptEventByRunAndLumiSection(runId_, lumiId_, qualityMaps[subsystemNames_.at(itr)]);
+      subsystemQuality_->push_back(qq);
+      if (qq == true)
+	++totQuality;
+    }
+  if (totQuality < subsystemNames_.size())
+    isSig_ = 0;
+  else
+    isSig_ = 1;
 
 }
 
@@ -248,9 +372,22 @@ void MyMiniAODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, c
   computeQuantiles(PFJetPt_, qPFJetPt_, quantiles_);
   computeQuantiles(PFJetEta_,qPFJetEta_,quantiles_);
   computeQuantiles(PFJetPhi_,qPFJetPhi_,quantiles_);
+  computeQuantiles(nVtx_,    qNVtx_,    quantiles_);
 
-  //one event per LS
+  //fill tree one event per LS
   outTree_->Fill();
+
+  // //fill np array one event per LS
+  // if (PyCallable_Check(_pyFillArray))
+  //   {
+  //     _pyArray = PyObject_CallObject(_pyFillArray,_pyFillArrayArgs);
+  //     PyErr_Print();
+  //   }
+  // else
+  //   {
+  //     std::cout << "_pyFillArray function not callable" << std::endl;
+  //     PyErr_Print();
+  //   }
 }
 
 
@@ -262,6 +399,11 @@ void MyMiniAODAnalyzer::analyze (const edm::Event &event, const edm::EventSetup 
 
   if(PFJets.isValid())
     fillJets(PFJets, std::string("PF"));  
+
+  edm::Handle<reco::VertexCollection> recVtxs;
+  event.getByToken(vtxToken_,recVtxs);
+  if(recVtxs.isValid())
+    nVtx_->push_back(recVtxs->size());
 }
 
 

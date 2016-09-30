@@ -31,6 +31,7 @@ process.MyAnalysis =cms.EDAnalyzer("MyMiniAODAnalyzer",
 
                        #caloJetTag              = cms.untracked.InputTag("slimmedJets"),
                        PFJetTag                = cms.untracked.InputTag("slimmedJets"),
+                       vtx                     = cms.untracked.InputTag("offlineSlimmedPrimaryVertices"),
                                    
                        maxJetEta               = cms.untracked.double(3.0),
                        minJetPt                = cms.untracked.double(30.0),
