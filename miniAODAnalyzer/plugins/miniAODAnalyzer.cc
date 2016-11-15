@@ -13,6 +13,8 @@
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
 #include "SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h"
 
+#include "DataFormats/PatCandidates/interface/MET.h"
+#include "DataFormats/METReco/interface/MET.h"
 #include "DataFormats/PatCandidates/interface/Jet.h"
 #include "DataFormats/JetReco/interface/JetCollection.h"
 
@@ -65,6 +67,8 @@ private:
   void initialize();
   template<typename T>
   void computeQuantiles(std::vector<T>*, std::vector<T>*, std::vector<double>);
+  template<typename T>
+  void computeMeanAndRms(std::vector<T>*, std::vector<T>*);
   std::map<int, std::vector<std::pair<int, int> > > readJSONFile(const std::string&);
   bool AcceptEventByRunAndLumiSection(const int& , const int& ,std::map<int, std::vector<std::pair<int, int> > >&);
 
@@ -95,15 +99,24 @@ private:
   std::vector<float>* PFJetPt_;
   std::vector<float>* PFJetEta_;
   std::vector<float>* PFJetPhi_;
+  std::vector<float>* MetPt_;
+  std::vector<float>* MetPhi_;
   std::vector<int>*   nVtx_;
 
   std::vector<float>* qPFJetPt_;
   std::vector<float>* qPFJetEta_;
   std::vector<float>* qPFJetPhi_;
+  std::vector<float>* qMetPt_;
+  std::vector<float>* qMetPhi_;
   std::vector<int>*   qNVtx_;
 
+  std::vector<float>*   crossSection_;
+
   edm::EDGetTokenT<pat::JetCollection>    PFJetToken_;
+  edm::EDGetTokenT<std::vector<pat::MET>>    METJetToken_;
   edm::EDGetTokenT<reco::VertexCollection>   vtxToken_;
+
+  int eventCounter;
 
   double maxJetEta_;
   double minJetPt_;
@@ -127,6 +140,7 @@ private:
 
 MyMiniAODAnalyzer::MyMiniAODAnalyzer(const edm::ParameterSet& cfg): 
   PFJetToken_               (consumes<pat::JetCollection>(cfg.getUntrackedParameter<edm::InputTag>("PFJetTag"))),
+  METJetToken_              (consumes<std::vector<pat::MET>>(cfg.getUntrackedParameter<edm::InputTag>("metTag"))),
   vtxToken_                 (consumes<reco::VertexCollection>(cfg.getUntrackedParameter<edm::InputTag>("vtx"))),
   //params for wide jet calculation
   maxJetEta_                (cfg.getUntrackedParameter<double>("maxJetEta")),
@@ -173,6 +187,8 @@ MyMiniAODAnalyzer::MyMiniAODAnalyzer(const edm::ParameterSet& cfg):
 
 void MyMiniAODAnalyzer::initialize()
 {
+  eventCounter = 0;
+
   lumiId_ = -1;
   lumi_  = -1;
   runId_ = -1;
@@ -181,12 +197,18 @@ void MyMiniAODAnalyzer::initialize()
   PFJetPt_->clear();
   PFJetEta_->clear();
   PFJetPhi_->clear();
+  MetPt_->clear();
+  MetPhi_->clear();
   nVtx_->clear();
 
   qPFJetPt_->clear();
   qPFJetEta_->clear();
   qPFJetPhi_->clear();
+  qMetPt_->clear();
+  qMetPhi_->clear();
   qNVtx_->clear();
+
+  crossSection_->clear();
 
   subsystemQuality_->clear();
 }
@@ -244,7 +266,18 @@ void MyMiniAODAnalyzer::computeQuantiles(std::vector<T>* myDistr, std::vector<T>
 }
 
 
+template<typename T>
+void MyMiniAODAnalyzer::computeMeanAndRms(std::vector<T>* myDistr, std::vector<T>* myVect)
+{
+  double sum = std::accumulate(myDistr->begin(), myDistr->end(), 0.0);
+  double mean = sum / myDistr->size();
+  myVect->push_back( mean );
 
+  std::vector<double> diff(myDistr->size());
+  std::transform(myDistr->begin(), myDistr->end(), diff.begin(), [mean](double x) { return x - mean; });
+  double sq_sum = std::inner_product(diff.begin(), diff.end(), diff.begin(), 0.0);
+  myVect->push_back( std::sqrt(sq_sum / myDistr->size()) );
+}
 
 
 
@@ -262,7 +295,11 @@ void MyMiniAODAnalyzer::beginJob() {
   PFJetPt_ = new std::vector<float>;
   PFJetEta_ = new std::vector<float>;
   PFJetPhi_ = new std::vector<float>;
+  MetPt_ = new std::vector<float>;
+  MetPhi_ = new std::vector<float>;
   nVtx_     = new std::vector<int>;
+  // outTree_->Branch("MetPt",     "std::vector<std::float>",     &MetPt_);
+  // outTree_->Branch("MetPhi",    "std::vector<std::float>",     &MetPhi_);
   // outTree_->Branch("PFJetPt",     "std::vector<std::float>",     &PFJetPt_);
   // outTree_->Branch("PFJetEta",    "std::vector<std::float>",     &PFJetEta_);
   // outTree_->Branch("PFJetPhi",    "std::vector<std::float>",     &PFJetPhi_);
@@ -271,11 +308,17 @@ void MyMiniAODAnalyzer::beginJob() {
   qPFJetPt_ = new std::vector<float>;
   qPFJetEta_ = new std::vector<float>;
   qPFJetPhi_ = new std::vector<float>;
+  qMetPt_ = new std::vector<float>;
+  qMetPhi_ = new std::vector<float>;
   qNVtx_     = new std::vector<int>;
+  crossSection_  = new std::vector<float>;
   outTree_->Branch("qPFJetPt",     "std::vector<std::float>",     &qPFJetPt_);
   outTree_->Branch("qPFJetEta",    "std::vector<std::float>",     &qPFJetEta_);
   outTree_->Branch("qPFJetPhi",    "std::vector<std::float>",     &qPFJetPhi_);
+  outTree_->Branch("qMetPt",     "std::vector<std::float>",       &qMetPt_);
+  outTree_->Branch("qMetPhi",    "std::vector<std::float>",       &qMetPhi_);
   outTree_->Branch("qNVtx",        "std::vector<std::int>",       &qNVtx_);
+  outTree_->Branch("crossSection",   "std::vector<std::float>",       &crossSection_);
 
   subsystemQuality_ = new std::vector<bool>;
   outTree_->Branch("subsystemQuality", "std::vector<bool>",        &subsystemQuality_);
@@ -322,10 +365,16 @@ void MyMiniAODAnalyzer::endJob()
   delete PFJetEta_;
   delete PFJetPhi_;
 
+  delete MetPt_;
+  delete MetPhi_;
+
   delete qPFJetPt_;
   delete qPFJetEta_;
   delete qPFJetPhi_;
+  delete qMetPt_;
+  delete qMetPhi_;
   delete qNVtx_;
+  delete crossSection_;
 
   delete subsystemQuality_;
 
@@ -368,11 +417,25 @@ void MyMiniAODAnalyzer::beginLuminosityBlock (const edm::LuminosityBlock & lumi,
 
 void MyMiniAODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const edm::EventSetup &eventSetup) 
 {
+
   //compute and store quantiles
+  computeMeanAndRms(PFJetPt_, qPFJetPt_);
+  computeMeanAndRms(PFJetEta_,qPFJetEta_);
+  computeMeanAndRms(PFJetPhi_,qPFJetPhi_);
+  computeMeanAndRms(MetPt_, qMetPt_);
+  computeMeanAndRms(MetPhi_,  qMetPhi_);
+  computeMeanAndRms(nVtx_,    qNVtx_);
+
   computeQuantiles(PFJetPt_, qPFJetPt_, quantiles_);
   computeQuantiles(PFJetEta_,qPFJetEta_,quantiles_);
   computeQuantiles(PFJetPhi_,qPFJetPhi_,quantiles_);
+  computeQuantiles(MetPt_, qMetPt_, quantiles_);
+  computeQuantiles(MetPhi_,qMetPhi_,quantiles_);
   computeQuantiles(nVtx_,    qNVtx_,    quantiles_);
+
+  crossSection_->push_back( (float)eventCounter/lumi_ );
+
+
 
   //fill tree one event per LS
   outTree_->Fill();
@@ -393,13 +456,24 @@ void MyMiniAODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, c
 
 void MyMiniAODAnalyzer::analyze (const edm::Event &event, const edm::EventSetup &eventSetup) 
 {
+  ++eventCounter;
+
+  //fill Met
+  edm::Handle<std::vector<pat::MET>> Met;
+  event.getByToken(METJetToken_,Met);
+  if(Met.isValid())
+    {
+      MetPt_->push_back( (*Met)[0].et() );
+      MetPhi_->push_back( (*Met)[0].phi() );
+    }
+
   //fill Jets
   edm::Handle<pat::JetCollection> PFJets;
   event.getByToken(PFJetToken_,PFJets);
-
   if(PFJets.isValid())
     fillJets(PFJets, std::string("PF"));  
 
+  //fill vtx
   edm::Handle<reco::VertexCollection> recVtxs;
   event.getByToken(vtxToken_,recVtxs);
   if(recVtxs.isValid())

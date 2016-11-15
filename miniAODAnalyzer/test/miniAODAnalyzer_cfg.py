@@ -21,7 +21,7 @@ process.load('Configuration.Geometry.GeometryRecoDB_cff')
 
 
 basePath = '/afs/cern.ch/user/d/deguio/public/qualityPerSub_2016/'
-subsystemList = ['Pix','Strip','Ecal','Hcal','Dt','Rpc','Es','Csc','Track']
+subsystemList = ['L1tcalo','L1tmu','Hlt','Pix','Strip','Ecal','Hcal','Dt','Rpc','Es','Csc','Track','Egamma','Muon','Jetmet','Lumi']
 fileList = []
 for sub in subsystemList:
     fileList.append(basePath+'Cert_13TeV_2016_'+sub+'.txt')
@@ -31,10 +31,11 @@ process.MyAnalysis =cms.EDAnalyzer("MyMiniAODAnalyzer",
 
                        #caloJetTag              = cms.untracked.InputTag("slimmedJets"),
                        PFJetTag                = cms.untracked.InputTag("slimmedJets"),
+                       metTag                  = cms.untracked.InputTag("slimmedMETs"),
                        vtx                     = cms.untracked.InputTag("offlineSlimmedPrimaryVertices"),
                                    
-                       maxJetEta               = cms.untracked.double(3.0),
-                       minJetPt                = cms.untracked.double(30.0),
+                       maxJetEta               = cms.untracked.double(5.0),   #is this ok?
+                       minJetPt                = cms.untracked.double(10.0),  #is this ok?
 
                        lumiFile                = cms.untracked.string(basePath+'run_ls_lumi_2016.txt'),
                        subsystems              = cms.untracked.vstring(subsystemList),
