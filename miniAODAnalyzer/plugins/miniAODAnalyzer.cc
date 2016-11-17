@@ -18,6 +18,12 @@
 #include "DataFormats/PatCandidates/interface/Jet.h"
 #include "DataFormats/JetReco/interface/JetCollection.h"
 
+#include "DataFormats/Common/interface/TriggerResults.h"
+#include "FWCore/Common/interface/TriggerNames.h"
+#include "DataFormats/PatCandidates/interface/PackedTriggerPrescales.h"
+
+
+
 #include <map>
 #include <string>
 #include <fstream>
@@ -111,10 +117,16 @@ private:
   std::vector<int>*   qNVtx_;
 
   std::vector<float>*   crossSection_;
+  std::vector<float>*   pathRates_;
+  std::vector<std::string>*   pathNames_;
+  std::map<std::string,int> rateMap;
+
 
   edm::EDGetTokenT<pat::JetCollection>    PFJetToken_;
   edm::EDGetTokenT<std::vector<pat::MET>>    METJetToken_;
   edm::EDGetTokenT<reco::VertexCollection>   vtxToken_;
+  edm::EDGetTokenT<edm::TriggerResults> triggerBits_;
+  edm::EDGetTokenT<pat::PackedTriggerPrescales> triggerPrescales_;
 
   int eventCounter;
 
@@ -142,6 +154,8 @@ MyMiniAODAnalyzer::MyMiniAODAnalyzer(const edm::ParameterSet& cfg):
   PFJetToken_               (consumes<pat::JetCollection>(cfg.getUntrackedParameter<edm::InputTag>("PFJetTag"))),
   METJetToken_              (consumes<std::vector<pat::MET>>(cfg.getUntrackedParameter<edm::InputTag>("metTag"))),
   vtxToken_                 (consumes<reco::VertexCollection>(cfg.getUntrackedParameter<edm::InputTag>("vtx"))),
+  triggerBits_              (consumes<edm::TriggerResults>(cfg.getUntrackedParameter<edm::InputTag>("bits"))),
+  triggerPrescales_         (consumes<pat::PackedTriggerPrescales>(cfg.getUntrackedParameter<edm::InputTag>("prescales"))),
   //params for wide jet calculation
   maxJetEta_                (cfg.getUntrackedParameter<double>("maxJetEta")),
   minJetPt_                 (cfg.getUntrackedParameter<double>("minJetPt")),
@@ -209,6 +223,10 @@ void MyMiniAODAnalyzer::initialize()
   qNVtx_->clear();
 
   crossSection_->clear();
+  pathRates_->clear();
+  pathNames_->clear();
+  
+  rateMap.clear();
 
   subsystemQuality_->clear();
 }
@@ -312,6 +330,8 @@ void MyMiniAODAnalyzer::beginJob() {
   qMetPhi_ = new std::vector<float>;
   qNVtx_     = new std::vector<int>;
   crossSection_  = new std::vector<float>;
+  pathRates_      = new std::vector<float>;
+  pathNames_  = new std::vector<std::string>;
   outTree_->Branch("qPFJetPt",     "std::vector<std::float>",     &qPFJetPt_);
   outTree_->Branch("qPFJetEta",    "std::vector<std::float>",     &qPFJetEta_);
   outTree_->Branch("qPFJetPhi",    "std::vector<std::float>",     &qPFJetPhi_);
@@ -319,6 +339,8 @@ void MyMiniAODAnalyzer::beginJob() {
   outTree_->Branch("qMetPhi",    "std::vector<std::float>",       &qMetPhi_);
   outTree_->Branch("qNVtx",        "std::vector<std::int>",       &qNVtx_);
   outTree_->Branch("crossSection",   "std::vector<std::float>",       &crossSection_);
+  outTree_->Branch("pathRates",          "std::vector<std::float>",       &pathRates_);
+  outTree_->Branch("pathNames",      "std::vector<std::string>",       &pathNames_);
 
   subsystemQuality_ = new std::vector<bool>;
   outTree_->Branch("subsystemQuality", "std::vector<bool>",        &subsystemQuality_);
@@ -375,6 +397,8 @@ void MyMiniAODAnalyzer::endJob()
   delete qMetPhi_;
   delete qNVtx_;
   delete crossSection_;
+  delete pathRates_;
+  delete pathNames_;
 
   delete subsystemQuality_;
 
@@ -434,7 +458,12 @@ void MyMiniAODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, c
   computeQuantiles(nVtx_,    qNVtx_,    quantiles_);
 
   crossSection_->push_back( (float)eventCounter/lumi_ );
-
+  
+  for(std::map<std::string,int>::const_iterator itr = rateMap.begin(); itr != rateMap.end(); ++itr)
+    {
+      pathNames_->push_back(itr->first);
+      pathRates_->push_back(itr->second/lumi_);
+    }
 
 
   //fill tree one event per LS
@@ -478,6 +507,25 @@ void MyMiniAODAnalyzer::analyze (const edm::Event &event, const edm::EventSetup 
   event.getByToken(vtxToken_,recVtxs);
   if(recVtxs.isValid())
     nVtx_->push_back(recVtxs->size());
+
+  //fill hlt
+  edm::Handle<edm::TriggerResults> triggerBits;
+  edm::Handle<pat::PackedTriggerPrescales> triggerPrescales;
+
+  event.getByToken(triggerBits_, triggerBits);
+  event.getByToken(triggerPrescales_, triggerPrescales);
+  
+  const edm::TriggerNames &names = event.triggerNames(*triggerBits);
+  for (unsigned int i = 0, n = triggerBits->size(); i < n; ++i) 
+    {
+      if(rateMap.find(names.triggerName(i)) != rateMap.end())
+	rateMap[names.triggerName(i)] += triggerPrescales->getPrescaleForIndex(i)*triggerBits->accept(i);
+      else
+	rateMap[names.triggerName(i)] = triggerPrescales->getPrescaleForIndex(i)*triggerBits->accept(i);
+
+      //std::cout << names.triggerName(i) << " " << triggerPrescales->getPrescaleForIndex(i) << " " << triggerBits->accept(i) << std::endl;
+										     
+    }
 }
 
 

@@ -4,7 +4,7 @@ config = Configuration()
 config.section_('General')
 config.General.transferOutputs = True
 config.General.transferLogs = False
-config.General.workArea = 'crab3Submission_0310'
+config.General.workArea = 'crab3Submission_1611'
 config.General.requestName = ''
 
 config.section_('JobType')
@@ -16,7 +16,7 @@ config.JobType.maxJobRuntimeMin = 2750 #45 h
 
 config.section_('Data')
 config.Data.inputDataset = ''
-config.Data.unitsPerJob = 100 #without '' since it must be an int
+config.Data.unitsPerJob = 80 #without '' since it must be an int
 config.Data.splitting = 'LumiBased'
 config.Data.publication = False
 #config.Data.runRange = ''
@@ -51,7 +51,8 @@ if __name__ == '__main__':
                        'JetHT_2016F_v1',
                        'JetHT_2016G_v1',
                        'JetHT_2016H_v1',
-                       'JetHT_2016H_v2']
+                       'JetHT_2016H_v2',
+                       'JetHT_2016H_v3']
 
     inputDatasetList = ['/JetHT/Run2016B-PromptReco-v1/MINIAOD',
                         '/JetHT/Run2016B-PromptReco-v2/MINIAOD',
@@ -61,7 +62,8 @@ if __name__ == '__main__':
                         '/JetHT/Run2016F-PromptReco-v1/MINIAOD',
                         '/JetHT/Run2016G-PromptReco-v1/MINIAOD',
                         '/JetHT/Run2016H-PromptReco-v1/MINIAOD',
-                        '/JetHT/Run2016H-PromptReco-v2/MINIAOD']
+                        '/JetHT/Run2016H-PromptReco-v2/MINIAOD',
+                        '/JetHT/Run2016H-PromptReco-v3/MINIAOD']
 
     for req,dataset in zip(requestNameList,inputDatasetList):
         config.General.requestName = req

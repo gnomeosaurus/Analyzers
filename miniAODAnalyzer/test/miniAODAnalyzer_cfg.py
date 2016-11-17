@@ -33,6 +33,8 @@ process.MyAnalysis =cms.EDAnalyzer("MyMiniAODAnalyzer",
                        PFJetTag                = cms.untracked.InputTag("slimmedJets"),
                        metTag                  = cms.untracked.InputTag("slimmedMETs"),
                        vtx                     = cms.untracked.InputTag("offlineSlimmedPrimaryVertices"),
+                       bits                    = cms.untracked.InputTag("TriggerResults","","HLT"),
+                       prescales               = cms.untracked.InputTag("patTrigger"),
                                    
                        maxJetEta               = cms.untracked.double(5.0),   #is this ok?
                        minJetPt                = cms.untracked.double(10.0),  #is this ok?
