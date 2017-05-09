@@ -20,7 +20,7 @@
 
 #include "DataFormats/Common/interface/TriggerResults.h"
 #include "FWCore/Common/interface/TriggerNames.h"
-#include "DataFormats/PatCandidates/interface/PackedTriggerPrescales.h"
+//#include "DataFormats/PatCandidates/interface/PackedTriggerPrescales.h"
 
 #include <numeric>
 #include "FWCore/Framework/interface/LuminosityBlock.h"
@@ -128,7 +128,7 @@ private:
   edm::EDGetTokenT<std::vector<pat::MET>>    METJetToken_;
   edm::EDGetTokenT<reco::VertexCollection>   vtxToken_;
   edm::EDGetTokenT<edm::TriggerResults> triggerBits_;
-  edm::EDGetTokenT<pat::PackedTriggerPrescales> triggerPrescales_;
+  //edm::EDGetTokenT<pat::PackedTriggerPrescales> triggerPrescales_;
 
   int eventCounter;
 
@@ -157,7 +157,7 @@ MyMiniAODAnalyzer::MyMiniAODAnalyzer(const edm::ParameterSet& cfg):
   METJetToken_              (consumes<std::vector<pat::MET>>(cfg.getUntrackedParameter<edm::InputTag>("metTag"))),
   vtxToken_                 (consumes<reco::VertexCollection>(cfg.getUntrackedParameter<edm::InputTag>("vtx"))),
   triggerBits_              (consumes<edm::TriggerResults>(cfg.getUntrackedParameter<edm::InputTag>("bits"))),
-  triggerPrescales_         (consumes<pat::PackedTriggerPrescales>(cfg.getUntrackedParameter<edm::InputTag>("prescales"))),
+  //triggerPrescales_         (consumes<pat::PackedTriggerPrescales>(cfg.getUntrackedParameter<edm::InputTag>("prescales"))),
   //params for wide jet calculation
   maxJetEta_                (cfg.getUntrackedParameter<double>("maxJetEta")),
   minJetPt_                 (cfg.getUntrackedParameter<double>("minJetPt")),
@@ -512,13 +512,13 @@ void MyMiniAODAnalyzer::analyze (const edm::Event &event, const edm::EventSetup 
 
   //fill hlt
   edm::Handle<edm::TriggerResults> triggerBits;
-  edm::Handle<pat::PackedTriggerPrescales> triggerPrescales;
+  //edm::Handle<pat::PackedTriggerPrescales> triggerPrescales;
 
   event.getByToken(triggerBits_, triggerBits);
   event.getByToken(triggerPrescales_, triggerPrescales);
   
   const edm::TriggerNames &names = event.triggerNames(*triggerBits);
-  for (unsigned int i = 0, n = triggerBits->size(); i < n; ++i) 
+  /*for (unsigned int i = 0, n = triggerBits->size(); i < n; ++i) 
     {
       if(rateMap.find(names.triggerName(i)) != rateMap.end())
 	rateMap[names.triggerName(i)] += triggerPrescales->getPrescaleForIndex(i)*triggerBits->accept(i);
@@ -527,7 +527,7 @@ void MyMiniAODAnalyzer::analyze (const edm::Event &event, const edm::EventSetup 
 
       //std::cout << names.triggerName(i) << " " << triggerPrescales->getPrescaleForIndex(i) << " " << triggerBits->accept(i) << std::endl;
 										     
-    }
+    }*/
 }
 
 
