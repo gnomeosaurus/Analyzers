@@ -515,7 +515,7 @@ void MyMiniAODAnalyzer::analyze (const edm::Event &event, const edm::EventSetup 
   //edm::Handle<pat::PackedTriggerPrescales> triggerPrescales;
 
   event.getByToken(triggerBits_, triggerBits);
-  event.getByToken(triggerPrescales_, triggerPrescales);
+  //event.getByToken(triggerPrescales_, triggerPrescales);
   
   const edm::TriggerNames &names = event.triggerNames(*triggerBits);
   /*for (unsigned int i = 0, n = triggerBits->size(); i < n; ++i) 
