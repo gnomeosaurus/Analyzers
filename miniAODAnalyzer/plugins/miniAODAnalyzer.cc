@@ -22,6 +22,9 @@
 #include "FWCore/Common/interface/TriggerNames.h"
 #include "DataFormats/PatCandidates/interface/PackedTriggerPrescales.h"
 
+#include "DataFormats/EgammaReco/interface/SuperCluster.h" //added because of SuperCluster
+#include "DataFormats/EgammaReco/interface/SuperClusterFwd.h" //added because of SuperCluster (collection)
+
 #include <numeric>
 #include "FWCore/Framework/interface/LuminosityBlock.h"
 #include "FWCore/Framework/interface/Event.h"
@@ -36,22 +39,22 @@
 
 
 // python script
-static const std::string __script = "\
-import os, numpy as np\n\
-outArray = None\n\
-def fillArray(*values):\n\
-  print \"!!!fillArray!!!\"\n\
-  global outArray\n\
-  outArray = np.array(values).astype(np.float32)\n\
-  return\n\
-def saveFile(fout):\n\
-  print \"!!!saveFile!!! \"+fout\n\
-  np.savetxt(fout,outArray)\n\
-  return\n\
-def myprint(text):\n\
-  print 'text passed: '+text+'. it works!'\n\
-  return\n\
-";
+// static const std::string __script = "
+// import os, numpy as np\n\
+// outArray = None\n\
+// def fillArray(*values):\n\
+//   print \"!!!fillArray!!!\"\n\
+//   global outArray\n\
+//   outArray = np.array(values).astype(np.float32)\n\
+//   return\n\
+// def saveFile(fout):\n\
+//   print \"!!!saveFile!!! \"+fout\n\
+//   np.savetxt(fout,outArray)\n\
+//   return\n\
+// def myprint(text):\n\
+//   print 'text passed: '+text+'. it works!'\n\
+//   return\n\
+// ";
 
 
 class MyMiniAODAnalyzer : public edm::EDAnalyzer {
@@ -72,6 +75,8 @@ private:
   
   template<typename jetCollection>
   void fillJets(const edm::Handle<jetCollection> &, std::string );
+  template<typename SuperClusterCollection> //adding because of superclust
+  void fillSC(const edm::Handle<SuperClusterCollection> &); //std::string?
   void initialize();
   template<typename T>
   void computeQuantiles(std::vector<T>*, std::vector<T>*, std::vector<double>);
@@ -111,6 +116,12 @@ private:
   std::vector<float>* MetPhi_;
   std::vector<int>*   nVtx_;
 
+  //std::vector<float>* SuperCluster_; // adding SuperCluster
+  std::vector<float>* SCPt_;
+  std::vector<float>* SCEta_;
+  std::vector<float>* SCPhi_;
+
+ 
   std::vector<float>* qPFJetPt_;
   std::vector<float>* qPFJetEta_;
   std::vector<float>* qPFJetPhi_;
@@ -118,6 +129,11 @@ private:
   std::vector<float>* qMetPhi_;
   std::vector<int>*   qNVtx_;
 
+  std::vector<float>* qSCPt_;
+  std::vector<float>* qSCEta_;
+  std::vector<float>* qSCPhi_;
+  //std::vector<float>* qSuperCluster_; // adding SuperCluster
+ 
   std::vector<float>*   crossSection_;
   std::vector<float>*   pathRates_;
   std::vector<std::string>*   pathNames_;
@@ -129,11 +145,14 @@ private:
   edm::EDGetTokenT<reco::VertexCollection>   vtxToken_;
   edm::EDGetTokenT<edm::TriggerResults> triggerBits_;
   edm::EDGetTokenT<pat::PackedTriggerPrescales> triggerPrescales_;
+  edm::EDGetTokenT<reco::SuperClusterCollection>   SuperClusterToken_;  //adding SuperCluster
 
   int eventCounter;
 
   double maxJetEta_;
   double minJetPt_;
+  double maxSCEta_;
+  double minSCPt_;
 
   std::string lumiFile_;
   std::map<int,std::map<int,float> > lumiMap;
@@ -158,9 +177,12 @@ MyMiniAODAnalyzer::MyMiniAODAnalyzer(const edm::ParameterSet& cfg):
   vtxToken_                 (consumes<reco::VertexCollection>(cfg.getUntrackedParameter<edm::InputTag>("vtx"))),
   triggerBits_              (consumes<edm::TriggerResults>(cfg.getUntrackedParameter<edm::InputTag>("bits"))),
   triggerPrescales_         (consumes<pat::PackedTriggerPrescales>(cfg.getUntrackedParameter<edm::InputTag>("prescales"))),
+  SuperClusterToken_        (consumes<reco::SuperClusterCollection>(cfg.getUntrackedParameter<edm::InputTag>("SuperClusterTag"))), //adding SuperClusterToken_
   //params for wide jet calculation
   maxJetEta_                (cfg.getUntrackedParameter<double>("maxJetEta")),
   minJetPt_                 (cfg.getUntrackedParameter<double>("minJetPt")),
+  maxSCEta_                 (cfg.getUntrackedParameter<double>("maxSCEta")),
+  minSCPt_                  (cfg.getUntrackedParameter<double>("minSCPt")),
   lumiFile_                 (cfg.getUntrackedParameter<std::string>("lumiFile")),
   quantiles_                (cfg.getUntrackedParameter<std::vector<double> >("quantiles")),
   subsystemNames_           (cfg.getUntrackedParameter<std::vector<std::string> >("subsystems")),
@@ -216,13 +238,23 @@ void MyMiniAODAnalyzer::initialize()
   MetPt_->clear();
   MetPhi_->clear();
   nVtx_->clear();
-
+  //SuperCluster_ ->clear(); //adding SuperCluster
+  SCPt_ ->clear();
+  SCEta_->clear();
+  SCPhi_->clear();
+ 
   qPFJetPt_->clear();
   qPFJetEta_->clear();
   qPFJetPhi_->clear();
   qMetPt_->clear();
   qMetPhi_->clear();
   qNVtx_->clear();
+
+  //qSuperCluster_ ->clear(); //ASK IF quantiles should be here
+  qSCPt_ ->clear();
+  qSCEta_->clear();
+  qSCPhi_->clear();
+
 
   crossSection_->clear();
   pathRates_->clear();
@@ -237,7 +269,7 @@ template<typename jetCollection>
 void MyMiniAODAnalyzer::fillJets(const edm::Handle<jetCollection> & jets, std::string type)
 {
   // Selected jets
-  reco::CaloJetCollection recojets;
+  //reco::CaloJetCollection recojets;
   typename jetCollection::const_iterator i = jets->begin();
   for(;i != jets->end(); i++){
     if(std::abs(i->eta()) < maxJetEta_ && i->pt() >= minJetPt_)
@@ -254,7 +286,31 @@ void MyMiniAODAnalyzer::fillJets(const edm::Handle<jetCollection> & jets, std::s
   }
   return;
 }
- 
+
+template<typename SuperClusterCollection>
+void MyMiniAODAnalyzer::fillSC(const edm::Handle<SuperClusterCollection> & superclusters) //ask for jets analogy //SUPERCLUSTERS
+{
+
+  // Selected jets
+  //reco::CaloJetCollection recojets;
+  typename SuperClusterCollection::const_iterator i = superclusters->begin();
+  for(;i != superclusters->end(); i++){
+    // if(std::abs(i->eta()) < maxSCEta && i->pt() >= minSCPt_) //ask where can I find values for maxSCEta and minSCPt
+      // {
+        SCPt_->push_back(i->rawEnergy());
+        SCEta_->push_back(i->etaWidth());
+        SCPhi_->push_back(i->phiWidth());
+        std::cout << "ele energy: " << i->rawEnergy() << std::endl; 
+        std::cout << "ele eta: " << i->etaWidth() << std::endl;
+        std::cout << "ele phi: " << i->phiWidth() << std::endl;
+      // }
+  }
+  return;
+
+
+
+}
+
 
 template<typename T>
 void MyMiniAODAnalyzer::computeQuantiles(std::vector<T>* myDistr, std::vector<T>* myQuan, std::vector<double> qq)
@@ -318,6 +374,13 @@ void MyMiniAODAnalyzer::beginJob() {
   MetPt_ = new std::vector<float>;
   MetPhi_ = new std::vector<float>;
   nVtx_     = new std::vector<int>;
+  
+  //SuperCluster_ = new std::vector<float>; //adding SuperCluster
+  SCPt_ = new std::vector<float>;
+  SCEta_ = new std::vector<float>;
+  SCPhi_ = new std::vector<float>;
+
+
   // outTree_->Branch("MetPt",     "std::vector<std::float>",     &MetPt_);
   // outTree_->Branch("MetPhi",    "std::vector<std::float>",     &MetPhi_);
   // outTree_->Branch("PFJetPt",     "std::vector<std::float>",     &PFJetPt_);
@@ -328,6 +391,10 @@ void MyMiniAODAnalyzer::beginJob() {
   qPFJetPt_ = new std::vector<float>;
   qPFJetEta_ = new std::vector<float>;
   qPFJetPhi_ = new std::vector<float>;
+  //qSuperCluster_ = new std::vector<float>; //only if quantiles of SuperCluster is needed
+  qSCPt_ = new std::vector<float>;
+  qSCEta_ = new std::vector<float>;
+  qSCPhi_ = new std::vector<float>;
   qMetPt_ = new std::vector<float>;
   qMetPhi_ = new std::vector<float>;
   qNVtx_     = new std::vector<int>;
@@ -340,9 +407,15 @@ void MyMiniAODAnalyzer::beginJob() {
   outTree_->Branch("qMetPt",     "std::vector<std::float>",       &qMetPt_);
   outTree_->Branch("qMetPhi",    "std::vector<std::float>",       &qMetPhi_);
   outTree_->Branch("qNVtx",        "std::vector<std::int>",       &qNVtx_);
+
+  //outTree_->Branch("SuperCluster","std::vector<std::float>",      &SuperCluster_);
+  outTree_->Branch("qSCPt",     "std::vector<std::float>",        &qSCPt_);
+  outTree_->Branch("qSCEta",    "std::vector<std::float>",        &qSCEta_);
+  outTree_->Branch("qSCPhi",    "std::vector<std::float>",        &qSCPhi_);
+
   outTree_->Branch("crossSection",   "std::vector<std::float>",       &crossSection_);
-  outTree_->Branch("pathRates",          "std::vector<std::float>",       &pathRates_);
-  outTree_->Branch("pathNames",      "std::vector<std::string>",       &pathNames_);
+  outTree_->Branch("pathRates",          "std::vector<std::float>",   &pathRates_);
+  outTree_->Branch("pathNames",      "std::vector<std::string>",      &pathNames_);
 
   subsystemQuality_ = new std::vector<bool>;
   outTree_->Branch("subsystemQuality", "std::vector<bool>",        &subsystemQuality_);
@@ -388,13 +461,21 @@ void MyMiniAODAnalyzer::endJob()
   delete PFJetPt_;
   delete PFJetEta_;
   delete PFJetPhi_;
-
+  delete SCPt_;
+  delete SCEta_;
+  delete SCPhi_;
   delete MetPt_;
   delete MetPhi_;
-
+  
+  //delete SuperCluster_;
+  //delete qSuperCluster_;
   delete qPFJetPt_;
   delete qPFJetEta_;
   delete qPFJetPhi_;
+  delete qSCPt_;
+  delete qSCEta_;
+  delete qSCPhi_;
+
   delete qMetPt_;
   delete qMetPhi_;
   delete qNVtx_;
@@ -451,13 +532,21 @@ void MyMiniAODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, c
   computeMeanAndRms(MetPt_, qMetPt_);
   computeMeanAndRms(MetPhi_,  qMetPhi_);
   computeMeanAndRms(nVtx_,    qNVtx_);
+  computeMeanAndRms(SCPt_, qSCPt_);   //adding supercluster pt,eta and phi
+  computeMeanAndRms(SCEta_, qSCEta_);  //
+  computeMeanAndRms(SCPhi_, qSCPhi_);  //
+
+
 
   computeQuantiles(PFJetPt_, qPFJetPt_, quantiles_);
   computeQuantiles(PFJetEta_,qPFJetEta_,quantiles_);
   computeQuantiles(PFJetPhi_,qPFJetPhi_,quantiles_);
-  computeQuantiles(MetPt_, qMetPt_, quantiles_);
-  computeQuantiles(MetPhi_,qMetPhi_,quantiles_);
+  computeQuantiles(MetPt_, qMetPt_,     quantiles_);
+  computeQuantiles(MetPhi_,qMetPhi_,    quantiles_);
   computeQuantiles(nVtx_,    qNVtx_,    quantiles_);
+  computeQuantiles(SCPt_, qSCPt_,       quantiles_);
+  computeQuantiles(SCEta_, qSCEta_,     quantiles_);
+  computeQuantiles(SCPhi_, qSCPhi_,     quantiles_);
 
   crossSection_->push_back( (float)eventCounter/lumi_ );
   
@@ -509,6 +598,20 @@ void MyMiniAODAnalyzer::analyze (const edm::Event &event, const edm::EventSetup 
   event.getByToken(vtxToken_,recVtxs);
   if(recVtxs.isValid())
     nVtx_->push_back(recVtxs->size());
+
+  //attempt to fill SuperCluster
+  edm::Handle<reco::SuperClusterCollection> SuperClusterlocalv; // explain
+  event.getByToken(SuperClusterToken_, SuperClusterlocalv);
+  // print the size of SuperClusterlocalv
+  if(SuperClusterlocalv.isValid())
+  {
+    fillSC(SuperClusterlocalv);
+  }
+  
+
+  // SuperCluster_->push_back() //not sute what push_back does
+  
+
 
   //fill hlt
   edm::Handle<edm::TriggerResults> triggerBits;
