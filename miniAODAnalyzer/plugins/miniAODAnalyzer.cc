@@ -38,25 +38,6 @@
 
 
 
-// python script
-// static const std::string __script = "
-// import os, numpy as np\n\
-// outArray = None\n\
-// def fillArray(*values):\n\
-//   print \"!!!fillArray!!!\"\n\
-//   global outArray\n\
-//   outArray = np.array(values).astype(np.float32)\n\
-//   return\n\
-// def saveFile(fout):\n\
-//   print \"!!!saveFile!!! \"+fout\n\
-//   np.savetxt(fout,outArray)\n\
-//   return\n\
-// def myprint(text):\n\
-//   print 'text passed: '+text+'. it works!'\n\
-//   return\n\
-// ";
-
-
 class MyMiniAODAnalyzer : public edm::EDAnalyzer {
   
 public:
@@ -85,19 +66,7 @@ private:
   std::map<int, std::vector<std::pair<int, int> > > readJSONFile(const std::string&);
   bool AcceptEventByRunAndLumiSection(const int& , const int& ,std::map<int, std::vector<std::pair<int, int> > >&);
 
-  
-  // // python objects
-  // PyObject* _pyContext;
-  // // python functions
-  // PyObject* _pyPrint;
 
-  // PyObject* _pyFillArray;      //function
-  // PyObject* _pyPt;             //function arguments
-  // PyObject* _pyEta;            //function arguments
-  // PyObject* _pyPhi;  //function arguments
-  // PyObject* _pyArray;          //array
-
-  // PyObject* _pySaveFile;
 
 
   /// file service and tree
@@ -117,7 +86,7 @@ private:
   std::vector<int>*   nVtx_;
 
   //std::vector<float>* SuperCluster_; // adding SuperCluster
-  std::vector<float>* SCPt_;
+  std::vector<float>* SCEn_;
   std::vector<float>* SCEta_;
   std::vector<float>* SCPhi_;
 
@@ -129,7 +98,7 @@ private:
   std::vector<float>* qMetPhi_;
   std::vector<int>*   qNVtx_;
 
-  std::vector<float>* qSCPt_;
+  std::vector<float>* qSCEn_;
   std::vector<float>* qSCEta_;
   std::vector<float>* qSCPhi_;
   //std::vector<float>* qSuperCluster_; // adding SuperCluster
@@ -152,7 +121,7 @@ private:
   double maxJetEta_;
   double minJetPt_;
   double maxSCEta_;
-  double minSCPt_;
+  double minSCEn_;
 
   std::string lumiFile_;
   std::map<int,std::map<int,float> > lumiMap;
@@ -182,47 +151,14 @@ MyMiniAODAnalyzer::MyMiniAODAnalyzer(const edm::ParameterSet& cfg):
   maxJetEta_                (cfg.getUntrackedParameter<double>("maxJetEta")),
   minJetPt_                 (cfg.getUntrackedParameter<double>("minJetPt")),
   maxSCEta_                 (cfg.getUntrackedParameter<double>("maxSCEta")),
-  minSCPt_                  (cfg.getUntrackedParameter<double>("minSCPt")),
+  minSCEn_                  (cfg.getUntrackedParameter<double>("minSCEn")),
   lumiFile_                 (cfg.getUntrackedParameter<std::string>("lumiFile")),
   quantiles_                (cfg.getUntrackedParameter<std::vector<double> >("quantiles")),
   subsystemNames_           (cfg.getUntrackedParameter<std::vector<std::string> >("subsystems")),
   qualityFiles_             (cfg.getUntrackedParameter<std::vector<std::string> >("qualityFiles"))
 {
-  // // initialize python
-  // Py_Initialize();
-  // PyEval_InitThreads();
 
-  // // run the __script
-  // PyObject* pyMainModule = PyImport_AddModule("__main__");
-  // PyObject *pyMainDict = PyModule_GetDict(pyMainModule);
-  // _pyContext = PyDict_Copy(pyMainDict);
-  // PyRun_String(__script.c_str(), Py_file_input, _pyContext, _pyContext);
-
-  // // functions
-  // _pyPrint     = PyDict_GetItemString(_pyContext, "myprint");
-  // _pyFillArray = PyDict_GetItemString(_pyContext, "fillArray");
-  // _pySaveFile  = PyDict_GetItemString(_pyContext, "saveFile");
-
-  
-  // _pyFillArrayArgs = PyTuple_New(3);
-
-
-  // //test print
-  // if (PyCallable_Check(_pyPrint))
-  //   {
-  //     PyObject* pValue=Py_BuildValue("(z)",(char*)"something");
-  //     PyErr_Print();
-  //     printf("Let's give this a shot!\n");
-  //     PyObject* presult=PyObject_CallObject(_pyPrint,pValue);
-  //     PyErr_Print();
-  //   }
-  // else
-  //   {
-  //     std::cout << "function not callable" << std::endl;
-  //     PyErr_Print();
-  //   }
 }
-
 void MyMiniAODAnalyzer::initialize()
 {
   eventCounter = 0;
@@ -239,7 +175,7 @@ void MyMiniAODAnalyzer::initialize()
   MetPhi_->clear();
   nVtx_->clear();
   //SuperCluster_ ->clear(); //adding SuperCluster
-  SCPt_ ->clear();
+  SCEn_ ->clear();
   SCEta_->clear();
   SCPhi_->clear();
  
@@ -251,7 +187,7 @@ void MyMiniAODAnalyzer::initialize()
   qNVtx_->clear();
 
   //qSuperCluster_ ->clear(); //ASK IF quantiles should be here
-  qSCPt_ ->clear();
+  qSCEn_ ->clear();
   qSCEta_->clear();
   qSCPhi_->clear();
 
@@ -280,6 +216,9 @@ void MyMiniAODAnalyzer::fillJets(const edm::Handle<jetCollection> & jets, std::s
 	    PFJetPt_->push_back(i->pt());
 	    PFJetEta_->push_back(i->eta());
 	    PFJetPhi_->push_back(i->phi());
+      //std::cout << "ele pt: " << i->pt() << std::endl; //TEST -- works
+      //std::cout << "ele eta: " << i->eta() << std::endl;   //TEST --works
+      //std::cout << "ele phi: " << i->phi() << std::endl;   //TEST --works
 	  }
 	
       }
@@ -295,14 +234,14 @@ void MyMiniAODAnalyzer::fillSC(const edm::Handle<SuperClusterCollection> & super
   //reco::CaloJetCollection recojets;
   typename SuperClusterCollection::const_iterator i = superclusters->begin();
   for(;i != superclusters->end(); i++){
-    // if(std::abs(i->eta()) < maxSCEta && i->pt() >= minSCPt_) //ask where can I find values for maxSCEta and minSCPt
+     if(std::abs(i->eta()) < maxSCEta_ && i->energy() >= minSCEn_) // not sure if needed
       // {
-        SCPt_->push_back(i->rawEnergy());
+        SCEn_->push_back(i->energy());
         SCEta_->push_back(i->etaWidth());
         SCPhi_->push_back(i->phiWidth());
-        std::cout << "ele energy: " << i->rawEnergy() << std::endl; 
-        std::cout << "ele eta: " << i->etaWidth() << std::endl;
-        std::cout << "ele phi: " << i->phiWidth() << std::endl;
+        std::cout << "ele energy: " << i->energy() << std::endl; 
+        std::cout << "ele SCeta: " << i->etaWidth() << std::endl;
+        std::cout << "ele SCphi: " << i->phiWidth() << std::endl;
       // }
   }
   return;
@@ -329,9 +268,6 @@ void MyMiniAODAnalyzer::computeQuantiles(std::vector<T>* myDistr, std::vector<T>
       float prob = ((float)itr+1.)/(float)dummyDistr.size();
       if(prob >= qq[qItr])
 	{
-	  //fill pyTuple
-	  //PyTuple_SetItem(_pyFillArrayArgs, pos, PyFloat_FromDouble(dummyDistr.at(itr)));
-	  //PyObject* dummyVal = Py_BuildValue("(f)",PyFloat_FromDouble(dummyDistr.at(itr)));
 
 	  //fill root tree
 	  myQuan->push_back(dummyDistr.at(itr));
@@ -376,7 +312,7 @@ void MyMiniAODAnalyzer::beginJob() {
   nVtx_     = new std::vector<int>;
   
   //SuperCluster_ = new std::vector<float>; //adding SuperCluster
-  SCPt_ = new std::vector<float>;
+  SCEn_ = new std::vector<float>;
   SCEta_ = new std::vector<float>;
   SCPhi_ = new std::vector<float>;
 
@@ -392,7 +328,7 @@ void MyMiniAODAnalyzer::beginJob() {
   qPFJetEta_ = new std::vector<float>;
   qPFJetPhi_ = new std::vector<float>;
   //qSuperCluster_ = new std::vector<float>; //only if quantiles of SuperCluster is needed
-  qSCPt_ = new std::vector<float>;
+  qSCEn_ = new std::vector<float>;
   qSCEta_ = new std::vector<float>;
   qSCPhi_ = new std::vector<float>;
   qMetPt_ = new std::vector<float>;
@@ -409,7 +345,7 @@ void MyMiniAODAnalyzer::beginJob() {
   outTree_->Branch("qNVtx",        "std::vector<std::int>",       &qNVtx_);
 
   //outTree_->Branch("SuperCluster","std::vector<std::float>",      &SuperCluster_);
-  outTree_->Branch("qSCPt",     "std::vector<std::float>",        &qSCPt_);
+  outTree_->Branch("qSCEn",     "std::vector<std::float>",        &qSCEn_);
   outTree_->Branch("qSCEta",    "std::vector<std::float>",        &qSCEta_);
   outTree_->Branch("qSCPhi",    "std::vector<std::float>",        &qSCPhi_);
 
@@ -443,25 +379,10 @@ void MyMiniAODAnalyzer::beginJob() {
 void MyMiniAODAnalyzer::endJob() 
 {
 
-  // if (PyCallable_Check(_pySaveFile))
-  //   {
-  //     PyObject* oName=Py_BuildValue("(z)",(char*)"outTest.txt");
-  //     PyErr_Print();
-  //     std::cout << "saving file..." << std::endl;
-  //     PyObject* presult=PyObject_CallObject(_pySaveFile,oName);
-  //     PyErr_Print();
-  //   }
-  // else
-  //   {
-  //     std::cout << "_pySaveFile function not callable" << std::endl;
-  //     PyErr_Print();
-  //   }
-
-
   delete PFJetPt_;
   delete PFJetEta_;
   delete PFJetPhi_;
-  delete SCPt_;
+  delete SCEn_;
   delete SCEta_;
   delete SCPhi_;
   delete MetPt_;
@@ -472,7 +393,7 @@ void MyMiniAODAnalyzer::endJob()
   delete qPFJetPt_;
   delete qPFJetEta_;
   delete qPFJetPhi_;
-  delete qSCPt_;
+  delete qSCEn_;
   delete qSCEta_;
   delete qSCPhi_;
 
@@ -489,13 +410,7 @@ void MyMiniAODAnalyzer::endJob()
 
 MyMiniAODAnalyzer::~MyMiniAODAnalyzer()
 {
-  // cleanup python objects
-  // Py_DECREF(_pyFillArrayArgs);
-  // Py_DECREF(_pyFillArray);
-  // Py_DECREF(_pySaveFile);
-  // Py_DECREF(_pyPrint);
-  // Py_DECREF(_pyContext);
-  // Py_Finalize();
+
 }
 
 void MyMiniAODAnalyzer::beginLuminosityBlock (const edm::LuminosityBlock & lumi, const edm::EventSetup &eventSetup) 
@@ -532,7 +447,7 @@ void MyMiniAODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, c
   computeMeanAndRms(MetPt_, qMetPt_);
   computeMeanAndRms(MetPhi_,  qMetPhi_);
   computeMeanAndRms(nVtx_,    qNVtx_);
-  computeMeanAndRms(SCPt_, qSCPt_);   //adding supercluster pt,eta and phi
+  computeMeanAndRms(SCEn_, qSCEn_);   //adding supercluster pt,eta and phi
   computeMeanAndRms(SCEta_, qSCEta_);  //
   computeMeanAndRms(SCPhi_, qSCPhi_);  //
 
@@ -544,7 +459,7 @@ void MyMiniAODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, c
   computeQuantiles(MetPt_, qMetPt_,     quantiles_);
   computeQuantiles(MetPhi_,qMetPhi_,    quantiles_);
   computeQuantiles(nVtx_,    qNVtx_,    quantiles_);
-  computeQuantiles(SCPt_, qSCPt_,       quantiles_);
+  computeQuantiles(SCEn_, qSCEn_,       quantiles_);
   computeQuantiles(SCEta_, qSCEta_,     quantiles_);
   computeQuantiles(SCPhi_, qSCPhi_,     quantiles_);
 
@@ -560,17 +475,7 @@ void MyMiniAODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, c
   //fill tree one event per LS
   outTree_->Fill();
 
-  // //fill np array one event per LS
-  // if (PyCallable_Check(_pyFillArray))
-  //   {
-  //     _pyArray = PyObject_CallObject(_pyFillArray,_pyFillArrayArgs);
-  //     PyErr_Print();
-  //   }
-  // else
-  //   {
-  //     std::cout << "_pyFillArray function not callable" << std::endl;
-  //     PyErr_Print();
-  //   }
+
 }
 
 
@@ -604,9 +509,7 @@ void MyMiniAODAnalyzer::analyze (const edm::Event &event, const edm::EventSetup 
   event.getByToken(SuperClusterToken_, SuperClusterlocalv);
   // print the size of SuperClusterlocalv
   if(SuperClusterlocalv.isValid())
-  {
     fillSC(SuperClusterlocalv);
-  }
   
 
   // SuperCluster_->push_back() //not sute what push_back does

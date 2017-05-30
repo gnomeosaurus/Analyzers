@@ -39,13 +39,13 @@ process.MyAnalysis =cms.EDAnalyzer("MyMiniAODAnalyzer",
                        bits                    = cms.untracked.InputTag("TriggerResults","","HLT"),
                        prescales               = cms.untracked.InputTag("patTrigger"), #this is giving us a crash...
 
-                       SuperClusterTag         = cms.untracked.InputTag("reducedEgamma"), #adding SuperCluster
+                       SuperClusterTag         = cms.untracked.InputTag("reducedEgamma","reducedSuperClusters"), #adding SuperCluster
                                    
                        maxJetEta               = cms.untracked.double(5.0),   #is this ok?
                        minJetPt                = cms.untracked.double(10.0),  #is this ok?
 
                        maxSCEta                = cms.untracked.double(3.0),   # IS THIS OK?
-                       minSCPt                 = cms.untracked.double(8.0),  # IS THIS OK?
+                       minSCEn                 = cms.untracked.double(8.0),  # IS THIS OK?
 
                        lumiFile                = cms.untracked.string(basePath+'run_ls_lumi_2016.txt'),
                        subsystems              = cms.untracked.vstring(subsystemList),
