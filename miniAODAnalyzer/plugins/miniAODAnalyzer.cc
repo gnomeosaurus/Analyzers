@@ -24,6 +24,20 @@
 
 #include "DataFormats/EgammaReco/interface/SuperCluster.h" //added because of SuperCluster
 #include "DataFormats/EgammaReco/interface/SuperClusterFwd.h" //added because of SuperCluster (collection)
+#include "DataFormats/EgammaCandidates/interface/GsfElectron.h" //added because of GsfElectron
+#include "DataFormats/EgammaCandidates/interface/GsfElectronFwd.h" //added because of GsfElectron -- QUESTION - do I need to include something similar also for GsfElectronunclean?
+#include "DataFormats/MuonReco/interface/Muon.h"
+#include "DataFormats/MuonReco/interface/MuonFwd.h"
+#include "DataFormats/EgammaCandidates/interface/Photon.h" 
+#include "DataFormats/EgammaCandidates/interface/PhotonFwd.h"
+#include "DataFormats/METReco/interface/PFMET.h"
+#include "DataFormats/METReco/interface/PFMETFwd.h" 
+
+#include "DataFormats/EcalRecHit/interface/EcalRecHit.h"
+#include "DataFormats/EcalRecHit/interface/EcalRecHitCollections.h" //not entirely sure here
+#include "DataFormats/HcalRecHit/interface/HBHERecHit.h"
+#include "DataFormats/HcalRecHit/interface/HFRecHit.h"
+#include "DataFormats/HcalRecHit/interface/HORecHit.h"
 
 #include <numeric>
 #include "FWCore/Framework/interface/LuminosityBlock.h"
@@ -50,7 +64,7 @@ public:
   virtual void beginRun(const edm::Run & run,    const edm::EventSetup & eventSetup) {};
   virtual void endRun  (const edm::Run & run,    const edm::EventSetup & eventSetup) {};
   virtual void beginLuminosityBlock  (const edm::LuminosityBlock& lumi, const edm::EventSetup& eventSetup);
-  virtual void endLuminosityBlock  (const edm::LuminosityBlock& lumi, const edm::EventSetup& eventSetup);
+  virtual void endLuminosityBlock    (const edm::LuminosityBlock& lumi, const edm::EventSetup& eventSetup);
   
 private:
   
@@ -58,6 +72,13 @@ private:
   void fillJets(const edm::Handle<jetCollection> &, std::string );
   template<typename SuperClusterCollection> //adding because of superclust
   void fillSC(const edm::Handle<SuperClusterCollection> &); //std::string?
+  //TODO
+
+
+
+
+
+
   void initialize();
   template<typename T>
   void computeQuantiles(std::vector<T>*, std::vector<T>*, std::vector<double>);
@@ -86,9 +107,16 @@ private:
   std::vector<int>*   nVtx_;
 
   //std::vector<float>* SuperCluster_; // adding SuperCluster
-  std::vector<float>* SCEn_;
-  std::vector<float>* SCEta_;
-  std::vector<float>* SCPhi_;
+  std::vector<double>* SCEn_;
+  std::vector<double>* SCEta_;
+  std::vector<double>* SCPhi_;
+  //TODO
+
+
+
+
+
+
 
  
   std::vector<float>* qPFJetPt_;
@@ -98,9 +126,12 @@ private:
   std::vector<float>* qMetPhi_;
   std::vector<int>*   qNVtx_;
 
-  std::vector<float>* qSCEn_;
-  std::vector<float>* qSCEta_;
-  std::vector<float>* qSCPhi_;
+  std::vector<double>* qSCEn_;
+  std::vector<double>* qSCEta_;
+  std::vector<double>* qSCPhi_;
+
+  //TODO
+
   //std::vector<float>* qSuperCluster_; // adding SuperCluster
  
   std::vector<float>*   crossSection_;
@@ -115,6 +146,25 @@ private:
   edm::EDGetTokenT<edm::TriggerResults> triggerBits_;
   edm::EDGetTokenT<pat::PackedTriggerPrescales> triggerPrescales_;
   edm::EDGetTokenT<reco::SuperClusterCollection>   SuperClusterToken_;  //adding SuperCluster
+
+  // edm::EDGetTokenT<reco::GsfElectronCollection> GsfElectronToken_;
+  // edm::EDGetTokenT<reco::GsfElectronCollection> GsfElectronUncleanedToken_;
+  // edm::EDGetTokenT<reco::MuonCollection> MuonToken_;
+  // edm::EDGetTokenT<reco::PhotonCollection> gedPhotonToken_;
+  // edm::EDGetTokenT<reco::PhotonCollection> PhotonToken_;   //TWO types of Photons -- one collection?
+  // edm::EDGetTokenT<reco::PFMETCollection> ChPFMETToken_;
+  // edm::EDGetTokenT<reco::PFMETCollection> PFMETToken_;
+  
+  //TODO -- finish adding collections!
+
+  
+
+
+
+
+
+
+
 
   int eventCounter;
 
@@ -147,6 +197,22 @@ MyMiniAODAnalyzer::MyMiniAODAnalyzer(const edm::ParameterSet& cfg):
   triggerBits_              (consumes<edm::TriggerResults>(cfg.getUntrackedParameter<edm::InputTag>("bits"))),
   triggerPrescales_         (consumes<pat::PackedTriggerPrescales>(cfg.getUntrackedParameter<edm::InputTag>("prescales"))),
   SuperClusterToken_        (consumes<reco::SuperClusterCollection>(cfg.getUntrackedParameter<edm::InputTag>("SuperClusterTag"))), //adding SuperClusterToken_
+  // GsfElectronToken_         (consumes<reco::GsfElectronCollection>(cfg.getUntrackedParameter<edm::InputTag>("GsfElectronTag"))),
+  // GsfElectronUncleanedToken_(consumes<reco::GsfElectronCollection>(cfg.getUntrackedParameter<edm::InputTag>("GsfElectronUncleanedTag"))),
+  // MuonToken_                (consumes<reco::MuonCollection>(cfg.getUntrackedParameter<edm::InputTag>("MuonTag"))),
+  // gedPhotonToken_           (consumes<reco::PhotonCollection>(cfg.getUntrackedParameter<edm::InputTag>("gedPhotonTag"))),
+  // PhotonToken_              (consumes<reco::PhotonCollection>(cfg.getUntrackedParameter<edm::InputTag>("PhotonTag"))),
+  // ChPFMETToken_             (consumes<reco::PFMETCollection>(cfg.getUntrackedParameter<edm::InputTag>("ChPFMETTag"))),
+  // PFMETToken_               (consumes<reco::PFMETCollection>(cfg.getUntrackedParameter<edm::InputTag>("PFMETTag"))),
+  
+  //TODO -- add collections!
+
+
+
+
+
+
+
   //params for wide jet calculation
   maxJetEta_                (cfg.getUntrackedParameter<double>("maxJetEta")),
   minJetPt_                 (cfg.getUntrackedParameter<double>("minJetPt")),
@@ -178,6 +244,12 @@ void MyMiniAODAnalyzer::initialize()
   SCEn_ ->clear();
   SCEta_->clear();
   SCPhi_->clear();
+  //TODO
+
+
+
+
+
  
   qPFJetPt_->clear();
   qPFJetEta_->clear();
@@ -190,6 +262,10 @@ void MyMiniAODAnalyzer::initialize()
   qSCEn_ ->clear();
   qSCEta_->clear();
   qSCPhi_->clear();
+  //TODO
+
+
+
 
 
   crossSection_->clear();
@@ -312,9 +388,15 @@ void MyMiniAODAnalyzer::beginJob() {
   nVtx_     = new std::vector<int>;
   
   //SuperCluster_ = new std::vector<float>; //adding SuperCluster
-  SCEn_ = new std::vector<float>;
-  SCEta_ = new std::vector<float>;
-  SCPhi_ = new std::vector<float>;
+  SCEn_ = new std::vector<double>;
+  SCEta_ = new std::vector<double>;
+  SCPhi_ = new std::vector<double>;
+  //TODO
+
+
+
+
+
 
 
   // outTree_->Branch("MetPt",     "std::vector<std::float>",     &MetPt_);
@@ -328,9 +410,15 @@ void MyMiniAODAnalyzer::beginJob() {
   qPFJetEta_ = new std::vector<float>;
   qPFJetPhi_ = new std::vector<float>;
   //qSuperCluster_ = new std::vector<float>; //only if quantiles of SuperCluster is needed
-  qSCEn_ = new std::vector<float>;
-  qSCEta_ = new std::vector<float>;
-  qSCPhi_ = new std::vector<float>;
+  qSCEn_ = new std::vector<double>;
+  qSCEta_ = new std::vector<double>;
+  qSCPhi_ = new std::vector<double>;
+  //TODO
+
+
+
+
+
   qMetPt_ = new std::vector<float>;
   qMetPhi_ = new std::vector<float>;
   qNVtx_     = new std::vector<int>;
@@ -345,9 +433,14 @@ void MyMiniAODAnalyzer::beginJob() {
   outTree_->Branch("qNVtx",        "std::vector<std::int>",       &qNVtx_);
 
   //outTree_->Branch("SuperCluster","std::vector<std::float>",      &SuperCluster_);
-  outTree_->Branch("qSCEn",     "std::vector<std::float>",        &qSCEn_);
-  outTree_->Branch("qSCEta",    "std::vector<std::float>",        &qSCEta_);
-  outTree_->Branch("qSCPhi",    "std::vector<std::float>",        &qSCPhi_);
+  outTree_->Branch("qSCEn",     "std::vector<std::double>",        &qSCEn_);
+  outTree_->Branch("qSCEta",    "std::vector<std::double>",        &qSCEta_);
+  outTree_->Branch("qSCPhi",    "std::vector<std::double>",        &qSCPhi_);
+  //TODO
+
+
+
+
 
   outTree_->Branch("crossSection",   "std::vector<std::float>",       &crossSection_);
   outTree_->Branch("pathRates",          "std::vector<std::float>",   &pathRates_);
@@ -385,6 +478,10 @@ void MyMiniAODAnalyzer::endJob()
   delete SCEn_;
   delete SCEta_;
   delete SCPhi_;
+  //TODO
+
+
+
   delete MetPt_;
   delete MetPhi_;
   
@@ -396,6 +493,11 @@ void MyMiniAODAnalyzer::endJob()
   delete qSCEn_;
   delete qSCEta_;
   delete qSCPhi_;
+  //TODO
+
+
+
+
 
   delete qMetPt_;
   delete qMetPhi_;
@@ -450,6 +552,10 @@ void MyMiniAODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, c
   computeMeanAndRms(SCEn_, qSCEn_);   //adding supercluster pt,eta and phi
   computeMeanAndRms(SCEta_, qSCEta_);  //
   computeMeanAndRms(SCPhi_, qSCPhi_);  //
+  //TODO
+
+
+
 
 
 
@@ -462,6 +568,11 @@ void MyMiniAODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, c
   computeQuantiles(SCEn_, qSCEn_,       quantiles_);
   computeQuantiles(SCEta_, qSCEta_,     quantiles_);
   computeQuantiles(SCPhi_, qSCPhi_,     quantiles_);
+  //TODO
+
+
+
+
 
   crossSection_->push_back( (float)eventCounter/lumi_ );
   
@@ -504,15 +615,20 @@ void MyMiniAODAnalyzer::analyze (const edm::Event &event, const edm::EventSetup 
   if(recVtxs.isValid())
     nVtx_->push_back(recVtxs->size());
 
-  //attempt to fill SuperCluster
-  edm::Handle<reco::SuperClusterCollection> SuperClusterlocalv; // explain
+  //Fill SuperCluster
+  edm::Handle<reco::SuperClusterCollection> SuperClusterlocalv;
   event.getByToken(SuperClusterToken_, SuperClusterlocalv);
   // print the size of SuperClusterlocalv
   if(SuperClusterlocalv.isValid())
     fillSC(SuperClusterlocalv);
   
 
-  // SuperCluster_->push_back() //not sute what push_back does
+  //TODO --fill Photons, fill Muons, e.t.c.
+
+
+
+
+
   
 
 
