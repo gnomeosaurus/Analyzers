@@ -4,9 +4,9 @@ process = cms.Process("ANALYSIS")
 
 process.source = cms.Source("PoolSource",
                     fileNames = cms.untracked.vstring(
-                                     "/store/data/Run2015D/SingleElectron/MINIAOD/16Dec2015-v1/20000/00050EF1-F9A6-E511-86B2-0025905A48D0.root", #going for SuperCluster
+                                   "/store/data/Run2015D/SingleElectron/MINIAOD/16Dec2015-v1/20000/00050EF1-F9A6-E511-86B2-0025905A48D0.root", #going for SuperCluster in MINIAOD
 				                           # '/store/data/Run2016H/SingleElectron/MINIAOD/PromptReco-v3/000/284/040/00000/76F4EC3E-879F-E611-8792-02163E012498.root', #randomly choosing file regarding  electrons
-                                   # '/store/data/Run2016H/DoubleEG/AOD/PromptReco-v1/000/281/130/00000/70B9D8E1-7680-E611-ABA1-02163E014716.root',
+                                  #'/store/data/Run2016H/DoubleEG/AOD/PromptReco-v1/000/281/130/00000/70B9D8E1-7680-E611-ABA1-02163E014716.root', #exercise2 - going for other variables
                                    # '/store/data/Run2016G/ZeroBias/MINIAOD/PromptReco-v1/000/280/385/00000/08080C9F-C078-E611-AEF1-FA163E5647FC.root',
                                    # '/store/data/Run2016G/ZeroBias/MINIAOD/PromptReco-v1/000/280/385/00000/084B4FBE-C078-E611-9740-02163E013993.root',
                                    # '/store/data/Run2016G/ZeroBias/MINIAOD/PromptReco-v1/000/280/385/00000/0A6B1BD0-C078-E611-A332-02163E014113.root'
@@ -29,7 +29,7 @@ fileList = []
 for sub in subsystemList:
     fileList.append(basePath+'Cert_13TeV_2016_'+sub+'.txt')
 
-
+#vector<reco::SuperCluster>            "reducedEgamma"             "reducedSuperClusters"   "RECO"     --output of edmDumpEventContent for path #going for Supercluster
 process.MyAnalysis =cms.EDAnalyzer("MyMiniAODAnalyzer",
 
                        #caloJetTag              = cms.untracked.InputTag("slimmedJets"),
@@ -40,6 +40,23 @@ process.MyAnalysis =cms.EDAnalyzer("MyMiniAODAnalyzer",
                        prescales               = cms.untracked.InputTag("patTrigger"), #this is giving us a crash...
 
                        SuperClusterTag         = cms.untracked.InputTag("reducedEgamma","reducedSuperClusters"), #adding SuperCluster
+
+                       #44-57 are new tags
+                       # GsfElectronTag          = cms.untracked.InputTag("gedGsfElectrons"),
+                       # GsfElectronUncleanedTag = cms.untracked.InputTag("uncleanedOnlyGsfElectrons"),
+                       # MuonTag                 = cms.untracked.InputTag("muons"),
+                       # gedPhotonTag            = cms.untracked.InputTag("gedPhotons"),
+                       # PhotonTag               = cms.untracked.InputTag("photons"),
+                       # ChPFMETTag              = cms.untracked.InputTag("pfChMet"),
+                       # PFMETTag                = cms.untracked.InputTag("pfMet"),
+
+                       # CollectionEcalRecHitEBTag  = cms.untracked.InputTag("reducedEcalRecHitsEB"),
+                       # CollectionEcalRecHitEETag  = cms.untracked.InputTag("reducedEcalRecHitsEE"),
+                       # CollectionEcalRecHitESTag  = cms.untracked.InputTag("reducedEcalRecHitsES"),
+                       # CollectionHBHERecHitTag    = cms.untracked.InputTag("reducedHcalRecHits","hbhereco"),
+                       # CollectionHFRecHitTag      = cms.untracked.InputTag("reducedHcalRecHits","hfreco"),
+                       # CollectionHORecHitTag      = cms.untracked.InputTag("reducedHcalRecHits","horeco"),
+
                                    
                        maxJetEta               = cms.untracked.double(5.0),   #is this ok?
                        minJetPt                = cms.untracked.double(10.0),  #is this ok?
@@ -66,6 +83,7 @@ process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(-1))
 process.options =  cms.untracked.PSet(
                    #allowUnscheduled = cms.untracked.bool(True),
                    wantSummary = cms.untracked.bool(True),
+                   # SkipEvent = cms.untracked.vstring('ProductNotFound'), #!!! only for testing
                    )
 
 
