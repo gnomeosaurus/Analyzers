@@ -33,6 +33,7 @@
 #include "DataFormats/METReco/interface/PFMET.h"
 #include "DataFormats/METReco/interface/PFMETFwd.h" 
 
+#include "DataFormats/Math/interface/LorentzVector.h"
 #include "DataFormats/EcalRecHit/interface/EcalRecHit.h"
 #include "DataFormats/EcalRecHit/interface/EcalRecHitCollections.h" //not entirely sure here
 #include "DataFormats/HcalRecHit/interface/HBHERecHit.h"
@@ -73,7 +74,8 @@ private:
   template<typename SuperClusterCollection> //adding because of superclust
   void fillSC(const edm::Handle<SuperClusterCollection> &); //std::string?
   //TODO
-
+  template<typename GsfElectronCollection>
+  void fillGsf(const edm::Handle<GsfElectronCollection> &);
 
 
 
@@ -111,6 +113,15 @@ private:
   std::vector<double>* SCEta_;
   std::vector<double>* SCPhi_;
   //TODO
+  std::vector<float>* SigmaIEta_;
+  std::vector<float>* SigmaIPhi_;
+  std::vector<float>* r9_;
+  std::vector<float>* HadOEm_;
+  std::vector<float>* drSumPt_;
+  std::vector<float>* drSumEt_;
+  std::vector<float>* eSCOP_;
+  std::vector<float>* ecEn_;
+
 
 
 
@@ -129,10 +140,15 @@ private:
   std::vector<double>* qSCEn_;
   std::vector<double>* qSCEta_;
   std::vector<double>* qSCPhi_;
-
   //TODO
-
-  //std::vector<float>* qSuperCluster_; // adding SuperCluster
+  std::vector<float>* qSigmaIEta_;
+  std::vector<float>* qSigmaIPhi_;
+  std::vector<float>* qr9_;
+  std::vector<float>* qHadOEm_;
+  std::vector<float>* qdrSumPt_;
+  std::vector<float>* qdrSumEt_;
+  std::vector<float>* qeSCOP_;
+  std::vector<float>* qecEn_;
  
   std::vector<float>*   crossSection_;
   std::vector<float>*   pathRates_;
@@ -148,7 +164,7 @@ private:
   edm::EDGetTokenT<reco::SuperClusterCollection>   SuperClusterToken_;  //adding SuperCluster
 
   edm::EDGetTokenT<reco::GsfElectronCollection> GsfElectronToken_;
-  edm::EDGetTokenT<reco::GsfElectronCollection> GsfElectronUncleanedToken_;
+  // edm::EDGetTokenT<reco::GsfElectronCollection> GsfElectronUncleanedToken_;
   edm::EDGetTokenT<reco::MuonCollection> MuonToken_;
   edm::EDGetTokenT<reco::PhotonCollection> gedPhotonToken_;
   edm::EDGetTokenT<reco::PhotonCollection> PhotonToken_;   //TWO types of Photons -- one collection?
@@ -198,7 +214,7 @@ MyMiniAODAnalyzer::MyMiniAODAnalyzer(const edm::ParameterSet& cfg):
   triggerPrescales_         (consumes<pat::PackedTriggerPrescales>(cfg.getUntrackedParameter<edm::InputTag>("prescales"))),
   SuperClusterToken_        (consumes<reco::SuperClusterCollection>(cfg.getUntrackedParameter<edm::InputTag>("SuperClusterTag"))), //adding SuperClusterToken_
   GsfElectronToken_         (consumes<reco::GsfElectronCollection>(cfg.getUntrackedParameter<edm::InputTag>("GsfElectronTag"))),
-  GsfElectronUncleanedToken_(consumes<reco::GsfElectronCollection>(cfg.getUntrackedParameter<edm::InputTag>("GsfElectronUncleanedTag"))),
+  // GsfElectronUncleanedToken_(consumes<reco::GsfElectronCollection>(cfg.getUntrackedParameter<edm::InputTag>("GsfElectronUncleanedTag"))),
   MuonToken_                (consumes<reco::MuonCollection>(cfg.getUntrackedParameter<edm::InputTag>("MuonTag"))),
   gedPhotonToken_           (consumes<reco::PhotonCollection>(cfg.getUntrackedParameter<edm::InputTag>("gedPhotonTag"))),
   PhotonToken_              (consumes<reco::PhotonCollection>(cfg.getUntrackedParameter<edm::InputTag>("PhotonTag"))),
@@ -245,8 +261,14 @@ void MyMiniAODAnalyzer::initialize()
   SCEta_->clear();
   SCPhi_->clear();
   //TODO
-
-
+  SigmaIEta_->clear();
+  SigmaIPhi_->clear();
+  r9_->clear();
+  HadOEm_->clear();
+  drSumPt_->clear();
+  drSumEt_->clear();
+  eSCOP_->clear();
+  ecEn_->clear();
 
 
 
@@ -263,7 +285,14 @@ void MyMiniAODAnalyzer::initialize()
   qSCEta_->clear();
   qSCPhi_->clear();
   //TODO
-
+  qSigmaIEta_->clear();
+  qSigmaIPhi_->clear();  
+  qr9_->clear();
+  qHadOEm_->clear();
+  qdrSumPt_->clear();
+  qdrSumEt_->clear();
+  qeSCOP_->clear();
+  qecEn_->clear();
 
 
 
@@ -315,6 +344,7 @@ void MyMiniAODAnalyzer::fillSC(const edm::Handle<SuperClusterCollection> & super
         SCEn_->push_back(i->energy());
         SCEta_->push_back(i->etaWidth());
         SCPhi_->push_back(i->phiWidth());
+
         std::cout << "ele energy: " << i->energy() << std::endl; 
         std::cout << "ele SCeta: " << i->etaWidth() << std::endl;
         std::cout << "ele SCphi: " << i->phiWidth() << std::endl;
@@ -326,7 +356,35 @@ void MyMiniAODAnalyzer::fillSC(const edm::Handle<SuperClusterCollection> & super
 
 }
 
+//TODO
+template<typename GsfElectronCollection>
+void MyMiniAODAnalyzer::fillGsf(const edm::Handle<GsfElectronCollection> & electrons)
+{
 
+  typename GsfElectronCollection::const_iterator i = electrons->begin();
+  for(;i != electrons->end(); i++){
+    SigmaIEta_->push_back(i->sigmaIetaIeta());
+    SigmaIPhi_->push_back(i->sigmaIphiIphi());
+    r9_->push_back(i->r9());
+    HadOEm_->push_back(i->hadronicOverEm());
+    drSumPt_->push_back(i->dr03TkSumPt());
+    drSumEt_->push_back(i->dr03EcalRecHitSumEt());
+    eSCOP_->push_back(i->eSuperClusterOverP());
+    ecEn_->push_back(i->ecalEnergy());    
+    std::cout << "ele etaeta: " << i->sigmaIetaIeta()  << std::endl;
+    std::cout << "ele phiphi: " << i->sigmaIphiIphi()  << std::endl; 
+    std::cout << "ele r9: " << i->r9()  << std::endl; 
+    std::cout << "ele hadoem: " << i->hadronicOverEm()  << std::endl; 
+    std::cout << "ele drsumpt: " << i->dr03TkSumPt()  << std::endl; 
+    std::cout << "ele drsumet: " << i->dr03EcalRecHitSumEt()  << std::endl; 
+    std::cout << "ele escop: " << i->eSuperClusterOverP()  << std::endl; 
+    std::cout << "ele ecen: " << i->ecalEnergy()  << std::endl; 
+
+
+  }
+  return;
+
+}
 template<typename T>
 void MyMiniAODAnalyzer::computeQuantiles(std::vector<T>* myDistr, std::vector<T>* myQuan, std::vector<double> qq)
 {
@@ -392,8 +450,15 @@ void MyMiniAODAnalyzer::beginJob() {
   SCEta_ = new std::vector<double>;
   SCPhi_ = new std::vector<double>;
   //TODO
-
-
+  SigmaIEta_ = new std::vector<float>;
+  SigmaIPhi_ = new std::vector<float>;
+  r9_ = new std::vector<float>;
+  HadOEm_ = new std::vector<float>;
+  drSumPt_ = new std::vector<float>;
+  drSumEt_ = new std::vector<float>;
+  eSCOP_ = new std::vector<float>;
+  ecEn_ = new std::vector<float>;
+ 
 
 
 
@@ -413,6 +478,15 @@ void MyMiniAODAnalyzer::beginJob() {
   qSCEn_ = new std::vector<double>;
   qSCEta_ = new std::vector<double>;
   qSCPhi_ = new std::vector<double>;
+  qSigmaIEta_ = new std::vector<float>;
+  qSigmaIPhi_ = new std::vector<float>;
+  qr9_ = new std::vector<float>;
+  qHadOEm_ = new std::vector<float>;
+  qdrSumPt_ = new std::vector<float>;
+  qdrSumEt_ = new std::vector<float>;
+  qeSCOP_ = new std::vector<float>;
+  qecEn_ = new std::vector<float>;
+
   //TODO
 
 
@@ -436,6 +510,15 @@ void MyMiniAODAnalyzer::beginJob() {
   outTree_->Branch("qSCEn",     "std::vector<std::double>",        &qSCEn_);
   outTree_->Branch("qSCEta",    "std::vector<std::double>",        &qSCEta_);
   outTree_->Branch("qSCPhi",    "std::vector<std::double>",        &qSCPhi_);
+  outTree_->Branch("qSigmaIEta",    "std::vector<std::float>",        &qSigmaIEta_);
+  outTree_->Branch("qSigmaIPhi",    "std::vector<std::float>",        &qSigmaIPhi_);
+  outTree_->Branch("qr9",    "std::vector<std::float>",        &qr9_);
+  outTree_->Branch("qHadOEm",    "std::vector<std::float>",        &qHadOEm_);
+  outTree_->Branch("qdrSumPt",    "std::vector<std::float>",        &qdrSumPt_);
+  outTree_->Branch("qdrSumEt",    "std::vector<std::float>",        &qdrSumEt_);
+  outTree_->Branch("qeSCOP",    "std::vector<std::float>",        &qeSCOP_);
+  outTree_->Branch("qecEn",    "std::vector<std::float>",        &qecEn_);
+
   //TODO
 
 
@@ -479,8 +562,14 @@ void MyMiniAODAnalyzer::endJob()
   delete SCEta_;
   delete SCPhi_;
   //TODO
-
-
+  delete SigmaIEta_;
+  delete SigmaIPhi_;
+  delete r9_;
+  delete HadOEm_;
+  delete drSumPt_;
+  delete drSumEt_;
+  delete eSCOP_;
+  delete ecEn_;
 
   delete MetPt_;
   delete MetPhi_;
@@ -494,10 +583,14 @@ void MyMiniAODAnalyzer::endJob()
   delete qSCEta_;
   delete qSCPhi_;
   //TODO
-
-
-
-
+  delete qSigmaIEta_;
+  delete qSigmaIPhi_;
+  delete qr9_;
+  delete qHadOEm_;
+  delete qdrSumPt_;
+  delete qdrSumEt_;
+  delete qeSCOP_;
+  delete qecEn_;
 
   delete qMetPt_;
   delete qMetPhi_;
@@ -553,8 +646,14 @@ void MyMiniAODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, c
   computeMeanAndRms(SCEta_, qSCEta_);  //
   computeMeanAndRms(SCPhi_, qSCPhi_);  //
   //TODO
-
-
+  computeMeanAndRms(SigmaIEta_, qSigmaIEta_);
+  computeMeanAndRms(SigmaIPhi_, qSigmaIPhi_);
+  computeMeanAndRms(r9_, qr9_);
+  computeMeanAndRms(HadOEm_, qHadOEm_);
+  computeMeanAndRms(drSumPt_, qdrSumPt_);
+  computeMeanAndRms(drSumEt_, qdrSumEt_);
+  computeMeanAndRms(eSCOP_, qeSCOP_);
+  computeMeanAndRms(ecEn_, qecEn_);
 
 
 
@@ -569,7 +668,14 @@ void MyMiniAODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, c
   computeQuantiles(SCEta_, qSCEta_,     quantiles_);
   computeQuantiles(SCPhi_, qSCPhi_,     quantiles_);
   //TODO
-
+  computeQuantiles(SigmaIEta_, qSigmaIEta_, quantiles_);
+  computeQuantiles(SigmaIPhi_, qSigmaIPhi_, quantiles_);
+  computeQuantiles(r9_, qr9_, quantiles_);
+  computeQuantiles(HadOEm_, qHadOEm_, quantiles_);
+  computeQuantiles(drSumPt_, qdrSumPt_, quantiles_);
+  computeQuantiles(drSumEt_, qdrSumEt_, quantiles_);
+  computeQuantiles(eSCOP_, qeSCOP_, quantiles_);
+  computeQuantiles(ecEn_, qecEn_, quantiles_);
 
 
 
@@ -624,7 +730,11 @@ void MyMiniAODAnalyzer::analyze (const edm::Event &event, const edm::EventSetup 
   
 
   //TODO --fill Photons, fill Muons
-
+  //fill GsF
+  edm::Handle<reco::GsfElectronCollection> GsfElectronlocalv;
+  event.getByToken(GsfElectronToken_, GsfElectronlocalv);
+  if(GsfElectronlocalv.isValid())
+     fillGsf(GsfElectronlocalv);
 
 
 
