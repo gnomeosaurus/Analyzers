@@ -42,20 +42,20 @@ process.MyAnalysis =cms.EDAnalyzer("MyMiniAODAnalyzer",
                        SuperClusterTag         = cms.untracked.InputTag("reducedEgamma","reducedSuperClusters"), #adding SuperCluster --needs to be changed because miniAOD!=AOD
 
                        #44-57 are new tags
-                       # GsfElectronTag          = cms.untracked.InputTag("gedGsfElectrons"),
-                       # GsfElectronUncleanedTag = cms.untracked.InputTag("uncleanedOnlyGsfElectrons"),
-                       # MuonTag                 = cms.untracked.InputTag("muons"),
-                       # gedPhotonTag            = cms.untracked.InputTag("gedPhotons"),
-                       # PhotonTag               = cms.untracked.InputTag("photons"),
-                       # ChPFMETTag              = cms.untracked.InputTag("pfChMet"),
-                       # PFMETTag                = cms.untracked.InputTag("pfMet"),
+                       GsfElectronTag          = cms.untracked.InputTag("gedGsfElectrons"),
+                       GsfElectronUncleanedTag = cms.untracked.InputTag("uncleanedOnlyGsfElectrons"),
+                       MuonTag                 = cms.untracked.InputTag("muons"),
+                       gedPhotonTag            = cms.untracked.InputTag("gedPhotons"),
+                       PhotonTag               = cms.untracked.InputTag("photons"),
+                       ChPFMETTag              = cms.untracked.InputTag("pfChMet"),
+                       PFMETTag                = cms.untracked.InputTag("pfMet"),
 
-                       # CollectionEcalRecHitEBTag  = cms.untracked.InputTag("reducedEcalRecHitsEB"),
-                       # CollectionEcalRecHitEETag  = cms.untracked.InputTag("reducedEcalRecHitsEE"),
-                       # CollectionEcalRecHitESTag  = cms.untracked.InputTag("reducedEcalRecHitsES"),
-                       # CollectionHBHERecHitTag    = cms.untracked.InputTag("reducedHcalRecHits","hbhereco"),
-                       # CollectionHFRecHitTag      = cms.untracked.InputTag("reducedHcalRecHits","hfreco"),
-                       # CollectionHORecHitTag      = cms.untracked.InputTag("reducedHcalRecHits","horeco"),
+                       CollectionEcalRecHitEBTag  = cms.untracked.InputTag("reducedEcalRecHitsEB"),
+                       CollectionEcalRecHitEETag  = cms.untracked.InputTag("reducedEcalRecHitsEE"),
+                       CollectionEcalRecHitESTag  = cms.untracked.InputTag("reducedEcalRecHitsES"),
+                       CollectionHBHERecHitTag    = cms.untracked.InputTag("reducedHcalRecHits","hbhereco"),
+                       CollectionHFRecHitTag      = cms.untracked.InputTag("reducedHcalRecHits","hfreco"),
+                       CollectionHORecHitTag      = cms.untracked.InputTag("reducedHcalRecHits","horeco"),
 
                                    
                        maxJetEta               = cms.untracked.double(5.0),   #is this ok?
@@ -69,21 +69,21 @@ process.MyAnalysis =cms.EDAnalyzer("MyMiniAODAnalyzer",
                        qualityFiles            = cms.untracked.vstring(fileList),
                        quantiles               = cms.untracked.vdouble(0.,0.25,0.50,0.75,1.)
 
-                       )
+                        )
 
 
 process.mypath  = cms.Path(process.MyAnalysis)
 
 process.TFileService = cms.Service("TFileService",
                                    fileName = cms.string("miniAODTree.root"),
-                                   closeFileFast = cms.untracked.bool(False)
+                                   closeFileFast = cms.untracked.bool(False),
                                    )
  
 process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(-1))
 process.options =  cms.untracked.PSet(
                    #allowUnscheduled = cms.untracked.bool(True),
                    wantSummary = cms.untracked.bool(True),
-                   # SkipEvent = cms.untracked.vstring('ProductNotFound'), #!!! only for testing
+                   SkipEvent = cms.untracked.vstring('ProductNotFound'), #!!! only for testing
                    )
 
 

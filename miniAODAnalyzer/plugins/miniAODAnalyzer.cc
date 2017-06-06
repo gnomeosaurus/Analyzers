@@ -147,13 +147,13 @@ private:
   edm::EDGetTokenT<pat::PackedTriggerPrescales> triggerPrescales_;
   edm::EDGetTokenT<reco::SuperClusterCollection>   SuperClusterToken_;  //adding SuperCluster
 
-  // edm::EDGetTokenT<reco::GsfElectronCollection> GsfElectronToken_;
-  // edm::EDGetTokenT<reco::GsfElectronCollection> GsfElectronUncleanedToken_;
-  // edm::EDGetTokenT<reco::MuonCollection> MuonToken_;
-  // edm::EDGetTokenT<reco::PhotonCollection> gedPhotonToken_;
-  // edm::EDGetTokenT<reco::PhotonCollection> PhotonToken_;   //TWO types of Photons -- one collection?
-  // edm::EDGetTokenT<reco::PFMETCollection> ChPFMETToken_;
-  // edm::EDGetTokenT<reco::PFMETCollection> PFMETToken_;
+  edm::EDGetTokenT<reco::GsfElectronCollection> GsfElectronToken_;
+  edm::EDGetTokenT<reco::GsfElectronCollection> GsfElectronUncleanedToken_;
+  edm::EDGetTokenT<reco::MuonCollection> MuonToken_;
+  edm::EDGetTokenT<reco::PhotonCollection> gedPhotonToken_;
+  edm::EDGetTokenT<reco::PhotonCollection> PhotonToken_;   //TWO types of Photons -- one collection?
+  edm::EDGetTokenT<reco::PFMETCollection> ChPFMETToken_;
+  edm::EDGetTokenT<reco::PFMETCollection> PFMETToken_;
   
   //TODO -- finish adding collections!
 
@@ -197,13 +197,13 @@ MyMiniAODAnalyzer::MyMiniAODAnalyzer(const edm::ParameterSet& cfg):
   triggerBits_              (consumes<edm::TriggerResults>(cfg.getUntrackedParameter<edm::InputTag>("bits"))),
   triggerPrescales_         (consumes<pat::PackedTriggerPrescales>(cfg.getUntrackedParameter<edm::InputTag>("prescales"))),
   SuperClusterToken_        (consumes<reco::SuperClusterCollection>(cfg.getUntrackedParameter<edm::InputTag>("SuperClusterTag"))), //adding SuperClusterToken_
-  // GsfElectronToken_         (consumes<reco::GsfElectronCollection>(cfg.getUntrackedParameter<edm::InputTag>("GsfElectronTag"))),
-  // GsfElectronUncleanedToken_(consumes<reco::GsfElectronCollection>(cfg.getUntrackedParameter<edm::InputTag>("GsfElectronUncleanedTag"))),
-  // MuonToken_                (consumes<reco::MuonCollection>(cfg.getUntrackedParameter<edm::InputTag>("MuonTag"))),
-  // gedPhotonToken_           (consumes<reco::PhotonCollection>(cfg.getUntrackedParameter<edm::InputTag>("gedPhotonTag"))),
-  // PhotonToken_              (consumes<reco::PhotonCollection>(cfg.getUntrackedParameter<edm::InputTag>("PhotonTag"))),
-  // ChPFMETToken_             (consumes<reco::PFMETCollection>(cfg.getUntrackedParameter<edm::InputTag>("ChPFMETTag"))),
-  // PFMETToken_               (consumes<reco::PFMETCollection>(cfg.getUntrackedParameter<edm::InputTag>("PFMETTag"))),
+  GsfElectronToken_         (consumes<reco::GsfElectronCollection>(cfg.getUntrackedParameter<edm::InputTag>("GsfElectronTag"))),
+  GsfElectronUncleanedToken_(consumes<reco::GsfElectronCollection>(cfg.getUntrackedParameter<edm::InputTag>("GsfElectronUncleanedTag"))),
+  MuonToken_                (consumes<reco::MuonCollection>(cfg.getUntrackedParameter<edm::InputTag>("MuonTag"))),
+  gedPhotonToken_           (consumes<reco::PhotonCollection>(cfg.getUntrackedParameter<edm::InputTag>("gedPhotonTag"))),
+  PhotonToken_              (consumes<reco::PhotonCollection>(cfg.getUntrackedParameter<edm::InputTag>("PhotonTag"))),
+  ChPFMETToken_             (consumes<reco::PFMETCollection>(cfg.getUntrackedParameter<edm::InputTag>("ChPFMETTag"))),
+  PFMETToken_               (consumes<reco::PFMETCollection>(cfg.getUntrackedParameter<edm::InputTag>("PFMETTag"))),
   
   //TODO -- add collections!
 
@@ -623,7 +623,7 @@ void MyMiniAODAnalyzer::analyze (const edm::Event &event, const edm::EventSetup 
     fillSC(SuperClusterlocalv);
   
 
-  //TODO --fill Photons, fill Muons, e.t.c.
+  //TODO --fill Photons, fill Muons
 
 
 
