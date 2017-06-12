@@ -9,7 +9,7 @@ process.source = cms.Source("PoolSource",
                                   #'/store/data/Run2016H/DoubleEG/AOD/PromptReco-v1/000/281/130/00000/70B9D8E1-7680-E611-ABA1-02163E014716.root', #exercise2 - going for other variables in AOD
                                    # '/store/data/Run2016G/ZeroBias/MINIAOD/PromptReco-v1/000/280/385/00000/08080C9F-C078-E611-AEF1-FA163E5647FC.root',
                                    # '/store/data/Run2016G/ZeroBias/MINIAOD/PromptReco-v1/000/280/385/00000/084B4FBE-C078-E611-9740-02163E013993.root',
-                                   # '/store/data/Run2016G/ZeroBias/MINIAOD/PromptReco-v1/000/280/385/00000/0A6B1BD0-C078-E611-A332-02163E014113.root'
+                                   # '/store/data/Run2016G/ZeroBias/MINIAOD/PromptReco-v1/000/280/385/00000/0A6B1BD0-C078-E611-A332-02163E014113.root',
                                    "/store/data/Run2016H/DoubleEG/AOD/PromptReco-v3/000/284/044/00000/42E8B572-A29F-E611-A76B-FA163E4C7CB3.root",
                         ),
                     secondaryFileNames = cms.untracked.vstring(),
@@ -34,8 +34,8 @@ for sub in subsystemList:
 process.MyAnalysis =cms.EDAnalyzer("AODAnalyzer",
 
                        #caloJetTag              = cms.untracked.InputTag("slimmedJets"),
-                       PFJetTag                = cms.untracked.InputTag("ak4PFJets"),
-                       metTag                  = cms.untracked.InputTag("pfChMet"),
+                       PFJetTag                = cms.untracked.InputTag("ak8PFJetsCHS"),
+                       metTag                  = cms.untracked.InputTag("caloMetM"),
                        vtx                     = cms.untracked.InputTag("offlinePrimaryVertices"),
                        bits                    = cms.untracked.InputTag("TriggerResults","","HLT"),
                        prescales               = cms.untracked.InputTag("hltTriggerSummaryAOD"), #this is giving us a crash...
@@ -53,12 +53,12 @@ process.MyAnalysis =cms.EDAnalyzer("AODAnalyzer",
 
                        EBRecHitSourceTag       = cms.untracked.InputTag("reducedEcalRecHitsEB"),
                        EERecHitSourceTag       = cms.untracked.InputTag("reducedEcalRecHitsEE"),
-                       CollectionEcalRecHitESTag  = cms.untracked.InputTag("reducedEcalRecHitsES"),
+                       ESRecHitSourceTag       = cms.untracked.InputTag("reducedEcalRecHitsES"),
                        CollectionHBHERecHitTag    = cms.untracked.InputTag("reducedHcalRecHits","hbhereco"),
                        CollectionHFRecHitTag      = cms.untracked.InputTag("reducedHcalRecHits","hfreco"),
                        CollectionHORecHitTag      = cms.untracked.InputTag("reducedHcalRecHits","horeco"),
 
-                                   
+                                
                        maxJetEta               = cms.untracked.double(5.0),   #is this ok?
                        minJetPt                = cms.untracked.double(10.0),  #is this ok?
 
@@ -84,7 +84,7 @@ process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(-1))
 process.options =  cms.untracked.PSet(
                    #allowUnscheduled = cms.untracked.bool(True),
                    wantSummary = cms.untracked.bool(True),
-                   SkipEvent = cms.untracked.vstring('ProductNotFound'), #!! only for testing
+                   #SkipEvent = cms.untracked.vstring('ProductNotFound'), #!! only for testing
                    )
 
 

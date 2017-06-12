@@ -20,7 +20,7 @@
 
 #include "DataFormats/Common/interface/TriggerResults.h"
 #include "FWCore/Common/interface/TriggerNames.h"
-#include "DataFormats/PatCandidates/interface/PackedTriggerPrescales.h"
+//#include "DataFormats/PatCandidates/interface/PackedTriggerPrescales.h"
 
 #include "DataFormats/EgammaReco/interface/SuperCluster.h" //added because of SuperCluster
 #include "DataFormats/EgammaReco/interface/SuperClusterFwd.h" //added because of SuperCluster (collection)
@@ -80,13 +80,14 @@ private:
   template<typename GsfElectronCollection>
   void fillUNGsf(const edm::Handle<GsfElectronCollection> &);
 
-  // template<typename EcalRecHitCollection>
-  // void fillEBrecHit(const edm::Handle<EcalRecHitCollection> &);
+  template<typename EcalRecHitCollection>
+  void fillEBrecHit(const edm::Handle<EcalRecHitCollection> &);
 
-  // template<typename EcalRecHitCollection>
-  // void fillEErecHit(const edm::Handle<EcalRecHitCollection> &);
+  template<typename EcalRecHitCollection>
+  void fillEErecHit(const edm::Handle<EcalRecHitCollection> &);
  
-
+  template<typename EcalRecHitCollection>
+  void fillESrecHit(const edm::Handle<EcalRecHitCollection> &);
    //TODO
 
 
@@ -140,7 +141,15 @@ private:
   std::vector<float>* UNeSCOP_;
   std::vector<float>* UNecEn_;
 
-
+  std::vector<float>* EBenergy_;
+  std::vector<float>* EBtime_;
+  std::vector<float>* EBchi2_;
+  std::vector<float>* EEenergy_;
+  std::vector<float>* EEtime_;
+  std::vector<float>* EEchi2_;
+  std::vector<float>* ESenergy_;
+  std::vector<float>* EStime_;
+  std::vector<float>* ESchi2_;
 
 
 
@@ -175,6 +184,15 @@ private:
   std::vector<float>* qUNeSCOP_;
   std::vector<float>* qUNecEn_;
 
+  std::vector<float>* qEBenergy_;
+  std::vector<float>* qEBtime_;
+  std::vector<float>* qEBchi2_;
+  std::vector<float>* qEEenergy_;
+  std::vector<float>* qEEtime_;
+  std::vector<float>* qEEchi2_;
+  std::vector<float>* qESenergy_;
+  std::vector<float>* qEStime_;
+  std::vector<float>* qESchi2_;
 
   std::vector<float>*   crossSection_;
   std::vector<float>*   pathRates_;
@@ -186,7 +204,7 @@ private:
   edm::EDGetTokenT<std::vector<pat::MET>>    METJetToken_;
   edm::EDGetTokenT<reco::VertexCollection>   vtxToken_;
   edm::EDGetTokenT<edm::TriggerResults> triggerBits_;
-  edm::EDGetTokenT<pat::PackedTriggerPrescales> triggerPrescales_;
+  //edm::EDGetTokenT<pat::PackedTriggerPrescales> triggerPrescales_;
   edm::EDGetTokenT<reco::SuperClusterCollection>   SuperClusterToken_;  //adding SuperCluster
 
   edm::EDGetTokenT<reco::GsfElectronCollection> GsfElectronToken_;
@@ -201,8 +219,10 @@ private:
 
   // edm:: 
 
-  // edm::EDGetTokenT<EcalRecHitCollection> ebRHSrcToken_;
-  // edm::EDGetTokenT<EcalRecHitCollection> eeRHSrcToken_;
+  edm::EDGetTokenT<EcalRecHitCollection> ebRHSrcToken_;
+  edm::EDGetTokenT<EcalRecHitCollection> eeRHSrcToken_;
+  edm::EDGetTokenT<EcalRecHitCollection> esRHSrcToken_;
+
 
   // edm::EDGetTokenT<SortedCollection<EcalRecHit,edm::StrictWeakOrdering<EcalRecHit>> ebRHSrcToken_;
   // edm::EDGetTokenT<SortedCollection<EcalRecHit,edm::StrictWeakOrdering<EcalRecHit>> eeRHSrcToken_;
@@ -240,7 +260,7 @@ AODAnalyzer::AODAnalyzer(const edm::ParameterSet& cfg):
   METJetToken_              (consumes<std::vector<pat::MET>>(cfg.getUntrackedParameter<edm::InputTag>("metTag"))),
   vtxToken_                 (consumes<reco::VertexCollection>(cfg.getUntrackedParameter<edm::InputTag>("vtx"))),
   triggerBits_              (consumes<edm::TriggerResults>(cfg.getUntrackedParameter<edm::InputTag>("bits"))),
-  triggerPrescales_         (consumes<pat::PackedTriggerPrescales>(cfg.getUntrackedParameter<edm::InputTag>("prescales"))),
+  //triggerPrescales_         (consumes<pat::PackedTriggerPrescales>(cfg.getUntrackedParameter<edm::InputTag>("prescales"))),
   SuperClusterToken_        (consumes<reco::SuperClusterCollection>(cfg.getUntrackedParameter<edm::InputTag>("SuperClusterTag"))), //adding SuperClusterToken_
   GsfElectronToken_         (consumes<reco::GsfElectronCollection>(cfg.getUntrackedParameter<edm::InputTag>("GsfElectronTag"))),
   GsfElectronUncleanedToken_(consumes<reco::GsfElectronCollection>(cfg.getUntrackedParameter<edm::InputTag>("GsfElectronUncleanedTag"))),
@@ -252,8 +272,9 @@ AODAnalyzer::AODAnalyzer(const edm::ParameterSet& cfg):
   
   //TODO -- add collections!
   //CollectionEcalRecHitEBTToken_
-  // ebRHSrcToken_             (consumes<edm::SortedCollection<EcalRecHit> EcalRecHitCollection>(cfg.getUntrackedParameter<edm::InputTag>("EBRecHitSourceTag"))),  //ICONFIG -> cfg
-  // eeRHSrcToken_             (consumes<edm::SortedCollection<EcalRecHit> EcalRecHitCollection>(cfg.getUntrackedParameter<edm::InputTag>("EERecHitSourceTag"))),
+  ebRHSrcToken_             (consumes<EcalRecHitCollection>(cfg.getUntrackedParameter<edm::InputTag>("EBRecHitSourceTag"))),  //ICONFIG -> cfg
+  eeRHSrcToken_             (consumes<EcalRecHitCollection>(cfg.getUntrackedParameter<edm::InputTag>("EERecHitSourceTag"))),
+  esRHSrcToken_             (consumes<EcalRecHitCollection>(cfg.getUntrackedParameter<edm::InputTag>("ESRecHitSourceTag"))),
 
 
 
@@ -308,8 +329,16 @@ void AODAnalyzer::initialize()
   UNdrSumEt_->clear();
   UNeSCOP_->clear();
   UNecEn_->clear();
-
-
+  
+  EBenergy_->clear();
+  EBtime_->clear();
+  EBchi2_->clear();
+  EEenergy_->clear();
+  EEtime_->clear();
+  EEchi2_->clear();
+  ESenergy_->clear();
+  EStime_->clear();
+  ESchi2_->clear();
  
   qPFJetPt_->clear();
   qPFJetEta_->clear();
@@ -341,6 +370,15 @@ void AODAnalyzer::initialize()
   qUNeSCOP_->clear();
   qUNecEn_->clear();
 
+  qEBenergy_->clear();
+  qEBtime_->clear();
+  qEBchi2_->clear();
+  qEEenergy_->clear();
+  qEEtime_->clear();
+  qEEchi2_->clear();
+  qESenergy_->clear();
+  qEStime_->clear();
+  qESchi2_->clear();
 
   crossSection_->clear();
   pathRates_->clear();
@@ -356,6 +394,7 @@ void AODAnalyzer::fillJets(const edm::Handle<jetCollection> & jets, std::string 
 {
   // Selected jets
   //reco::CaloJetCollection recojets;
+  std::cout << "fillJets is called" <<std::endl;
   typename jetCollection::const_iterator i = jets->begin();
   for(;i != jets->end(); i++){
     if(std::abs(i->eta()) < maxJetEta_ && i->pt() >= minJetPt_)
@@ -366,9 +405,9 @@ void AODAnalyzer::fillJets(const edm::Handle<jetCollection> & jets, std::string 
 	    PFJetPt_->push_back(i->pt());
 	    PFJetEta_->push_back(i->eta());
 	    PFJetPhi_->push_back(i->phi());
-      //std::cout << "ele pt: " << i->pt() << std::endl; //TEST -- works
-      //std::cout << "ele eta: " << i->eta() << std::endl;   //TEST --works
-      //std::cout << "ele phi: " << i->phi() << std::endl;   //TEST --works
+      std::cout << "ele pt: " << i->pt() << std::endl; //TEST -- works
+      std::cout << "ele eta: " << i->eta() << std::endl;   //TEST --works
+      std::cout << "ele phi: " << i->phi() << std::endl;   //TEST --works
 	  }
 	
       }
@@ -417,14 +456,14 @@ void AODAnalyzer::fillGsf(const edm::Handle<GsfElectronCollection> & electrons)
     drSumEt_  ->push_back(i->dr03EcalRecHitSumEt());
     eSCOP_    ->push_back(i->eSuperClusterOverP());
     ecEn_     ->push_back(i->ecalEnergy());
-    std::cout << "ele etaeta: "  << i->sigmaIetaIeta()       << std::endl;
-    std::cout << "ele phiphi: "  << i->sigmaIphiIphi()       << std::endl; 
-    std::cout << "ele r9: "      << i->r9()                  << std::endl; 
-    std::cout << "ele hadoem: "  << i->hadronicOverEm()      << std::endl; 
-    std::cout << "ele drsumpt: " << i->dr03TkSumPt()         << std::endl; 
-    std::cout << "ele drsumet: " << i->dr03EcalRecHitSumEt() << std::endl; 
-    std::cout << "ele escop: "   << i->eSuperClusterOverP()  << std::endl; 
-    std::cout << "ele ecen: "    << i->ecalEnergy()          << std::endl; 
+    // std::cout << "ele etaeta: "  << i->sigmaIetaIeta()       << std::endl;
+    // std::cout << "ele phiphi: "  << i->sigmaIphiIphi()       << std::endl; 
+    // std::cout << "ele r9: "      << i->r9()                  << std::endl; 
+    // std::cout << "ele hadoem: "  << i->hadronicOverEm()      << std::endl; 
+    // std::cout << "ele drsumpt: " << i->dr03TkSumPt()         << std::endl; 
+    // std::cout << "ele drsumet: " << i->dr03EcalRecHitSumEt() << std::endl; 
+    // std::cout << "ele escop: "   << i->eSuperClusterOverP()  << std::endl; 
+    // std::cout << "ele ecen: "    << i->ecalEnergy()          << std::endl; 
 
 
   }
@@ -447,14 +486,14 @@ void AODAnalyzer::fillUNGsf(const edm::Handle<GsfElectronCollection> & UNelectro
     UNdrSumEt_  ->push_back(i->dr03EcalRecHitSumEt());
     UNeSCOP_    ->push_back(i->eSuperClusterOverP());
     UNecEn_     ->push_back(i->ecalEnergy());
-    std::cout << "ele UNetaeta: "  << i->sigmaIetaIeta()       << std::endl;
-    std::cout << "ele UNphiphi: "  << i->sigmaIphiIphi()       << std::endl; 
-    std::cout << "ele UNr9: "      << i->r9()                  << std::endl; 
-    std::cout << "ele UNhadoem: "  << i->hadronicOverEm()      << std::endl; 
-    std::cout << "ele UNdrsumpt: " << i->dr03TkSumPt()         << std::endl; 
-    std::cout << "ele UNdrsumet: " << i->dr03EcalRecHitSumEt() << std::endl; 
-    std::cout << "ele UNescop: "   << i->eSuperClusterOverP()  << std::endl; 
-    std::cout << "ele UNecen: "    << i->ecalEnergy()          << std::endl; 
+    // std::cout << "ele UNetaeta: "  << i->sigmaIetaIeta()       << std::endl;
+    // std::cout << "ele UNphiphi: "  << i->sigmaIphiIphi()       << std::endl; 
+    // std::cout << "ele UNr9: "      << i->r9()                  << std::endl; 
+    // std::cout << "ele UNhadoem: "  << i->hadronicOverEm()      << std::endl; 
+    // std::cout << "ele UNdrsumpt: " << i->dr03TkSumPt()         << std::endl; 
+    // std::cout << "ele UNdrsumet: " << i->dr03EcalRecHitSumEt() << std::endl; 
+    // std::cout << "ele UNescop: "   << i->eSuperClusterOverP()  << std::endl; 
+    // std::cout << "ele UNecen: "    << i->ecalEnergy()          << std::endl; 
 
 
   }
@@ -462,29 +501,50 @@ void AODAnalyzer::fillUNGsf(const edm::Handle<GsfElectronCollection> & UNelectro
 
 }
 
-// template<typename EcalRecHitCollection>
-// void AODAnalyzer::fillEBrecHit(const edm::Handle<EcalRecHitCollection> & EBhits)
-// {
+template<typename EcalRecHitCollection>
+void AODAnalyzer::fillEBrecHit(const edm::Handle<EcalRecHitCollection> & EBhits)
+{
 
-//   std::cout << "fillEBrecHit is being called!" << std::endl;
-//   typename EcalRecHitCollection::const_iterator i = EBhits->begin();
-//   for(;i != EBhits->end(); i++){
-//     //ADD variables
-//   }
-//   return;
-// }
+  std::cout << "fillEBrecHit is being called!" << std::endl;
+  typename EcalRecHitCollection::const_iterator i = EBhits->begin();
+  for(;i != EBhits->end(); i++){
+    EBenergy_ ->push_back(i->energy());
+    EBtime_ ->push_back(i->time());
+    EBchi2_ ->push_back(i->chi2());
 
-// template<typename EcalRecHitCollection>
-// void AODAnalyzer::fillEErecHit(const edm::Handle<EcalRecHitCollection> & EEhits)
-// {
+  }
+  return;
+}
 
-//   std::cout << "fillEErecHit is being called!" << std::endl;
-//   typename EcalRecHitCollection::const_iterator i = EEhits->begin();
-//   for(;i != EEhits->end(); i++){
-//     //ADD variables
-//   }
-//   return;
-// }
+template<typename EcalRecHitCollection>
+void AODAnalyzer::fillEErecHit(const edm::Handle<EcalRecHitCollection> & EEhits)
+{
+
+  std::cout << "fillEErecHit is being called!" << std::endl;
+  typename EcalRecHitCollection::const_iterator i = EEhits->begin();
+  for(;i != EEhits->end(); i++){
+    EEenergy_ ->push_back(i->energy());
+    EEtime_ ->push_back(i->time());
+    EEchi2_ ->push_back(i->chi2());
+
+  }
+  return;
+}
+
+template<typename EcalRecHitCollection>
+void AODAnalyzer::fillESrecHit(const edm::Handle<EcalRecHitCollection> & EShits)
+{
+
+  std::cout << "fillESrecHit is being called!" << std::endl;
+  typename EcalRecHitCollection::const_iterator i = EShits->begin();
+  for(;i != EShits->end(); i++){
+    ESenergy_ ->push_back(i->energy());
+    EStime_ ->push_back(i->time());
+    ESchi2_ ->push_back(i->chi2());
+
+  }
+  return;
+}
 
 
 template<typename T>
@@ -569,8 +629,15 @@ void AODAnalyzer::beginJob() {
   UNeSCOP_     = new std::vector<float>;
   UNecEn_      = new std::vector<float>;
 
-
-
+  EBenergy_    = new std::vector<float>;
+  EBtime_      = new std::vector<float>;
+  EBchi2_      = new std::vector<float>;
+  EEenergy_    = new std::vector<float>;
+  EEtime_      = new std::vector<float>;
+  EEchi2_      = new std::vector<float>;
+  ESenergy_    = new std::vector<float>;
+  EStime_      = new std::vector<float>;
+  ESchi2_      = new std::vector<float>;
 
   // outTree_->Branch("MetPt",     "std::vector<std::float>",     &MetPt_);
   // outTree_->Branch("MetPhi",    "std::vector<std::float>",     &MetPhi_);
@@ -606,7 +673,15 @@ void AODAnalyzer::beginJob() {
   qUNecEn_     = new std::vector<float>;
   //TODO
 
-
+  qEBenergy_   = new std::vector<float>;
+  qEBtime_     = new std::vector<float>;
+  qEBchi2_     = new std::vector<float>;
+  qEEenergy_   = new std::vector<float>;
+  qEEtime_     = new std::vector<float>;
+  qEEchi2_     = new std::vector<float>;
+  qESenergy_   = new std::vector<float>;
+  qEStime_     = new std::vector<float>;
+  qESchi2_     = new std::vector<float>;
 
 
   qMetPt_      = new std::vector<float>;
@@ -645,8 +720,15 @@ void AODAnalyzer::beginJob() {
   outTree_->Branch("qUNeSCOP",    "std::vector<std::float>",         &qUNeSCOP_);
   outTree_->Branch("qUNecEn",    "std::vector<std::float>",          &qUNecEn_);
   //TODO
-
-
+  outTree_->Branch("qEBenergy",    "std::vector<std::float>",        &qEBenergy_);
+  outTree_->Branch("qEBtime",    "std::vector<std::float>",          &qEBtime_);
+  outTree_->Branch("qEBchi2",    "std::vector<std::float>",          &qEBchi2_);
+  outTree_->Branch("qEEenergy",    "std::vector<std::float>",        &qEEenergy_);
+  outTree_->Branch("qEEtime",    "std::vector<std::float>",          &qEEtime_);
+  outTree_->Branch("qEEchi2",    "std::vector<std::float>",          &qEEchi2_);
+  outTree_->Branch("qESenergy",    "std::vector<std::float>",        &qESenergy_);
+  outTree_->Branch("qEStime",    "std::vector<std::float>",          &qEStime_);
+  outTree_->Branch("qESchi2",    "std::vector<std::float>",          &qESchi2_);
 
 
 
@@ -683,6 +765,9 @@ void AODAnalyzer::endJob()
   delete PFJetPt_;
   delete PFJetEta_;
   delete PFJetPhi_;
+  delete MetPt_;
+  delete MetPhi_;
+  
   delete SCEn_;
   delete SCEta_;
   delete SCPhi_;
@@ -705,14 +790,23 @@ void AODAnalyzer::endJob()
   delete UNeSCOP_;
   delete UNecEn_;
 
-  delete MetPt_;
-  delete MetPhi_;
-  
+  delete EBenergy_;
+  delete EBtime_;
+  delete EBchi2_;
+  delete EEenergy_;
+  delete EEtime_;
+  delete EEchi2_;
+  delete ESenergy_;
+  delete EStime_;
+  delete ESchi2_;
+
   //delete SuperCluster_;
   //delete qSuperCluster_;
   delete qPFJetPt_;
   delete qPFJetEta_;
   delete qPFJetPhi_;
+  delete qMetPt_;
+  delete qMetPhi_;
   delete qSCEn_;
   delete qSCEta_;
   delete qSCPhi_;
@@ -735,8 +829,16 @@ void AODAnalyzer::endJob()
   delete qUNeSCOP_;
   delete qUNecEn_;
 
-  delete qMetPt_;
-  delete qMetPhi_;
+  delete qEBenergy_;
+  delete qEBtime_;
+  delete qEBchi2_;
+  delete qEEenergy_;
+  delete qEEtime_;
+  delete qEEchi2_;
+  delete qESenergy_;
+  delete qEStime_;
+  delete qESchi2_;
+
   delete qNVtx_;
   delete crossSection_;
   delete pathRates_;
@@ -806,6 +908,15 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeMeanAndRms(UNdrSumEt_, qUNdrSumEt_);
   computeMeanAndRms(UNeSCOP_, qUNeSCOP_);
   computeMeanAndRms(UNecEn_, qUNecEn_);
+  computeMeanAndRms(EBenergy_, qEBenergy_);
+  computeMeanAndRms(EBtime_, qEBtime_);
+  computeMeanAndRms(EBchi2_, qEBchi2_);
+  computeMeanAndRms(EEenergy_, qEEenergy_);
+  computeMeanAndRms(EEtime_, qEEtime_);
+  computeMeanAndRms(EEchi2_, qEEchi2_);
+  computeMeanAndRms(ESenergy_, qESenergy_);
+  computeMeanAndRms(EStime_, qEStime_);
+  computeMeanAndRms(ESchi2_, qESchi2_);
 
 
 
@@ -836,6 +947,16 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeQuantiles(UNdrSumEt_, qUNdrSumEt_, quantiles_);
   computeQuantiles(UNeSCOP_, qUNeSCOP_, quantiles_);
   computeQuantiles(UNecEn_, qUNecEn_, quantiles_);
+
+  computeQuantiles(EBenergy_, qEBenergy_, quantiles_);
+  computeQuantiles(EBtime_, qEBtime_, quantiles_);
+  computeQuantiles(EBchi2_, qEBchi2_, quantiles_);
+  computeQuantiles(EEenergy_, qEEenergy_, quantiles_);
+  computeQuantiles(EEtime_, qEEtime_, quantiles_);
+  computeQuantiles(EEchi2_, qEEchi2_, quantiles_);
+  computeQuantiles(ESenergy_, qESenergy_, quantiles_);
+  computeQuantiles(EStime_, qEStime_, quantiles_);
+  computeQuantiles(ESchi2_, qESchi2_, quantiles_);
 
 
   crossSection_->push_back( (float)eventCounter/lumi_ );
@@ -901,39 +1022,44 @@ void AODAnalyzer::analyze (const edm::Event &event, const edm::EventSetup &event
      fillUNGsf(UNGsfElectronlocalv);
   
 
-  // //fill EcalRec EB    
-  // edm::Handle<EcalRecHitCollection> ebRHs;    //finish fill ee, eb and so on
-  // event.getByToken(ebRHSrcToken_, ebRHs);
-  // if(ebRHs.isValid())
-  //   fillEBrecHit(ebRHs);
+  //fill EcalRec EB    
+  edm::Handle<EcalRecHitCollection> ebRHs;    //finish fill ee, eb and so on
+  event.getByToken(ebRHSrcToken_, ebRHs);
+  if(ebRHs.isValid())
+    fillEBrecHit(ebRHs);
 
 
 
-  // //fill EcalRec EE
-  // edm::Handle<EcalRecHitCollection> eeRHs;
-  // event.getByToken(eeRHSrcToken_, eeRHs);
-  // if(eeRHs.isValid())
-  //   fillEErecHit(eeRHs);
+  //fill EcalRec EE
+  edm::Handle<EcalRecHitCollection> eeRHs;
+  event.getByToken(eeRHSrcToken_, eeRHs);
+  if(eeRHs.isValid())
+    fillEErecHit(eeRHs);
 
+  //fill EcalRec ES
+  edm::Handle<EcalRecHitCollection> esRHs;
+  event.getByToken(esRHSrcToken_, esRHs);
+  if(esRHs.isValid())
+    fillESrecHit(esRHs);
 
   //fill hlt
   edm::Handle<edm::TriggerResults> triggerBits;
-  edm::Handle<pat::PackedTriggerPrescales> triggerPrescales;
+  //edm::Handle<pat::PackedTriggerPrescales> triggerPrescales;
 
   event.getByToken(triggerBits_, triggerBits);
-  event.getByToken(triggerPrescales_, triggerPrescales);
+  //event.getByToken(triggerPrescales_, triggerPrescales);
   
-  const edm::TriggerNames &names = event.triggerNames(*triggerBits);
-  for (unsigned int i = 0, n = triggerBits->size(); i < n; ++i) 
-    {
-      if(rateMap.find(names.triggerName(i)) != rateMap.end())
-	rateMap[names.triggerName(i)] += triggerPrescales->getPrescaleForIndex(i)*triggerBits->accept(i);
-      else
-	rateMap[names.triggerName(i)] = triggerPrescales->getPrescaleForIndex(i)*triggerBits->accept(i);
+  //const edm::TriggerNames &names = event.triggerNames(*triggerBits);
+  //for (unsigned int i = 0, n = triggerBits->size(); i < n; ++i) 
+    //{
+      //if(rateMap.find(names.triggerName(i)) != rateMap.end())
+	//rateMap[names.triggerName(i)] += triggerPrescales->getPrescaleForIndex(i)*triggerBits->accept(i);
+    //  else
+	//rateMap[names.triggerName(i)] = triggerPrescales->getPrescaleForIndex(i)*triggerBits->accept(i);
 
       //std::cout << names.triggerName(i) << " " << triggerPrescales->getPrescaleForIndex(i) << " " << triggerBits->accept(i) << std::endl;
 										     
-    }
+    //}
 }
 
 
