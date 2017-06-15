@@ -20,7 +20,10 @@
 
 #include "DataFormats/Common/interface/TriggerResults.h"
 #include "FWCore/Common/interface/TriggerNames.h"
-//#include "DataFormats/PatCandidates/interface/PackedTriggerPrescales.h"
+#include "DataFormats/PatCandidates/interface/PackedTriggerPrescales.h"
+#include "DataFormats/PatCandidates/interface/TriggerEvent.h"
+#include "DataFormats/HLTReco/interface/TriggerEvent.h"
+
 
 #include "DataFormats/EgammaReco/interface/SuperCluster.h" //added because of SuperCluster
 #include "DataFormats/EgammaReco/interface/SuperClusterFwd.h" //added because of SuperCluster (collection)
@@ -30,8 +33,15 @@
 #include "DataFormats/MuonReco/interface/MuonFwd.h"
 #include "DataFormats/EgammaCandidates/interface/Photon.h" 
 #include "DataFormats/EgammaCandidates/interface/PhotonFwd.h"
-#include "DataFormats/METReco/interface/PFMET.h"
+
+
+#include "DataFormats/JetReco/interface/PFJet.h"
+#include "DataFormats/JetReco/interface/PFJetCollection.h"
+#include "DataFormats/METReco/interface/PFMETCollection.h"
+#include "DataFormats/METReco/interface/PFMET.h"  
 #include "DataFormats/METReco/interface/PFMETFwd.h" 
+#include "DataFormats/METReco/interface/CaloMETFwd.h"
+#include "DataFormats/METReco/interface/CaloMETCollection.h"
 
 #include "DataFormats/Math/interface/LorentzVector.h"
 #include "DataFormats/EcalRecHit/interface/EcalRecHit.h"
@@ -71,8 +81,15 @@ private:
   
   template<typename jetCollection>
   void fillJets(const edm::Handle<jetCollection> &, std::string );
-  template<typename SuperClusterCollection> //adding because of superclust
-  void fillSC(const edm::Handle<SuperClusterCollection> &); //std::string?
+
+  template<typename PFMETCollection>
+  void fillPFChMets(const edm::Handle<PFMETCollection> &);
+
+  template<typename PFMETCollection>
+  void fillPFMets(const edm::Handle<PFMETCollection> &);
+
+  template<typename SuperClusterCollection> 
+  void fillSC(const edm::Handle<SuperClusterCollection> &); 
   //TODO
   template<typename GsfElectronCollection>
   void fillGsf(const edm::Handle<GsfElectronCollection> &);
@@ -114,8 +131,10 @@ private:
   std::vector<float>* PFJetPt_;
   std::vector<float>* PFJetEta_;
   std::vector<float>* PFJetPhi_;
-  std::vector<float>* MetPt_;
-  std::vector<float>* MetPhi_;
+  std::vector<float>* PFChMetPt_;
+  std::vector<float>* PFChMetPhi_;
+  std::vector<float>* PFMetPt_;
+  std::vector<float>* PFMetPhi_;
   std::vector<int>*   nVtx_;
 
   //std::vector<float>* SuperCluster_; // adding SuperCluster
@@ -158,8 +177,10 @@ private:
   std::vector<float>* qPFJetPt_;
   std::vector<float>* qPFJetEta_;
   std::vector<float>* qPFJetPhi_;
-  std::vector<float>* qMetPt_;
-  std::vector<float>* qMetPhi_;
+  std::vector<float>* qPFChMetPt_;
+  std::vector<float>* qPFChMetPhi_;
+  std::vector<float>* qPFMetPt_;
+  std::vector<float>* qPFMetPhi_;
   std::vector<int>*   qNVtx_;
 
   std::vector<double>* qSCEn_;
@@ -200,11 +221,13 @@ private:
   std::map<std::string,int> rateMap;
 
 
-  edm::EDGetTokenT<pat::JetCollection>    PFJetToken_;
-  edm::EDGetTokenT<std::vector<pat::MET>>    METJetToken_;
+  edm::EDGetTokenT<reco::PFJetCollection>    PFJetToken_;
+  edm::EDGetTokenT<reco::PFMETCollection> PFChMETToken_;
+  edm::EDGetTokenT<reco::PFMETCollection> PFMETToken_;
+  //edm::EDGetTokenT<std::vector<reco::CaloMETCollection> >    CaloMETJetToken_;
   edm::EDGetTokenT<reco::VertexCollection>   vtxToken_;
   edm::EDGetTokenT<edm::TriggerResults> triggerBits_;
-  //edm::EDGetTokenT<pat::PackedTriggerPrescales> triggerPrescales_;
+  edm::EDGetTokenT<trigger::TriggerEvent> triggerPrescales_;  //pat::PackedTriggerPrescales
   edm::EDGetTokenT<reco::SuperClusterCollection>   SuperClusterToken_;  //adding SuperCluster
 
   edm::EDGetTokenT<reco::GsfElectronCollection> GsfElectronToken_;
@@ -212,8 +235,7 @@ private:
   edm::EDGetTokenT<reco::MuonCollection> MuonToken_;
   edm::EDGetTokenT<reco::PhotonCollection> gedPhotonToken_;
   edm::EDGetTokenT<reco::PhotonCollection> PhotonToken_;   //TWO types of Photons -- one collection?
-  edm::EDGetTokenT<reco::PFMETCollection> ChPFMETToken_;
-  edm::EDGetTokenT<reco::PFMETCollection> PFMETToken_;
+
   
   //TODO -- finish adding collections!  // edm::   //eCALlASERcORRFILTER like
 
@@ -256,19 +278,20 @@ private:
 
 
 AODAnalyzer::AODAnalyzer(const edm::ParameterSet& cfg): 
-  PFJetToken_               (consumes<pat::JetCollection>(cfg.getUntrackedParameter<edm::InputTag>("PFJetTag"))),
-  METJetToken_              (consumes<std::vector<pat::MET>>(cfg.getUntrackedParameter<edm::InputTag>("metTag"))),
+  PFJetToken_               (consumes<reco::PFJetCollection>(cfg.getUntrackedParameter<edm::InputTag>("PFJetTag"))),  //reco instead of pat
+  PFChMETToken_             (consumes<reco::PFMETCollection>(cfg.getUntrackedParameter<edm::InputTag>("PFChMETTag"))),
+  PFMETToken_               (consumes<reco::PFMETCollection>(cfg.getUntrackedParameter<edm::InputTag>("PFMETTag"))),
+  // CaloMETJetToken_          (consumes<reco::CaloMETCollection>(cfg.getUntrackedParameter<edm::InputTag>("CaloMETTag"))),  ///std::vector<reco::CaloMET> 
   vtxToken_                 (consumes<reco::VertexCollection>(cfg.getUntrackedParameter<edm::InputTag>("vtx"))),
   triggerBits_              (consumes<edm::TriggerResults>(cfg.getUntrackedParameter<edm::InputTag>("bits"))),
-  //triggerPrescales_         (consumes<pat::PackedTriggerPrescales>(cfg.getUntrackedParameter<edm::InputTag>("prescales"))),
+  triggerPrescales_         (consumes<trigger::TriggerEvent>(cfg.getUntrackedParameter<edm::InputTag>("prescales"))),  // pat::PackedTriggerPrescales
   SuperClusterToken_        (consumes<reco::SuperClusterCollection>(cfg.getUntrackedParameter<edm::InputTag>("SuperClusterTag"))), //adding SuperClusterToken_
   GsfElectronToken_         (consumes<reco::GsfElectronCollection>(cfg.getUntrackedParameter<edm::InputTag>("GsfElectronTag"))),
   GsfElectronUncleanedToken_(consumes<reco::GsfElectronCollection>(cfg.getUntrackedParameter<edm::InputTag>("GsfElectronUncleanedTag"))),
   MuonToken_                (consumes<reco::MuonCollection>(cfg.getUntrackedParameter<edm::InputTag>("MuonTag"))),
   gedPhotonToken_           (consumes<reco::PhotonCollection>(cfg.getUntrackedParameter<edm::InputTag>("gedPhotonTag"))),
   PhotonToken_              (consumes<reco::PhotonCollection>(cfg.getUntrackedParameter<edm::InputTag>("PhotonTag"))),
-  ChPFMETToken_             (consumes<reco::PFMETCollection>(cfg.getUntrackedParameter<edm::InputTag>("ChPFMETTag"))),
-  PFMETToken_               (consumes<reco::PFMETCollection>(cfg.getUntrackedParameter<edm::InputTag>("PFMETTag"))),
+  
   
   //TODO -- add collections!
   //CollectionEcalRecHitEBTToken_
@@ -304,8 +327,10 @@ void AODAnalyzer::initialize()
   PFJetPt_->clear();
   PFJetEta_->clear();
   PFJetPhi_->clear();
-  MetPt_->clear();
-  MetPhi_->clear();
+  PFChMetPt_->clear();
+  PFChMetPhi_->clear();
+  PFMetPt_->clear();
+  PFMetPhi_->clear();
   nVtx_->clear();
   //SuperCluster_ ->clear(); //adding SuperCluster
   SCEn_ ->clear();
@@ -343,8 +368,10 @@ void AODAnalyzer::initialize()
   qPFJetPt_->clear();
   qPFJetEta_->clear();
   qPFJetPhi_->clear();
-  qMetPt_->clear();
-  qMetPhi_->clear();
+  qPFChMetPt_->clear();
+  qPFChMetPhi_->clear();
+  qPFMetPt_->clear();
+  qPFMetPhi_->clear();
   qNVtx_->clear();
 
   //qSuperCluster_ ->clear(); //ASK IF quantiles should be here
@@ -415,6 +442,35 @@ void AODAnalyzer::fillJets(const edm::Handle<jetCollection> & jets, std::string 
   return;
 }
 
+template<typename PFMETCollection>
+void AODAnalyzer::fillPFChMets(const edm::Handle<PFMETCollection> & pfchmets)
+{
+  std::cout << "fillPFChMets is being called!" << std::endl;
+  std::cout << pfchmets->size() <<std::endl;
+  typename PFMETCollection::const_iterator i = pfchmets->begin();
+  for(;i != pfchmets->end(); i++){
+    PFChMetPt_->push_back(i->et());
+    PFChMetPhi_->push_back(i->phi());
+
+  }
+  return;
+
+}
+
+template<typename PFMETCollection>
+void AODAnalyzer::fillPFMets(const edm::Handle<PFMETCollection> & pfmets)
+{
+  std::cout << "fillPFChMets is being called!" << std::endl;
+  std::cout << pfmets->size() <<std::endl;
+  typename PFMETCollection::const_iterator i = pfmets->begin();
+  for(;i != pfmets->end(); i++){
+    PFMetPt_->push_back(i->et());
+    PFMetPhi_->push_back(i->phi());
+
+  }
+  return;
+
+}
 template<typename SuperClusterCollection>
 void AODAnalyzer::fillSC(const edm::Handle<SuperClusterCollection> & superclusters) //ask for jets analogy //SUPERCLUSTERS
 {
@@ -602,8 +658,10 @@ void AODAnalyzer::beginJob() {
   PFJetPt_   = new std::vector<float>;
   PFJetEta_  = new std::vector<float>;
   PFJetPhi_  = new std::vector<float>;
-  MetPt_     = new std::vector<float>;
-  MetPhi_    = new std::vector<float>;
+  PFChMetPt_     = new std::vector<float>;
+  PFChMetPhi_    = new std::vector<float>;
+  PFMetPt_     = new std::vector<float>;
+  PFMetPhi_    = new std::vector<float>;
   nVtx_      = new std::vector<int>;
   
   //SuperCluster_ = new std::vector<float>; //adding SuperCluster
@@ -649,7 +707,11 @@ void AODAnalyzer::beginJob() {
   qPFJetPt_  = new std::vector<float>;
   qPFJetEta_ = new std::vector<float>;
   qPFJetPhi_ = new std::vector<float>;
-  //qSuperCluster_ = new std::vector<float>; //only if quantiles of SuperCluster is needed
+  qPFChMetPt_     = new std::vector<float>;
+  qPFChMetPhi_    = new std::vector<float>;
+  qPFMetPt_     = new std::vector<float>;
+  qPFMetPhi_    = new std::vector<float>;
+ 
   qSCEn_     = new std::vector<double>;
   qSCEta_    = new std::vector<double>;
   qSCPhi_    = new std::vector<double>;
@@ -684,8 +746,7 @@ void AODAnalyzer::beginJob() {
   qESchi2_     = new std::vector<float>;
 
 
-  qMetPt_      = new std::vector<float>;
-  qMetPhi_     = new std::vector<float>;
+
   qNVtx_       = new std::vector<int>;
   crossSection_= new std::vector<float>;
   pathRates_   = new std::vector<float>;
@@ -693,8 +754,10 @@ void AODAnalyzer::beginJob() {
   outTree_->Branch("qPFJetPt",     "std::vector<std::float>",      &qPFJetPt_);
   outTree_->Branch("qPFJetEta",    "std::vector<std::float>",      &qPFJetEta_);
   outTree_->Branch("qPFJetPhi",    "std::vector<std::float>",      &qPFJetPhi_);
-  outTree_->Branch("qMetPt",     "std::vector<std::float>",        &qMetPt_);
-  outTree_->Branch("qMetPhi",    "std::vector<std::float>",        &qMetPhi_);
+  outTree_->Branch("qPFChMetPt",     "std::vector<std::float>",        &qPFChMetPt_);
+  outTree_->Branch("qPFChMetPhi",    "std::vector<std::float>",        &qPFChMetPhi_);
+  outTree_->Branch("qPFMetPt",     "std::vector<std::float>",        &qPFMetPt_);
+  outTree_->Branch("qPFMetPhi",    "std::vector<std::float>",        &qPFMetPhi_);
   outTree_->Branch("qNVtx",        "std::vector<std::int>",        &qNVtx_);
 
   //outTree_->Branch("SuperCluster","std::vector<std::float>",      &SuperCluster_);
@@ -765,9 +828,11 @@ void AODAnalyzer::endJob()
   delete PFJetPt_;
   delete PFJetEta_;
   delete PFJetPhi_;
-  delete MetPt_;
-  delete MetPhi_;
-  
+  delete PFChMetPt_;
+  delete PFChMetPhi_;
+  delete PFMetPt_;
+  delete PFMetPhi_;
+
   delete SCEn_;
   delete SCEta_;
   delete SCPhi_;
@@ -805,8 +870,10 @@ void AODAnalyzer::endJob()
   delete qPFJetPt_;
   delete qPFJetEta_;
   delete qPFJetPhi_;
-  delete qMetPt_;
-  delete qMetPhi_;
+  delete qPFChMetPt_;
+  delete qPFChMetPhi_;
+  delete qPFMetPt_;
+  delete qPFMetPhi_;
   delete qSCEn_;
   delete qSCEta_;
   delete qSCPhi_;
@@ -884,8 +951,10 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeMeanAndRms(PFJetPt_, qPFJetPt_);
   computeMeanAndRms(PFJetEta_,qPFJetEta_);
   computeMeanAndRms(PFJetPhi_,qPFJetPhi_);
-  computeMeanAndRms(MetPt_, qMetPt_);
-  computeMeanAndRms(MetPhi_,  qMetPhi_);
+  computeMeanAndRms(PFChMetPt_, qPFChMetPt_);
+  computeMeanAndRms(PFChMetPhi_,  qPFChMetPhi_);
+  computeMeanAndRms(PFMetPt_, qPFMetPt_);
+  computeMeanAndRms(PFMetPhi_,  qPFMetPhi_);
   computeMeanAndRms(nVtx_,    qNVtx_);
   computeMeanAndRms(SCEn_, qSCEn_);   //adding supercluster pt,eta and phi
   computeMeanAndRms(SCEta_, qSCEta_);  //
@@ -923,8 +992,10 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeQuantiles(PFJetPt_, qPFJetPt_, quantiles_);
   computeQuantiles(PFJetEta_,qPFJetEta_,quantiles_);
   computeQuantiles(PFJetPhi_,qPFJetPhi_,quantiles_);
-  computeQuantiles(MetPt_, qMetPt_,     quantiles_);
-  computeQuantiles(MetPhi_,qMetPhi_,    quantiles_);
+  computeQuantiles(PFChMetPt_, qPFChMetPt_,     quantiles_);
+  computeQuantiles(PFChMetPhi_,qPFChMetPhi_,    quantiles_);
+  computeQuantiles(PFMetPt_, qPFMetPt_,     quantiles_);
+  computeQuantiles(PFMetPhi_,qPFMetPhi_,    quantiles_);
   computeQuantiles(nVtx_,    qNVtx_,    quantiles_);
   computeQuantiles(SCEn_, qSCEn_,       quantiles_);
   computeQuantiles(SCEta_, qSCEta_,     quantiles_);
@@ -979,20 +1050,41 @@ void AODAnalyzer::analyze (const edm::Event &event, const edm::EventSetup &event
 {
   ++eventCounter;
 
-  //fill Met
-  edm::Handle<std::vector<pat::MET>> Met;
-  event.getByToken(METJetToken_,Met);
-  if(Met.isValid())
-    {
-      MetPt_->push_back( (*Met)[0].et() );
-      MetPhi_->push_back( (*Met)[0].phi() );
-    }
 
   //fill Jets
-  edm::Handle<pat::JetCollection> PFJets;
+  edm::Handle<reco::PFJetCollection> PFJets;
   event.getByToken(PFJetToken_,PFJets);
   if(PFJets.isValid())
-    fillJets(PFJets, std::string("PF"));  
+    fillJets(PFJets, std::string("PF")); 
+
+  //   //fill PFChMet
+
+  edm::Handle<reco::PFMETCollection> pfchmetlocalv;
+  event.getByToken(PFChMETToken_, pfchmetlocalv);
+  // 
+  if(pfchmetlocalv.isValid())
+    fillPFChMets(pfchmetlocalv);
+  // edm::Handle<std::vector<reco::PFMETCollection> > PFChMet;    ////
+  // event.getByToken(PFChMETToken_,PFChMet);
+  // if(PFChMet.isValid())
+  //   {
+  //     PFChMetPt_->push_back( (*PFChMet)[0].et() );
+  //     PFChMetPhi_->push_back( (*PFChMet)[0].phi() );
+  //   }
+
+  // //fill PFMet
+  edm::Handle<reco::PFMETCollection> pfmetlocalv;
+  event.getByToken(PFMETToken_, pfmetlocalv);
+  // 
+  if(pfmetlocalv.isValid())
+    fillPFMets(pfmetlocalv);
+  // edm::Handle<std::vector<reco::PFMETCollection> > PFMet;    ////
+  // event.getByToken(PFMETToken_,PFMet);
+  // if(PFMet.isValid())
+  //   {
+  //     PFMetPt_->push_back( (*PFMet)[0].et() );
+  //     PFMetPhi_->push_back( (*PFMet)[0].phi() );
+  //   } 
 
   //fill vtx
   edm::Handle<reco::VertexCollection> recVtxs;
@@ -1042,24 +1134,74 @@ void AODAnalyzer::analyze (const edm::Event &event, const edm::EventSetup &event
   if(esRHs.isValid())
     fillESrecHit(esRHs);
 
+  //Lorentz vector
+   // Look for MET --LORENTZ VECTOR
+  // edm::Handle<reco::GenMETCollection> genMet;
+  // iEvent.getByToken(MCMET_, genMet);
+  // LorentzVector MET(0.,0.,0.,0.);
+  // if(genMet.isValid()){
+  //   MET = LorentzVector(
+  //       genMet->front().px(),
+  //       genMet->front().py(),
+  //       0,
+  //       genMet->front().pt()
+  //   );
+  // }     
+  // product_MET->push_back(MET);
+
+  //  ANOTHER line I found --   reco::MET::LorentzVector p4(mhx, mhy, 0, sqrt(mhx*mhx + mhy*mhy));
+  // ANOTHER LINE i found --    Particle::LorentzVector p,p1,p2;
+
+  //   // Take the SA container       -- LORENTZ
+  // LogTrace(metname)<<" Taking the StandAlone muons: "<<theSACollectionLabel;
+  // Handle<TrackCollection> tracks; 
+  // event.getByToken(tracksToken,tracks);
+
+  // // Create a RecoChargedCandidate collection
+  // LogTrace(metname)<<" Creating the RecoChargedCandidate collection";
+  // auto candidates = std::make_unique<RecoChargedCandidateCollection>();
+
+  // for (unsigned int i=0; i<tracks->size(); i++) {
+  //     TrackRef tkref(tracks,i);
+  //     Particle::Charge q = tkref->charge();
+  //     Particle::LorentzVector p4(tkref->px(), tkref->py(), tkref->pz(), tkref->p());
+  //     Particle::Point vtx(tkref->vx(),tkref->vy(), tkref->vz());
+  //     int pid = 13;
+  //     if(abs(q)==1) pid = q < 0 ? 13 : -13;
+  //     else LogWarning(metname) << "L2MuonCandidate has charge = "<<q;
+  //     RecoChargedCandidate cand(q, p4, vtx, pid);
+  //     cand.setTrack(tkref);
+  //     candidates->push_back(cand);
+  // }                                -- LORENTZ
+
+
+   ///        --lorentz
+  // if(selectedMuons.size() == 4){
+  //   reco::Candidate::LorentzVector p4CM;
+  //   for (pat::MuonCollection::const_iterator muon = selectedMuons.begin();  muon != selectedMuons.end(); ++muon){
+  //     p4CM = p4CM + muon->p4();
+  //   }
+  //   h4MuInvMass->Fill(p4CM.mass());
+  // }    --lorentz
+
   //fill hlt
   edm::Handle<edm::TriggerResults> triggerBits;
-  //edm::Handle<pat::PackedTriggerPrescales> triggerPrescales;
+  edm::Handle<trigger::TriggerEvent> triggerPrescales;
 
   event.getByToken(triggerBits_, triggerBits);
-  //event.getByToken(triggerPrescales_, triggerPrescales);
+  event.getByToken(triggerPrescales_, triggerPrescales);
   
-  //const edm::TriggerNames &names = event.triggerNames(*triggerBits);
-  //for (unsigned int i = 0, n = triggerBits->size(); i < n; ++i) 
-    //{
-      //if(rateMap.find(names.triggerName(i)) != rateMap.end())
-	//rateMap[names.triggerName(i)] += triggerPrescales->getPrescaleForIndex(i)*triggerBits->accept(i);
-    //  else
-	//rateMap[names.triggerName(i)] = triggerPrescales->getPrescaleForIndex(i)*triggerBits->accept(i);
+ //  const edm::TriggerNames &names = event.triggerNames(*triggerBits);
+ //  for (unsigned int i = 0, n = triggerBits->size(); i < n; ++i) 
+ //    {
+ //      if(rateMap.find(names.triggerName(i)) != rateMap.end())
+	// rateMap[names.triggerName(i)] += triggerPrescales->getPrescaleForIndex(i)*triggerBits->accept(i);
+ //     else
+	// rateMap[names.triggerName(i)] = triggerPrescales->getPrescaleForIndex(i)*triggerBits->accept(i);
 
-      //std::cout << names.triggerName(i) << " " << triggerPrescales->getPrescaleForIndex(i) << " " << triggerBits->accept(i) << std::endl;
+ //      std::cout << names.triggerName(i) << " " << triggerPrescales->getPrescaleForIndex(i) << " " << triggerBits->accept(i) << std::endl;
 										     
-    //}
+ //    }
 }
 
 

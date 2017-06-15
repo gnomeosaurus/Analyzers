@@ -34,13 +34,16 @@ for sub in subsystemList:
 process.MyAnalysis =cms.EDAnalyzer("AODAnalyzer",
 
                        #caloJetTag              = cms.untracked.InputTag("slimmedJets"),
-                       PFJetTag                = cms.untracked.InputTag("ak8PFJetsCHS"),
-                       metTag                  = cms.untracked.InputTag("caloMetM"),
-                       vtx                     = cms.untracked.InputTag("offlinePrimaryVertices"),
-                       bits                    = cms.untracked.InputTag("TriggerResults","","HLT"),
-                       prescales               = cms.untracked.InputTag("hltTriggerSummaryAOD"), #this is giving us a crash...
+                       PFJetTag                = cms.untracked.InputTag("ak8PFJetsCHS"), #ak4PFJets
+                       PFChMETTag              = cms.untracked.InputTag("pfChMet"),
+                       PFMETTag                = cms.untracked.InputTag("pfMet"),
+                       CaloMETTag              = cms.untracked.InputTag("caloMet"),  #calometTag
 
-                       SuperClusterTag         = cms.untracked.InputTag("particleFlowEGamma"), #adding SuperCluster --needs to be changed because miniAOD!=AOD
+                       vtx                     = cms.untracked.InputTag("offlinePrimaryVertices"),
+                       bits                    = cms.untracked.InputTag("TriggerResults","","HLT"),  #ASK IF HLT OR RECO!!!!!!!!!
+                       prescales               = cms.untracked.InputTag("hltTriggerSummaryAOD"), # //PROBABLY get from https://github.com/cms-sw/cmssw/blob/master/DataFormats/PatCandidates/interface/TriggerEvent.h  ... ask about how
+
+                       SuperClusterTag         = cms.untracked.InputTag("particleFlowEGamma"), 
 
                        #44-57 are new tags
                        GsfElectronTag          = cms.untracked.InputTag("gedGsfElectrons"),
@@ -48,15 +51,14 @@ process.MyAnalysis =cms.EDAnalyzer("AODAnalyzer",
                        MuonTag                 = cms.untracked.InputTag("muons"),
                        gedPhotonTag            = cms.untracked.InputTag("gedPhotons"),
                        PhotonTag               = cms.untracked.InputTag("photons"),
-                       ChPFMETTag              = cms.untracked.InputTag("pfChMet"),
-                       PFMETTag                = cms.untracked.InputTag("pfMet"),
+
 
                        EBRecHitSourceTag       = cms.untracked.InputTag("reducedEcalRecHitsEB"),
                        EERecHitSourceTag       = cms.untracked.InputTag("reducedEcalRecHitsEE"),
                        ESRecHitSourceTag       = cms.untracked.InputTag("reducedEcalRecHitsES"),
-                       CollectionHBHERecHitTag    = cms.untracked.InputTag("reducedHcalRecHits","hbhereco"),
-                       CollectionHFRecHitTag      = cms.untracked.InputTag("reducedHcalRecHits","hfreco"),
-                       CollectionHORecHitTag      = cms.untracked.InputTag("reducedHcalRecHits","horeco"),
+                       CollectionHBHERecHitTag = cms.untracked.InputTag("reducedHcalRecHits","hbhereco"),
+                       CollectionHFRecHitTag   = cms.untracked.InputTag("reducedHcalRecHits","hfreco"),
+                       CollectionHORecHitTag   = cms.untracked.InputTag("reducedHcalRecHits","horeco"),
 
                                 
                        maxJetEta               = cms.untracked.double(5.0),   #is this ok?
