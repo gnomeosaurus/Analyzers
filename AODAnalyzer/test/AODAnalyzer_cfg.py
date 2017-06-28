@@ -56,9 +56,10 @@ process.MyAnalysis =cms.EDAnalyzer("AODAnalyzer",
                        EBRecHitSourceTag       = cms.untracked.InputTag("reducedEcalRecHitsEB"),
                        EERecHitSourceTag       = cms.untracked.InputTag("reducedEcalRecHitsEE"),
                        ESRecHitSourceTag       = cms.untracked.InputTag("reducedEcalRecHitsES"),
-                       CollectionHBHERecHitTag = cms.untracked.InputTag("reducedHcalRecHits","hbhereco"),
-                       CollectionHFRecHitTag   = cms.untracked.InputTag("reducedHcalRecHits","hfreco"),
-                       CollectionHORecHitTag   = cms.untracked.InputTag("reducedHcalRecHits","horeco"),
+
+                       HBHERecHitTag           = cms.untracked.InputTag("reducedHcalRecHits","hbhereco"),
+                       HFRecHitTag             = cms.untracked.InputTag("reducedHcalRecHits","hfreco"),
+                       HORecHitTag             = cms.untracked.InputTag("reducedHcalRecHits","horeco"),
 
                                 
                        maxJetEta               = cms.untracked.double(5.0),   #is this ok?

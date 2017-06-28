@@ -49,6 +49,8 @@
 #include "DataFormats/HcalRecHit/interface/HBHERecHit.h"
 #include "DataFormats/HcalRecHit/interface/HFRecHit.h"
 #include "DataFormats/HcalRecHit/interface/HORecHit.h"
+// #include "DataFormats/HcalRecHit/interface/HcalRecHitFwd.h"   --gives error
+#include "DataFormats/HcalRecHit/interface/HcalRecHitCollections.h"
 
 #include <numeric>
 #include "FWCore/Framework/interface/LuminosityBlock.h"
@@ -105,8 +107,15 @@ private:
  
   template<typename EcalRecHitCollection>
   void fillESrecHit(const edm::Handle<EcalRecHitCollection> &);
-   //TODO
 
+  template<typename HBHERecHitCollection>
+  void fillHBHErecHit(const edm::Handle<HBHERecHitCollection> &);
+
+  template<typename HFRecHitCollection>
+  void fillHFrecHit(const edm::Handle<HFRecHitCollection> &);
+
+  template<typename HORecHitCollection>
+  void fillHOrecHit(const edm::Handle<HORecHitCollection> &);
 
   void initialize();
   template<typename T>
@@ -115,7 +124,6 @@ private:
   void computeMeanAndRms(std::vector<T>*, std::vector<T>*);
   std::map<int, std::vector<std::pair<int, int> > > readJSONFile(const std::string&);
   bool AcceptEventByRunAndLumiSection(const int& , const int& ,std::map<int, std::vector<std::pair<int, int> > >&);
-
 
 
 
@@ -171,6 +179,15 @@ private:
   std::vector<float>* ESchi2_;
 
 
+  std::vector<float>* HBHEenergy_;
+  std::vector<float>* HBHEtime_;
+  std::vector<float>* HBHEchi2_;
+  std::vector<float>* HFenergy_;
+  std::vector<float>* HFtime_;
+  std::vector<float>* HFchi2_;
+  std::vector<float>* HOenergy_;
+  std::vector<float>* HOtime_;
+  std::vector<float>* HOchi2_;
 
 
  
@@ -215,6 +232,17 @@ private:
   std::vector<float>* qEStime_;
   std::vector<float>* qESchi2_;
 
+  std::vector<float>* qHBHEenergy_;
+  std::vector<float>* qHBHEtime_;
+  std::vector<float>* qHBHEchi2_;
+  std::vector<float>* qHFenergy_;
+  std::vector<float>* qHFtime_;
+  std::vector<float>* qHFchi2_;
+  std::vector<float>* qHOenergy_;
+  std::vector<float>* qHOtime_;
+  std::vector<float>* qHOchi2_;
+
+
   std::vector<float>*   crossSection_;
   std::vector<float>*   pathRates_;
   std::vector<std::string>*   pathNames_;
@@ -224,7 +252,7 @@ private:
   edm::EDGetTokenT<reco::PFJetCollection>    PFJetToken_;
   edm::EDGetTokenT<reco::PFMETCollection> PFChMETToken_;
   edm::EDGetTokenT<reco::PFMETCollection> PFMETToken_;
-  //edm::EDGetTokenT<std::vector<reco::CaloMETCollection> >    CaloMETJetToken_;
+  //edm::EDGetTokenT<std::vector<reco::CaloMETCollection> >    CaloMETJetToken_;      ---varialbes
   edm::EDGetTokenT<reco::VertexCollection>   vtxToken_;
   edm::EDGetTokenT<edm::TriggerResults> triggerBits_;
   edm::EDGetTokenT<trigger::TriggerEvent> triggerPrescales_;  //pat::PackedTriggerPrescales
@@ -245,6 +273,9 @@ private:
   edm::EDGetTokenT<EcalRecHitCollection> eeRHSrcToken_;
   edm::EDGetTokenT<EcalRecHitCollection> esRHSrcToken_;
 
+  edm::EDGetTokenT<HBHERecHitCollection> hbheRHcToken_;
+  edm::EDGetTokenT<HFRecHitCollection>   hfRHcToken_;
+  edm::EDGetTokenT<HORecHitCollection>   hoRHcToken_;
 
   // edm::EDGetTokenT<SortedCollection<EcalRecHit,edm::StrictWeakOrdering<EcalRecHit>> ebRHSrcToken_;
   // edm::EDGetTokenT<SortedCollection<EcalRecHit,edm::StrictWeakOrdering<EcalRecHit>> eeRHSrcToken_;
@@ -299,6 +330,9 @@ AODAnalyzer::AODAnalyzer(const edm::ParameterSet& cfg):
   eeRHSrcToken_             (consumes<EcalRecHitCollection>(cfg.getUntrackedParameter<edm::InputTag>("EERecHitSourceTag"))),
   esRHSrcToken_             (consumes<EcalRecHitCollection>(cfg.getUntrackedParameter<edm::InputTag>("ESRecHitSourceTag"))),
 
+  hbheRHcToken_             (consumes<HBHERecHitCollection>(cfg.getUntrackedParameter<edm::InputTag>("HBHERecHitTag"))),  //ICONFIG -> cfg
+  hfRHcToken_               (consumes<HFRecHitCollection>(cfg.getUntrackedParameter<edm::InputTag>("HFRecHitTag"))),
+  hoRHcToken_               (consumes<HORecHitCollection>(cfg.getUntrackedParameter<edm::InputTag>("HORecHitTag"))),
 
 
 
@@ -364,6 +398,16 @@ void AODAnalyzer::initialize()
   ESenergy_->clear();
   EStime_->clear();
   ESchi2_->clear();
+
+  HBHEenergy_->clear();
+  HBHEtime_->clear();
+  HBHEchi2_->clear();
+  HFenergy_->clear();
+  HFtime_->clear();
+  HFchi2_->clear();
+  HOenergy_->clear();
+  HOtime_->clear();
+  HOchi2_->clear();
  
   qPFJetPt_->clear();
   qPFJetEta_->clear();
@@ -407,6 +451,16 @@ void AODAnalyzer::initialize()
   qEStime_->clear();
   qESchi2_->clear();
 
+  qHBHEenergy_->clear();
+  qHBHEtime_->clear();
+  qHBHEchi2_->clear();
+  qHFenergy_->clear();
+  qHFtime_->clear();
+  qHFchi2_->clear();
+  qHOenergy_->clear();
+  qHOtime_->clear();
+  qHOchi2_->clear();
+
   crossSection_->clear();
   pathRates_->clear();
   pathNames_->clear();
@@ -421,7 +475,7 @@ void AODAnalyzer::fillJets(const edm::Handle<jetCollection> & jets, std::string 
 {
   // Selected jets
   //reco::CaloJetCollection recojets;
-  std::cout << "fillJets is called" <<std::endl;
+  // std::cout << "HARAMBE!" <<std::endl;
   typename jetCollection::const_iterator i = jets->begin();
   for(;i != jets->end(); i++){
     if(std::abs(i->eta()) < maxJetEta_ && i->pt() >= minJetPt_)
@@ -432,9 +486,9 @@ void AODAnalyzer::fillJets(const edm::Handle<jetCollection> & jets, std::string 
 	    PFJetPt_->push_back(i->pt());
 	    PFJetEta_->push_back(i->eta());
 	    PFJetPhi_->push_back(i->phi());
-      std::cout << "ele pt: " << i->pt() << std::endl; //TEST -- works
-      std::cout << "ele eta: " << i->eta() << std::endl;   //TEST --works
-      std::cout << "ele phi: " << i->phi() << std::endl;   //TEST --works
+      // std::cout << "ele pt: " << i->pt() << std::endl; //TEST -- works
+      // std::cout << "ele eta: " << i->eta() << std::endl;   //TEST --works
+      // std::cout << "ele phi: " << i->phi() << std::endl;   //TEST --works
 	  }
 	
       }
@@ -445,8 +499,8 @@ void AODAnalyzer::fillJets(const edm::Handle<jetCollection> & jets, std::string 
 template<typename PFMETCollection>
 void AODAnalyzer::fillPFChMets(const edm::Handle<PFMETCollection> & pfchmets)
 {
-  std::cout << "fillPFChMets is being called!" << std::endl;
-  std::cout << pfchmets->size() <<std::endl;
+  // std::cout << "fillPFChMets is being called!" << std::endl;
+  // std::cout << pfchmets->size() <<std::endl;
   typename PFMETCollection::const_iterator i = pfchmets->begin();
   for(;i != pfchmets->end(); i++){
     PFChMetPt_->push_back(i->et());
@@ -460,8 +514,8 @@ void AODAnalyzer::fillPFChMets(const edm::Handle<PFMETCollection> & pfchmets)
 template<typename PFMETCollection>
 void AODAnalyzer::fillPFMets(const edm::Handle<PFMETCollection> & pfmets)
 {
-  std::cout << "fillPFChMets is being called!" << std::endl;
-  std::cout << pfmets->size() <<std::endl;
+  // std::cout << "fillPFChMets is being called!" << std::endl;
+  // std::cout << pfmets->size() <<std::endl;
   typename PFMETCollection::const_iterator i = pfmets->begin();
   for(;i != pfmets->end(); i++){
     PFMetPt_->push_back(i->et());
@@ -485,9 +539,9 @@ void AODAnalyzer::fillSC(const edm::Handle<SuperClusterCollection> & supercluste
         SCEta_->push_back(i->etaWidth());
         SCPhi_->push_back(i->phiWidth());
 
-        std::cout << "ele energy: " << i->energy()   << std::endl; 
-        std::cout << "ele SCeta: "  << i->etaWidth() << std::endl;
-        std::cout << "ele SCphi: "  << i->phiWidth() << std::endl;
+        // std::cout << "ele energy: " << i->energy()   << std::endl; 
+        // std::cout << "ele SCeta: "  << i->etaWidth() << std::endl;
+        // std::cout << "ele SCphi: "  << i->phiWidth() << std::endl;
       // }
   }
   return;
@@ -500,8 +554,8 @@ void AODAnalyzer::fillSC(const edm::Handle<SuperClusterCollection> & supercluste
 template<typename GsfElectronCollection>
 void AODAnalyzer::fillGsf(const edm::Handle<GsfElectronCollection> & electrons)
 {
-  std::cout << "fillGSF is being called!" << std::endl;
-  std::cout << electrons->size() <<std::endl;
+  // std::cout << "fillGSF is being called!" << std::endl;
+  // std::cout << electrons->size() <<std::endl;
   typename GsfElectronCollection::const_iterator i = electrons->begin();
   for(;i != electrons->end(); i++){
     SigmaIEta_->push_back(i->sigmaIetaIeta());
@@ -531,7 +585,7 @@ template<typename GsfElectronCollection>
 void AODAnalyzer::fillUNGsf(const edm::Handle<GsfElectronCollection> & UNelectrons)
 {
   
-  std::cout << "fillUNGSF is being called!" << std::endl;
+  // std::cout << "fillUNGSF is being called!" << std::endl;
   typename GsfElectronCollection::const_iterator i = UNelectrons->begin();
   for(;i != UNelectrons->end(); i++){
     UNSigmaIEta_->push_back(i->sigmaIetaIeta());
@@ -561,7 +615,7 @@ template<typename EcalRecHitCollection>
 void AODAnalyzer::fillEBrecHit(const edm::Handle<EcalRecHitCollection> & EBhits)
 {
 
-  std::cout << "fillEBrecHit is being called!" << std::endl;
+  // std::cout << "fillEBrecHit is being called!" << std::endl;
   typename EcalRecHitCollection::const_iterator i = EBhits->begin();
   for(;i != EBhits->end(); i++){
     EBenergy_ ->push_back(i->energy());
@@ -576,7 +630,7 @@ template<typename EcalRecHitCollection>
 void AODAnalyzer::fillEErecHit(const edm::Handle<EcalRecHitCollection> & EEhits)
 {
 
-  std::cout << "fillEErecHit is being called!" << std::endl;
+  // std::cout << "fillEErecHit is being called!" << std::endl;
   typename EcalRecHitCollection::const_iterator i = EEhits->begin();
   for(;i != EEhits->end(); i++){
     EEenergy_ ->push_back(i->energy());
@@ -591,17 +645,65 @@ template<typename EcalRecHitCollection>
 void AODAnalyzer::fillESrecHit(const edm::Handle<EcalRecHitCollection> & EShits)
 {
 
-  std::cout << "fillESrecHit is being called!" << std::endl;
+  // std::cout << "fillESrecHit is being called!" << std::endl;
   typename EcalRecHitCollection::const_iterator i = EShits->begin();
   for(;i != EShits->end(); i++){
     ESenergy_ ->push_back(i->energy());
     EStime_ ->push_back(i->time());
-    ESchi2_ ->push_back(i->chi2());
+    ESchi2_ ->push_back(i->chi2()); 
 
   }
   return;
 }
+///---------------------------------------- HBHE
+template<typename HBHERecHitCollection>
+void AODAnalyzer::fillHBHErecHit(const edm::Handle<HBHERecHitCollection> & HBHEhits)
+{
 
+  std::cout << "fillHBHErecHit is being called!" << std::endl;
+  typename HBHERecHitCollection::const_iterator i = HBHEhits->begin();
+  for(;i != HBHEhits->end(); i++){
+    HBHEenergy_ ->push_back(i->energy());
+    HBHEtime_ ->push_back(i->time());
+    // HBHEchi2_ ->push_back(i->chi2()); const class HBHERecHit' has no member named 'chi2'
+    // std::cout << "ele HBHEenergy: " << i->energy()   << std::endl; 
+    // std::cout << "ele HBHEtime: "  << i->time() << std::endl;
+  }
+  return;
+}
+
+template<typename HFRecHitCollection>
+void AODAnalyzer::fillHFrecHit(const edm::Handle<HFRecHitCollection> & HFhits)
+{
+
+  std::cout << "fillHFrecHit is being called!" << std::endl;
+  typename HFRecHitCollection::const_iterator i = HFhits->begin();
+  for(;i != HFhits->end(); i++){
+    HFenergy_ ->push_back(i->energy());
+    HFtime_ ->push_back(i->time());
+    // HFchi2_ ->push_back(i->chi2());
+    // std::cout << "ele HFenergy: " << i->energy()   << std::endl; 
+    // std::cout << "ele HFtime: "  << i->time() << std::endl;
+  }
+  return;
+}
+
+template<typename HORecHitCollection>
+void AODAnalyzer::fillHOrecHit(const edm::Handle<HORecHitCollection> & HOhits)
+{
+
+  std::cout << "fillHOrecHit is being called!" << std::endl;
+  typename HORecHitCollection::const_iterator i = HOhits->begin();
+  for(;i != HOhits->end(); i++){
+    HOenergy_ ->push_back(i->energy());
+    HOtime_ ->push_back(i->time());
+    // HOchi2_ ->push_back(i->chi2());
+    std::cout << "ele HOenergy: " << i->energy()   << std::endl; 
+    std::cout << "ele HOtime: "  << i->time() << std::endl;
+  }
+  return;
+}
+// ----------------------------------- HO
 
 template<typename T>
 void AODAnalyzer::computeQuantiles(std::vector<T>* myDistr, std::vector<T>* myQuan, std::vector<double> qq)
@@ -697,6 +799,16 @@ void AODAnalyzer::beginJob() {
   EStime_      = new std::vector<float>;
   ESchi2_      = new std::vector<float>;
 
+  HBHEenergy_  = new std::vector<float>;
+  HBHEtime_    = new std::vector<float>;
+  HBHEchi2_    = new std::vector<float>;
+  HFenergy_    = new std::vector<float>;
+  HFtime_      = new std::vector<float>;
+  HFchi2_      = new std::vector<float>;
+  HOenergy_    = new std::vector<float>;
+  HOtime_      = new std::vector<float>;
+  HOchi2_      = new std::vector<float>;
+
   // outTree_->Branch("MetPt",     "std::vector<std::float>",     &MetPt_);
   // outTree_->Branch("MetPhi",    "std::vector<std::float>",     &MetPhi_);
   // outTree_->Branch("PFJetPt",     "std::vector<std::float>",     &PFJetPt_);
@@ -745,7 +857,16 @@ void AODAnalyzer::beginJob() {
   qEStime_     = new std::vector<float>;
   qESchi2_     = new std::vector<float>;
 
-
+  qHBHEenergy_  = new std::vector<float>;
+  qHBHEtime_    = new std::vector<float>;
+  qHBHEchi2_    = new std::vector<float>;
+  qHFenergy_    = new std::vector<float>;
+  qHFtime_      = new std::vector<float>;
+  qHFchi2_      = new std::vector<float>;
+  qHOenergy_    = new std::vector<float>;
+  qHOtime_      = new std::vector<float>;
+  qHOchi2_      = new std::vector<float>;
+//FINISH doing HBHE<HF<HO
 
   qNVtx_       = new std::vector<int>;
   crossSection_= new std::vector<float>;
@@ -792,6 +913,16 @@ void AODAnalyzer::beginJob() {
   outTree_->Branch("qESenergy",    "std::vector<std::float>",        &qESenergy_);
   outTree_->Branch("qEStime",    "std::vector<std::float>",          &qEStime_);
   outTree_->Branch("qESchi2",    "std::vector<std::float>",          &qESchi2_);
+
+  outTree_->Branch("qHBHEenergy",    "std::vector<std::float>",        &qHBHEenergy_);
+  outTree_->Branch("qHBHEtime",    "std::vector<std::float>",          &qHBHEtime_);
+  outTree_->Branch("qHBHEchi2",    "std::vector<std::float>",          &qHBHEchi2_);
+  outTree_->Branch("qHFenergy",    "std::vector<std::float>",        &qHFenergy_);
+  outTree_->Branch("qHFtime",    "std::vector<std::float>",          &qHFtime_);
+  outTree_->Branch("qHFchi2",    "std::vector<std::float>",          &qHFchi2_);
+  outTree_->Branch("qHOenergy",    "std::vector<std::float>",        &qHOenergy_);
+  outTree_->Branch("qHOtime",    "std::vector<std::float>",          &qHOtime_);
+  outTree_->Branch("qHOchi2",    "std::vector<std::float>",          &qHOchi2_);
 
 
 
@@ -906,6 +1037,16 @@ void AODAnalyzer::endJob()
   delete qEStime_;
   delete qESchi2_;
 
+  delete qHBHEenergy_;
+  delete qHBHEtime_;
+  delete qHBHEchi2_;
+  delete qHFenergy_;
+  delete qHFtime_;
+  delete qHFchi2_;
+  delete qHOenergy_;
+  delete qHOtime_;
+  delete qHOchi2_;
+
   delete qNVtx_;
   delete crossSection_;
   delete pathRates_;
@@ -986,6 +1127,15 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeMeanAndRms(ESenergy_, qESenergy_);
   computeMeanAndRms(EStime_, qEStime_);
   computeMeanAndRms(ESchi2_, qESchi2_);
+  computeMeanAndRms(HBHEenergy_, qHBHEenergy_);
+  computeMeanAndRms(HBHEtime_, qHBHEtime_);
+  computeMeanAndRms(HBHEchi2_, qHBHEchi2_);
+  computeMeanAndRms(HFenergy_, qHFenergy_);
+  computeMeanAndRms(HFtime_, qHFtime_);
+  computeMeanAndRms(HFchi2_, qHFchi2_);
+  computeMeanAndRms(HOenergy_, qHOenergy_);
+  computeMeanAndRms(HOtime_, qHOtime_);
+  computeMeanAndRms(HOchi2_, qHOchi2_);
 
 
 
@@ -1028,6 +1178,16 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeQuantiles(ESenergy_, qESenergy_, quantiles_);
   computeQuantiles(EStime_, qEStime_, quantiles_);
   computeQuantiles(ESchi2_, qESchi2_, quantiles_);
+
+  computeQuantiles(HBHEenergy_, qHBHEenergy_, quantiles_);
+  computeQuantiles(HBHEtime_, qHBHEtime_, quantiles_);
+  computeQuantiles(HBHEchi2_, qHBHEchi2_, quantiles_);
+  computeQuantiles(HFenergy_, qHFenergy_, quantiles_);
+  computeQuantiles(HFtime_, qHFtime_, quantiles_);
+  computeQuantiles(HFchi2_, qHFchi2_, quantiles_);
+  computeQuantiles(HOenergy_, qHOenergy_, quantiles_);
+  computeQuantiles(HOtime_, qHOtime_, quantiles_);
+  computeQuantiles(HOchi2_, qHOchi2_, quantiles_);
 
 
   crossSection_->push_back( (float)eventCounter/lumi_ );
@@ -1134,6 +1294,23 @@ void AODAnalyzer::analyze (const edm::Event &event, const edm::EventSetup &event
   if(esRHs.isValid())
     fillESrecHit(esRHs);
 
+  //fill hbhereco  
+  edm::Handle<HBHERecHitCollection> hbheRHs;    //finish fill ee, eb and so on
+  event.getByToken(hbheRHcToken_, hbheRHs);
+  if(hbheRHs.isValid())
+    fillHBHErecHit(hbheRHs);
+
+  //fill hfreco
+  edm::Handle<HFRecHitCollection> hfRHs;
+  event.getByToken(hfRHcToken_, hfRHs);
+  if(hfRHs.isValid())
+    fillHFrecHit(hfRHs);
+
+  //fill horeco
+  edm::Handle<HORecHitCollection> hoRHs;
+  event.getByToken(hoRHcToken_, hoRHs);
+  if(hoRHs.isValid())
+    fillHOrecHit(hoRHs);
   //Lorentz vector
    // Look for MET --LORENTZ VECTOR
   // edm::Handle<reco::GenMETCollection> genMet;
