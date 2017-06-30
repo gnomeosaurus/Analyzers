@@ -40,6 +40,11 @@
 #include "DataFormats/METReco/interface/PFMETCollection.h"
 #include "DataFormats/METReco/interface/PFMET.h"  
 #include "DataFormats/METReco/interface/PFMETFwd.h" 
+
+#include "DataFormats/JetReco/interface/CaloJet.h"
+// #include "DataFormats/JetReco/interface/CaloJetfwd.h"
+#include "DataFormats/JetReco/interface/CaloJetCollection.h"
+#include "DataFormats/METReco/interface/CaloMET.h"
 #include "DataFormats/METReco/interface/CaloMETFwd.h"
 #include "DataFormats/METReco/interface/CaloMETCollection.h"
 
@@ -51,6 +56,11 @@
 #include "DataFormats/HcalRecHit/interface/HORecHit.h"
 // #include "DataFormats/HcalRecHit/interface/HcalRecHitFwd.h"   --gives error
 #include "DataFormats/HcalRecHit/interface/HcalRecHitCollections.h"
+
+#include "DataFormats/EgammaReco/interface/PreshowerCluster.h"
+#include "DataFormats/EgammaReco/interface/PreshowerClusterFwd.h"
+#include "DataFormats/CaloRecHit/interface/CaloCluster.h"
+
 
 #include <numeric>
 #include "FWCore/Framework/interface/LuminosityBlock.h"
@@ -90,9 +100,24 @@ private:
   template<typename PFMETCollection>
   void fillPFMets(const edm::Handle<PFMETCollection> &);
 
+  template<typename CaloJetCollection> //select variables
+  void fillCaloJets(const edm::Handle<CaloJetCollection> &);
+
+  template<typename CaloMETCollection>
+  void fillCaloMETs(const edm::Handle<CaloMETCollection> &);
+
   template<typename SuperClusterCollection> 
   void fillSC(const edm::Handle<SuperClusterCollection> &); 
   //TODO
+  template<typename PhotonCollection>
+  void fillPhotons(const edm::Handle<PhotonCollection> &);
+
+  template<typename PhotonCollection>
+  void fillgedPhotons(const edm::Handle<PhotonCollection> &);
+
+  template<typename MuonCollection>
+  void fillMuons(const edm::Handle<MuonCollection> &);
+
   template<typename GsfElectronCollection>
   void fillGsf(const edm::Handle<GsfElectronCollection> &);
 
@@ -116,6 +141,9 @@ private:
 
   template<typename HORecHitCollection>
   void fillHOrecHit(const edm::Handle<HORecHitCollection> &);
+
+  template<typename PreshowerClusterCollection>
+  void fillPreshowerCluster(const edm::Handle<PreshowerClusterCollection> &);
 
   void initialize();
   template<typename T>
@@ -144,12 +172,63 @@ private:
   std::vector<float>* PFMetPt_;
   std::vector<float>* PFMetPhi_;
   std::vector<int>*   nVtx_;
+  
+  std::vector<float>* CalJetPt_;
+  std::vector<float>* CalJetEta_;
+  std::vector<float>* CalJetPhi_;
+  std::vector<float>* CalJetEn_;
+  std::vector<float>* CalMETPt_;
+  std::vector<float>* CalMETEta_;
+  std::vector<float>* CalMETPhi_;
+  std::vector<float>* CalMETEn_;
 
   //std::vector<float>* SuperCluster_; // adding SuperCluster
   std::vector<double>* SCEn_;
   std::vector<double>* SCEta_;
   std::vector<double>* SCPhi_;
-  //TODO
+
+  std::vector<float>* PhoPt_;
+  std::vector<float>* PhoEta_;
+  std::vector<float>* PhoPhi_;
+  std::vector<float>* PhoTrueEn_;
+  // CURRENTLY FILLING ENERGY() AND NOT CORRECTED ENERGY
+
+  std::vector<float>* Phoe1x5_;
+  std::vector<float>* Phoe2x5_;
+  std::vector<float>* Phoe3x3_;
+  std::vector<float>* Phoe5x5_;
+  std::vector<float>* Phomaxenxtal_;
+  std::vector<float>* Phosigmaeta_;
+  std::vector<float>* PhosigmaIeta_;
+  std::vector<float>* Phor1x5_;
+  std::vector<float>* Phor2x5_;
+  std::vector<float>* Phor9_;
+
+  std::vector<float>* gedPhoPt_;
+  std::vector<float>* gedPhoEta_;
+  std::vector<float>* gedPhoPhi_;
+  // CURRENTLY FILLING ENERGY() AND NOT CORRECTED ENERGY
+  std::vector<float>* gedPhoTrueEn_;
+  // CURRENTLY FILLING ENERGY() AND NOT CORRECTED ENERGY
+
+  std::vector<float>* gedPhoe1x5_;
+  std::vector<float>* gedPhoe2x5_;
+  std::vector<float>* gedPhoe3x3_;
+  std::vector<float>* gedPhoe5x5_;
+  std::vector<float>* gedPhomaxenxtal_;
+  std::vector<float>* gedPhosigmaeta_;
+  std::vector<float>* gedPhosigmaIeta_;
+  std::vector<float>* gedPhor1x5_;
+  std::vector<float>* gedPhor2x5_;
+  std::vector<float>* gedPhor9_;
+
+  // Muon variables
+  std::vector<float>* MuPt_;
+  std::vector<float>* MuEta_;
+  std::vector<float>* MuPhi_;
+  std::vector<float>* MuEn_;
+
+  // GSF variables
   std::vector<float>* SigmaIEta_;
   std::vector<float>* SigmaIPhi_;
   std::vector<float>* r9_;
@@ -159,6 +238,7 @@ private:
   std::vector<float>* eSCOP_;
   std::vector<float>* ecEn_;
 
+  // UNGSF variables
   std::vector<float>* UNSigmaIEta_;
   std::vector<float>* UNSigmaIPhi_;
   std::vector<float>* UNr9_;
@@ -167,7 +247,8 @@ private:
   std::vector<float>* UNdrSumEt_;
   std::vector<float>* UNeSCOP_;
   std::vector<float>* UNecEn_;
-
+  
+  //EB rechit, EE rechit and ES rechit variables
   std::vector<float>* EBenergy_;
   std::vector<float>* EBtime_;
   std::vector<float>* EBchi2_;
@@ -178,19 +259,23 @@ private:
   std::vector<float>* EStime_;
   std::vector<float>* ESchi2_;
 
-
+  //HBHE rechit, HF rechit and HO rechit variables
   std::vector<float>* HBHEenergy_;
   std::vector<float>* HBHEtime_;
-  std::vector<float>* HBHEchi2_;
+  // std::vector<float>* HBHEchi2_;
   std::vector<float>* HFenergy_;
   std::vector<float>* HFtime_;
-  std::vector<float>* HFchi2_;
+  // std::vector<float>* HFchi2_;
   std::vector<float>* HOenergy_;
   std::vector<float>* HOtime_;
-  std::vector<float>* HOchi2_;
+  // std::vector<float>* HOchi2_;
+  
+  //preshower variables
+  std::vector<double>* PreShEn_;
+  std::vector<double>* PreShCorrEn_;
+  std::vector<double>* PreShEta_;
+  std::vector<double>* PreShPhi_;
 
-
- 
   std::vector<float>* qPFJetPt_;
   std::vector<float>* qPFJetEta_;
   std::vector<float>* qPFJetPhi_;
@@ -200,9 +285,55 @@ private:
   std::vector<float>* qPFMetPhi_;
   std::vector<int>*   qNVtx_;
 
+  std::vector<float>* qCalJetPt_;
+  std::vector<float>* qCalJetEta_;
+  std::vector<float>* qCalJetPhi_;
+  std::vector<float>* qCalJetEn_;
+  std::vector<float>* qCalMETPt_;
+  std::vector<float>* qCalMETEta_;
+  std::vector<float>* qCalMETPhi_;
+  std::vector<float>* qCalMETEn_;
+
   std::vector<double>* qSCEn_;
   std::vector<double>* qSCEta_;
   std::vector<double>* qSCPhi_;
+
+  std::vector<float>* qPhoPt_;
+  std::vector<float>* qPhoEta_;
+  std::vector<float>* qPhoPhi_;
+  std::vector<float>* qPhoTrueEn_;
+
+  std::vector<float>* qPhoe1x5_;
+  std::vector<float>* qPhoe2x5_;
+  std::vector<float>* qPhoe3x3_;
+  std::vector<float>* qPhoe5x5_;
+  std::vector<float>* qPhomaxenxtal_;
+  std::vector<float>* qPhosigmaeta_;
+  std::vector<float>* qPhosigmaIeta_;
+  std::vector<float>* qPhor1x5_;
+  std::vector<float>* qPhor2x5_;
+  std::vector<float>* qPhor9_;
+
+  std::vector<float>* qgedPhoPt_;
+  std::vector<float>* qgedPhoEta_;
+  std::vector<float>* qgedPhoPhi_;
+  std::vector<float>* qgedPhoTrueEn_;
+
+  std::vector<float>* qgedPhoe1x5_;
+  std::vector<float>* qgedPhoe2x5_;
+  std::vector<float>* qgedPhoe3x3_;
+  std::vector<float>* qgedPhoe5x5_;
+  std::vector<float>* qgedPhomaxenxtal_;
+  std::vector<float>* qgedPhosigmaeta_;
+  std::vector<float>* qgedPhosigmaIeta_;
+  std::vector<float>* qgedPhor1x5_;
+  std::vector<float>* qgedPhor2x5_;
+  std::vector<float>* qgedPhor9_;
+
+  std::vector<float>* qMuPt_;
+  std::vector<float>* qMuEta_;
+  std::vector<float>* qMuPhi_;
+  std::vector<float>* qMuEn_;
   //TODO
   std::vector<float>* qSigmaIEta_;
   std::vector<float>* qSigmaIPhi_;
@@ -234,13 +365,18 @@ private:
 
   std::vector<float>* qHBHEenergy_;
   std::vector<float>* qHBHEtime_;
-  std::vector<float>* qHBHEchi2_;
+  // std::vector<float>* qHBHEchi2_;
   std::vector<float>* qHFenergy_;
   std::vector<float>* qHFtime_;
-  std::vector<float>* qHFchi2_;
+  // std::vector<float>* qHFchi2_;
   std::vector<float>* qHOenergy_;
   std::vector<float>* qHOtime_;
-  std::vector<float>* qHOchi2_;
+  // std::vector<float>* qHOchi2_;
+
+  std::vector<double>* qPreShEn_;
+  std::vector<double>* qPreShCorrEn_;
+  std::vector<double>* qPreShEta_;
+  std::vector<double>* qPreShPhi_;
 
 
   std::vector<float>*   crossSection_;
@@ -252,19 +388,22 @@ private:
   edm::EDGetTokenT<reco::PFJetCollection>    PFJetToken_;
   edm::EDGetTokenT<reco::PFMETCollection> PFChMETToken_;
   edm::EDGetTokenT<reco::PFMETCollection> PFMETToken_;
-  //edm::EDGetTokenT<std::vector<reco::CaloMETCollection> >    CaloMETJetToken_;      ---varialbes
-  edm::EDGetTokenT<reco::VertexCollection>   vtxToken_;
+
+  edm::EDGetTokenT<reco::CaloJetCollection> CaloJetToken_;
+  edm::EDGetTokenT<reco::CaloMETCollection> CaloMETToken_;      //variables
+  edm::EDGetTokenT<reco::VertexCollection>  vtxToken_;
+
   edm::EDGetTokenT<edm::TriggerResults> triggerBits_;
   edm::EDGetTokenT<trigger::TriggerEvent> triggerPrescales_;  //pat::PackedTriggerPrescales
   edm::EDGetTokenT<reco::SuperClusterCollection>   SuperClusterToken_;  //adding SuperCluster
+  edm::EDGetTokenT<reco::PhotonCollection> PhotonToken_;   //TWO types of Photons -- one collection?
+  edm::EDGetTokenT<reco::PhotonCollection> gedPhotonToken_;
+  edm::EDGetTokenT<reco::MuonCollection> MuonToken_;
 
   edm::EDGetTokenT<reco::GsfElectronCollection> GsfElectronToken_;
   edm::EDGetTokenT<reco::GsfElectronCollection> GsfElectronUncleanedToken_;
-  edm::EDGetTokenT<reco::MuonCollection> MuonToken_;
-  edm::EDGetTokenT<reco::PhotonCollection> gedPhotonToken_;
-  edm::EDGetTokenT<reco::PhotonCollection> PhotonToken_;   //TWO types of Photons -- one collection?
 
-  
+
   //TODO -- finish adding collections!  // edm::   //eCALlASERcORRFILTER like
 
   // edm:: 
@@ -279,7 +418,7 @@ private:
 
   // edm::EDGetTokenT<SortedCollection<EcalRecHit,edm::StrictWeakOrdering<EcalRecHit>> ebRHSrcToken_;
   // edm::EDGetTokenT<SortedCollection<EcalRecHit,edm::StrictWeakOrdering<EcalRecHit>> eeRHSrcToken_;
-
+  edm::EDGetTokenT<reco::PreshowerClusterCollection> preshowerToken_;
 
 
 
@@ -312,16 +451,18 @@ AODAnalyzer::AODAnalyzer(const edm::ParameterSet& cfg):
   PFJetToken_               (consumes<reco::PFJetCollection>(cfg.getUntrackedParameter<edm::InputTag>("PFJetTag"))),  //reco instead of pat
   PFChMETToken_             (consumes<reco::PFMETCollection>(cfg.getUntrackedParameter<edm::InputTag>("PFChMETTag"))),
   PFMETToken_               (consumes<reco::PFMETCollection>(cfg.getUntrackedParameter<edm::InputTag>("PFMETTag"))),
-  // CaloMETJetToken_          (consumes<reco::CaloMETCollection>(cfg.getUntrackedParameter<edm::InputTag>("CaloMETTag"))),  ///std::vector<reco::CaloMET> 
+  CaloJetToken_             (consumes<reco::CaloJetCollection>(cfg.getUntrackedParameter<edm::InputTag>("CaloJetTag"))),
+  CaloMETToken_             (consumes<reco::CaloMETCollection>(cfg.getUntrackedParameter<edm::InputTag>("CaloMETTag"))),  ///std::vector<reco::CaloMET> 
   vtxToken_                 (consumes<reco::VertexCollection>(cfg.getUntrackedParameter<edm::InputTag>("vtx"))),
   triggerBits_              (consumes<edm::TriggerResults>(cfg.getUntrackedParameter<edm::InputTag>("bits"))),
   triggerPrescales_         (consumes<trigger::TriggerEvent>(cfg.getUntrackedParameter<edm::InputTag>("prescales"))),  // pat::PackedTriggerPrescales
   SuperClusterToken_        (consumes<reco::SuperClusterCollection>(cfg.getUntrackedParameter<edm::InputTag>("SuperClusterTag"))), //adding SuperClusterToken_
+  PhotonToken_              (consumes<reco::PhotonCollection>(cfg.getUntrackedParameter<edm::InputTag>("PhotonTag"))),
+  gedPhotonToken_           (consumes<reco::PhotonCollection>(cfg.getUntrackedParameter<edm::InputTag>("gedPhotonTag"))),
+  MuonToken_                (consumes<reco::MuonCollection>(cfg.getUntrackedParameter<edm::InputTag>("MuonTag"))),
   GsfElectronToken_         (consumes<reco::GsfElectronCollection>(cfg.getUntrackedParameter<edm::InputTag>("GsfElectronTag"))),
   GsfElectronUncleanedToken_(consumes<reco::GsfElectronCollection>(cfg.getUntrackedParameter<edm::InputTag>("GsfElectronUncleanedTag"))),
-  MuonToken_                (consumes<reco::MuonCollection>(cfg.getUntrackedParameter<edm::InputTag>("MuonTag"))),
-  gedPhotonToken_           (consumes<reco::PhotonCollection>(cfg.getUntrackedParameter<edm::InputTag>("gedPhotonTag"))),
-  PhotonToken_              (consumes<reco::PhotonCollection>(cfg.getUntrackedParameter<edm::InputTag>("PhotonTag"))),
+
   
   
   //TODO -- add collections!
@@ -333,7 +474,7 @@ AODAnalyzer::AODAnalyzer(const edm::ParameterSet& cfg):
   hbheRHcToken_             (consumes<HBHERecHitCollection>(cfg.getUntrackedParameter<edm::InputTag>("HBHERecHitTag"))),  //ICONFIG -> cfg
   hfRHcToken_               (consumes<HFRecHitCollection>(cfg.getUntrackedParameter<edm::InputTag>("HFRecHitTag"))),
   hoRHcToken_               (consumes<HORecHitCollection>(cfg.getUntrackedParameter<edm::InputTag>("HORecHitTag"))),
-
+  preshowerToken_           (consumes<reco::PreshowerClusterCollection>(cfg.getUntrackedParameter<edm::InputTag>("PreshowerClusterTag"))),
 
 
 
@@ -366,11 +507,57 @@ void AODAnalyzer::initialize()
   PFMetPt_->clear();
   PFMetPhi_->clear();
   nVtx_->clear();
+
+  CalJetPt_->clear();
+  CalJetEta_->clear();
+  CalJetPhi_->clear();
+  CalJetEn_->clear();
+  CalMETPt_->clear();
+  CalMETEta_->clear();
+  CalMETPhi_->clear();
+  CalMETEn_->clear();
   //SuperCluster_ ->clear(); //adding SuperCluster
   SCEn_ ->clear();
   SCEta_->clear();
   SCPhi_->clear();
-  //TODO
+
+  PhoPt_->clear();
+  PhoEta_->clear();
+  PhoPhi_->clear();
+  PhoTrueEn_->clear();
+
+  Phoe1x5_->clear();
+  Phoe2x5_->clear();
+  Phoe3x3_->clear();
+  Phoe5x5_->clear();
+  Phomaxenxtal_->clear();
+  Phosigmaeta_->clear();
+  PhosigmaIeta_->clear();
+  Phor1x5_->clear();
+  Phor2x5_->clear();
+  Phor9_->clear();
+
+  gedPhoPt_->clear();
+  gedPhoEta_->clear();
+  gedPhoPhi_->clear();
+  gedPhoTrueEn_->clear();
+
+  gedPhoe1x5_->clear();
+  gedPhoe2x5_->clear();
+  gedPhoe3x3_->clear();
+  gedPhoe5x5_->clear();
+  gedPhomaxenxtal_->clear();
+  gedPhosigmaeta_->clear();
+  gedPhosigmaIeta_->clear();
+  gedPhor1x5_->clear();
+  gedPhor2x5_->clear();
+  gedPhor9_->clear();
+
+  MuPt_->clear();
+  MuEta_->clear();
+  MuPhi_->clear();
+  MuEn_->clear();
+
   SigmaIEta_->clear();
   SigmaIPhi_->clear();
   r9_->clear();
@@ -401,14 +588,19 @@ void AODAnalyzer::initialize()
 
   HBHEenergy_->clear();
   HBHEtime_->clear();
-  HBHEchi2_->clear();
+  // HBHEchi2_->clear();
   HFenergy_->clear();
   HFtime_->clear();
-  HFchi2_->clear();
+  // HFchi2_->clear();
   HOenergy_->clear();
   HOtime_->clear();
-  HOchi2_->clear();
+  // HOchi2_->clear();
  
+  PreShEn_->clear();
+  PreShCorrEn_->clear();
+  PreShEta_->clear();
+  PreShPhi_->clear();
+
   qPFJetPt_->clear();
   qPFJetEta_->clear();
   qPFJetPhi_->clear();
@@ -418,10 +610,56 @@ void AODAnalyzer::initialize()
   qPFMetPhi_->clear();
   qNVtx_->clear();
 
+  qCalJetPt_->clear();
+  qCalJetEta_->clear();
+  qCalJetPhi_->clear();
+  qCalJetEn_->clear();
+  qCalMETPt_->clear();
+  qCalMETEta_->clear();
+  qCalMETPhi_->clear();
+  qCalMETEn_->clear();
   //qSuperCluster_ ->clear(); //ASK IF quantiles should be here
   qSCEn_ ->clear();
   qSCEta_->clear();
   qSCPhi_->clear();
+
+  qPhoPt_->clear();
+  qPhoEta_->clear();
+  qPhoPhi_->clear();
+  qPhoTrueEn_->clear();
+
+  qPhoe1x5_->clear();
+  qPhoe2x5_->clear();
+  qPhoe3x3_->clear();
+  qPhoe5x5_->clear();
+  qPhomaxenxtal_->clear();
+  qPhosigmaeta_->clear();
+  qPhosigmaIeta_->clear();
+  qPhor1x5_->clear();
+  qPhor2x5_->clear();
+  qPhor9_->clear();
+
+  qgedPhoPt_->clear();
+  qgedPhoEta_->clear();
+  qgedPhoPhi_->clear();
+  qgedPhoTrueEn_->clear();
+
+  qgedPhoe1x5_->clear();
+  qgedPhoe2x5_->clear();
+  qgedPhoe3x3_->clear();
+  qgedPhoe5x5_->clear();
+  qgedPhomaxenxtal_->clear();
+  qgedPhosigmaeta_->clear();
+  qgedPhosigmaIeta_->clear();
+  qgedPhor1x5_->clear();
+  qgedPhor2x5_->clear();
+  qgedPhor9_->clear();
+
+  qMuPt_->clear();
+  qMuEta_->clear();
+  qMuPhi_->clear();
+  qMuEn_->clear();
+
   //TODO
   qSigmaIEta_->clear();
   qSigmaIPhi_->clear();  
@@ -453,13 +691,18 @@ void AODAnalyzer::initialize()
 
   qHBHEenergy_->clear();
   qHBHEtime_->clear();
-  qHBHEchi2_->clear();
+  // qHBHEchi2_->clear();
   qHFenergy_->clear();
   qHFtime_->clear();
-  qHFchi2_->clear();
+  // qHFchi2_->clear();
   qHOenergy_->clear();
   qHOtime_->clear();
-  qHOchi2_->clear();
+  // qHOchi2_->clear();
+
+  qPreShEn_->clear();
+  qPreShCorrEn_->clear();
+  qPreShEta_->clear();
+  qPreShPhi_->clear();
 
   crossSection_->clear();
   pathRates_->clear();
@@ -475,7 +718,6 @@ void AODAnalyzer::fillJets(const edm::Handle<jetCollection> & jets, std::string 
 {
   // Selected jets
   //reco::CaloJetCollection recojets;
-  // std::cout << "HARAMBE!" <<std::endl;
   typename jetCollection::const_iterator i = jets->begin();
   for(;i != jets->end(); i++){
     if(std::abs(i->eta()) < maxJetEta_ && i->pt() >= minJetPt_)
@@ -519,12 +761,55 @@ void AODAnalyzer::fillPFMets(const edm::Handle<PFMETCollection> & pfmets)
   typename PFMETCollection::const_iterator i = pfmets->begin();
   for(;i != pfmets->end(); i++){
     PFMetPt_->push_back(i->et());
-    PFMetPhi_->push_back(i->phi());
+    PFMetPhi_->push_back(i->phi());  //try also eta and energy
 
   }
   return;
 
 }
+
+template<typename CaloJetCollection>
+void AODAnalyzer::fillCaloJets(const edm::Handle<CaloJetCollection> & calojets)
+{
+  // std::cout << "fillPFChMets is being called!" << std::endl;
+  // std::cout << pfmets->size() <<std::endl;
+  typename CaloJetCollection::const_iterator i = calojets->begin();
+  for(;i != calojets->end(); i++){
+        CalJetPt_->push_back(i->et());
+        CalJetEta_->push_back(i->eta());
+        CalJetPhi_->push_back(i->phi());
+        CalJetEn_->push_back(i->energy());
+
+  }
+  return;
+
+}
+
+template<typename CaloMETCollection>
+void AODAnalyzer::fillCaloMETs(const edm::Handle<CaloMETCollection> & caloMETs)
+{
+  // std::cout << "fillPFChMets is being called!" << std::endl;
+  // std::cout << pfmets->size() <<std::endl;
+  typename CaloMETCollection::const_iterator i = caloMETs->begin();
+  for(;i != caloMETs->end(); i++){
+        CalMETPt_->push_back(i->et());
+        CalMETEta_->push_back(i->eta());
+        CalMETPhi_->push_back(i->phi());
+        CalMETEn_->push_back(i->energy());
+
+  }
+  return;
+
+}
+// //TODO
+// template<typename CaloJetCollection>
+// void AODAnalyzer::fillCaloJets()
+
+// //TODO
+// template<typename CaloMETCollection>
+// void AODAnalyzer::fillCaloMETs()
+
+
 template<typename SuperClusterCollection>
 void AODAnalyzer::fillSC(const edm::Handle<SuperClusterCollection> & superclusters) //ask for jets analogy //SUPERCLUSTERS
 {
@@ -535,9 +820,9 @@ void AODAnalyzer::fillSC(const edm::Handle<SuperClusterCollection> & supercluste
   for(;i != superclusters->end(); i++){
      if(std::abs(i->eta()) < maxSCEta_ && i->energy() >= minSCEn_) // not sure if needed
       // {
-        SCEn_->push_back(i->energy());
-        SCEta_->push_back(i->etaWidth());
-        SCPhi_->push_back(i->phiWidth());
+      SCEn_->push_back(i->energy());
+      SCEta_->push_back(i->etaWidth());
+      SCPhi_->push_back(i->phiWidth());
 
         // std::cout << "ele energy: " << i->energy()   << std::endl; 
         // std::cout << "ele SCeta: "  << i->etaWidth() << std::endl;
@@ -547,8 +832,88 @@ void AODAnalyzer::fillSC(const edm::Handle<SuperClusterCollection> & supercluste
   return;
 
 
+}
+
+template<typename PhotonCollection>
+void AODAnalyzer::fillPhotons(const edm::Handle<PhotonCollection> & photons)
+{
+   typename PhotonCollection::const_iterator i = photons->begin();
+   for(;i != photons->end(); i++){
+     
+        PhoPt_->push_back(i->et());
+        PhoEta_->push_back(i->eta());
+        PhoPhi_->push_back(i->phi());
+        PhoTrueEn_->push_back(i->getCorrectedEnergy(i->getCandidateP4type()));   //GETCORRECTEDENERGY!!
+        Phoe1x5_->push_back(i->e1x5());   
+        Phoe2x5_->push_back(i->e2x5());
+        Phoe3x3_->push_back(i->e3x3());
+        Phoe5x5_->push_back(i->e5x5());
+        Phomaxenxtal_->push_back(i->maxEnergyXtal());
+        Phosigmaeta_->push_back(i->sigmaEtaEta());
+        PhosigmaIeta_->push_back(i->sigmaIetaIeta());
+        Phor1x5_->push_back(i->r1x5());
+        Phor2x5_->push_back(i->r2x5());
+        Phor9_->push_back(i->r9());
+        // std::cout << "ele energy: " << i->energy()   << std::endl; 
+        // std::cout << "ele SCeta: "  << i->etaWidth() << std::endl;
+        // std::cout << "ele SCphi: "  << i->phiWidth() << std::endl;
+      // }
+  }
+  return;
+
 
 }
+
+template<typename PhotonCollection>
+void AODAnalyzer::fillgedPhotons(const edm::Handle<PhotonCollection> & gedphotons)
+{
+   typename PhotonCollection::const_iterator i = gedphotons->begin();
+   for(;i != gedphotons->end(); i++){
+     
+        gedPhoPt_->push_back(i->et());
+        gedPhoEta_->push_back(i->eta());
+        gedPhoPhi_->push_back(i->phi());
+        gedPhoTrueEn_->push_back(i->energy());
+        gedPhoe1x5_->push_back(i->e1x5());   
+        gedPhoe2x5_->push_back(i->e2x5());
+        gedPhoe3x3_->push_back(i->e3x3());
+        gedPhoe5x5_->push_back(i->e5x5());
+        gedPhomaxenxtal_->push_back(i->maxEnergyXtal());
+        gedPhosigmaeta_->push_back(i->sigmaEtaEta());
+        gedPhosigmaIeta_->push_back(i->sigmaIetaIeta());
+        gedPhor1x5_->push_back(i->r1x5());
+        gedPhor2x5_->push_back(i->r2x5());
+        gedPhor9_->push_back(i->r9());
+        // std::cout << "ele energy: " << i->energy()   << std::endl; 
+        // std::cout << "ele SCeta: "  << i->etaWidth() << std::endl;
+        // std::cout << "ele SCphi: "  << i->phiWidth() << std::endl;
+      // }
+  }
+  return;
+
+
+}
+
+template<typename MuonCollection>
+void AODAnalyzer::fillMuons(const edm::Handle<MuonCollection> & muons)
+{
+   typename MuonCollection::const_iterator i = muons->begin();
+   for(;i != muons->end(); i++){
+     
+        MuPt_->push_back(i->et());
+        MuEta_->push_back(i->eta());
+        MuPhi_->push_back(i->phi());
+        MuEn_->push_back(i->energy());   //GETCORRECTEDENERGY!!
+        // std::cout << "ele energy: " << i->energy()   << std::endl; 
+        // std::cout << "ele SCeta: "  << i->etaWidth() << std::endl;
+        // std::cout << "ele SCphi: "  << i->phiWidth() << std::endl;
+      // }
+  }
+  return;
+
+
+}
+
 
 //TODO
 template<typename GsfElectronCollection>
@@ -660,7 +1025,7 @@ template<typename HBHERecHitCollection>
 void AODAnalyzer::fillHBHErecHit(const edm::Handle<HBHERecHitCollection> & HBHEhits)
 {
 
-  std::cout << "fillHBHErecHit is being called!" << std::endl;
+  // std::cout << "fillHBHErecHit is being called!" << std::endl;
   typename HBHERecHitCollection::const_iterator i = HBHEhits->begin();
   for(;i != HBHEhits->end(); i++){
     HBHEenergy_ ->push_back(i->energy());
@@ -676,7 +1041,7 @@ template<typename HFRecHitCollection>
 void AODAnalyzer::fillHFrecHit(const edm::Handle<HFRecHitCollection> & HFhits)
 {
 
-  std::cout << "fillHFrecHit is being called!" << std::endl;
+  // std::cout << "fillHFrecHit is being called!" << std::endl;
   typename HFRecHitCollection::const_iterator i = HFhits->begin();
   for(;i != HFhits->end(); i++){
     HFenergy_ ->push_back(i->energy());
@@ -692,7 +1057,7 @@ template<typename HORecHitCollection>
 void AODAnalyzer::fillHOrecHit(const edm::Handle<HORecHitCollection> & HOhits)
 {
 
-  std::cout << "fillHOrecHit is being called!" << std::endl;
+  // std::cout << "fillHOrecHit is being called!" << std::endl;
   typename HORecHitCollection::const_iterator i = HOhits->begin();
   for(;i != HOhits->end(); i++){
     HOenergy_ ->push_back(i->energy());
@@ -703,6 +1068,25 @@ void AODAnalyzer::fillHOrecHit(const edm::Handle<HORecHitCollection> & HOhits)
   }
   return;
 }
+
+template<typename PreshowerClusterCollection>
+void AODAnalyzer::fillPreshowerCluster(const edm::Handle<PreshowerClusterCollection> & preshowerclusterhits)
+{
+
+  // std::cout << "fillHOrecHit is being called!" << std::endl;
+  typename PreshowerClusterCollection::const_iterator i = preshowerclusterhits->begin();
+  for(;i != preshowerclusterhits->end(); i++){
+
+    PreShEn_->push_back(i->energy());
+    PreShCorrEn_->push_back(i->correctedEnergy());
+    PreShEta_->push_back(i->eta());
+    PreShPhi_->push_back(i->phi());
+
+  }
+  return;
+}
+
+
 // ----------------------------------- HO
 
 template<typename T>
@@ -766,10 +1150,54 @@ void AODAnalyzer::beginJob() {
   PFMetPhi_    = new std::vector<float>;
   nVtx_      = new std::vector<int>;
   
+  CalJetPt_   = new std::vector<float>;
+  CalJetEta_   = new std::vector<float>;
+  CalJetPhi_   = new std::vector<float>;
+  CalJetEn_   = new std::vector<float>;
+  CalMETPt_   = new std::vector<float>;
+  CalMETEta_   = new std::vector<float>;
+  CalMETPhi_   = new std::vector<float>;
+  CalMETEn_   = new std::vector<float>;
   //SuperCluster_ = new std::vector<float>; //adding SuperCluster
   SCEn_      = new std::vector<double>;
   SCEta_     = new std::vector<double>;
   SCPhi_     = new std::vector<double>;
+  PhoPt_     = new std::vector<float>;
+  PhoEta_    = new std::vector<float>;
+  PhoPhi_    = new std::vector<float>;
+  PhoTrueEn_ = new std::vector<float>;
+
+  Phoe1x5_   = new std::vector<float>;
+  Phoe2x5_   = new std::vector<float>;
+  Phoe3x3_   = new std::vector<float>;
+  Phoe5x5_   = new std::vector<float>;
+  Phomaxenxtal_ = new std::vector<float>;
+  Phosigmaeta_  = new std::vector<float>;
+  PhosigmaIeta_ = new std::vector<float>;
+  Phor1x5_   = new std::vector<float>;
+  Phor2x5_   = new std::vector<float>;
+  Phor9_     = new std::vector<float>;
+
+  gedPhoPt_     = new std::vector<float>;
+  gedPhoEta_    = new std::vector<float>;
+  gedPhoPhi_    = new std::vector<float>;
+  gedPhoTrueEn_ = new std::vector<float>;
+
+  gedPhoe1x5_   = new std::vector<float>;
+  gedPhoe2x5_   = new std::vector<float>;
+  gedPhoe3x3_   = new std::vector<float>;
+  gedPhoe5x5_   = new std::vector<float>;
+  gedPhomaxenxtal_ = new std::vector<float>;
+  gedPhosigmaeta_  = new std::vector<float>;
+  gedPhosigmaIeta_ = new std::vector<float>;
+  gedPhor1x5_   = new std::vector<float>;
+  gedPhor2x5_   = new std::vector<float>;
+  gedPhor9_     = new std::vector<float>;
+
+  MuPt_         = new std::vector<float>;
+  MuEta_        = new std::vector<float>;
+  MuPhi_        = new std::vector<float>;
+  MuEn_         = new std::vector<float>;
   //TODO
   SigmaIEta_ = new std::vector<float>;
   SigmaIPhi_ = new std::vector<float>;
@@ -801,14 +1229,19 @@ void AODAnalyzer::beginJob() {
 
   HBHEenergy_  = new std::vector<float>;
   HBHEtime_    = new std::vector<float>;
-  HBHEchi2_    = new std::vector<float>;
+  // HBHEchi2_    = new std::vector<float>;
   HFenergy_    = new std::vector<float>;
   HFtime_      = new std::vector<float>;
-  HFchi2_      = new std::vector<float>;
+  // HFchi2_      = new std::vector<float>;
   HOenergy_    = new std::vector<float>;
   HOtime_      = new std::vector<float>;
-  HOchi2_      = new std::vector<float>;
+  // HOchi2_      = new std::vector<float>;
 
+
+  PreShEn_    = new std::vector<double>;
+  PreShCorrEn_= new std::vector<double>;
+  PreShEta_   = new std::vector<double>;
+  PreShPhi_   = new std::vector<double>;
   // outTree_->Branch("MetPt",     "std::vector<std::float>",     &MetPt_);
   // outTree_->Branch("MetPhi",    "std::vector<std::float>",     &MetPhi_);
   // outTree_->Branch("PFJetPt",     "std::vector<std::float>",     &PFJetPt_);
@@ -824,9 +1257,55 @@ void AODAnalyzer::beginJob() {
   qPFMetPt_     = new std::vector<float>;
   qPFMetPhi_    = new std::vector<float>;
  
+  qCalJetPt_   = new std::vector<float>;
+  qCalJetEta_   = new std::vector<float>;
+  qCalJetPhi_   = new std::vector<float>;
+  qCalJetEn_   = new std::vector<float>;
+  qCalMETPt_   = new std::vector<float>;
+  qCalMETEta_   = new std::vector<float>;
+  qCalMETPhi_   = new std::vector<float>;
+  qCalMETEn_   = new std::vector<float>;
+
   qSCEn_     = new std::vector<double>;
   qSCEta_    = new std::vector<double>;
   qSCPhi_    = new std::vector<double>;
+
+  qPhoPt_     = new std::vector<float>;
+  qPhoEta_    = new std::vector<float>;
+  qPhoPhi_    = new std::vector<float>;
+  qPhoTrueEn_ = new std::vector<float>;
+
+  qPhoe1x5_   = new std::vector<float>;
+  qPhoe2x5_   = new std::vector<float>;
+  qPhoe3x3_   = new std::vector<float>;
+  qPhoe5x5_   = new std::vector<float>;
+  qPhomaxenxtal_ = new std::vector<float>;
+  qPhosigmaeta_  = new std::vector<float>;
+  qPhosigmaIeta_ = new std::vector<float>;
+  qPhor1x5_   = new std::vector<float>;
+  qPhor2x5_   = new std::vector<float>;
+  qPhor9_     = new std::vector<float>;
+
+  qgedPhoPt_     = new std::vector<float>;
+  qgedPhoEta_    = new std::vector<float>;
+  qgedPhoPhi_    = new std::vector<float>;
+  qgedPhoTrueEn_ = new std::vector<float>;
+
+  qgedPhoe1x5_   = new std::vector<float>;
+  qgedPhoe2x5_   = new std::vector<float>;
+  qgedPhoe3x3_   = new std::vector<float>;
+  qgedPhoe5x5_   = new std::vector<float>;
+  qgedPhomaxenxtal_ = new std::vector<float>;
+  qgedPhosigmaeta_  = new std::vector<float>;
+  qgedPhosigmaIeta_ = new std::vector<float>;
+  qgedPhor1x5_   = new std::vector<float>;
+  qgedPhor2x5_   = new std::vector<float>;
+  qgedPhor9_     = new std::vector<float>;
+
+  qMuPt_   = new std::vector<float>;
+  qMuEta_   = new std::vector<float>;
+  qMuPhi_   = new std::vector<float>;
+  qMuEn_   = new std::vector<float>;
 
   qSigmaIEta_= new std::vector<float>;
   qSigmaIPhi_= new std::vector<float>;
@@ -859,14 +1338,19 @@ void AODAnalyzer::beginJob() {
 
   qHBHEenergy_  = new std::vector<float>;
   qHBHEtime_    = new std::vector<float>;
-  qHBHEchi2_    = new std::vector<float>;
+  // qHBHEchi2_    = new std::vector<float>;
   qHFenergy_    = new std::vector<float>;
   qHFtime_      = new std::vector<float>;
-  qHFchi2_      = new std::vector<float>;
+  // qHFchi2_      = new std::vector<float>;
   qHOenergy_    = new std::vector<float>;
   qHOtime_      = new std::vector<float>;
-  qHOchi2_      = new std::vector<float>;
+  // qHOchi2_      = new std::vector<float>;
 //FINISH doing HBHE<HF<HO
+
+  qPreShEn_    = new std::vector<double>;
+  qPreShCorrEn_= new std::vector<double>;
+  qPreShEta_   = new std::vector<double>;
+  qPreShPhi_   = new std::vector<double>;
 
   qNVtx_       = new std::vector<int>;
   crossSection_= new std::vector<float>;
@@ -881,10 +1365,56 @@ void AODAnalyzer::beginJob() {
   outTree_->Branch("qPFMetPhi",    "std::vector<std::float>",        &qPFMetPhi_);
   outTree_->Branch("qNVtx",        "std::vector<std::int>",        &qNVtx_);
 
+  outTree_->Branch("qCalJetPt",     "std::vector<std::float>",        &qCalJetPt_);
+  outTree_->Branch("qCalJetEta",    "std::vector<std::float>",        &qCalJetEta_);
+  outTree_->Branch("qCalJetPhi",    "std::vector<std::float>",        &qCalJetPhi_);
+  outTree_->Branch("qCalJetEn",    "std::vector<std::float>",        &qCalJetEn_);
+
+  outTree_->Branch("qCalMETPt",     "std::vector<std::float>",        &qCalMETPt_);
+  outTree_->Branch("qCalMETEta",    "std::vector<std::float>",        &qCalMETEta_);
+  outTree_->Branch("qCalMETPhi",    "std::vector<std::float>",        &qCalMETPhi_);
+  outTree_->Branch("qCalMETEn",    "std::vector<std::float>",        &qCalMETEn_);
   //outTree_->Branch("SuperCluster","std::vector<std::float>",      &SuperCluster_);
   outTree_->Branch("qSCEn",     "std::vector<std::double>",        &qSCEn_);
   outTree_->Branch("qSCEta",    "std::vector<std::double>",        &qSCEta_);
   outTree_->Branch("qSCPhi",    "std::vector<std::double>",        &qSCPhi_);
+
+  outTree_->Branch("qPhoPt",     "std::vector<std::float>",        &qPhoPt_);
+  outTree_->Branch("qPhoEta",    "std::vector<std::float>",        &qPhoEta_);
+  outTree_->Branch("qPhoPhi",    "std::vector<std::float>",        &qPhoPhi_);
+  outTree_->Branch("qPhoTrueEn_",    "std::vector<std::float>",    &qPhoTrueEn_);
+
+  outTree_->Branch("qPhoe1x5_",     "std::vector<std::float>",        &qPhoe1x5_);
+  outTree_->Branch("qPhoe2x5_",    "std::vector<std::float>",        &qPhoe2x5_);
+  outTree_->Branch("qPhoe3x3_",    "std::vector<std::float>",        &qPhoe3x3_);
+  outTree_->Branch("qPhoe5x5_",    "std::vector<std::float>",    &qPhoe5x5_);
+  outTree_->Branch("qPhomaxenxtal_",     "std::vector<std::float>",        &qPhomaxenxtal_);
+  outTree_->Branch("qPhosigmaeta_",    "std::vector<std::float>",        &qPhosigmaeta_);
+  outTree_->Branch("qPhosigmaIeta_",    "std::vector<std::float>",        &qPhosigmaIeta_);
+  outTree_->Branch("qPhor1x5_",    "std::vector<std::float>",    &qPhor1x5_);
+  outTree_->Branch("qPhor2x5_",    "std::vector<std::float>",        &qPhor2x5_);
+  outTree_->Branch("qPhor9_",    "std::vector<std::float>",    &qPhor9_);
+
+  outTree_->Branch("qgedPhoPt",     "std::vector<std::float>",     &qgedPhoPt_);
+  outTree_->Branch("qgedPhoEta",    "std::vector<std::float>",     &qgedPhoEta_);
+  outTree_->Branch("qgedPhoPhi",    "std::vector<std::float>",     &qgedPhoPhi_);
+  outTree_->Branch("qgedPhoTrueEn_",    "std::vector<std::float>", &qgedPhoTrueEn_);
+
+  outTree_->Branch("qgedPhoe1x5_",     "std::vector<std::float>",        &qgedPhoe1x5_);
+  outTree_->Branch("qgedPhoe2x5_",    "std::vector<std::float>",        &qgedPhoe2x5_);
+  outTree_->Branch("qgedPhoe3x3_",    "std::vector<std::float>",        &qgedPhoe3x3_);
+  outTree_->Branch("qgedPhoe5x5_",    "std::vector<std::float>",    &qgedPhoe5x5_);
+  outTree_->Branch("qgedPhomaxenxtal_",     "std::vector<std::float>",        &qgedPhomaxenxtal_);
+  outTree_->Branch("qgedPhosigmaeta_",    "std::vector<std::float>",        &qgedPhosigmaeta_);
+  outTree_->Branch("qgedPhosigmaIeta_",    "std::vector<std::float>",        &qgedPhosigmaIeta_);
+  outTree_->Branch("qgedPhor1x5_",    "std::vector<std::float>",    &qgedPhor1x5_);
+  outTree_->Branch("qgedPhor2x5_",    "std::vector<std::float>",        &qgedPhor2x5_);
+  outTree_->Branch("qgedPhor9_",    "std::vector<std::float>",    &qgedPhor9_);
+
+  outTree_->Branch("qMuPt",     "std::vector<std::float>",        &qMuPt_);
+  outTree_->Branch("qMuEta",    "std::vector<std::float>",        &qMuEta_);
+  outTree_->Branch("qMuPhi",    "std::vector<std::float>",        &qMuPhi_);
+  outTree_->Branch("qMuEn_",    "std::vector<std::float>",        &qMuEn_);
 
   outTree_->Branch("qSigmaIEta",    "std::vector<std::float>",     &qSigmaIEta_);
   outTree_->Branch("qSigmaIPhi",    "std::vector<std::float>",     &qSigmaIPhi_);
@@ -916,14 +1446,18 @@ void AODAnalyzer::beginJob() {
 
   outTree_->Branch("qHBHEenergy",    "std::vector<std::float>",        &qHBHEenergy_);
   outTree_->Branch("qHBHEtime",    "std::vector<std::float>",          &qHBHEtime_);
-  outTree_->Branch("qHBHEchi2",    "std::vector<std::float>",          &qHBHEchi2_);
+  // outTree_->Branch("qHBHEchi2",    "std::vector<std::float>",          &qHBHEchi2_);
   outTree_->Branch("qHFenergy",    "std::vector<std::float>",        &qHFenergy_);
   outTree_->Branch("qHFtime",    "std::vector<std::float>",          &qHFtime_);
-  outTree_->Branch("qHFchi2",    "std::vector<std::float>",          &qHFchi2_);
+  // outTree_->Branch("qHFchi2",    "std::vector<std::float>",          &qHFchi2_);
   outTree_->Branch("qHOenergy",    "std::vector<std::float>",        &qHOenergy_);
   outTree_->Branch("qHOtime",    "std::vector<std::float>",          &qHOtime_);
-  outTree_->Branch("qHOchi2",    "std::vector<std::float>",          &qHOchi2_);
+  // outTree_->Branch("qHOchi2",    "std::vector<std::float>",          &qHOchi2_);
 
+  outTree_->Branch("qPreShEn",     "std::vector<std::double>",        &qPreShEn_);
+  outTree_->Branch("qPreShCorrEn", "std::vector<std::double>",        &qPreShCorrEn_);
+  outTree_->Branch("qPreShEta",    "std::vector<std::double>",        &qPreShEta_);
+  outTree_->Branch("qPreShPhi",    "std::vector<std::double>",        &qPreShPhi_);
 
 
   outTree_->Branch("crossSection",   "std::vector<std::float>",    &crossSection_);
@@ -964,9 +1498,55 @@ void AODAnalyzer::endJob()
   delete PFMetPt_;
   delete PFMetPhi_;
 
+  delete CalJetPt_;
+  delete CalJetEta_;
+  delete CalJetPhi_;
+  delete CalJetEn_;
+  delete CalMETPt_;
+  delete CalMETEta_;
+  delete CalMETPhi_;
+  delete CalMETEn_;
+
   delete SCEn_;
   delete SCEta_;
   delete SCPhi_;
+
+  delete PhoPt_;
+  delete PhoEta_;
+  delete PhoPhi_;
+  delete PhoTrueEn_;
+
+  delete Phoe1x5_;
+  delete Phoe2x5_;
+  delete Phoe3x3_;
+  delete Phoe5x5_;
+  delete Phomaxenxtal_;
+  delete Phosigmaeta_;
+  delete PhosigmaIeta_;
+  delete Phor1x5_;
+  delete Phor2x5_;
+  delete Phor9_;
+
+  delete gedPhoPt_;
+  delete gedPhoEta_;
+  delete gedPhoPhi_;
+  delete gedPhoTrueEn_;
+
+  delete gedPhoe1x5_;
+  delete gedPhoe2x5_;
+  delete gedPhoe3x3_;
+  delete gedPhoe5x5_;
+  delete gedPhomaxenxtal_;
+  delete gedPhosigmaeta_;
+  delete gedPhosigmaIeta_;
+  delete gedPhor1x5_;
+  delete gedPhor2x5_;
+  delete gedPhor9_;
+
+  delete MuPt_;
+  delete MuEta_;
+  delete MuPhi_;
+  delete MuEn_;
   //TODO
   delete SigmaIEta_;
   delete SigmaIPhi_;
@@ -996,6 +1576,20 @@ void AODAnalyzer::endJob()
   delete EStime_;
   delete ESchi2_;
 
+  delete HBHEenergy_ ;
+  delete HBHEtime_ ;
+  //delete HBHEchi2_ ;
+  delete HFenergy_ ;
+  delete HFtime_ ;
+  //delete HFchi2_  ;
+  delete HOenergy_ ;
+  delete HOtime_ ;
+  // HOchi2_    
+  delete PreShEn_;
+  delete PreShCorrEn_;
+  delete PreShEta_;
+  delete PreShPhi_;
+
   //delete SuperCluster_;
   //delete qSuperCluster_;
   delete qPFJetPt_;
@@ -1005,9 +1599,56 @@ void AODAnalyzer::endJob()
   delete qPFChMetPhi_;
   delete qPFMetPt_;
   delete qPFMetPhi_;
+
+  delete qCalJetPt_;
+  delete qCalJetEta_;
+  delete qCalJetPhi_;
+  delete qCalJetEn_;
+  delete qCalMETPt_;
+  delete qCalMETEta_;
+  delete qCalMETPhi_;
+  delete qCalMETEn_;
+
   delete qSCEn_;
   delete qSCEta_;
   delete qSCPhi_;
+
+  delete qPhoPt_;
+  delete qPhoEta_;
+  delete qPhoPhi_;
+  delete qPhoTrueEn_;
+
+  delete qPhoe1x5_;
+  delete qPhoe2x5_;
+  delete qPhoe3x3_;
+  delete qPhoe5x5_;
+  delete qPhomaxenxtal_;
+  delete qPhosigmaeta_;
+  delete qPhosigmaIeta_;
+  delete qPhor1x5_;
+  delete qPhor2x5_;
+  delete qPhor9_;
+
+  delete qgedPhoPt_;
+  delete qgedPhoEta_;
+  delete qgedPhoPhi_;
+  delete qgedPhoTrueEn_;
+
+  delete qgedPhoe1x5_;
+  delete qgedPhoe2x5_;
+  delete qgedPhoe3x3_;
+  delete qgedPhoe5x5_;
+  delete qgedPhomaxenxtal_;
+  delete qgedPhosigmaeta_;
+  delete qgedPhosigmaIeta_;
+  delete qgedPhor1x5_;
+  delete qgedPhor2x5_;
+  delete qgedPhor9_;
+
+  delete qMuPt_;
+  delete qMuEta_;
+  delete qMuPhi_;
+  delete qMuEn_;
   //TODO
   delete qSigmaIEta_;
   delete qSigmaIPhi_;
@@ -1039,13 +1680,18 @@ void AODAnalyzer::endJob()
 
   delete qHBHEenergy_;
   delete qHBHEtime_;
-  delete qHBHEchi2_;
+  // delete qHBHEchi2_;
   delete qHFenergy_;
   delete qHFtime_;
-  delete qHFchi2_;
+  // delete qHFchi2_;
   delete qHOenergy_;
   delete qHOtime_;
-  delete qHOchi2_;
+  // delete qHOchi2_;
+
+  delete qPreShEn_;
+  delete qPreShCorrEn_;
+  delete qPreShEta_;
+  delete qPreShPhi_;
 
   delete qNVtx_;
   delete crossSection_;
@@ -1097,9 +1743,58 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeMeanAndRms(PFMetPt_, qPFMetPt_);
   computeMeanAndRms(PFMetPhi_,  qPFMetPhi_);
   computeMeanAndRms(nVtx_,    qNVtx_);
+
+  computeMeanAndRms(CalJetPt_, qCalJetPt_);
+  computeMeanAndRms(CalJetEta_,qCalJetEta_);
+  computeMeanAndRms(CalJetPhi_,qCalJetPhi_);
+  computeMeanAndRms(CalJetEn_,qCalJetEn_);
+
+  computeMeanAndRms(CalMETPt_, qCalMETPt_);
+  computeMeanAndRms(CalMETEta_,qCalMETEta_);
+  computeMeanAndRms(CalMETPhi_,qCalMETPhi_);
+  computeMeanAndRms(CalMETEn_,qCalMETEn_);
+
   computeMeanAndRms(SCEn_, qSCEn_);   //adding supercluster pt,eta and phi
   computeMeanAndRms(SCEta_, qSCEta_);  //
   computeMeanAndRms(SCPhi_, qSCPhi_);  //
+
+  computeMeanAndRms(PhoPt_, qPhoPt_);
+  computeMeanAndRms(PhoEta_,qPhoEta_);
+  computeMeanAndRms(PhoPhi_,qPhoPhi_);
+  computeMeanAndRms(PhoTrueEn_,qPhoTrueEn_);
+
+  computeMeanAndRms(Phoe1x5_, qPhoe1x5_);
+  computeMeanAndRms(Phoe2x5_,qPhoe2x5_);
+  computeMeanAndRms(Phoe3x3_,qPhoe3x3_);
+  computeMeanAndRms(Phoe5x5_,qPhoe5x5_);
+  computeMeanAndRms(Phomaxenxtal_, qPhomaxenxtal_);
+  computeMeanAndRms(Phosigmaeta_,  qPhosigmaeta_);
+  computeMeanAndRms(PhosigmaIeta_, qPhosigmaIeta_);
+  computeMeanAndRms(Phor1x5_, qPhor1x5_);
+  computeMeanAndRms(Phor2x5_, qPhor2x5_);
+  computeMeanAndRms(Phor9_,   qPhor9_);
+
+
+  computeMeanAndRms(gedPhoPt_, qgedPhoPt_);
+  computeMeanAndRms(gedPhoEta_,qgedPhoEta_);
+  computeMeanAndRms(gedPhoPhi_,qgedPhoPhi_);
+  computeMeanAndRms(gedPhoTrueEn_,qgedPhoTrueEn_);
+
+  computeMeanAndRms(gedPhoe1x5_, qgedPhoe1x5_);
+  computeMeanAndRms(gedPhoe2x5_,qgedPhoe2x5_);
+  computeMeanAndRms(gedPhoe3x3_,qgedPhoe3x3_);
+  computeMeanAndRms(gedPhoe5x5_,qgedPhoe5x5_);
+  computeMeanAndRms(gedPhomaxenxtal_, qgedPhomaxenxtal_);
+  computeMeanAndRms(gedPhosigmaeta_,  qgedPhosigmaeta_);
+  computeMeanAndRms(gedPhosigmaIeta_, qgedPhosigmaIeta_);
+  computeMeanAndRms(gedPhor1x5_, qgedPhor1x5_);
+  computeMeanAndRms(gedPhor2x5_, qgedPhor2x5_);
+  computeMeanAndRms(gedPhor9_,   qgedPhor9_);
+
+  computeMeanAndRms(MuPt_, qMuPt_);
+  computeMeanAndRms(MuEta_,qMuEta_);
+  computeMeanAndRms(MuPhi_,qMuPhi_);
+  computeMeanAndRms(MuEn_,qMuEn_);
   //TODO
   computeMeanAndRms(SigmaIEta_, qSigmaIEta_);
   computeMeanAndRms(SigmaIPhi_, qSigmaIPhi_);
@@ -1129,15 +1824,18 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeMeanAndRms(ESchi2_, qESchi2_);
   computeMeanAndRms(HBHEenergy_, qHBHEenergy_);
   computeMeanAndRms(HBHEtime_, qHBHEtime_);
-  computeMeanAndRms(HBHEchi2_, qHBHEchi2_);
+  // computeMeanAndRms(HBHEchi2_, qHBHEchi2_);
   computeMeanAndRms(HFenergy_, qHFenergy_);
   computeMeanAndRms(HFtime_, qHFtime_);
-  computeMeanAndRms(HFchi2_, qHFchi2_);
+  // computeMeanAndRms(HFchi2_, qHFchi2_);
   computeMeanAndRms(HOenergy_, qHOenergy_);
   computeMeanAndRms(HOtime_, qHOtime_);
-  computeMeanAndRms(HOchi2_, qHOchi2_);
+  // computeMeanAndRms(HOchi2_, qHOchi2_);
 
-
+  computeMeanAndRms(PreShEn_, qPreShEn_);   
+  computeMeanAndRms(PreShCorrEn_, qPreShCorrEn_);   
+  computeMeanAndRms(PreShEta_, qPreShEta_);  //
+  computeMeanAndRms(PreShPhi_, qPreShPhi_);  //
 
   computeQuantiles(PFJetPt_, qPFJetPt_, quantiles_);
   computeQuantiles(PFJetEta_,qPFJetEta_,quantiles_);
@@ -1147,9 +1845,56 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeQuantiles(PFMetPt_, qPFMetPt_,     quantiles_);
   computeQuantiles(PFMetPhi_,qPFMetPhi_,    quantiles_);
   computeQuantiles(nVtx_,    qNVtx_,    quantiles_);
+
+  computeQuantiles(CalJetPt_, qCalJetPt_, quantiles_);
+  computeQuantiles(CalJetEta_,qCalJetEta_,quantiles_);
+  computeQuantiles(CalJetPhi_,qCalJetPhi_,quantiles_);
+  computeQuantiles(CalJetEn_,qCalJetEn_,  quantiles_);
+  computeQuantiles(CalMETPt_, qCalMETPt_, quantiles_);
+  computeQuantiles(CalMETEta_,qCalMETEta_,quantiles_);
+  computeQuantiles(CalMETPhi_,qCalMETPhi_,quantiles_);
+  computeQuantiles(CalMETEn_,qCalMETEn_,  quantiles_);
+
   computeQuantiles(SCEn_, qSCEn_,       quantiles_);
   computeQuantiles(SCEta_, qSCEta_,     quantiles_);
   computeQuantiles(SCPhi_, qSCPhi_,     quantiles_);
+
+  computeQuantiles(PhoPt_, qPhoPt_, quantiles_);
+  computeQuantiles(PhoEta_,qPhoEta_,quantiles_);
+  computeQuantiles(PhoPhi_,qPhoPhi_,quantiles_);
+  computeQuantiles(PhoTrueEn_,qPhoTrueEn_,quantiles_);
+
+  computeQuantiles(Phoe1x5_, qPhoe1x5_, quantiles_);
+  computeQuantiles(Phoe2x5_,qPhoe2x5_,quantiles_);
+  computeQuantiles(Phoe3x3_,qPhoe3x3_,quantiles_);
+  computeQuantiles(Phoe5x5_,qPhoe5x5_,quantiles_);
+  computeQuantiles(Phomaxenxtal_, qPhomaxenxtal_, quantiles_);
+  computeQuantiles(Phosigmaeta_,qPhosigmaeta_,quantiles_);
+  computeQuantiles(PhosigmaIeta_,qPhosigmaIeta_,quantiles_);
+  computeQuantiles(Phor1x5_,qPhor1x5_,quantiles_);
+  computeQuantiles(Phor2x5_, qPhor2x5_, quantiles_);
+  computeQuantiles(Phor9_,qPhor9_,quantiles_);
+
+  computeQuantiles(gedPhoPt_, qgedPhoPt_, quantiles_);
+  computeQuantiles(gedPhoEta_,qgedPhoEta_,quantiles_);
+  computeQuantiles(gedPhoPhi_,qgedPhoPhi_,quantiles_);
+  computeQuantiles(gedPhoTrueEn_,qgedPhoTrueEn_,quantiles_);
+
+  computeQuantiles(gedPhoe1x5_, qgedPhoe1x5_, quantiles_);
+  computeQuantiles(gedPhoe2x5_,qgedPhoe2x5_,quantiles_);
+  computeQuantiles(gedPhoe3x3_,qgedPhoe3x3_,quantiles_);
+  computeQuantiles(gedPhoe5x5_,qgedPhoe5x5_,quantiles_);
+  computeQuantiles(gedPhomaxenxtal_, qgedPhomaxenxtal_, quantiles_);
+  computeQuantiles(gedPhosigmaeta_,qgedPhosigmaeta_,quantiles_);
+  computeQuantiles(gedPhosigmaIeta_,qgedPhosigmaIeta_,quantiles_);
+  computeQuantiles(gedPhor1x5_,qgedPhor1x5_,quantiles_);
+  computeQuantiles(gedPhor2x5_, qgedPhor2x5_, quantiles_);
+  computeQuantiles(gedPhor9_,qgedPhor9_,quantiles_);
+
+  computeQuantiles(MuPt_, qMuPt_, quantiles_);
+  computeQuantiles(MuEta_,qMuEta_,quantiles_);
+  computeQuantiles(MuPhi_,qMuPhi_,quantiles_);
+  computeQuantiles(MuEn_,qMuEn_,quantiles_);
   //TODO
   computeQuantiles(SigmaIEta_, qSigmaIEta_, quantiles_);
   computeQuantiles(SigmaIPhi_, qSigmaIPhi_, quantiles_);
@@ -1181,14 +1926,19 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
 
   computeQuantiles(HBHEenergy_, qHBHEenergy_, quantiles_);
   computeQuantiles(HBHEtime_, qHBHEtime_, quantiles_);
-  computeQuantiles(HBHEchi2_, qHBHEchi2_, quantiles_);
+  // computeQuantiles(HBHEchi2_, qHBHEchi2_, quantiles_);
   computeQuantiles(HFenergy_, qHFenergy_, quantiles_);
   computeQuantiles(HFtime_, qHFtime_, quantiles_);
-  computeQuantiles(HFchi2_, qHFchi2_, quantiles_);
+  // computeQuantiles(HFchi2_, qHFchi2_, quantiles_);
   computeQuantiles(HOenergy_, qHOenergy_, quantiles_);
   computeQuantiles(HOtime_, qHOtime_, quantiles_);
-  computeQuantiles(HOchi2_, qHOchi2_, quantiles_);
+  // computeQuantiles(HOchi2_, qHOchi2_, quantiles_);
 
+
+  computeQuantiles(PreShEn_, qPreShEn_,       quantiles_);
+  computeQuantiles(PreShCorrEn_, qPreShCorrEn_,       quantiles_);
+  computeQuantiles(PreShEta_, qPreShEta_,     quantiles_);
+  computeQuantiles(PreShPhi_, qPreShPhi_,     quantiles_);
 
   crossSection_->push_back( (float)eventCounter/lumi_ );
   
@@ -1235,7 +1985,6 @@ void AODAnalyzer::analyze (const edm::Event &event, const edm::EventSetup &event
   // //fill PFMet
   edm::Handle<reco::PFMETCollection> pfmetlocalv;
   event.getByToken(PFMETToken_, pfmetlocalv);
-  // 
   if(pfmetlocalv.isValid())
     fillPFMets(pfmetlocalv);
   // edm::Handle<std::vector<reco::PFMETCollection> > PFMet;    ////
@@ -1245,6 +1994,16 @@ void AODAnalyzer::analyze (const edm::Event &event, const edm::EventSetup &event
   //     PFMetPt_->push_back( (*PFMet)[0].et() );
   //     PFMetPhi_->push_back( (*PFMet)[0].phi() );
   //   } 
+
+  edm::Handle<reco::CaloJetCollection> calojetlocalv;
+  event.getByToken(CaloJetToken_, calojetlocalv);
+  if(calojetlocalv.isValid())
+    fillCaloJets(calojetlocalv);
+
+  edm::Handle<reco::CaloMETCollection> caloMETlocalv;
+  event.getByToken(CaloMETToken_, caloMETlocalv);
+  if(caloMETlocalv.isValid())
+    fillCaloMETs(caloMETlocalv);
 
   //fill vtx
   edm::Handle<reco::VertexCollection> recVtxs;
@@ -1259,8 +2018,22 @@ void AODAnalyzer::analyze (const edm::Event &event, const edm::EventSetup &event
   if(SuperClusterlocalv.isValid())
     fillSC(SuperClusterlocalv);
   
+  edm::Handle<reco::PhotonCollection> photonlocalv;
+  event.getByToken(PhotonToken_, photonlocalv);
+  if(photonlocalv.isValid())
+    fillPhotons(photonlocalv);
 
-  //TODO --fill Photons, fill Muons
+  edm::Handle<reco::PhotonCollection> gedphotonlocalv;
+  event.getByToken(gedPhotonToken_, gedphotonlocalv);
+  if(gedphotonlocalv.isValid())
+    fillgedPhotons(gedphotonlocalv);
+
+  edm::Handle<reco::MuonCollection> muonlocalv;
+  event.getByToken(MuonToken_, muonlocalv);
+  if(muonlocalv.isValid())
+    fillMuons(muonlocalv);
+
+  //TODO --fill fill Muons
   //fill GsF
   edm::Handle<reco::GsfElectronCollection> GsfElectronlocalv;
   event.getByToken(GsfElectronToken_, GsfElectronlocalv);
@@ -1311,6 +2084,11 @@ void AODAnalyzer::analyze (const edm::Event &event, const edm::EventSetup &event
   event.getByToken(hoRHcToken_, hoRHs);
   if(hoRHs.isValid())
     fillHOrecHit(hoRHs);
+
+  edm::Handle<reco::PreshowerClusterCollection> prShs;
+  event.getByToken(preshowerToken_, prShs);
+  if(prShs.isValid())
+    fillPreshowerCluster(prShs);
   //Lorentz vector
    // Look for MET --LORENTZ VECTOR
   // edm::Handle<reco::GenMETCollection> genMet;

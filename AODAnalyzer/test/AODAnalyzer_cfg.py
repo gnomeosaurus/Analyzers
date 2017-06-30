@@ -33,10 +33,11 @@ for sub in subsystemList:
 #vector<reco::SuperCluster>            "reducedEgamma"             "reducedSuperClusters"   "RECO"     --output of edmDumpEventContent for path #going for Supercluster
 process.MyAnalysis =cms.EDAnalyzer("AODAnalyzer",
 
-                       #caloJetTag              = cms.untracked.InputTag("slimmedJets"),
+                       
                        PFJetTag                = cms.untracked.InputTag("ak8PFJetsCHS"), #ak4PFJets
                        PFChMETTag              = cms.untracked.InputTag("pfChMet"),
                        PFMETTag                = cms.untracked.InputTag("pfMet"),
+                       CaloJetTag              = cms.untracked.InputTag("ak4CaloJets"),
                        CaloMETTag              = cms.untracked.InputTag("caloMet"),  #calometTag
 
                        vtx                     = cms.untracked.InputTag("offlinePrimaryVertices"),
@@ -44,13 +45,14 @@ process.MyAnalysis =cms.EDAnalyzer("AODAnalyzer",
                        prescales               = cms.untracked.InputTag("hltTriggerSummaryAOD"), # //PROBABLY get from https://github.com/cms-sw/cmssw/blob/master/DataFormats/PatCandidates/interface/TriggerEvent.h  ... ask about how
 
                        SuperClusterTag         = cms.untracked.InputTag("particleFlowEGamma"), 
+                       PhotonTag               = cms.untracked.InputTag("photons"),
+                       gedPhotonTag            = cms.untracked.InputTag("gedPhotons"),
+                       MuonTag                 = cms.untracked.InputTag("muons"),
+
 
                        #44-57 are new tags
                        GsfElectronTag          = cms.untracked.InputTag("gedGsfElectrons"),
                        GsfElectronUncleanedTag = cms.untracked.InputTag("uncleanedOnlyGsfElectrons"),
-                       MuonTag                 = cms.untracked.InputTag("muons"),
-                       gedPhotonTag            = cms.untracked.InputTag("gedPhotons"),
-                       PhotonTag               = cms.untracked.InputTag("photons"),
 
 
                        EBRecHitSourceTag       = cms.untracked.InputTag("reducedEcalRecHitsEB"),
@@ -60,7 +62,7 @@ process.MyAnalysis =cms.EDAnalyzer("AODAnalyzer",
                        HBHERecHitTag           = cms.untracked.InputTag("reducedHcalRecHits","hbhereco"),
                        HFRecHitTag             = cms.untracked.InputTag("reducedHcalRecHits","hfreco"),
                        HORecHitTag             = cms.untracked.InputTag("reducedHcalRecHits","horeco"),
-
+                       PreshowerClusterTag     = cms.untracked.InputTag("multi5x5SuperClustersWithPreshower","preshowerXClusters"),  #also possible to take YClusters instead of ZClusters
                                 
                        maxJetEta               = cms.untracked.double(5.0),   #is this ok?
                        minJetPt                = cms.untracked.double(10.0),  #is this ok?
