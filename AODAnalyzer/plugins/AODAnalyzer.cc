@@ -98,8 +98,8 @@ private:
   template<typename jetCollection>
   void fillJets(const edm::Handle<jetCollection> &, std::string );
 
-  template<typename PFMETCollection>
-  void fillPFChMets(const edm::Handle<PFMETCollection> &);
+  template<typename PFChMETCollection>
+  void fillPFChMets(const edm::Handle<PFChMETCollection> &);
 
   template<typename PFMETCollection>
   void fillPFMets(const edm::Handle<PFMETCollection> &);
@@ -113,11 +113,11 @@ private:
   template<typename SuperClusterCollection> 
   void fillSC(const edm::Handle<SuperClusterCollection> &); 
 
-  template<typename SuperClusterCollection> 
-  void fillSChfEM(const edm::Handle<SuperClusterCollection> &); 
+  template<typename SuperClusterhfEMCollection> 
+  void fillSChfEM(const edm::Handle<SuperClusterhfEMCollection> &); 
 
-  template<typename CaloClusterCollection>
-  void fillCChfEM(const edm::Handle<CaloClusterCollection> &); 
+  template<typename CaloClusterhfEMCollection>
+  void fillCChfEM(const edm::Handle<CaloClusterhfEMCollection> &); 
 
   template<typename CaloClusterCollection>
   void fillCC(const edm::Handle<CaloClusterCollection> &); 
@@ -125,8 +125,8 @@ private:
   template<typename PhotonCollection>
   void fillPhotons(const edm::Handle<PhotonCollection> &);
 
-  template<typename PhotonCollection>
-  void fillgedPhotons(const edm::Handle<PhotonCollection> &);
+  template<typename PhotongedCollection>
+  void fillgedPhotons(const edm::Handle<PhotongedCollection> &);
 
   template<typename MuonCollection>
   void fillMuons(const edm::Handle<MuonCollection> &);
@@ -134,17 +134,17 @@ private:
   template<typename GsfElectronCollection>
   void fillGsf(const edm::Handle<GsfElectronCollection> &);
 
-  template<typename GsfElectronCollection>
-  void fillUNGsf(const edm::Handle<GsfElectronCollection> &);
+  template<typename UNGsfElectronCollection>
+  void fillUNGsf(const edm::Handle<UNGsfElectronCollection> &);
 
-  template<typename EcalRecHitCollection>
-  void fillEBrecHit(const edm::Handle<EcalRecHitCollection> &);
+  template<typename EBEcalRecHitCollection>
+  void fillEBrecHit(const edm::Handle<EBEcalRecHitCollection> &);
 
-  template<typename EcalRecHitCollection>
-  void fillEErecHit(const edm::Handle<EcalRecHitCollection> &);
+  template<typename EEEcalRecHitCollection>
+  void fillEErecHit(const edm::Handle<EEEcalRecHitCollection> &);
  
-  template<typename EcalRecHitCollection>
-  void fillESrecHit(const edm::Handle<EcalRecHitCollection> &);
+  template<typename ESEcalRecHitCollection>
+  void fillESrecHit(const edm::Handle<ESEcalRecHitCollection> &);
 
   template<typename HBHERecHitCollection>
   void fillHBHErecHit(const edm::Handle<HBHERecHitCollection> &);
@@ -793,12 +793,12 @@ void AODAnalyzer::fillJets(const edm::Handle<jetCollection> & jets, std::string 
   return;
 }
 
-template<typename PFMETCollection>
-void AODAnalyzer::fillPFChMets(const edm::Handle<PFMETCollection> & pfchmets)
+template<typename PFChMETCollection>
+void AODAnalyzer::fillPFChMets(const edm::Handle<PFChMETCollection> & pfchmets)
 {
   // std::cout << "fillPFChMets is being called!" << std::endl;
   // std::cout << pfchmets->size() <<std::endl;
-  typename PFMETCollection::const_iterator i = pfchmets->begin();
+  typename PFChMETCollection::const_iterator i = pfchmets->begin();
   for(;i != pfchmets->end(); i++){
     PFChMetPt_->push_back(i->et());
     PFChMetPhi_->push_back(i->phi());
@@ -889,13 +889,13 @@ void AODAnalyzer::fillSC(const edm::Handle<SuperClusterCollection> & supercluste
 
 }
 
-template<typename SuperClusterCollection>
-void AODAnalyzer::fillSChfEM(const edm::Handle<SuperClusterCollection> & superclustershfEM) //ask for jets analogy //SUPERCLUSTERS
+template<typename SuperClusterhfEMCollection>
+void AODAnalyzer::fillSChfEM(const edm::Handle<SuperClusterhfEMCollection> & superclustershfEM) //ask for jets analogy //SUPERCLUSTERS
 {
 
   // Selected jets
   //reco::CaloJetCollection recojets;
-  typename SuperClusterCollection::const_iterator i = superclustershfEM->begin();
+  typename SuperClusterhfEMCollection::const_iterator i = superclustershfEM->begin();
   for(;i != superclustershfEM->end(); i++){
      if(std::abs(i->eta()) < maxSCEta_ && i->energy() >= minSCEn_) // not sure if needed
       // {
@@ -937,13 +937,13 @@ void AODAnalyzer::fillCC(const edm::Handle<CaloClusterCollection> & caloclusters
 
 }
 
-template<typename CaloClusterCollection>
-void AODAnalyzer::fillCChfEM(const edm::Handle<CaloClusterCollection> & caloclustershfEM) //ask for jets analogy //SUPERCLUSTERS
+template<typename CaloClusterhfEMCollection>
+void AODAnalyzer::fillCChfEM(const edm::Handle<CaloClusterhfEMCollection> & caloclustershfEM) //ask for jets analogy //SUPERCLUSTERS
 {
 
   // Selected jets
   //reco::CaloJetCollection recojets;
-  typename CaloClusterCollection::const_iterator i = caloclustershfEM->begin();
+  typename CaloClusterhfEMCollection::const_iterator i = caloclustershfEM->begin();
   for(;i != caloclustershfEM->end(); i++){
      // if(std::abs(i->eta()) < maxSCEta_ && i->energy() >= minSCEn_) // do I need something like maxCCeta and so on? TODOd
       // {
@@ -991,10 +991,10 @@ void AODAnalyzer::fillPhotons(const edm::Handle<PhotonCollection> & photons)
 
 }
 
-template<typename PhotonCollection>
-void AODAnalyzer::fillgedPhotons(const edm::Handle<PhotonCollection> & gedphotons)
+template<typename PhotongedCollection>
+void AODAnalyzer::fillgedPhotons(const edm::Handle<PhotongedCollection> & gedphotons)
 {
-   typename PhotonCollection::const_iterator i = gedphotons->begin();
+   typename PhotongedCollection::const_iterator i = gedphotons->begin();
    for(;i != gedphotons->end(); i++){
      
         gedPhoPt_->push_back(i->et());
@@ -1073,12 +1073,12 @@ void AODAnalyzer::fillGsf(const edm::Handle<GsfElectronCollection> & electrons)
 
 }
 
-template<typename GsfElectronCollection>
-void AODAnalyzer::fillUNGsf(const edm::Handle<GsfElectronCollection> & UNelectrons)
+template<typename UNGsfElectronCollection>
+void AODAnalyzer::fillUNGsf(const edm::Handle<UNGsfElectronCollection> & UNelectrons)
 {
   
   // std::cout << "fillUNGSF is being called!" << std::endl;
-  typename GsfElectronCollection::const_iterator i = UNelectrons->begin();
+  typename UNGsfElectronCollection::const_iterator i = UNelectrons->begin();
   for(;i != UNelectrons->end(); i++){
     UNSigmaIEta_->push_back(i->sigmaIetaIeta());
     UNSigmaIPhi_->push_back(i->sigmaIphiIphi());
@@ -1103,12 +1103,12 @@ void AODAnalyzer::fillUNGsf(const edm::Handle<GsfElectronCollection> & UNelectro
 
 }
 
-template<typename EcalRecHitCollection>
-void AODAnalyzer::fillEBrecHit(const edm::Handle<EcalRecHitCollection> & EBhits)
+template<typename EBEcalRecHitCollection>
+void AODAnalyzer::fillEBrecHit(const edm::Handle<EBEcalRecHitCollection> & EBhits)
 {
 
   // std::cout << "fillEBrecHit is being called!" << std::endl;
-  typename EcalRecHitCollection::const_iterator i = EBhits->begin();
+  typename EBEcalRecHitCollection::const_iterator i = EBhits->begin();
   for(;i != EBhits->end(); i++){
     EBenergy_ ->push_back(i->energy());
     EBtime_ ->push_back(i->time());
@@ -1118,12 +1118,12 @@ void AODAnalyzer::fillEBrecHit(const edm::Handle<EcalRecHitCollection> & EBhits)
   return;
 }
 
-template<typename EcalRecHitCollection>
-void AODAnalyzer::fillEErecHit(const edm::Handle<EcalRecHitCollection> & EEhits)
+template<typename EEEcalRecHitCollection>
+void AODAnalyzer::fillEErecHit(const edm::Handle<EEEcalRecHitCollection> & EEhits)
 {
 
   // std::cout << "fillEErecHit is being called!" << std::endl;
-  typename EcalRecHitCollection::const_iterator i = EEhits->begin();
+  typename EEEcalRecHitCollection::const_iterator i = EEhits->begin();
   for(;i != EEhits->end(); i++){
     EEenergy_ ->push_back(i->energy());
     EEtime_ ->push_back(i->time());
@@ -1133,12 +1133,12 @@ void AODAnalyzer::fillEErecHit(const edm::Handle<EcalRecHitCollection> & EEhits)
   return;
 }
 
-template<typename EcalRecHitCollection>
-void AODAnalyzer::fillESrecHit(const edm::Handle<EcalRecHitCollection> & EShits)
+template<typename ESEcalRecHitCollection>
+void AODAnalyzer::fillESrecHit(const edm::Handle<ESEcalRecHitCollection> & EShits)
 {
 
   // std::cout << "fillESrecHit is being called!" << std::endl;
-  typename EcalRecHitCollection::const_iterator i = EShits->begin();
+  typename ESEcalRecHitCollection::const_iterator i = EShits->begin();
   for(;i != EShits->end(); i++){
     ESenergy_ ->push_back(i->energy());
     EStime_ ->push_back(i->time());
