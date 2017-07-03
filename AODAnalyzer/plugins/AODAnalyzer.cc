@@ -27,6 +27,10 @@
 
 #include "DataFormats/EgammaReco/interface/SuperCluster.h" //added because of SuperCluster
 #include "DataFormats/EgammaReco/interface/SuperClusterFwd.h" //added because of SuperCluster (collection)
+#include "DataFormats/CaloRecHit/interface/CaloCluster.h"
+#include "DataFormats/CaloRecHit/interface/CaloClusterFwd.h"
+
+
 #include "DataFormats/EgammaCandidates/interface/GsfElectron.h" //added because of GsfElectron
 #include "DataFormats/EgammaCandidates/interface/GsfElectronFwd.h" //added because of GsfElectron -- QUESTION - do I need to include something similar also for GsfElectronunclean?
 #include "DataFormats/MuonReco/interface/Muon.h"
@@ -108,7 +112,16 @@ private:
 
   template<typename SuperClusterCollection> 
   void fillSC(const edm::Handle<SuperClusterCollection> &); 
-  //TODO
+
+  template<typename SuperClusterCollection> 
+  void fillSChfEM(const edm::Handle<SuperClusterCollection> &); 
+
+  template<typename CaloClusterCollection>
+  void fillCChfEM(const edm::Handle<CaloClusterCollection> &); 
+
+  template<typename CaloClusterCollection>
+  void fillCC(const edm::Handle<CaloClusterCollection> &); 
+
   template<typename PhotonCollection>
   void fillPhotons(const edm::Handle<PhotonCollection> &);
 
@@ -186,6 +199,15 @@ private:
   std::vector<double>* SCEn_;
   std::vector<double>* SCEta_;
   std::vector<double>* SCPhi_;
+  std::vector<double>* SCEnhfEM_;
+  std::vector<double>* SCEtahfEM_;
+  std::vector<double>* SCPhihfEM_;
+  std::vector<double>* CCEn_;
+  std::vector<double>* CCEta_;
+  std::vector<double>* CCPhi_;
+  std::vector<double>* CCEnhfEM_;
+  std::vector<double>* CCEtahfEM_;
+  std::vector<double>* CCPhihfEM_;
 
   std::vector<float>* PhoPt_;
   std::vector<float>* PhoEta_;
@@ -296,6 +318,15 @@ private:
   std::vector<double>* qSCEn_;
   std::vector<double>* qSCEta_;
   std::vector<double>* qSCPhi_;
+  std::vector<double>* qSCEnhfEM_;
+  std::vector<double>* qSCEtahfEM_;
+  std::vector<double>* qSCPhihfEM_;
+  std::vector<double>* qCCEn_;
+  std::vector<double>* qCCEta_;
+  std::vector<double>* qCCPhi_;
+  std::vector<double>* qCCEnhfEM_;
+  std::vector<double>* qCCEtahfEM_;
+  std::vector<double>* qCCPhihfEM_;
 
   std::vector<float>* qPhoPt_;
   std::vector<float>* qPhoEta_;
@@ -395,6 +426,10 @@ private:
   edm::EDGetTokenT<edm::TriggerResults> triggerBits_;
   edm::EDGetTokenT<trigger::TriggerEvent> triggerPrescales_;  //pat::PackedTriggerPrescales
   edm::EDGetTokenT<reco::SuperClusterCollection>   SuperClusterToken_;  //adding SuperCluster
+  edm::EDGetTokenT<reco::SuperClusterCollection>    SuperClusterhfEMToken_;
+  edm::EDGetTokenT<reco::CaloClusterCollection>   CaloClusterToken_;  //adding SuperCluster
+  edm::EDGetTokenT<reco::CaloClusterCollection>   CaloClusterhfEMToken_;
+
   edm::EDGetTokenT<reco::PhotonCollection> PhotonToken_;   //TWO types of Photons -- one collection?
   edm::EDGetTokenT<reco::PhotonCollection> gedPhotonToken_;
   edm::EDGetTokenT<reco::MuonCollection> MuonToken_;
@@ -455,7 +490,10 @@ AODAnalyzer::AODAnalyzer(const edm::ParameterSet& cfg):
   vtxToken_                 (consumes<reco::VertexCollection>(cfg.getUntrackedParameter<edm::InputTag>("vtx"))),
   triggerBits_              (consumes<edm::TriggerResults>(cfg.getUntrackedParameter<edm::InputTag>("bits"))),
   triggerPrescales_         (consumes<trigger::TriggerEvent>(cfg.getUntrackedParameter<edm::InputTag>("prescales"))),  // pat::PackedTriggerPrescales
-  SuperClusterToken_        (consumes<reco::SuperClusterCollection>(cfg.getUntrackedParameter<edm::InputTag>("SuperClusterTag"))), //adding SuperClusterToken_
+  SuperClusterToken_        (consumes<reco::SuperClusterCollection>(cfg.getUntrackedParameter<edm::InputTag>("SuperClusterTag"))),
+  SuperClusterhfEMToken_    (consumes<reco::SuperClusterCollection>(cfg.getUntrackedParameter<edm::InputTag>("SuperClusterhfEMTag"))),
+  CaloClusterToken_         (consumes<reco::CaloClusterCollection>(cfg.getUntrackedParameter<edm::InputTag>("CaloClusterTag"))),
+  CaloClusterhfEMToken_     (consumes<reco::CaloClusterCollection>(cfg.getUntrackedParameter<edm::InputTag>("CaloClusterhfEMTag"))),
   PhotonToken_              (consumes<reco::PhotonCollection>(cfg.getUntrackedParameter<edm::InputTag>("PhotonTag"))),
   gedPhotonToken_           (consumes<reco::PhotonCollection>(cfg.getUntrackedParameter<edm::InputTag>("gedPhotonTag"))),
   MuonToken_                (consumes<reco::MuonCollection>(cfg.getUntrackedParameter<edm::InputTag>("MuonTag"))),
@@ -519,6 +557,15 @@ void AODAnalyzer::initialize()
   SCEn_ ->clear();
   SCEta_->clear();
   SCPhi_->clear();
+  SCEnhfEM_ ->clear();
+  SCEtahfEM_->clear();
+  SCPhihfEM_->clear();
+  CCEn_ ->clear();
+  CCEta_->clear();
+  CCPhi_->clear();
+  CCEnhfEM_ ->clear();
+  CCEtahfEM_->clear();
+  CCPhihfEM_->clear();
 
   PhoPt_->clear();
   PhoEta_->clear();
@@ -621,6 +668,15 @@ void AODAnalyzer::initialize()
   qSCEn_ ->clear();
   qSCEta_->clear();
   qSCPhi_->clear();
+  qSCEnhfEM_ ->clear();
+  qSCEtahfEM_->clear();
+  qSCPhihfEM_->clear();
+  qCCEn_ ->clear();
+  qCCEta_->clear();
+  qCCPhi_->clear();
+  qCCEnhfEM_ ->clear();
+  qCCEtahfEM_->clear();
+  qCCPhihfEM_->clear();
 
   qPhoPt_->clear();
   qPhoEta_->clear();
@@ -822,6 +878,78 @@ void AODAnalyzer::fillSC(const edm::Handle<SuperClusterCollection> & supercluste
       SCEn_->push_back(i->energy());
       SCEta_->push_back(i->etaWidth());
       SCPhi_->push_back(i->phiWidth());
+
+        // std::cout << "ele energy: " << i->energy()   << std::endl; 
+        // std::cout << "ele SCeta: "  << i->etaWidth() << std::endl;
+        // std::cout << "ele SCphi: "  << i->phiWidth() << std::endl;
+      // }
+  }
+  return;
+
+
+}
+
+template<typename SuperClusterCollection>
+void AODAnalyzer::fillSChfEM(const edm::Handle<SuperClusterCollection> & superclustershfEM) //ask for jets analogy //SUPERCLUSTERS
+{
+
+  // Selected jets
+  //reco::CaloJetCollection recojets;
+  typename SuperClusterCollection::const_iterator i = superclustershfEM->begin();
+  for(;i != superclustershfEM->end(); i++){
+     if(std::abs(i->eta()) < maxSCEta_ && i->energy() >= minSCEn_) // not sure if needed
+      // {
+      SCEnhfEM_->push_back(i->energy());
+      SCEtahfEM_->push_back(i->etaWidth());
+      SCPhihfEM_->push_back(i->phiWidth());
+
+        // std::cout << "ele energy: " << i->energy()   << std::endl; 
+        // std::cout << "ele SCeta: "  << i->etaWidth() << std::endl;
+        // std::cout << "ele SCphi: "  << i->phiWidth() << std::endl;
+      // }
+  }
+  return;
+
+
+}
+
+template<typename CaloClusterCollection>
+void AODAnalyzer::fillCC(const edm::Handle<CaloClusterCollection> & caloclusters) //ask for jets analogy //SUPERCLUSTERS
+{
+
+  // Selected jets
+  //reco::CaloJetCollection recojets;
+  typename CaloClusterCollection::const_iterator i = caloclusters->begin();
+  for(;i != caloclusters->end(); i++){
+     //if(std::abs(i->eta()) < maxSCEta_ && i->energy() >= minSCEn_)  //do I need something like maxCCeta and so on? TODO
+      // {
+      CCEn_->push_back(i->energy());
+      CCEta_->push_back(i->eta());
+      CCPhi_->push_back(i->phi());
+
+        // std::cout << "ele energy: " << i->energy()   << std::endl; 
+        // std::cout << "ele SCeta: "  << i->etaWidth() << std::endl;
+        // std::cout << "ele SCphi: "  << i->phiWidth() << std::endl;
+      // }
+  }
+  return;
+
+
+}
+
+template<typename CaloClusterCollection>
+void AODAnalyzer::fillCChfEM(const edm::Handle<CaloClusterCollection> & caloclustershfEM) //ask for jets analogy //SUPERCLUSTERS
+{
+
+  // Selected jets
+  //reco::CaloJetCollection recojets;
+  typename CaloClusterCollection::const_iterator i = caloclustershfEM->begin();
+  for(;i != caloclustershfEM->end(); i++){
+     // if(std::abs(i->eta()) < maxSCEta_ && i->energy() >= minSCEn_) // do I need something like maxCCeta and so on? TODOd
+      // {
+      CCEnhfEM_->push_back(i->energy());
+      CCEtahfEM_->push_back(i->eta());
+      CCPhihfEM_->push_back(i->phi());
 
         // std::cout << "ele energy: " << i->energy()   << std::endl; 
         // std::cout << "ele SCeta: "  << i->etaWidth() << std::endl;
@@ -1161,6 +1289,16 @@ void AODAnalyzer::beginJob() {
   SCEn_      = new std::vector<double>;
   SCEta_     = new std::vector<double>;
   SCPhi_     = new std::vector<double>;
+  SCEnhfEM_      = new std::vector<double>;
+  SCEtahfEM_     = new std::vector<double>;
+  SCPhihfEM_     = new std::vector<double>;
+  CCEn_      = new std::vector<double>;
+  CCEta_     = new std::vector<double>;
+  CCPhi_     = new std::vector<double>;
+  CCEnhfEM_      = new std::vector<double>;
+  CCEtahfEM_     = new std::vector<double>;
+  CCPhihfEM_     = new std::vector<double>;
+
   PhoPt_     = new std::vector<float>;
   PhoEta_    = new std::vector<float>;
   PhoPhi_    = new std::vector<float>;
@@ -1268,6 +1406,15 @@ void AODAnalyzer::beginJob() {
   qSCEn_     = new std::vector<double>;
   qSCEta_    = new std::vector<double>;
   qSCPhi_    = new std::vector<double>;
+  qSCEnhfEM_     = new std::vector<double>;
+  qSCEtahfEM_    = new std::vector<double>;
+  qSCPhihfEM_    = new std::vector<double>;
+  qCCEn_     = new std::vector<double>;
+  qCCEta_    = new std::vector<double>;
+  qCCPhi_    = new std::vector<double>;
+  qCCEnhfEM_     = new std::vector<double>;
+  qCCEtahfEM_    = new std::vector<double>;
+  qCCPhihfEM_    = new std::vector<double>;
 
   qPhoPt_     = new std::vector<float>;
   qPhoEta_    = new std::vector<float>;
@@ -1377,6 +1524,15 @@ void AODAnalyzer::beginJob() {
   outTree_->Branch("qSCEn",     "std::vector<std::double>",        &qSCEn_);
   outTree_->Branch("qSCEta",    "std::vector<std::double>",        &qSCEta_);
   outTree_->Branch("qSCPhi",    "std::vector<std::double>",        &qSCPhi_);
+  outTree_->Branch("qSCEnhfEM",     "std::vector<std::double>",        &qSCEnhfEM_);
+  outTree_->Branch("qSCEtahfEM",    "std::vector<std::double>",        &qSCEtahfEM_);
+  outTree_->Branch("qSCPhihfEM",    "std::vector<std::double>",        &qSCPhihfEM_);
+  outTree_->Branch("qCCEn",     "std::vector<std::double>",        &qCCEn_);
+  outTree_->Branch("qCCEta",    "std::vector<std::double>",        &qCCEta_);
+  outTree_->Branch("qCCPhi",    "std::vector<std::double>",        &qCCPhi_);
+  outTree_->Branch("qCCEnhfEM",     "std::vector<std::double>",        &qCCEnhfEM_);
+  outTree_->Branch("qCCEtahfEM",    "std::vector<std::double>",        &qCCEtahfEM_);
+  outTree_->Branch("qCCPhihfEM",    "std::vector<std::double>",        &qCCPhihfEM_);
 
   outTree_->Branch("qPhoPt",     "std::vector<std::float>",        &qPhoPt_);
   outTree_->Branch("qPhoEta",    "std::vector<std::float>",        &qPhoEta_);
@@ -1509,6 +1665,15 @@ void AODAnalyzer::endJob()
   delete SCEn_;
   delete SCEta_;
   delete SCPhi_;
+  delete SCEnhfEM_;
+  delete SCEtahfEM_;
+  delete SCPhihfEM_;
+  delete CCEn_;
+  delete CCEta_;
+  delete CCPhi_;
+  delete CCEnhfEM_;
+  delete CCEtahfEM_;
+  delete CCPhihfEM_;
 
   delete PhoPt_;
   delete PhoEta_;
@@ -1611,6 +1776,15 @@ void AODAnalyzer::endJob()
   delete qSCEn_;
   delete qSCEta_;
   delete qSCPhi_;
+  delete qSCEnhfEM_;
+  delete qSCEtahfEM_;
+  delete qSCPhihfEM_;
+  delete qCCEn_;
+  delete qCCEta_;
+  delete qCCPhi_;
+  delete qCCEnhfEM_;
+  delete qCCEtahfEM_;
+  delete qCCPhihfEM_;
 
   delete qPhoPt_;
   delete qPhoEta_;
@@ -1753,9 +1927,19 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeMeanAndRms(CalMETPhi_,qCalMETPhi_);
   computeMeanAndRms(CalMETEn_,qCalMETEn_);
 
-  computeMeanAndRms(SCEn_, qSCEn_);   //adding supercluster pt,eta and phi
-  computeMeanAndRms(SCEta_, qSCEta_);  //
-  computeMeanAndRms(SCPhi_, qSCPhi_);  //
+  computeMeanAndRms(SCEn_, qSCEn_);   
+  computeMeanAndRms(SCEta_, qSCEta_);  
+  computeMeanAndRms(SCPhi_, qSCPhi_);
+  computeMeanAndRms(SCEnhfEM_, qSCEnhfEM_);   
+  computeMeanAndRms(SCEtahfEM_, qSCEtahfEM_);  
+  computeMeanAndRms(SCPhihfEM_, qSCPhihfEM_); 
+  computeMeanAndRms(CCEn_, qCCEn_);   
+  computeMeanAndRms(CCEta_, qCCEta_);  
+  computeMeanAndRms(CCPhi_, qCCPhi_);
+  computeMeanAndRms(CCEnhfEM_, qCCEnhfEM_);   
+  computeMeanAndRms(CCEtahfEM_, qCCEtahfEM_);  
+  computeMeanAndRms(CCPhihfEM_, qCCPhihfEM_); 
+
 
   computeMeanAndRms(PhoPt_, qPhoPt_);
   computeMeanAndRms(PhoEta_,qPhoEta_);
@@ -1857,6 +2041,15 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeQuantiles(SCEn_, qSCEn_,       quantiles_);
   computeQuantiles(SCEta_, qSCEta_,     quantiles_);
   computeQuantiles(SCPhi_, qSCPhi_,     quantiles_);
+  computeQuantiles(SCEnhfEM_, qSCEnhfEM_,       quantiles_);
+  computeQuantiles(SCEtahfEM_, qSCEtahfEM_,     quantiles_);
+  computeQuantiles(SCPhihfEM_, qSCPhihfEM_,     quantiles_);
+  computeQuantiles(CCEn_, qCCEn_,       quantiles_);
+  computeQuantiles(CCEta_, qCCEta_,     quantiles_);
+  computeQuantiles(CCPhi_, qCCPhi_,     quantiles_);
+  computeQuantiles(CCEnhfEM_, qCCEnhfEM_,       quantiles_);
+  computeQuantiles(CCEtahfEM_, qCCEtahfEM_,     quantiles_);
+  computeQuantiles(CCPhihfEM_, qCCPhihfEM_,     quantiles_);
 
   computeQuantiles(PhoPt_, qPhoPt_, quantiles_);
   computeQuantiles(PhoEta_,qPhoEta_,quantiles_);
@@ -2016,7 +2209,27 @@ void AODAnalyzer::analyze (const edm::Event &event, const edm::EventSetup &event
   // print the size of SuperClusterlocalv
   if(SuperClusterlocalv.isValid())
     fillSC(SuperClusterlocalv);
-  
+
+  edm::Handle<reco::SuperClusterCollection> SuperClusterhfEMlocalv;
+  event.getByToken(SuperClusterhfEMToken_, SuperClusterhfEMlocalv);
+  // print the size of SuperClusterlocalv
+  if(SuperClusterhfEMlocalv.isValid())
+    fillSChfEM(SuperClusterhfEMlocalv);
+
+    //Fill CaloCluster
+  edm::Handle<reco::CaloClusterCollection> CaloClusterlocalv;
+  event.getByToken(CaloClusterToken_, CaloClusterlocalv);
+  // print the size of SuperClusterlocalv
+  if(CaloClusterlocalv.isValid())
+    fillCC(CaloClusterlocalv);
+
+  edm::Handle<reco::CaloClusterCollection> CaloClusterhfEMlocalv;
+  event.getByToken(CaloClusterhfEMToken_, CaloClusterhfEMlocalv);
+  // print the size of SuperClusterlocalv
+  if(CaloClusterhfEMlocalv.isValid())
+    fillCChfEM(CaloClusterhfEMlocalv);
+
+
   edm::Handle<reco::PhotonCollection> photonlocalv;
   event.getByToken(PhotonToken_, photonlocalv);
   if(photonlocalv.isValid())

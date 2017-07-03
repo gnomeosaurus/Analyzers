@@ -41,10 +41,14 @@ process.MyAnalysis =cms.EDAnalyzer("AODAnalyzer",
                        CaloMETTag              = cms.untracked.InputTag("caloMet"),  #calometTag
 
                        vtx                     = cms.untracked.InputTag("offlinePrimaryVertices"),
-                       bits                    = cms.untracked.InputTag("TriggerResults","","HLT"),  #ASK IF HLT OR RECO!!!!!!!!!
+                       bits                    = cms.untracked.InputTag("TriggerResults","","HLT"),  #ASK IF HLT OR RECO!!!!!!!
                        prescales               = cms.untracked.InputTag("hltTriggerSummaryAOD"), # //PROBABLY get from https://github.com/cms-sw/cmssw/blob/master/DataFormats/PatCandidates/interface/TriggerEvent.h  ... ask about how
 
-                       SuperClusterTag         = cms.untracked.InputTag("particleFlowEGamma"), 
+                       SuperClusterTag         = cms.untracked.InputTag("particleFlowEGamma"),
+                       SuperClusterhfEMTag     = cms.untracked.InputTag("hfEMClusters"),
+                       CaloClusterTag          = cms.untracked.InputTag("particleFlowEGamma","EBEEClusters"),  #ESClusters also possible instead of EBEEClusters
+                       CaloClusterhfEMTag      = cms.untracked.InputTag("hfEMClusters"), 
+                       
                        PhotonTag               = cms.untracked.InputTag("photons"),
                        gedPhotonTag            = cms.untracked.InputTag("gedPhotons"),
                        MuonTag                 = cms.untracked.InputTag("muons"),
@@ -81,7 +85,7 @@ process.MyAnalysis =cms.EDAnalyzer("AODAnalyzer",
 process.mypath  = cms.Path(process.MyAnalysis)
 
 process.TFileService = cms.Service("TFileService",
-                                   fileName = cms.string("miniAODTree.root"),
+                                   fileName = cms.string("AODTree.root"),
                                    closeFileFast = cms.untracked.bool(False),
                                    )
  
