@@ -190,8 +190,7 @@ private:
   std::vector<float>* PhoPt_;
   std::vector<float>* PhoEta_;
   std::vector<float>* PhoPhi_;
-  std::vector<float>* PhoTrueEn_;
-  // CURRENTLY FILLING ENERGY() AND NOT CORRECTED ENERGY
+  std::vector<float>* PhoEn_;
 
   std::vector<float>* Phoe1x5_;
   std::vector<float>* Phoe2x5_;
@@ -208,7 +207,7 @@ private:
   std::vector<float>* gedPhoEta_;
   std::vector<float>* gedPhoPhi_;
   // CURRENTLY FILLING ENERGY() AND NOT CORRECTED ENERGY
-  std::vector<float>* gedPhoTrueEn_;
+  std::vector<float>* gedPhoEn_;
   // CURRENTLY FILLING ENERGY() AND NOT CORRECTED ENERGY
 
   std::vector<float>* gedPhoe1x5_;
@@ -301,7 +300,7 @@ private:
   std::vector<float>* qPhoPt_;
   std::vector<float>* qPhoEta_;
   std::vector<float>* qPhoPhi_;
-  std::vector<float>* qPhoTrueEn_;
+  std::vector<float>* qPhoEn_;
 
   std::vector<float>* qPhoe1x5_;
   std::vector<float>* qPhoe2x5_;
@@ -317,7 +316,7 @@ private:
   std::vector<float>* qgedPhoPt_;
   std::vector<float>* qgedPhoEta_;
   std::vector<float>* qgedPhoPhi_;
-  std::vector<float>* qgedPhoTrueEn_;
+  std::vector<float>* qgedPhoEn_;
 
   std::vector<float>* qgedPhoe1x5_;
   std::vector<float>* qgedPhoe2x5_;
@@ -524,7 +523,7 @@ void AODAnalyzer::initialize()
   PhoPt_->clear();
   PhoEta_->clear();
   PhoPhi_->clear();
-  PhoTrueEn_->clear();
+  PhoEn_->clear();
 
   Phoe1x5_->clear();
   Phoe2x5_->clear();
@@ -540,7 +539,7 @@ void AODAnalyzer::initialize()
   gedPhoPt_->clear();
   gedPhoEta_->clear();
   gedPhoPhi_->clear();
-  gedPhoTrueEn_->clear();
+  gedPhoEn_->clear();
 
   gedPhoe1x5_->clear();
   gedPhoe2x5_->clear();
@@ -626,7 +625,7 @@ void AODAnalyzer::initialize()
   qPhoPt_->clear();
   qPhoEta_->clear();
   qPhoPhi_->clear();
-  qPhoTrueEn_->clear();
+  qPhoEn_->clear();
 
   qPhoe1x5_->clear();
   qPhoe2x5_->clear();
@@ -642,7 +641,7 @@ void AODAnalyzer::initialize()
   qgedPhoPt_->clear();
   qgedPhoEta_->clear();
   qgedPhoPhi_->clear();
-  qgedPhoTrueEn_->clear();
+  qgedPhoEn_->clear();
 
   qgedPhoe1x5_->clear();
   qgedPhoe2x5_->clear();
@@ -843,7 +842,7 @@ void AODAnalyzer::fillPhotons(const edm::Handle<PhotonCollection> & photons)
         PhoPt_->push_back(i->et());
         PhoEta_->push_back(i->eta());
         PhoPhi_->push_back(i->phi());
-        PhoTrueEn_->push_back(i->getCorrectedEnergy(i->getCandidateP4type()));   //GETCORRECTEDENERGY!!
+        PhoEn_->push_back(i->energy());   //GETCORRECTEDENERGY!!
         Phoe1x5_->push_back(i->e1x5());   
         Phoe2x5_->push_back(i->e2x5());
         Phoe3x3_->push_back(i->e3x3());
@@ -873,7 +872,7 @@ void AODAnalyzer::fillgedPhotons(const edm::Handle<PhotonCollection> & gedphoton
         gedPhoPt_->push_back(i->et());
         gedPhoEta_->push_back(i->eta());
         gedPhoPhi_->push_back(i->phi());
-        gedPhoTrueEn_->push_back(i->energy());
+        gedPhoEn_->push_back(i->energy());
         gedPhoe1x5_->push_back(i->e1x5());   
         gedPhoe2x5_->push_back(i->e2x5());
         gedPhoe3x3_->push_back(i->e3x3());
@@ -1165,7 +1164,7 @@ void AODAnalyzer::beginJob() {
   PhoPt_     = new std::vector<float>;
   PhoEta_    = new std::vector<float>;
   PhoPhi_    = new std::vector<float>;
-  PhoTrueEn_ = new std::vector<float>;
+  PhoEn_ = new std::vector<float>;
 
   Phoe1x5_   = new std::vector<float>;
   Phoe2x5_   = new std::vector<float>;
@@ -1181,7 +1180,7 @@ void AODAnalyzer::beginJob() {
   gedPhoPt_     = new std::vector<float>;
   gedPhoEta_    = new std::vector<float>;
   gedPhoPhi_    = new std::vector<float>;
-  gedPhoTrueEn_ = new std::vector<float>;
+  gedPhoEn_ = new std::vector<float>;
 
   gedPhoe1x5_   = new std::vector<float>;
   gedPhoe2x5_   = new std::vector<float>;
@@ -1273,7 +1272,7 @@ void AODAnalyzer::beginJob() {
   qPhoPt_     = new std::vector<float>;
   qPhoEta_    = new std::vector<float>;
   qPhoPhi_    = new std::vector<float>;
-  qPhoTrueEn_ = new std::vector<float>;
+  qPhoEn_ = new std::vector<float>;
 
   qPhoe1x5_   = new std::vector<float>;
   qPhoe2x5_   = new std::vector<float>;
@@ -1289,7 +1288,7 @@ void AODAnalyzer::beginJob() {
   qgedPhoPt_     = new std::vector<float>;
   qgedPhoEta_    = new std::vector<float>;
   qgedPhoPhi_    = new std::vector<float>;
-  qgedPhoTrueEn_ = new std::vector<float>;
+  qgedPhoEn_ = new std::vector<float>;
 
   qgedPhoe1x5_   = new std::vector<float>;
   qgedPhoe2x5_   = new std::vector<float>;
@@ -1382,7 +1381,7 @@ void AODAnalyzer::beginJob() {
   outTree_->Branch("qPhoPt",     "std::vector<std::float>",        &qPhoPt_);
   outTree_->Branch("qPhoEta",    "std::vector<std::float>",        &qPhoEta_);
   outTree_->Branch("qPhoPhi",    "std::vector<std::float>",        &qPhoPhi_);
-  outTree_->Branch("qPhoTrueEn_",    "std::vector<std::float>",    &qPhoTrueEn_);
+  outTree_->Branch("qPhoEn_",    "std::vector<std::float>",    &qPhoEn_);
 
   outTree_->Branch("qPhoe1x5_",     "std::vector<std::float>",        &qPhoe1x5_);
   outTree_->Branch("qPhoe2x5_",    "std::vector<std::float>",        &qPhoe2x5_);
@@ -1398,7 +1397,7 @@ void AODAnalyzer::beginJob() {
   outTree_->Branch("qgedPhoPt",     "std::vector<std::float>",     &qgedPhoPt_);
   outTree_->Branch("qgedPhoEta",    "std::vector<std::float>",     &qgedPhoEta_);
   outTree_->Branch("qgedPhoPhi",    "std::vector<std::float>",     &qgedPhoPhi_);
-  outTree_->Branch("qgedPhoTrueEn_",    "std::vector<std::float>", &qgedPhoTrueEn_);
+  outTree_->Branch("qgedPhoEn_",    "std::vector<std::float>", &qgedPhoEn_);
 
   outTree_->Branch("qgedPhoe1x5_",     "std::vector<std::float>",        &qgedPhoe1x5_);
   outTree_->Branch("qgedPhoe2x5_",    "std::vector<std::float>",        &qgedPhoe2x5_);
@@ -1514,7 +1513,7 @@ void AODAnalyzer::endJob()
   delete PhoPt_;
   delete PhoEta_;
   delete PhoPhi_;
-  delete PhoTrueEn_;
+  delete PhoEn_;
 
   delete Phoe1x5_;
   delete Phoe2x5_;
@@ -1530,7 +1529,7 @@ void AODAnalyzer::endJob()
   delete gedPhoPt_;
   delete gedPhoEta_;
   delete gedPhoPhi_;
-  delete gedPhoTrueEn_;
+  delete gedPhoEn_;
 
   delete gedPhoe1x5_;
   delete gedPhoe2x5_;
@@ -1616,7 +1615,7 @@ void AODAnalyzer::endJob()
   delete qPhoPt_;
   delete qPhoEta_;
   delete qPhoPhi_;
-  delete qPhoTrueEn_;
+  delete qPhoEn_;
 
   delete qPhoe1x5_;
   delete qPhoe2x5_;
@@ -1632,7 +1631,7 @@ void AODAnalyzer::endJob()
   delete qgedPhoPt_;
   delete qgedPhoEta_;
   delete qgedPhoPhi_;
-  delete qgedPhoTrueEn_;
+  delete qgedPhoEn_;
 
   delete qgedPhoe1x5_;
   delete qgedPhoe2x5_;
@@ -1761,7 +1760,7 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeMeanAndRms(PhoPt_, qPhoPt_);
   computeMeanAndRms(PhoEta_,qPhoEta_);
   computeMeanAndRms(PhoPhi_,qPhoPhi_);
-  computeMeanAndRms(PhoTrueEn_,qPhoTrueEn_);
+  computeMeanAndRms(PhoEn_,qPhoEn_);
 
   computeMeanAndRms(Phoe1x5_, qPhoe1x5_);
   computeMeanAndRms(Phoe2x5_,qPhoe2x5_);
@@ -1778,7 +1777,7 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeMeanAndRms(gedPhoPt_, qgedPhoPt_);
   computeMeanAndRms(gedPhoEta_,qgedPhoEta_);
   computeMeanAndRms(gedPhoPhi_,qgedPhoPhi_);
-  computeMeanAndRms(gedPhoTrueEn_,qgedPhoTrueEn_);
+  computeMeanAndRms(gedPhoEn_,qgedPhoEn_);
 
   computeMeanAndRms(gedPhoe1x5_, qgedPhoe1x5_);
   computeMeanAndRms(gedPhoe2x5_,qgedPhoe2x5_);
@@ -1862,7 +1861,7 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeQuantiles(PhoPt_, qPhoPt_, quantiles_);
   computeQuantiles(PhoEta_,qPhoEta_,quantiles_);
   computeQuantiles(PhoPhi_,qPhoPhi_,quantiles_);
-  computeQuantiles(PhoTrueEn_,qPhoTrueEn_,quantiles_);
+  computeQuantiles(PhoEn_,qPhoEn_,quantiles_);
 
   computeQuantiles(Phoe1x5_, qPhoe1x5_, quantiles_);
   computeQuantiles(Phoe2x5_,qPhoe2x5_,quantiles_);
@@ -1878,7 +1877,7 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeQuantiles(gedPhoPt_, qgedPhoPt_, quantiles_);
   computeQuantiles(gedPhoEta_,qgedPhoEta_,quantiles_);
   computeQuantiles(gedPhoPhi_,qgedPhoPhi_,quantiles_);
-  computeQuantiles(gedPhoTrueEn_,qgedPhoTrueEn_,quantiles_);
+  computeQuantiles(gedPhoEn_,qgedPhoEn_,quantiles_);
 
   computeQuantiles(gedPhoe1x5_, qgedPhoe1x5_, quantiles_);
   computeQuantiles(gedPhoe2x5_,qgedPhoe2x5_,quantiles_);
