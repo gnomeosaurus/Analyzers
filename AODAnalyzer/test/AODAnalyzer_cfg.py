@@ -48,7 +48,7 @@ process.MyAnalysis =cms.EDAnalyzer("AODAnalyzer",
                        SuperClusterhfEMTag     = cms.untracked.InputTag("hfEMClusters"),
                        CaloClusterTag          = cms.untracked.InputTag("particleFlowEGamma","EBEEClusters"),  #ESClusters also possible instead of EBEEClusters
                        CaloClusterhfEMTag      = cms.untracked.InputTag("hfEMClusters"), 
-                       
+
                        PhotonTag               = cms.untracked.InputTag("photons"),
                        gedPhotonTag            = cms.untracked.InputTag("gedPhotons"),
                        MuonTag                 = cms.untracked.InputTag("muons"),
@@ -66,8 +66,10 @@ process.MyAnalysis =cms.EDAnalyzer("AODAnalyzer",
                        HBHERecHitTag           = cms.untracked.InputTag("reducedHcalRecHits","hbhereco"),
                        HFRecHitTag             = cms.untracked.InputTag("reducedHcalRecHits","hfreco"),
                        HORecHitTag             = cms.untracked.InputTag("reducedHcalRecHits","horeco"),
-                       PreshowerClusterTag     = cms.untracked.InputTag("multi5x5SuperClustersWithPreshower","preshowerXClusters"),  #also possible to take YClusters instead of ZClusters
-                                
+                       PreshowerClusterXTag    = cms.untracked.InputTag("multi5x5SuperClustersWithPreshower","preshowerXClusters"),  
+                       PreshowerClusterYTag    = cms.untracked.InputTag("multi5x5SuperClustersWithPreshower","preshowerYClusters"),
+                       CastorTowerTag          = cms.untracked.InputTag("CastorTowerReco"),  #add LeafCandidate variables
+        
                        maxJetEta               = cms.untracked.double(5.0),   #is this ok?
                        minJetPt                = cms.untracked.double(10.0),  #is this ok?
 
