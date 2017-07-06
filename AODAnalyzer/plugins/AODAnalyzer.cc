@@ -471,7 +471,7 @@ private:
   // edm::EDGetTokenT<SortedCollection<EcalRecHit,edm::StrictWeakOrdering<EcalRecHit>> eeRHSrcToken_;
   edm::EDGetTokenT<reco::PreshowerClusterCollection> preshowerXToken_;
   edm::EDGetTokenT<reco::PreshowerClusterCollection> preshowerYToken_;
-  edm::EDGetTokenT<reco::CastorRecHitCollection> CastorTowerToken_;   //leafcandidate variables
+  edm::EDGetTokenT<CastorRecHitCollection> CastorTowerToken_;   //leafcandidate variables
 
 
 
@@ -2379,7 +2379,7 @@ void AODAnalyzer::analyze (const edm::Event &event, const edm::EventSetup &event
   if(prShYs.isValid())
     fillPreshowerClusterY(prShYs);
 
-  edm::Handle<reco::CastorRecHitCollection> castors;
+  edm::Handle<CastorRecHitCollection> castors;
   event.getByToken(CastorTowerToken_, castors);
   if(castors.isValid())
     fillCastorTower(castors);
