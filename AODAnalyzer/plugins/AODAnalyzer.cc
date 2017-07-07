@@ -63,7 +63,6 @@
 
 #include "DataFormats/EgammaReco/interface/PreshowerCluster.h"
 #include "DataFormats/EgammaReco/interface/PreshowerClusterFwd.h"
-#include "DataFormats/CaloRecHit/interface/CaloCluster.h"
 
 #include "DataFormats/CastorReco/interface/CastorTower.h"
 #include "DataFormats/HcalRecHit/interface/CastorRecHit.h"
@@ -164,8 +163,8 @@ private:
   template<typename PreshowerClusterCollectionY>
   void fillPreshowerClusterY(const edm::Handle<PreshowerClusterCollectionY> &);
 
-  template<typename CastorRecHitCollection>   //TODO   --find variables for LeafCandidate
-  void fillCastorTower(const edm::Handle<CastorRecHitCollection> &);
+  template<typename CastorTowerCollection>   //TODO   --find variables for LeafCandidate
+  void fillCastorTower(const edm::Handle<CastorTowerCollection> &);
 
   void initialize();
   template<typename T>
@@ -186,6 +185,7 @@ private:
   float  lumi_;
   int    isSig_;
 
+  //PFJet variables
   std::vector<float>* PFJetPt_;
   std::vector<float>* PFJetEta_;
   std::vector<float>* PFJetPhi_;
@@ -194,11 +194,13 @@ private:
   std::vector<float>* PFMetPt_;
   std::vector<float>* PFMetPhi_;
   std::vector<int>*   nVtx_;
-  
+  //CaloJet variables
   std::vector<float>* CalJetPt_;
   std::vector<float>* CalJetEta_;
   std::vector<float>* CalJetPhi_;
   std::vector<float>* CalJetEn_;
+
+  //CaloMet variables
   std::vector<float>* CalMETPt_;
   std::vector<float>* CalMETEta_;
   std::vector<float>* CalMETPhi_;
@@ -211,13 +213,17 @@ private:
   std::vector<double>* SCEnhfEM_;
   std::vector<double>* SCEtahfEM_;
   std::vector<double>* SCPhihfEM_;
+
+  //caloclusters variables
   std::vector<double>* CCEn_;
   std::vector<double>* CCEta_;
   std::vector<double>* CCPhi_;
+  //calocluster hfem variables
   std::vector<double>* CCEnhfEM_;
   std::vector<double>* CCEtahfEM_;
   std::vector<double>* CCPhihfEM_;
 
+  //photon variables
   std::vector<float>* PhoPt_;
   std::vector<float>* PhoEta_;
   std::vector<float>* PhoPhi_;
@@ -257,6 +263,8 @@ private:
   std::vector<float>* MuEta_;
   std::vector<float>* MuPhi_;
   std::vector<float>* MuEn_;
+  std::vector<float>* MuCh_;
+
 
   // GSF variables
   std::vector<float>* SigmaIEta_;
@@ -309,6 +317,11 @@ private:
   std::vector<double>* PreShYCorrEn_;
   std::vector<double>* PreShYEta_;
   std::vector<double>* PreShYPhi_;
+
+  //castor tower variables
+  std::vector<double>* CTPt_;
+  std::vector<double>* CTEta_;
+  std::vector<double>* CTPhi_;
 
   std::vector<float>* qPFJetPt_;
   std::vector<float>* qPFJetEta_;
@@ -377,6 +390,8 @@ private:
   std::vector<float>* qMuEta_;
   std::vector<float>* qMuPhi_;
   std::vector<float>* qMuEn_;
+  std::vector<float>* qMuCh_;
+
   //TODO
   std::vector<float>* qSigmaIEta_;
   std::vector<float>* qSigmaIPhi_;
@@ -425,6 +440,9 @@ private:
   std::vector<double>* qPreShYEta_;
   std::vector<double>* qPreShYPhi_;
 
+  std::vector<double>* qCTPt_;
+  std::vector<double>* qCTEta_;
+  std::vector<double>* qCTPhi_;
 
   std::vector<float>*   crossSection_;
   std::vector<float>*   pathRates_;
@@ -471,7 +489,7 @@ private:
   // edm::EDGetTokenT<SortedCollection<EcalRecHit,edm::StrictWeakOrdering<EcalRecHit>> eeRHSrcToken_;
   edm::EDGetTokenT<reco::PreshowerClusterCollection> preshowerXToken_;
   edm::EDGetTokenT<reco::PreshowerClusterCollection> preshowerYToken_;
-  edm::EDGetTokenT<CastorRecHitCollection> CastorTowerToken_;   //leafcandidate variables
+  edm::EDGetTokenT<reco::CastorTowerCollection> CastorTowerToken_;   //leafcandidate variables  //perhaps reco
 
 
 
@@ -532,7 +550,7 @@ AODAnalyzer::AODAnalyzer(const edm::ParameterSet& cfg):
   hoRHcToken_               (consumes<HORecHitCollection>(cfg.getUntrackedParameter<edm::InputTag>("HORecHitTag"))),
   preshowerXToken_          (consumes<reco::PreshowerClusterCollection>(cfg.getUntrackedParameter<edm::InputTag>("PreshowerClusterXTag"))),
   preshowerYToken_          (consumes<reco::PreshowerClusterCollection>(cfg.getUntrackedParameter<edm::InputTag>("PreshowerClusterYTag"))),
-  CastorTowerToken_         (consumes<reco::CastorTower>(cfg.getUntrackedParameter<edm::InputTag>("CastorTowerTag"))),
+  CastorTowerToken_         (consumes<reco::CastorTowerCollection>(cfg.getUntrackedParameter<edm::InputTag>("CastorTowerTag"))),  //perhaps reco  https://github.com/cms-sw/cmssw/blob/09c3fce6626f70fd04223e7dacebf0b485f73f54/DataFormats/CastorReco/interface/CastorTower.h
 
 
 
@@ -624,6 +642,7 @@ void AODAnalyzer::initialize()
   MuEta_->clear();
   MuPhi_->clear();
   MuEn_->clear();
+  MuCh_->clear();
 
   SigmaIEta_->clear();
   SigmaIPhi_->clear();
@@ -671,6 +690,10 @@ void AODAnalyzer::initialize()
   PreShYCorrEn_->clear();
   PreShYEta_->clear();
   PreShYPhi_->clear();
+
+  CTPt_->clear();
+  CTEta_->clear();
+  CTPhi_->clear();
 
   qPFJetPt_->clear();
   qPFJetEta_->clear();
@@ -739,7 +762,7 @@ void AODAnalyzer::initialize()
   qMuEta_->clear();
   qMuPhi_->clear();
   qMuEn_->clear();
-
+  qMuCh_->clear();
   //TODO
   qSigmaIEta_->clear();
   qSigmaIPhi_->clear();  
@@ -787,6 +810,10 @@ void AODAnalyzer::initialize()
   qPreShYCorrEn_->clear();
   qPreShYEta_->clear();
   qPreShYPhi_->clear();
+
+  qCTPt_->clear();
+  qCTEta_->clear();
+  qCTPhi_->clear();
 
   crossSection_->clear();
   pathRates_->clear();
@@ -840,7 +867,7 @@ void AODAnalyzer::fillPFChMets(const edm::Handle<PFChMETCollection> & pfchmets)
 template<typename PFMETCollection>
 void AODAnalyzer::fillPFMets(const edm::Handle<PFMETCollection> & pfmets)
 {
-  // std::cout << "fillPFChMets is being called!" << std::endl;
+  // std::cout << "fis is being called!" << std::endl;
   // std::cout << pfmets->size() <<std::endl;
   typename PFMETCollection::const_iterator i = pfmets->begin();
   for(;i != pfmets->end(); i++){
@@ -855,7 +882,7 @@ void AODAnalyzer::fillPFMets(const edm::Handle<PFMETCollection> & pfmets)
 template<typename CaloJetCollection>
 void AODAnalyzer::fillCaloJets(const edm::Handle<CaloJetCollection> & calojets)
 {
-  // std::cout << "fillPFChMets is being called!" << std::endl;
+  // std::cout << "f is being called!" << std::endl;
   // std::cout << pfmets->size() <<std::endl;
   typename CaloJetCollection::const_iterator i = calojets->begin();
   for(;i != calojets->end(); i++){
@@ -872,7 +899,7 @@ void AODAnalyzer::fillCaloJets(const edm::Handle<CaloJetCollection> & calojets)
 template<typename CaloMETCollection>
 void AODAnalyzer::fillCaloMETs(const edm::Handle<CaloMETCollection> & caloMETs)
 {
-  // std::cout << "fillPFChMets is being called!" << std::endl;
+  // std::cout << "fills is being called!" << std::endl;
   // std::cout << pfmets->size() <<std::endl;
   typename CaloMETCollection::const_iterator i = caloMETs->begin();
   for(;i != caloMETs->end(); i++){
@@ -1060,6 +1087,7 @@ void AODAnalyzer::fillMuons(const edm::Handle<MuonCollection> & muons)
         MuEta_->push_back(i->eta());
         MuPhi_->push_back(i->phi());
         MuEn_->push_back(i->energy());   //GETCORRECTEDENERGY!!
+        MuCh_->push_back(i->charge());
         // std::cout << "ele energy: " << i->energy()   << std::endl; 
         // std::cout << "ele SCeta: "  << i->etaWidth() << std::endl;
         // std::cout << "ele SCphi: "  << i->phiWidth() << std::endl;
@@ -1259,6 +1287,23 @@ void AODAnalyzer::fillPreshowerClusterY(const edm::Handle<PreshowerClusterCollec
   return;
 }
 
+
+template<typename CastorTowerCollection>
+void AODAnalyzer::fillCastorTower(const edm::Handle<CastorTowerCollection> & castors)
+{
+
+  // std::cout << "fillHOrecHit is being called!" << std::endl;
+  typename CastorTowerCollection::const_iterator i = castors->begin();
+  for(;i != castors->end(); i++){
+
+    CTPt_->push_back(i->pt());
+    CTEta_->push_back(i->eta());
+    CTPhi_->push_back(i->phi());
+
+  }
+  return;
+}
+
 // ----------------------------------- HO
 
 template<typename T>
@@ -1380,6 +1425,7 @@ void AODAnalyzer::beginJob() {
   MuEta_        = new std::vector<float>;
   MuPhi_        = new std::vector<float>;
   MuEn_         = new std::vector<float>;
+  MuCh_         = new std::vector<float>;
   //TODO
   SigmaIEta_ = new std::vector<float>;
   SigmaIPhi_ = new std::vector<float>;
@@ -1429,6 +1475,11 @@ void AODAnalyzer::beginJob() {
   PreShYCorrEn_= new std::vector<double>;
   PreShYEta_   = new std::vector<double>;
   PreShYPhi_   = new std::vector<double>;
+
+  CTPt_        = new std::vector<double>;
+  CTEta_       = new std::vector<double>;
+  CTPhi_       = new std::vector<double>;
+  
   // outTree_->Branch("MetPt",     "std::vector<std::float>",     &MetPt_);
   // outTree_->Branch("MetPhi",    "std::vector<std::float>",     &MetPhi_);
   // outTree_->Branch("PFJetPt",     "std::vector<std::float>",     &PFJetPt_);
@@ -1502,6 +1553,7 @@ void AODAnalyzer::beginJob() {
   qMuEta_   = new std::vector<float>;
   qMuPhi_   = new std::vector<float>;
   qMuEn_   = new std::vector<float>;
+  qMuCh_   = new std::vector<float>;
 
   qSigmaIEta_= new std::vector<float>;
   qSigmaIPhi_= new std::vector<float>;
@@ -1543,14 +1595,18 @@ void AODAnalyzer::beginJob() {
   // qHOchi2_      = new std::vector<float>;
 //FINISH doing HBHE<HF<HO
 
-  qPreShEn_    = new std::vector<double>;
-  qPreShCorrEn_= new std::vector<double>;
-  qPreShEta_   = new std::vector<double>;
-  qPreShPhi_   = new std::vector<double>;
+  qPreShEn_     = new std::vector<double>;
+  qPreShCorrEn_ = new std::vector<double>;
+  qPreShEta_    = new std::vector<double>;
+  qPreShPhi_    = new std::vector<double>;
   qPreShYEn_    = new std::vector<double>;
   qPreShYCorrEn_= new std::vector<double>;
   qPreShYEta_   = new std::vector<double>;
   qPreShYPhi_   = new std::vector<double>;
+
+  qCTPt_        = new std::vector<double>;
+  qCTEta_       = new std::vector<double>;
+  qCTPhi_       = new std::vector<double>;
 
   qNVtx_       = new std::vector<int>;
   crossSection_= new std::vector<float>;
@@ -1624,6 +1680,7 @@ void AODAnalyzer::beginJob() {
   outTree_->Branch("qMuEta",    "std::vector<std::float>",        &qMuEta_);
   outTree_->Branch("qMuPhi",    "std::vector<std::float>",        &qMuPhi_);
   outTree_->Branch("qMuEn_",    "std::vector<std::float>",        &qMuEn_);
+  outTree_->Branch("qMuCh_",    "std::vector<std::float>",        &qMuCh_);
 
   outTree_->Branch("qSigmaIEta",    "std::vector<std::float>",     &qSigmaIEta_);
   outTree_->Branch("qSigmaIPhi",    "std::vector<std::float>",     &qSigmaIPhi_);
@@ -1671,6 +1728,10 @@ void AODAnalyzer::beginJob() {
   outTree_->Branch("qPreShYCorrEn", "std::vector<std::double>",        &qPreShYCorrEn_);
   outTree_->Branch("qPreShYEta",    "std::vector<std::double>",        &qPreShYEta_);
   outTree_->Branch("qPreShYPhi",    "std::vector<std::double>",        &qPreShYPhi_);
+
+  outTree_->Branch("qCTPt",     "std::vector<std::double>",        &qCTPt_);
+  outTree_->Branch("qCTEta",    "std::vector<std::double>",        &qCTEta_);
+  outTree_->Branch("qCTPhi",    "std::vector<std::double>",        &qCTPhi_);
 
   outTree_->Branch("crossSection",   "std::vector<std::float>",    &crossSection_);
   outTree_->Branch("pathRates",      "std::vector<std::float>",    &pathRates_);
@@ -1768,6 +1829,7 @@ void AODAnalyzer::endJob()
   delete MuEta_;
   delete MuPhi_;
   delete MuEn_;
+  delete MuCh_;
   //TODO
   delete SigmaIEta_;
   delete SigmaIPhi_;
@@ -1814,6 +1876,9 @@ void AODAnalyzer::endJob()
   delete PreShYCorrEn_;
   delete PreShYEta_;
   delete PreShYPhi_;
+  delete CTPt_;
+  delete CTEta_;
+  delete CTPhi_;
   //delete SuperCluster_;
   //delete qSuperCluster_;
   delete qPFJetPt_;
@@ -1882,6 +1947,7 @@ void AODAnalyzer::endJob()
   delete qMuEta_;
   delete qMuPhi_;
   delete qMuEn_;
+  delete qMuCh_;
   //TODO
   delete qSigmaIEta_;
   delete qSigmaIPhi_;
@@ -1929,6 +1995,10 @@ void AODAnalyzer::endJob()
   delete qPreShYCorrEn_;
   delete qPreShYEta_;
   delete qPreShYPhi_;
+
+  delete qCTPt_;
+  delete qCTEta_;
+  delete qCTPhi_;
 
   delete qNVtx_;
   delete crossSection_;
@@ -2042,6 +2112,7 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeMeanAndRms(MuEta_,qMuEta_);
   computeMeanAndRms(MuPhi_,qMuPhi_);
   computeMeanAndRms(MuEn_,qMuEn_);
+  computeMeanAndRms(MuCh_,qMuCh_);
   //TODO
   computeMeanAndRms(SigmaIEta_, qSigmaIEta_);
   computeMeanAndRms(SigmaIPhi_, qSigmaIPhi_);
@@ -2087,6 +2158,10 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeMeanAndRms(PreShYCorrEn_, qPreShYCorrEn_);   
   computeMeanAndRms(PreShYEta_, qPreShYEta_);  //
   computeMeanAndRms(PreShYPhi_, qPreShYPhi_);  //
+
+  computeMeanAndRms(CTPt_, qCTPt_);   
+  computeMeanAndRms(CTEta_, qCTEta_);  
+  computeMeanAndRms(CTPhi_, qCTPhi_);
 
   computeQuantiles(PFJetPt_, qPFJetPt_, quantiles_);
   computeQuantiles(PFJetEta_,qPFJetEta_,quantiles_);
@@ -2155,6 +2230,7 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeQuantiles(MuEta_,qMuEta_,quantiles_);
   computeQuantiles(MuPhi_,qMuPhi_,quantiles_);
   computeQuantiles(MuEn_,qMuEn_,quantiles_);
+  computeQuantiles(MuCh_,qMuCh_,quantiles_);
   //TODO
   computeQuantiles(SigmaIEta_, qSigmaIEta_, quantiles_);
   computeQuantiles(SigmaIPhi_, qSigmaIPhi_, quantiles_);
@@ -2203,6 +2279,10 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeQuantiles(PreShYCorrEn_, qPreShYCorrEn_,   quantiles_);
   computeQuantiles(PreShYEta_, qPreShYEta_,     quantiles_);
   computeQuantiles(PreShYPhi_, qPreShYPhi_,     quantiles_);
+
+  computeQuantiles(CTPt_, qCTPt_, quantiles_);
+  computeQuantiles(CTEta_,qCTEta_,quantiles_);
+  computeQuantiles(CTPhi_,qCTPhi_,quantiles_);
 
   crossSection_->push_back( (float)eventCounter/lumi_ );
   
@@ -2379,10 +2459,10 @@ void AODAnalyzer::analyze (const edm::Event &event, const edm::EventSetup &event
   if(prShYs.isValid())
     fillPreshowerClusterY(prShYs);
 
-  edm::Handle<CastorRecHitCollection> castors;
-  event.getByToken(CastorTowerToken_, castors);
-  if(castors.isValid())
-    fillCastorTower(castors);
+  edm::Handle<reco::CastorTowerCollection> castorsz;
+  event.getByToken(CastorTowerToken_, castorsz);
+  if(castorsz.isValid())
+    fillCastorTower(castorsz);
   //Lorentz vector
    // Look for MET --LORENTZ VECTOR
   // edm::Handle<reco::GenMETCollection> genMet;

@@ -53,8 +53,6 @@ process.MyAnalysis =cms.EDAnalyzer("AODAnalyzer",
                        gedPhotonTag            = cms.untracked.InputTag("gedPhotons"),
                        MuonTag                 = cms.untracked.InputTag("muons"),
 
-
-                       #44-57 are new tags
                        GsfElectronTag          = cms.untracked.InputTag("gedGsfElectrons"),
                        GsfElectronUncleanedTag = cms.untracked.InputTag("uncleanedOnlyGsfElectrons"),
 
