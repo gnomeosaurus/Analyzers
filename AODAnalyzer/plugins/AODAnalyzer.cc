@@ -118,6 +118,9 @@ private:
   template<typename SuperClusterhfEMCollection> 
   void fillSChfEM(const edm::Handle<SuperClusterhfEMCollection> &); 
 
+  template<typename SuperCluster5x5Collection> 
+  void fillSC5x5(const edm::Handle<SuperCluster5x5Collection> &); 
+
   template<typename CaloCluster5x5Collection>
   void fillCChfEM(const edm::Handle<CaloCluster5x5Collection> &); 
 
@@ -132,6 +135,12 @@ private:
 
   template<typename MuonCollection>
   void fillMuons(const edm::Handle<MuonCollection> &);
+
+  template<typename MuonCosmCollection>
+  void fillCosmMuons(const edm::Handle<MuonCosmCollection> &);
+
+  template<typename MuonCosmLegCollection>
+  void fillCosmLegMuons(const edm::Handle<MuonCosmLegCollection> &);
 
   template<typename GsfElectronCollection>
   void fillGsf(const edm::Handle<GsfElectronCollection> &);
@@ -213,7 +222,9 @@ private:
   std::vector<double>* SCEnhfEM_;
   std::vector<double>* SCEtahfEM_;
   std::vector<double>* SCPhihfEM_;
-
+  std::vector<double>* SCEn5x5_;
+  std::vector<double>* SCEta5x5_;
+  std::vector<double>* SCPhi5x5_;
   //caloclusters variables
   std::vector<double>* CCEn_;
   std::vector<double>* CCEta_;
@@ -264,8 +275,16 @@ private:
   std::vector<float>* MuPhi_;
   std::vector<float>* MuEn_;
   std::vector<float>* MuCh_;
-
-
+  std::vector<float>* MuCosmPt_;
+  std::vector<float>* MuCosmEta_;
+  std::vector<float>* MuCosmPhi_;
+  std::vector<float>* MuCosmEn_;
+  std::vector<float>* MuCosmCh_;
+  std::vector<float>* MuCosmLegPt_;
+  std::vector<float>* MuCosmLegEta_;
+  std::vector<float>* MuCosmLegPhi_;
+  std::vector<float>* MuCosmLegEn_;
+  std::vector<float>* MuCosmLegCh_;
   // GSF variables
   std::vector<float>* SigmaIEta_;
   std::vector<float>* SigmaIPhi_;
@@ -347,6 +366,9 @@ private:
   std::vector<double>* qSCEnhfEM_;
   std::vector<double>* qSCEtahfEM_;
   std::vector<double>* qSCPhihfEM_;
+  std::vector<double>* qSCEn5x5_;
+  std::vector<double>* qSCEta5x5_;
+  std::vector<double>* qSCPhi5x5_;  
   std::vector<double>* qCCEn_;
   std::vector<double>* qCCEta_;
   std::vector<double>* qCCPhi_;
@@ -391,7 +413,16 @@ private:
   std::vector<float>* qMuPhi_;
   std::vector<float>* qMuEn_;
   std::vector<float>* qMuCh_;
-
+  std::vector<float>* qMuCosmPt_;
+  std::vector<float>* qMuCosmEta_;
+  std::vector<float>* qMuCosmPhi_;
+  std::vector<float>* qMuCosmEn_;
+  std::vector<float>* qMuCosmCh_;
+  std::vector<float>* qMuCosmLegPt_;
+  std::vector<float>* qMuCosmLegEta_;
+  std::vector<float>* qMuCosmLegPhi_;
+  std::vector<float>* qMuCosmLegEn_;
+  std::vector<float>* qMuCosmLegCh_;  
   //TODO
   std::vector<float>* qSigmaIEta_;
   std::vector<float>* qSigmaIPhi_;
@@ -462,12 +493,16 @@ private:
   edm::EDGetTokenT<trigger::TriggerEvent> triggerPrescales_;  //pat::PackedTriggerPrescales
   edm::EDGetTokenT<reco::SuperClusterCollection>   SuperClusterToken_;  //adding SuperCluster
   edm::EDGetTokenT<reco::SuperClusterCollection>    SuperClusterhfEMToken_;
+  edm::EDGetTokenT<reco::SuperClusterCollection>   SuperCluster5x5Token_;  //adding SuperCluster
+
   edm::EDGetTokenT<reco::CaloClusterCollection>   CaloClusterToken_;  //adding SuperCluster
   edm::EDGetTokenT<reco::CaloClusterCollection>   CaloCluster5x5Token_;
 
   edm::EDGetTokenT<reco::PhotonCollection> PhotonToken_;   //TWO types of Photons -- one collection?
   edm::EDGetTokenT<reco::PhotonCollection> gedPhotonToken_;
   edm::EDGetTokenT<reco::MuonCollection>   MuonToken_;
+  edm::EDGetTokenT<reco::MuonCollection>   MuonCosmToken_;
+  edm::EDGetTokenT<reco::MuonCollection>   MuonCosmLegToken_;
 
   edm::EDGetTokenT<reco::GsfElectronCollection> GsfElectronToken_;
   edm::EDGetTokenT<reco::GsfElectronCollection> GsfElectronUncleanedToken_;
@@ -529,11 +564,15 @@ AODAnalyzer::AODAnalyzer(const edm::ParameterSet& cfg):
   triggerPrescales_         (consumes<trigger::TriggerEvent>(cfg.getUntrackedParameter<edm::InputTag>("prescales"))),  // pat::PackedTriggerPrescales
   SuperClusterToken_        (consumes<reco::SuperClusterCollection>(cfg.getUntrackedParameter<edm::InputTag>("SuperClusterTag"))),
   SuperClusterhfEMToken_    (consumes<reco::SuperClusterCollection>(cfg.getUntrackedParameter<edm::InputTag>("SuperClusterhfEMTag"))),
+  SuperCluster5x5Token_     (consumes<reco::SuperClusterCollection>(cfg.getUntrackedParameter<edm::InputTag>("SuperCluster5x5Tag"))),
   CaloClusterToken_         (consumes<reco::CaloClusterCollection>(cfg.getUntrackedParameter<edm::InputTag>("CaloClusterTag"))),
   CaloCluster5x5Token_      (consumes<reco::CaloClusterCollection>(cfg.getUntrackedParameter<edm::InputTag>("CaloCluster5x5Tag"))),
   PhotonToken_              (consumes<reco::PhotonCollection>(cfg.getUntrackedParameter<edm::InputTag>("PhotonTag"))),
   gedPhotonToken_           (consumes<reco::PhotonCollection>(cfg.getUntrackedParameter<edm::InputTag>("gedPhotonTag"))),
   MuonToken_                (consumes<reco::MuonCollection>(cfg.getUntrackedParameter<edm::InputTag>("MuonTag"))),
+  MuonCosmToken_            (consumes<reco::MuonCollection>(cfg.getUntrackedParameter<edm::InputTag>("MuonCosmTag"))),
+  MuonCosmLegToken_         (consumes<reco::MuonCollection>(cfg.getUntrackedParameter<edm::InputTag>("MuonCosmLegTag"))),
+
   GsfElectronToken_         (consumes<reco::GsfElectronCollection>(cfg.getUntrackedParameter<edm::InputTag>("GsfElectronTag"))),
   GsfElectronUncleanedToken_(consumes<reco::GsfElectronCollection>(cfg.getUntrackedParameter<edm::InputTag>("GsfElectronUncleanedTag"))),
 
@@ -599,6 +638,9 @@ void AODAnalyzer::initialize()
   SCEnhfEM_ ->clear();
   SCEtahfEM_->clear();
   SCPhihfEM_->clear();
+  SCEn5x5_ ->clear();
+  SCEta5x5_->clear();
+  SCPhi5x5_->clear();  
   CCEn_ ->clear();
   CCEta_->clear();
   CCPhi_->clear();
@@ -643,6 +685,16 @@ void AODAnalyzer::initialize()
   MuPhi_->clear();
   MuEn_->clear();
   MuCh_->clear();
+  MuCosmPt_->clear();
+  MuCosmEta_->clear();
+  MuCosmPhi_->clear();
+  MuCosmEn_->clear();
+  MuCosmCh_->clear();
+  MuCosmLegPt_->clear();
+  MuCosmLegEta_->clear();
+  MuCosmLegPhi_->clear();
+  MuCosmLegEn_->clear();
+  MuCosmLegCh_->clear();
 
   SigmaIEta_->clear();
   SigmaIPhi_->clear();
@@ -712,13 +764,15 @@ void AODAnalyzer::initialize()
   qCalMETEta_->clear();
   qCalMETPhi_->clear();
   qCalMETEn_->clear();
-  //qSuperCluster_ ->clear(); //ASK IF quantiles should be here
   qSCEn_ ->clear();
   qSCEta_->clear();
   qSCPhi_->clear();
   qSCEnhfEM_ ->clear();
   qSCEtahfEM_->clear();
   qSCPhihfEM_->clear();
+  qSCEn5x5_ ->clear();
+  qSCEta5x5_->clear();
+  qSCPhi5x5_->clear();  
   qCCEn_ ->clear();
   qCCEta_->clear();
   qCCPhi_->clear();
@@ -763,6 +817,16 @@ void AODAnalyzer::initialize()
   qMuPhi_->clear();
   qMuEn_->clear();
   qMuCh_->clear();
+  qMuCosmPt_->clear();
+  qMuCosmEta_->clear();
+  qMuCosmPhi_->clear();
+  qMuCosmEn_->clear();
+  qMuCosmCh_->clear();
+  qMuCosmLegPt_->clear();
+  qMuCosmLegEta_->clear();
+  qMuCosmLegPhi_->clear();
+  qMuCosmLegEn_->clear();
+  qMuCosmLegCh_->clear();    
   //TODO
   qSigmaIEta_->clear();
   qSigmaIPhi_->clear();  
@@ -969,6 +1033,30 @@ void AODAnalyzer::fillSChfEM(const edm::Handle<SuperClusterhfEMCollection> & sup
 
 }
 
+template<typename SuperCluster5x5Collection>
+void AODAnalyzer::fillSC5x5(const edm::Handle<SuperCluster5x5Collection> & superclusters5x5) //ask for jets analogy //SUPERCLUSTERS
+{
+
+  // Selected jets
+  //reco::CaloJetCollection recojets;
+  typename SuperCluster5x5Collection::const_iterator i = superclusters5x5->begin();
+  for(;i != superclusters5x5->end(); i++){
+     if(std::abs(i->eta()) < maxSCEta_ && i->energy() >= minSCEn_) // not sure if needed
+      // {
+      SCEn5x5_->push_back(i->energy());
+      SCEta5x5_->push_back(i->etaWidth());
+      SCPhi5x5_->push_back(i->phiWidth());
+
+        // std::cout << "ele energy: " << i->energy()   << std::endl; 
+        // std::cout << "ele SCeta: "  << i->etaWidth() << std::endl;
+        // std::cout << "ele SCphi: "  << i->phiWidth() << std::endl;
+      // }
+  }
+  return;
+
+
+}
+
 template<typename CaloClusterCollection>
 void AODAnalyzer::fillCC(const edm::Handle<CaloClusterCollection> & caloclusters) //ask for jets analogy //SUPERCLUSTERS
 {
@@ -1097,6 +1185,52 @@ void AODAnalyzer::fillMuons(const edm::Handle<MuonCollection> & muons)
 
 
 }
+
+
+template<typename MuonCosmCollection>
+void AODAnalyzer::fillCosmMuons(const edm::Handle<MuonCosmCollection> & muonsCosm)
+{
+   typename MuonCosmCollection::const_iterator i = muonsCosm->begin();
+   for(;i != muonsCosm->end(); i++){
+     
+        MuCosmPt_->push_back(i->et());
+        MuCosmEta_->push_back(i->eta());
+        MuCosmPhi_->push_back(i->phi());
+        MuCosmEn_->push_back(i->energy());   //GETCORRECTEDENERGY!!
+        MuCosmCh_->push_back(i->charge());
+        // std::cout << "ele energy: " << i->energy()   << std::endl; 
+        // std::cout << "ele SCeta: "  << i->etaWidth() << std::endl;
+        // std::cout << "ele SCphi: "  << i->phiWidth() << std::endl;
+      // }
+  }
+  return;
+
+
+}
+
+
+
+template<typename MuonCosmLegCollection>
+void AODAnalyzer::fillCosmLegMuons(const edm::Handle<MuonCosmLegCollection> & muonsCosmLeg)
+{
+   typename MuonCosmLegCollection::const_iterator i = muonsCosmLeg->begin();
+   for(;i != muonsCosmLeg->end(); i++){
+     
+        MuCosmLegPt_->push_back(i->et());
+        MuCosmLegEta_->push_back(i->eta());
+        MuCosmLegPhi_->push_back(i->phi());
+        MuCosmLegEn_->push_back(i->energy());   //GETCORRECTEDENERGY!!
+        MuCosmLegCh_->push_back(i->charge());
+        // std::cout << "ele energy: " << i->energy()   << std::endl; 
+        // std::cout << "ele SCeta: "  << i->etaWidth() << std::endl;
+        // std::cout << "ele SCphi: "  << i->phiWidth() << std::endl;
+      // }
+  }
+  return;
+
+
+}
+
 
 
 //TODO
@@ -1375,13 +1509,15 @@ void AODAnalyzer::beginJob() {
   CalMETEta_   = new std::vector<float>;
   CalMETPhi_   = new std::vector<float>;
   CalMETEn_   = new std::vector<float>;
-  //SuperCluster_ = new std::vector<float>; //adding SuperCluster
   SCEn_      = new std::vector<double>;
   SCEta_     = new std::vector<double>;
   SCPhi_     = new std::vector<double>;
   SCEnhfEM_      = new std::vector<double>;
   SCEtahfEM_     = new std::vector<double>;
   SCPhihfEM_     = new std::vector<double>;
+  SCEn5x5_      = new std::vector<double>;
+  SCEta5x5_     = new std::vector<double>;
+  SCPhi5x5_     = new std::vector<double>;
   CCEn_      = new std::vector<double>;
   CCEta_     = new std::vector<double>;
   CCPhi_     = new std::vector<double>;
@@ -1426,6 +1562,16 @@ void AODAnalyzer::beginJob() {
   MuPhi_        = new std::vector<float>;
   MuEn_         = new std::vector<float>;
   MuCh_         = new std::vector<float>;
+  MuCosmPt_         = new std::vector<float>;
+  MuCosmEta_        = new std::vector<float>;
+  MuCosmPhi_        = new std::vector<float>;
+  MuCosmEn_         = new std::vector<float>;
+  MuCosmCh_         = new std::vector<float>;
+  MuCosmLegPt_         = new std::vector<float>;
+  MuCosmLegEta_        = new std::vector<float>;
+  MuCosmLegPhi_        = new std::vector<float>;
+  MuCosmLegEn_         = new std::vector<float>;
+  MuCosmLegCh_         = new std::vector<float>;
   //TODO
   SigmaIEta_ = new std::vector<float>;
   SigmaIPhi_ = new std::vector<float>;
@@ -1510,6 +1656,9 @@ void AODAnalyzer::beginJob() {
   qSCEnhfEM_     = new std::vector<double>;
   qSCEtahfEM_    = new std::vector<double>;
   qSCPhihfEM_    = new std::vector<double>;
+  qSCEn5x5_     = new std::vector<double>;
+  qSCEta5x5_    = new std::vector<double>;
+  qSCPhi5x5_    = new std::vector<double>;
   qCCEn_     = new std::vector<double>;
   qCCEta_    = new std::vector<double>;
   qCCPhi_    = new std::vector<double>;
@@ -1554,7 +1703,16 @@ void AODAnalyzer::beginJob() {
   qMuPhi_   = new std::vector<float>;
   qMuEn_   = new std::vector<float>;
   qMuCh_   = new std::vector<float>;
-
+  qMuCosmPt_   = new std::vector<float>;
+  qMuCosmEta_   = new std::vector<float>;
+  qMuCosmPhi_   = new std::vector<float>;
+  qMuCosmEn_   = new std::vector<float>;
+  qMuCosmCh_   = new std::vector<float>;
+  qMuCosmLegPt_   = new std::vector<float>;
+  qMuCosmLegEta_   = new std::vector<float>;
+  qMuCosmLegPhi_   = new std::vector<float>;
+  qMuCosmLegEn_   = new std::vector<float>;
+  qMuCosmLegCh_   = new std::vector<float>;  
   qSigmaIEta_= new std::vector<float>;
   qSigmaIPhi_= new std::vector<float>;
   qr9_       = new std::vector<float>;
@@ -1630,13 +1788,15 @@ void AODAnalyzer::beginJob() {
   outTree_->Branch("qCalMETEta",    "std::vector<std::float>",        &qCalMETEta_);
   outTree_->Branch("qCalMETPhi",    "std::vector<std::float>",        &qCalMETPhi_);
   outTree_->Branch("qCalMETEn",    "std::vector<std::float>",        &qCalMETEn_);
-  //outTree_->Branch("SuperCluster","std::vector<std::float>",      &SuperCluster_);
   outTree_->Branch("qSCEn",     "std::vector<std::double>",        &qSCEn_);
   outTree_->Branch("qSCEta",    "std::vector<std::double>",        &qSCEta_);
   outTree_->Branch("qSCPhi",    "std::vector<std::double>",        &qSCPhi_);
   outTree_->Branch("qSCEnhfEM",     "std::vector<std::double>",        &qSCEnhfEM_);
   outTree_->Branch("qSCEtahfEM",    "std::vector<std::double>",        &qSCEtahfEM_);
   outTree_->Branch("qSCPhihfEM",    "std::vector<std::double>",        &qSCPhihfEM_);
+  outTree_->Branch("qSCEn5x5",     "std::vector<std::double>",        &qSCEn5x5_);
+  outTree_->Branch("qSCEta5x5",    "std::vector<std::double>",        &qSCEta5x5_);
+  outTree_->Branch("qSCPhi5x5",    "std::vector<std::double>",        &qSCPhi5x5_);
   outTree_->Branch("qCCEn",     "std::vector<std::double>",        &qCCEn_);
   outTree_->Branch("qCCEta",    "std::vector<std::double>",        &qCCEta_);
   outTree_->Branch("qCCPhi",    "std::vector<std::double>",        &qCCPhi_);
@@ -1681,7 +1841,16 @@ void AODAnalyzer::beginJob() {
   outTree_->Branch("qMuPhi",    "std::vector<std::float>",        &qMuPhi_);
   outTree_->Branch("qMuEn_",    "std::vector<std::float>",        &qMuEn_);
   outTree_->Branch("qMuCh_",    "std::vector<std::float>",        &qMuCh_);
-
+  outTree_->Branch("qMuCosmPt",     "std::vector<std::float>",        &qMuCosmPt_);
+  outTree_->Branch("qMuCosmEta",    "std::vector<std::float>",        &qMuCosmEta_);
+  outTree_->Branch("qMuCosmPhi",    "std::vector<std::float>",        &qMuCosmPhi_);
+  outTree_->Branch("qMuCosmEn_",    "std::vector<std::float>",        &qMuCosmEn_);
+  outTree_->Branch("qMuCosmCh_",    "std::vector<std::float>",        &qMuCosmCh_);
+  outTree_->Branch("qMuCosmLegPt",     "std::vector<std::float>",        &qMuCosmLegPt_);
+  outTree_->Branch("qMuCosmLegEta",    "std::vector<std::float>",        &qMuCosmLegEta_);
+  outTree_->Branch("qMuCosmLegPhi",    "std::vector<std::float>",        &qMuCosmLegPhi_);
+  outTree_->Branch("qMuCosmLegEn_",    "std::vector<std::float>",        &qMuCosmLegEn_);
+  outTree_->Branch("qMuCosmLegCh_",    "std::vector<std::float>",        &qMuCosmLegCh_);
   outTree_->Branch("qSigmaIEta",    "std::vector<std::float>",     &qSigmaIEta_);
   outTree_->Branch("qSigmaIPhi",    "std::vector<std::float>",     &qSigmaIPhi_);
   outTree_->Branch("qr9",    "std::vector<std::float>",            &qr9_);
@@ -1786,6 +1955,9 @@ void AODAnalyzer::endJob()
   delete SCEnhfEM_;
   delete SCEtahfEM_;
   delete SCPhihfEM_;
+  delete SCEn5x5_;
+  delete SCEta5x5_;
+  delete SCPhi5x5_;
   delete CCEn_;
   delete CCEta_;
   delete CCPhi_;
@@ -1830,6 +2002,16 @@ void AODAnalyzer::endJob()
   delete MuPhi_;
   delete MuEn_;
   delete MuCh_;
+  delete MuCosmPt_;
+  delete MuCosmEta_;
+  delete MuCosmPhi_;
+  delete MuCosmEn_;
+  delete MuCosmCh_;
+  delete MuCosmLegPt_;
+  delete MuCosmLegEta_;
+  delete MuCosmLegPhi_;
+  delete MuCosmLegEn_;
+  delete MuCosmLegCh_;    
   //TODO
   delete SigmaIEta_;
   delete SigmaIPhi_;
@@ -1879,8 +2061,7 @@ void AODAnalyzer::endJob()
   delete CTPt_;
   delete CTEta_;
   delete CTPhi_;
-  //delete SuperCluster_;
-  //delete qSuperCluster_;
+
   delete qPFJetPt_;
   delete qPFJetEta_;
   delete qPFJetPhi_;
@@ -1904,6 +2085,9 @@ void AODAnalyzer::endJob()
   delete qSCEnhfEM_;
   delete qSCEtahfEM_;
   delete qSCPhihfEM_;
+  delete qSCEn5x5_;
+  delete qSCEta5x5_;
+  delete qSCPhi5x5_;
   delete qCCEn_;
   delete qCCEta_;
   delete qCCPhi_;
@@ -1948,6 +2132,16 @@ void AODAnalyzer::endJob()
   delete qMuPhi_;
   delete qMuEn_;
   delete qMuCh_;
+  delete qMuCosmPt_;
+  delete qMuCosmEta_;
+  delete qMuCosmPhi_;
+  delete qMuCosmEn_;
+  delete qMuCosmCh_;
+  delete qMuCosmLegPt_;
+  delete qMuCosmLegEta_;
+  delete qMuCosmLegPhi_;
+  delete qMuCosmLegEn_;
+  delete qMuCosmLegCh_;    
   //TODO
   delete qSigmaIEta_;
   delete qSigmaIPhi_;
@@ -2067,6 +2261,9 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeMeanAndRms(SCEnhfEM_, qSCEnhfEM_);   
   computeMeanAndRms(SCEtahfEM_, qSCEtahfEM_);  
   computeMeanAndRms(SCPhihfEM_, qSCPhihfEM_); 
+  computeMeanAndRms(SCEn5x5_, qSCEn5x5_);   
+  computeMeanAndRms(SCEta5x5_, qSCEta5x5_);  
+  computeMeanAndRms(SCPhi5x5_, qSCPhi5x5_);
   computeMeanAndRms(CCEn_, qCCEn_);   
   computeMeanAndRms(CCEta_, qCCEta_);  
   computeMeanAndRms(CCPhi_, qCCPhi_);
@@ -2113,6 +2310,16 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeMeanAndRms(MuPhi_,qMuPhi_);
   computeMeanAndRms(MuEn_,qMuEn_);
   computeMeanAndRms(MuCh_,qMuCh_);
+  computeMeanAndRms(MuCosmPt_, qMuCosmPt_);
+  computeMeanAndRms(MuCosmEta_,qMuCosmEta_);
+  computeMeanAndRms(MuCosmPhi_,qMuCosmPhi_);
+  computeMeanAndRms(MuCosmEn_, qMuCosmEn_);
+  computeMeanAndRms(MuCosmCh_, qMuCosmCh_);
+  computeMeanAndRms(MuCosmLegPt_, qMuCosmLegPt_);
+  computeMeanAndRms(MuCosmLegEta_,qMuCosmLegEta_);
+  computeMeanAndRms(MuCosmLegPhi_,qMuCosmLegPhi_);
+  computeMeanAndRms(MuCosmLegEn_, qMuCosmLegEn_);
+  computeMeanAndRms(MuCosmLegCh_, qMuCosmLegCh_);    
   //TODO
   computeMeanAndRms(SigmaIEta_, qSigmaIEta_);
   computeMeanAndRms(SigmaIPhi_, qSigmaIPhi_);
@@ -2187,6 +2394,9 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeQuantiles(SCEnhfEM_, qSCEnhfEM_,       quantiles_);
   computeQuantiles(SCEtahfEM_, qSCEtahfEM_,     quantiles_);
   computeQuantiles(SCPhihfEM_, qSCPhihfEM_,     quantiles_);
+  computeQuantiles(SCEn5x5_, qSCEn5x5_,       quantiles_);
+  computeQuantiles(SCEta5x5_, qSCEta5x5_,     quantiles_);
+  computeQuantiles(SCPhi5x5_, qSCPhi5x5_,     quantiles_);
   computeQuantiles(CCEn_, qCCEn_,       quantiles_);
   computeQuantiles(CCEta_, qCCEta_,     quantiles_);
   computeQuantiles(CCPhi_, qCCPhi_,     quantiles_);
@@ -2231,7 +2441,17 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeQuantiles(MuPhi_,qMuPhi_,quantiles_);
   computeQuantiles(MuEn_,qMuEn_,quantiles_);
   computeQuantiles(MuCh_,qMuCh_,quantiles_);
-  //TODO
+  computeQuantiles(MuCosmPt_, qMuCosmPt_, quantiles_);
+  computeQuantiles(MuCosmEta_,qMuCosmEta_,quantiles_);
+  computeQuantiles(MuCosmPhi_,qMuCosmPhi_,quantiles_);
+  computeQuantiles(MuCosmEn_, qMuCosmEn_,quantiles_);
+  computeQuantiles(MuCosmCh_, qMuCosmCh_,quantiles_);
+  computeQuantiles(MuCosmLegPt_, qMuCosmLegPt_, quantiles_);
+  computeQuantiles(MuCosmLegEta_,qMuCosmLegEta_,quantiles_);
+  computeQuantiles(MuCosmLegPhi_,qMuCosmLegPhi_,quantiles_);
+  computeQuantiles(MuCosmLegEn_, qMuCosmLegEn_,quantiles_);
+  computeQuantiles(MuCosmLegCh_, qMuCosmLegCh_,quantiles_);    
+  //TODOCosm
   computeQuantiles(SigmaIEta_, qSigmaIEta_, quantiles_);
   computeQuantiles(SigmaIPhi_, qSigmaIPhi_, quantiles_);
   computeQuantiles(r9_, qr9_, quantiles_);
@@ -2368,16 +2588,21 @@ void AODAnalyzer::analyze (const edm::Event &event, const edm::EventSetup &event
   if(SuperClusterhfEMlocalv.isValid())
     fillSChfEM(SuperClusterhfEMlocalv);
 
+  edm::Handle<reco::SuperClusterCollection> SuperCluster5x5localv;
+  event.getByToken(SuperCluster5x5Token_, SuperCluster5x5localv);
+  // print the size of SuperClusterlocalv
+  if(SuperCluster5x5localv.isValid())
+    fillSC5x5(SuperCluster5x5localv);
     //Fill CaloCluster
   edm::Handle<reco::CaloClusterCollection> CaloClusterlocalv;
   event.getByToken(CaloClusterToken_, CaloClusterlocalv);
-  // print the size of SuperClusterlocalv
+  // print the size of 
   if(CaloClusterlocalv.isValid())
     fillCC(CaloClusterlocalv);
 
   edm::Handle<reco::CaloClusterCollection> CaloCluster5x5localv;
   event.getByToken(CaloCluster5x5Token_, CaloCluster5x5localv);
-  // print the size of SuperClusterlocalv
+  // print the size of 
   if(CaloCluster5x5localv.isValid())
     fillCChfEM(CaloCluster5x5localv);
 
@@ -2396,6 +2621,16 @@ void AODAnalyzer::analyze (const edm::Event &event, const edm::EventSetup &event
   event.getByToken(MuonToken_, muonlocalv);
   if(muonlocalv.isValid())
     fillMuons(muonlocalv);
+
+  edm::Handle<reco::MuonCollection> muonCosmlocalv;
+  event.getByToken(MuonCosmToken_, muonCosmlocalv);
+  if(muonCosmlocalv.isValid())
+    fillCosmMuons(muonCosmlocalv);
+
+  edm::Handle<reco::MuonCollection> muonCosmLeglocalv;
+  event.getByToken(MuonCosmLegToken_, muonCosmLeglocalv);
+  if(muonCosmLeglocalv.isValid())
+    fillCosmLegMuons(muonCosmLeglocalv);
 
   //TODO --fill fill Muons
   //fill GsF
