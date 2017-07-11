@@ -34,7 +34,13 @@ for sub in subsystemList:
 process.MyAnalysis =cms.EDAnalyzer("AODAnalyzer",
 
                        
-                       PFJetTag                = cms.untracked.InputTag("ak8PFJetsCHS"), #ak4PFJets
+                       PFJetTag                = cms.untracked.InputTag("ak4PFJets"), #ak4PFJets
+                       PFJet4CHSTag            = cms.untracked.InputTag("ak4PFJetsCHS"),
+                       PFJet8CHSTag            = cms.untracked.InputTag("ak8PFJetsCHS"),
+                       PFJetEITag              = cms.untracked.InputTag("pfJetsEI"),
+                       PFJet8CHSSoftDropTag    = cms.untracked.InputTag("ak8PFJetsCHSSoftDrop","SubJets"),
+                       PFJetTopCHSTag          = cms.untracked.InputTag("cmsTopTagPFJetsCHS","caTopSubJets"),
+
                        PFChMETTag              = cms.untracked.InputTag("pfChMet"),
                        PFMETTag                = cms.untracked.InputTag("pfMet"),
                        CaloJetTag              = cms.untracked.InputTag("ak4CaloJets"),

@@ -100,6 +100,21 @@ private:
   template<typename jetCollection>
   void fillJets(const edm::Handle<jetCollection> &, std::string );
 
+  template<typename PFJet4CHSCollection>
+  void fill4CHSJets(const edm::Handle<PFJet4CHSCollection> &, std::string );
+
+   template<typename PFJet8CHSCollection>
+  void fill8CHSJets(const edm::Handle<PFJet8CHSCollection> &, std::string );
+
+  template<typename PFJetEICollection>
+  void fillEIJets(const edm::Handle<PFJetEICollection> &, std::string );
+
+  template<typename PFJet8CHSSoftDropCollection>
+  void fill8CHSoftDropJets(const edm::Handle<PFJet8CHSSoftDropCollection> &, std::string );
+
+  template<typename PFJetTopCHSCollection>
+  void fillTopCHSJets(const edm::Handle<PFJetTopCHSCollection> &, std::string );
+
   template<typename PFChMETCollection>
   void fillPFChMets(const edm::Handle<PFChMETCollection> &);
 
@@ -194,10 +209,43 @@ private:
   float  lumi_;
   int    isSig_;
 
+
+
+
+
+
   //PFJet variables
   std::vector<float>* PFJetPt_;
   std::vector<float>* PFJetEta_;
   std::vector<float>* PFJetPhi_;
+
+
+  //PF4CHS variables
+  std::vector<float>* PFJet4CHSPt_;
+  std::vector<float>* PFJet4CHSEta_;
+  std::vector<float>* PFJet4CHSPhi_;
+
+  //PF8CHS variables
+  std::vector<float>* PFJet8CHSPt_;
+  std::vector<float>* PFJet8CHSEta_;
+  std::vector<float>* PFJet8CHSPhi_;
+
+  //EI variables
+  std::vector<float>* PFJetEIPt_;
+  std::vector<float>* PFJetEIEta_;
+  std::vector<float>* PFJetEIPhi_;
+
+  //8CHSSoftDrop variables
+  std::vector<float>* PFJet8CHSSDPt_;
+  std::vector<float>* PFJet8CHSSDEta_;
+  std::vector<float>* PFJet8CHSSDPhi_;
+
+  //TopCHS variables
+  std::vector<float>* PFJetTopCHSPt_;
+  std::vector<float>* PFJetTopCHSEta_;
+  std::vector<float>* PFJetTopCHSPhi_;
+
+  //PFChMet variables
   std::vector<float>* PFChMetPt_;
   std::vector<float>* PFChMetPhi_;
   std::vector<float>* PFMetPt_;
@@ -345,6 +393,27 @@ private:
   std::vector<float>* qPFJetPt_;
   std::vector<float>* qPFJetEta_;
   std::vector<float>* qPFJetPhi_;
+
+  std::vector<float>* qPFJet4CHSPt_;
+  std::vector<float>* qPFJet4CHSEta_;
+  std::vector<float>* qPFJet4CHSPhi_;
+
+  std::vector<float>* qPFJet8CHSPt_;
+  std::vector<float>* qPFJet8CHSEta_;
+  std::vector<float>* qPFJet8CHSPhi_;
+
+  std::vector<float>* qPFJetEIPt_;
+  std::vector<float>* qPFJetEIEta_;
+  std::vector<float>* qPFJetEIPhi_;
+
+  std::vector<float>* qPFJet8CHSSDPt_;
+  std::vector<float>* qPFJet8CHSSDEta_;
+  std::vector<float>* qPFJet8CHSSDPhi_;
+
+  std::vector<float>* qPFJetTopCHSPt_;
+  std::vector<float>* qPFJetTopCHSEta_;
+  std::vector<float>* qPFJetTopCHSPhi_;
+
   std::vector<float>* qPFChMetPt_;
   std::vector<float>* qPFChMetPhi_;
   std::vector<float>* qPFMetPt_;
@@ -482,6 +551,11 @@ private:
 
 
   edm::EDGetTokenT<reco::PFJetCollection> PFJetToken_;
+  edm::EDGetTokenT<reco::PFJetCollection> PFJet4CHSToken_;
+  edm::EDGetTokenT<reco::PFJetCollection> PFJet8CHSToken_;
+  edm::EDGetTokenT<reco::PFJetCollection> PFJetEIToken_;
+  edm::EDGetTokenT<reco::PFJetCollection> PFJet8CHSSoftDropToken_;
+  edm::EDGetTokenT<reco::PFJetCollection> PFJetTopCHSToken_;
   edm::EDGetTokenT<reco::PFMETCollection> PFChMETToken_;
   edm::EDGetTokenT<reco::PFMETCollection> PFMETToken_;
 
@@ -555,6 +629,11 @@ private:
 
 AODAnalyzer::AODAnalyzer(const edm::ParameterSet& cfg): 
   PFJetToken_               (consumes<reco::PFJetCollection>(cfg.getUntrackedParameter<edm::InputTag>("PFJetTag"))),  //reco instead of pat
+  PFJet4CHSToken_           (consumes<reco::PFJetCollection>(cfg.getUntrackedParameter<edm::InputTag>("PFJet4CHSTag"))),
+  PFJet8CHSToken_           (consumes<reco::PFJetCollection>(cfg.getUntrackedParameter<edm::InputTag>("PFJet8CHSTag"))),
+  PFJetEIToken_             (consumes<reco::PFJetCollection>(cfg.getUntrackedParameter<edm::InputTag>("PFJetEITag"))),
+  PFJet8CHSSoftDropToken_   (consumes<reco::PFJetCollection>(cfg.getUntrackedParameter<edm::InputTag>("PFJet8CHSSoftDropTag"))),
+  PFJetTopCHSToken_         (consumes<reco::PFJetCollection>(cfg.getUntrackedParameter<edm::InputTag>("PFJetTopCHSTag"))),
   PFChMETToken_             (consumes<reco::PFMETCollection>(cfg.getUntrackedParameter<edm::InputTag>("PFChMETTag"))),
   PFMETToken_               (consumes<reco::PFMETCollection>(cfg.getUntrackedParameter<edm::InputTag>("PFMETTag"))),
   CaloJetToken_             (consumes<reco::CaloJetCollection>(cfg.getUntrackedParameter<edm::InputTag>("CaloJetTag"))),
@@ -617,6 +696,27 @@ void AODAnalyzer::initialize()
   PFJetPt_->clear();
   PFJetEta_->clear();
   PFJetPhi_->clear();
+
+  PFJet4CHSPt_->clear();
+  PFJet4CHSEta_->clear();
+  PFJet4CHSPhi_->clear();
+
+  PFJet8CHSPt_->clear();
+  PFJet8CHSEta_->clear();
+  PFJet8CHSPhi_->clear();
+  
+  PFJetEIPt_->clear();
+  PFJetEIEta_->clear();
+  PFJetEIPhi_->clear();
+
+  PFJet8CHSSDPt_->clear();
+  PFJet8CHSSDEta_->clear();
+  PFJet8CHSSDPhi_->clear();
+
+  PFJetTopCHSPt_->clear();
+  PFJetTopCHSEta_->clear();
+  PFJetTopCHSPhi_->clear();       
+
   PFChMetPt_->clear();
   PFChMetPhi_->clear();
   PFMetPt_->clear();
@@ -750,6 +850,27 @@ void AODAnalyzer::initialize()
   qPFJetPt_->clear();
   qPFJetEta_->clear();
   qPFJetPhi_->clear();
+
+  qPFJet4CHSPt_->clear();
+  qPFJet4CHSEta_->clear();
+  qPFJet4CHSPhi_->clear();
+
+  qPFJet8CHSPt_->clear();
+  qPFJet8CHSEta_->clear();
+  qPFJet8CHSPhi_->clear();
+  
+  qPFJetEIPt_->clear();
+  qPFJetEIEta_->clear();
+  qPFJetEIPhi_->clear();
+  
+  qPFJet8CHSSDPt_->clear();
+  qPFJet8CHSSDEta_->clear();
+  qPFJet8CHSSDPhi_->clear();
+
+  qPFJetTopCHSPt_->clear();
+  qPFJetTopCHSEta_->clear();
+  qPFJetTopCHSPhi_->clear(); 
+
   qPFChMetPt_->clear();
   qPFChMetPhi_->clear();
   qPFMetPt_->clear();
@@ -908,6 +1029,131 @@ void AODAnalyzer::fillJets(const edm::Handle<jetCollection> & jets, std::string 
       // std::cout << "ele phi: " << i->phi() << std::endl;   //TEST --works
 	  }
 	
+      }
+  }
+  return;
+}
+
+template<typename PFJet4CHSCollection>
+void AODAnalyzer::fill4CHSJets(const edm::Handle<PFJet4CHSCollection> & jets4CHS, std::string type)
+{
+  // Selected jets
+  //reco::CaloJetCollection recojets;
+  typename PFJet4CHSCollection::const_iterator i = jets4CHS->begin();
+  for(;i != jets4CHS->end(); i++){
+    if(std::abs(i->eta()) < maxJetEta_ && i->pt() >= minJetPt_)
+      {
+  
+  if(type.compare(std::string("PF")) == 0)
+    {
+      PFJet4CHSPt_->push_back(i->pt());
+      PFJet4CHSEta_->push_back(i->eta());
+      PFJet4CHSPhi_->push_back(i->phi());
+      // std::cout << "ele pt: " << i->pt() << std::endl; //TEST -- works
+      // std::cout << "ele eta: " << i->eta() << std::endl;   //TEST --works
+      // std::cout << "ele phi: " << i->phi() << std::endl;   //TEST --works
+    }
+  
+      }
+  }
+  return;
+}
+
+template<typename PFJet8CHSCollection>
+void AODAnalyzer::fill8CHSJets(const edm::Handle<PFJet8CHSCollection> & jets8CHS, std::string type)
+{
+  // Selected jets
+  //reco::CaloJetCollection recojets;
+  typename PFJet8CHSCollection::const_iterator i = jets8CHS->begin();
+  for(;i != jets8CHS->end(); i++){
+    if(std::abs(i->eta()) < maxJetEta_ && i->pt() >= minJetPt_)
+      {
+  
+  if(type.compare(std::string("PF")) == 0)
+    {
+      PFJet8CHSPt_->push_back(i->pt());
+      PFJet8CHSEta_->push_back(i->eta());
+      PFJet8CHSPhi_->push_back(i->phi());
+      // std::cout << "ele pt: " << i->pt() << std::endl; //TEST -- works
+      // std::cout << "ele eta: " << i->eta() << std::endl;   //TEST --works
+      // std::cout << "ele phi: " << i->phi() << std::endl;   //TEST --works
+    }
+  
+      }
+  }
+  return;
+}
+
+template<typename PFJetEICollection>
+void AODAnalyzer::fillEIJets(const edm::Handle<PFJetEICollection> & jetsEI, std::string type)
+{
+  // Selected jets
+  //reco::CaloJetCollection recojets;
+  typename PFJetEICollection::const_iterator i = jetsEI->begin();
+  for(;i != jetsEI->end(); i++){
+    if(std::abs(i->eta()) < maxJetEta_ && i->pt() >= minJetPt_)
+      {
+  
+  if(type.compare(std::string("PF")) == 0)
+    {
+      PFJetEIPt_->push_back(i->pt());
+      PFJetEIEta_->push_back(i->eta());
+      PFJetEIPhi_->push_back(i->phi());
+      // std::cout << "ele pt: " << i->pt() << std::endl; //TEST -- works
+      // std::cout << "ele eta: " << i->eta() << std::endl;   //TEST --works
+      // std::cout << "ele phi: " << i->phi() << std::endl;   //TEST --works
+    }
+  
+      }
+  }
+  return;
+}
+
+template<typename PFJet8CHSSoftDropCollection>
+void AODAnalyzer::fill8CHSoftDropJets(const edm::Handle<PFJet8CHSSoftDropCollection> & jets8CHSSoftDrop, std::string type)
+{
+  // Selected jets
+  //reco::CaloJetCollection recojets;
+  typename PFJet8CHSSoftDropCollection::const_iterator i = jets8CHSSoftDrop->begin();
+  for(;i != jets8CHSSoftDrop->end(); i++){
+    if(std::abs(i->eta()) < maxJetEta_ && i->pt() >= minJetPt_)
+      {
+  
+  if(type.compare(std::string("PF")) == 0)
+    {
+      PFJet8CHSSDPt_->push_back(i->pt());
+      PFJet8CHSSDEta_->push_back(i->eta());
+      PFJet8CHSSDPhi_->push_back(i->phi());
+      // std::cout << "ele pt: " << i->pt() << std::endl; //TEST -- works
+      // std::cout << "ele eta: " << i->eta() << std::endl;   //TEST --works
+      // std::cout << "ele phi: " << i->phi() << std::endl;   //TEST --works
+    }
+  
+      }
+  }
+  return;
+}
+
+template<typename PFJetTopCHSCollection>
+void AODAnalyzer::fillTopCHSJets(const edm::Handle<PFJetTopCHSCollection> & jetsTopCHS, std::string type)
+{
+  // Selected jets
+  //reco::CaloJetCollection recojets;
+  typename PFJetTopCHSCollection::const_iterator i = jetsTopCHS->begin();
+  for(;i != jetsTopCHS->end(); i++){
+    if(std::abs(i->eta()) < maxJetEta_ && i->pt() >= minJetPt_)
+      {
+  
+  if(type.compare(std::string("PF")) == 0)
+    {
+      PFJetTopCHSPt_->push_back(i->pt());
+      PFJetTopCHSEta_->push_back(i->eta());
+      PFJetTopCHSPhi_->push_back(i->phi());
+      // std::cout << "ele pt: " << i->pt() << std::endl; //TEST -- works
+      // std::cout << "ele eta: " << i->eta() << std::endl;   //TEST --works
+      // std::cout << "ele phi: " << i->phi() << std::endl;   //TEST --works
+    }
+  
       }
   }
   return;
@@ -1350,7 +1596,7 @@ void AODAnalyzer::fillHBHErecHit(const edm::Handle<HBHERecHitCollection> & HBHEh
     HBHEtime_ ->push_back(i->time());
     HBHEauxe_ ->push_back(i->eaux()); //const class HBHERecHit' has no member named 'chi2'
     // std::cout << "ele HBHEenergy: " << i->energy()   << std::endl; 
-    std::cout << "ele HBHEchi: "  << i->eaux() << std::endl;
+    //std::cout << "ele HBHEchi: "  << i->eaux() << std::endl;
   }
   return;
 }
@@ -1495,6 +1741,27 @@ void AODAnalyzer::beginJob() {
   PFJetPt_   = new std::vector<float>;
   PFJetEta_  = new std::vector<float>;
   PFJetPhi_  = new std::vector<float>;
+
+  PFJet4CHSPt_   = new std::vector<float>;
+  PFJet4CHSEta_  = new std::vector<float>;
+  PFJet4CHSPhi_  = new std::vector<float>;
+
+  PFJet8CHSPt_   = new std::vector<float>;
+  PFJet8CHSEta_  = new std::vector<float>;
+  PFJet8CHSPhi_  = new std::vector<float>;
+
+  PFJetEIPt_   = new std::vector<float>;
+  PFJetEIEta_  = new std::vector<float>;
+  PFJetEIPhi_  = new std::vector<float>;
+
+  PFJet8CHSSDPt_   = new std::vector<float>;
+  PFJet8CHSSDEta_  = new std::vector<float>;
+  PFJet8CHSSDPhi_  = new std::vector<float>;
+
+  PFJetTopCHSPt_   = new std::vector<float>;
+  PFJetTopCHSEta_  = new std::vector<float>;
+  PFJetTopCHSPhi_  = new std::vector<float>;        
+
   PFChMetPt_     = new std::vector<float>;
   PFChMetPhi_    = new std::vector<float>;
   PFMetPt_     = new std::vector<float>;
@@ -1636,6 +1903,27 @@ void AODAnalyzer::beginJob() {
   qPFJetPt_  = new std::vector<float>;
   qPFJetEta_ = new std::vector<float>;
   qPFJetPhi_ = new std::vector<float>;
+
+  qPFJet4CHSPt_   = new std::vector<float>;
+  qPFJet4CHSEta_  = new std::vector<float>;
+  qPFJet4CHSPhi_  = new std::vector<float>;
+
+  qPFJet8CHSPt_   = new std::vector<float>;
+  qPFJet8CHSEta_  = new std::vector<float>;
+  qPFJet8CHSPhi_  = new std::vector<float>;
+
+  qPFJetEIPt_   = new std::vector<float>;
+  qPFJetEIEta_  = new std::vector<float>;
+  qPFJetEIPhi_  = new std::vector<float>;
+
+  qPFJet8CHSSDPt_   = new std::vector<float>;
+  qPFJet8CHSSDEta_  = new std::vector<float>;
+  qPFJet8CHSSDPhi_  = new std::vector<float>;
+
+  qPFJetTopCHSPt_   = new std::vector<float>;
+  qPFJetTopCHSEta_  = new std::vector<float>;
+  qPFJetTopCHSPhi_  = new std::vector<float>;
+
   qPFChMetPt_     = new std::vector<float>;
   qPFChMetPhi_    = new std::vector<float>;
   qPFMetPt_     = new std::vector<float>;
@@ -1773,6 +2061,28 @@ void AODAnalyzer::beginJob() {
   outTree_->Branch("qPFJetPt",     "std::vector<std::float>",      &qPFJetPt_);
   outTree_->Branch("qPFJetEta",    "std::vector<std::float>",      &qPFJetEta_);
   outTree_->Branch("qPFJetPhi",    "std::vector<std::float>",      &qPFJetPhi_);
+
+
+  outTree_->Branch("qPFJet4CHSPt",     "std::vector<std::float>",      &qPFJet4CHSPt_);
+  outTree_->Branch("qPFJet4CHSEta",    "std::vector<std::float>",      &qPFJet4CHSEta_);
+  outTree_->Branch("qPFJet4CHSPhi",    "std::vector<std::float>",      &qPFJet4CHSPhi_);
+
+  outTree_->Branch("qPFJet8CHSPt",     "std::vector<std::float>",      &qPFJet8CHSPt_);
+  outTree_->Branch("qPFJet8CHSEta",    "std::vector<std::float>",      &qPFJet8CHSEta_);
+  outTree_->Branch("qPFJet8CHSPhi",    "std::vector<std::float>",      &qPFJet8CHSPhi_);
+
+  outTree_->Branch("qPFJetEIPt",     "std::vector<std::float>",      &qPFJetEIPt_);
+  outTree_->Branch("qPFJetEIEta",    "std::vector<std::float>",      &qPFJetEIEta_);
+  outTree_->Branch("qPFJetEIPhi",    "std::vector<std::float>",      &qPFJetEIPhi_);
+
+  outTree_->Branch("qPFJet8CHSSDPt",     "std::vector<std::float>",      &qPFJet8CHSSDPt_);
+  outTree_->Branch("qPFJet8CHSSDEta",    "std::vector<std::float>",      &qPFJet8CHSSDEta_);
+  outTree_->Branch("qPFJet8CHSSDPhi",    "std::vector<std::float>",      &qPFJet8CHSSDPhi_);
+
+  outTree_->Branch("qPFJetTopCHSPt",     "std::vector<std::float>",      &qPFJetTopCHSPt_);
+  outTree_->Branch("qPFJetTopCHSEta",    "std::vector<std::float>",      &qPFJetTopCHSEta_);
+  outTree_->Branch("qPFJetTopCHSPhi",    "std::vector<std::float>",      &qPFJetTopCHSPhi_);
+
   outTree_->Branch("qPFChMetPt",     "std::vector<std::float>",        &qPFChMetPt_);
   outTree_->Branch("qPFChMetPhi",    "std::vector<std::float>",        &qPFChMetPhi_);
   outTree_->Branch("qPFMetPt",     "std::vector<std::float>",        &qPFMetPt_);
@@ -1881,7 +2191,7 @@ void AODAnalyzer::beginJob() {
 
   outTree_->Branch("qHBHEenergy",    "std::vector<std::float>",        &qHBHEenergy_);
   outTree_->Branch("qHBHEtime",    "std::vector<std::float>",          &qHBHEtime_);
-  outTree_->Branch("qHBHEchi2",    "std::vector<std::float>",          &qHBHEauxe_);
+  outTree_->Branch("qHBHEauxe",    "std::vector<std::float>",          &qHBHEauxe_);
   outTree_->Branch("qHFenergy",    "std::vector<std::float>",        &qHFenergy_);
   outTree_->Branch("qHFtime",    "std::vector<std::float>",          &qHFtime_);
   // outTree_->Branch("qHFchi2",    "std::vector<std::float>",          &qHFchi2_);
@@ -1935,6 +2245,27 @@ void AODAnalyzer::endJob()
   delete PFJetPt_;
   delete PFJetEta_;
   delete PFJetPhi_;
+
+  delete PFJet4CHSPt_;
+  delete PFJet4CHSEta_;
+  delete PFJet4CHSPhi_;
+
+  delete PFJet8CHSPt_;
+  delete PFJet8CHSEta_;
+  delete PFJet8CHSPhi_;
+
+  delete PFJetEIPt_;
+  delete PFJetEIEta_;
+  delete PFJetEIPhi_;
+
+  delete PFJet8CHSSDPt_;
+  delete PFJet8CHSSDEta_;
+  delete PFJet8CHSSDPhi_;
+
+  delete PFJetTopCHSPt_;
+  delete PFJetTopCHSEta_;
+  delete PFJetTopCHSPhi_;
+
   delete PFChMetPt_;
   delete PFChMetPhi_;
   delete PFMetPt_;
@@ -2065,6 +2396,27 @@ void AODAnalyzer::endJob()
   delete qPFJetPt_;
   delete qPFJetEta_;
   delete qPFJetPhi_;
+
+  delete qPFJet4CHSPt_;
+  delete qPFJet4CHSEta_;
+  delete qPFJet4CHSPhi_;
+
+  delete qPFJet8CHSPt_;
+  delete qPFJet8CHSEta_;
+  delete qPFJet8CHSPhi_;
+
+  delete qPFJetEIPt_;
+  delete qPFJetEIEta_;
+  delete qPFJetEIPhi_;
+
+  delete qPFJet8CHSSDPt_;
+  delete qPFJet8CHSSDEta_;
+  delete qPFJet8CHSSDPhi_;
+
+  delete qPFJetTopCHSPt_;
+  delete qPFJetTopCHSEta_;
+  delete qPFJetTopCHSPhi_;
+
   delete qPFChMetPt_;
   delete qPFChMetPhi_;
   delete qPFMetPt_;
@@ -2239,6 +2591,28 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeMeanAndRms(PFJetPt_, qPFJetPt_);
   computeMeanAndRms(PFJetEta_,qPFJetEta_);
   computeMeanAndRms(PFJetPhi_,qPFJetPhi_);
+
+
+  computeMeanAndRms(PFJet4CHSPt_, qPFJet4CHSPt_);
+  computeMeanAndRms(PFJet4CHSEta_,qPFJet4CHSEta_);
+  computeMeanAndRms(PFJet4CHSPhi_,qPFJet4CHSPhi_);
+
+  computeMeanAndRms(PFJet8CHSPt_, qPFJet8CHSPt_);
+  computeMeanAndRms(PFJet8CHSEta_,qPFJet8CHSEta_);
+  computeMeanAndRms(PFJet8CHSPhi_,qPFJet8CHSPhi_);
+
+  computeMeanAndRms(PFJetEIPt_, qPFJetEIPt_);
+  computeMeanAndRms(PFJetEIEta_,qPFJetEIEta_);
+  computeMeanAndRms(PFJetEIPhi_,qPFJetEIPhi_);
+
+  computeMeanAndRms(PFJet8CHSSDPt_, qPFJet8CHSSDPt_);
+  computeMeanAndRms(PFJet8CHSSDEta_,qPFJet8CHSSDEta_);
+  computeMeanAndRms(PFJet8CHSSDPhi_,qPFJet8CHSSDPhi_);
+
+  computeMeanAndRms(PFJetTopCHSPt_, qPFJetTopCHSPt_);
+  computeMeanAndRms(PFJetTopCHSEta_,qPFJetTopCHSEta_);
+  computeMeanAndRms(PFJetTopCHSPhi_,qPFJetTopCHSPhi_);
+
   computeMeanAndRms(PFChMetPt_, qPFChMetPt_);
   computeMeanAndRms(PFChMetPhi_,  qPFChMetPhi_);
   computeMeanAndRms(PFMetPt_, qPFMetPt_);
@@ -2370,9 +2744,31 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeMeanAndRms(CTEta_, qCTEta_);  
   computeMeanAndRms(CTPhi_, qCTPhi_);
 
+
   computeQuantiles(PFJetPt_, qPFJetPt_, quantiles_);
   computeQuantiles(PFJetEta_,qPFJetEta_,quantiles_);
   computeQuantiles(PFJetPhi_,qPFJetPhi_,quantiles_);
+
+  computeQuantiles(PFJet4CHSPt_, qPFJet4CHSPt_, quantiles_);
+  computeQuantiles(PFJet4CHSEta_,qPFJet4CHSEta_,quantiles_);
+  computeQuantiles(PFJet4CHSPhi_,qPFJet4CHSPhi_,quantiles_);
+
+  computeQuantiles(PFJet8CHSPt_, qPFJet8CHSPt_, quantiles_);
+  computeQuantiles(PFJet8CHSEta_,qPFJet8CHSEta_,quantiles_);
+  computeQuantiles(PFJet8CHSPhi_,qPFJet8CHSPhi_,quantiles_);
+
+  computeQuantiles(PFJetEIPt_, qPFJetEIPt_, quantiles_);
+  computeQuantiles(PFJetEIEta_,qPFJetEIEta_,quantiles_);
+  computeQuantiles(PFJetEIPhi_,qPFJetEIPhi_,quantiles_);
+
+  computeQuantiles(PFJet8CHSSDPt_, qPFJet8CHSSDPt_, quantiles_);
+  computeQuantiles(PFJet8CHSSDEta_,qPFJet8CHSSDEta_,quantiles_);
+  computeQuantiles(PFJet8CHSSDPhi_,qPFJet8CHSSDPhi_,quantiles_);
+
+  computeQuantiles(PFJetTopCHSPt_, qPFJetTopCHSPt_, quantiles_);
+  computeQuantiles(PFJetTopCHSEta_,qPFJetTopCHSEta_,quantiles_);
+  computeQuantiles(PFJetTopCHSPhi_,qPFJetTopCHSPhi_,quantiles_);      
+
   computeQuantiles(PFChMetPt_, qPFChMetPt_,     quantiles_);
   computeQuantiles(PFChMetPhi_,qPFChMetPhi_,    quantiles_);
   computeQuantiles(PFMetPt_, qPFMetPt_,     quantiles_);
@@ -2531,6 +2927,36 @@ void AODAnalyzer::analyze (const edm::Event &event, const edm::EventSetup &event
   if(PFJets.isValid())
     fillJets(PFJets, std::string("PF")); 
 
+
+  //fill PFJet4CHS Jets
+  edm::Handle<reco::PFJetCollection> PF4CHSJets;
+  event.getByToken(PFJet4CHSToken_,PF4CHSJets);
+  if(PF4CHSJets.isValid())
+    fill4CHSJets(PF4CHSJets, std::string("PF"));
+
+    //fill PFJet8CHS Jets
+  edm::Handle<reco::PFJetCollection> PF8CHSJets;
+  event.getByToken(PFJet8CHSToken_,PF8CHSJets);
+  if(PF8CHSJets.isValid())
+    fill8CHSJets(PF8CHSJets, std::string("PF"));
+
+    //fill PFJetEI Jets
+  edm::Handle<reco::PFJetCollection> PFEIJets;
+  event.getByToken(PFJetEIToken_,PFEIJets);
+  if(PFEIJets.isValid())
+    fillEIJets(PFEIJets, std::string("PF"));
+
+    //fill PFJet8CHSSoftDrop Jets
+  edm::Handle<reco::PFJetCollection> PF8CHSSoftDropJets;
+  event.getByToken(PFJet8CHSSoftDropToken_,PF8CHSSoftDropJets);
+  if(PF8CHSSoftDropJets.isValid())
+    fill8CHSoftDropJets(PF8CHSSoftDropJets, std::string("PF"));
+
+    //fill PFJetTopCHS Jets
+  edm::Handle<reco::PFJetCollection> PFTopCHSJets;
+  event.getByToken(PFJetTopCHSToken_,PFTopCHSJets);
+  if(PFTopCHSJets.isValid())
+    fillTopCHSJets(PFTopCHSJets, std::string("PF"));
   //   //fill PFChMet
 
   edm::Handle<reco::PFMETCollection> pfchmetlocalv;
