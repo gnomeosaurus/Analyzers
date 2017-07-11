@@ -127,6 +127,15 @@ private:
   template<typename CaloMETCollection>
   void fillCaloMETs(const edm::Handle<CaloMETCollection> &);
 
+  template<typename CaloMETBECollection>
+  void fillCaloMETBEs(const edm::Handle<CaloMETBECollection> &);
+
+  template<typename CaloMETBEFOCollection>
+  void fillCaloMETBEFOs(const edm::Handle<CaloMETBEFOCollection> &);
+
+  template<typename CaloMETMCollection>
+  void fillCaloMETMs(const edm::Handle<CaloMETMCollection> &);
+
   template<typename SuperClusterCollection> 
   void fillSC(const edm::Handle<SuperClusterCollection> &); 
 
@@ -247,8 +256,10 @@ private:
 
   //PFChMet variables
   std::vector<float>* PFChMetPt_;
+  std::vector<float>* PFChMetEta_;  
   std::vector<float>* PFChMetPhi_;
   std::vector<float>* PFMetPt_;
+  std::vector<float>* PFMetEta_;
   std::vector<float>* PFMetPhi_;
   std::vector<int>*   nVtx_;
   //CaloJet variables
@@ -262,6 +273,24 @@ private:
   std::vector<float>* CalMETEta_;
   std::vector<float>* CalMETPhi_;
   std::vector<float>* CalMETEn_;
+
+  //CaloMet variables BE
+  std::vector<float>* CalMETBEPt_;
+  std::vector<float>* CalMETBEEta_;
+  std::vector<float>* CalMETBEPhi_;
+  std::vector<float>* CalMETBEEn_;
+
+    //CaloMet variables  BEFO
+  std::vector<float>* CalMETBEFOPt_;
+  std::vector<float>* CalMETBEFOEta_;
+  std::vector<float>* CalMETBEFOPhi_;
+  std::vector<float>* CalMETBEFOEn_;
+
+    //CaloMet variables  M
+  std::vector<float>* CalMETMPt_;
+  std::vector<float>* CalMETMEta_;
+  std::vector<float>* CalMETMPhi_;
+  std::vector<float>* CalMETMEn_;
 
   //std::vector<float>* SuperCluster_; // adding SuperCluster
   std::vector<double>* SCEn_;
@@ -415,8 +444,10 @@ private:
   std::vector<float>* qPFJetTopCHSPhi_;
 
   std::vector<float>* qPFChMetPt_;
+  std::vector<float>* qPFChMetEta_;   
   std::vector<float>* qPFChMetPhi_;
   std::vector<float>* qPFMetPt_;
+  std::vector<float>* qPFMetEta_;  
   std::vector<float>* qPFMetPhi_;
   std::vector<int>*   qNVtx_;
 
@@ -424,10 +455,30 @@ private:
   std::vector<float>* qCalJetEta_;
   std::vector<float>* qCalJetPhi_;
   std::vector<float>* qCalJetEn_;
+
   std::vector<float>* qCalMETPt_;
   std::vector<float>* qCalMETEta_;
   std::vector<float>* qCalMETPhi_;
   std::vector<float>* qCalMETEn_;
+
+
+  std::vector<float>* qCalMETBEPt_;
+  std::vector<float>* qCalMETBEEta_;
+  std::vector<float>* qCalMETBEPhi_;
+  std::vector<float>* qCalMETBEEn_;
+
+
+  std::vector<float>* qCalMETBEFOPt_;
+  std::vector<float>* qCalMETBEFOEta_;
+  std::vector<float>* qCalMETBEFOPhi_;
+  std::vector<float>* qCalMETBEFOEn_;
+
+
+  std::vector<float>* qCalMETMPt_;
+  std::vector<float>* qCalMETMEta_;
+  std::vector<float>* qCalMETMPhi_;
+  std::vector<float>* qCalMETMEn_;
+
 
   std::vector<double>* qSCEn_;
   std::vector<double>* qSCEta_;
@@ -561,6 +612,9 @@ private:
 
   edm::EDGetTokenT<reco::CaloJetCollection> CaloJetToken_;
   edm::EDGetTokenT<reco::CaloMETCollection> CaloMETToken_;      //variables
+  edm::EDGetTokenT<reco::CaloMETCollection> CaloMETBEToken_;
+  edm::EDGetTokenT<reco::CaloMETCollection> CaloMETBEFOToken_;
+  edm::EDGetTokenT<reco::CaloMETCollection> CaloMETMToken_;
   edm::EDGetTokenT<reco::VertexCollection>  vtxToken_;
 
   edm::EDGetTokenT<edm::TriggerResults> triggerBits_;
@@ -637,7 +691,11 @@ AODAnalyzer::AODAnalyzer(const edm::ParameterSet& cfg):
   PFChMETToken_             (consumes<reco::PFMETCollection>(cfg.getUntrackedParameter<edm::InputTag>("PFChMETTag"))),
   PFMETToken_               (consumes<reco::PFMETCollection>(cfg.getUntrackedParameter<edm::InputTag>("PFMETTag"))),
   CaloJetToken_             (consumes<reco::CaloJetCollection>(cfg.getUntrackedParameter<edm::InputTag>("CaloJetTag"))),
-  CaloMETToken_             (consumes<reco::CaloMETCollection>(cfg.getUntrackedParameter<edm::InputTag>("CaloMETTag"))),  ///std::vector<reco::CaloMET> 
+  CaloMETToken_             (consumes<reco::CaloMETCollection>(cfg.getUntrackedParameter<edm::InputTag>("CaloMETTag"))),  ///std::vector<reco::CaloMET>
+  CaloMETBEToken_           (consumes<reco::CaloMETCollection>(cfg.getUntrackedParameter<edm::InputTag>("CaloMETBETag"))),  ///std::vector<reco::CaloMET> 
+  CaloMETBEFOToken_         (consumes<reco::CaloMETCollection>(cfg.getUntrackedParameter<edm::InputTag>("CaloMETBEFOTag"))),  ///std::vector<reco::CaloMET> 
+  CaloMETMToken_            (consumes<reco::CaloMETCollection>(cfg.getUntrackedParameter<edm::InputTag>("CaloMETMTag"))),  ///std::vector<reco::CaloMET> 
+ 
   vtxToken_                 (consumes<reco::VertexCollection>(cfg.getUntrackedParameter<edm::InputTag>("vtx"))),
   triggerBits_              (consumes<edm::TriggerResults>(cfg.getUntrackedParameter<edm::InputTag>("bits"))),
   triggerPrescales_         (consumes<trigger::TriggerEvent>(cfg.getUntrackedParameter<edm::InputTag>("prescales"))),  // pat::PackedTriggerPrescales
@@ -718,8 +776,10 @@ void AODAnalyzer::initialize()
   PFJetTopCHSPhi_->clear();       
 
   PFChMetPt_->clear();
+  PFChMetEta_->clear();  
   PFChMetPhi_->clear();
   PFMetPt_->clear();
+  PFMetEta_->clear();  
   PFMetPhi_->clear();
   nVtx_->clear();
 
@@ -727,10 +787,26 @@ void AODAnalyzer::initialize()
   CalJetEta_->clear();
   CalJetPhi_->clear();
   CalJetEn_->clear();
+
   CalMETPt_->clear();
   CalMETEta_->clear();
   CalMETPhi_->clear();
   CalMETEn_->clear();
+
+  CalMETBEPt_->clear();
+  CalMETBEEta_->clear();
+  CalMETBEPhi_->clear();
+  CalMETBEEn_->clear();
+
+  CalMETBEFOPt_->clear();
+  CalMETBEFOEta_->clear();
+  CalMETBEFOPhi_->clear();
+  CalMETBEFOEn_->clear();
+
+  CalMETMPt_->clear();
+  CalMETMEta_->clear();
+  CalMETMPhi_->clear();
+  CalMETMEn_->clear();
   //SuperCluster_ ->clear(); //adding SuperCluster
   SCEn_ ->clear();
   SCEta_->clear();
@@ -872,8 +948,10 @@ void AODAnalyzer::initialize()
   qPFJetTopCHSPhi_->clear(); 
 
   qPFChMetPt_->clear();
+  qPFChMetEta_->clear();  
   qPFChMetPhi_->clear();
   qPFMetPt_->clear();
+  qPFMetEta_->clear();  
   qPFMetPhi_->clear();
   qNVtx_->clear();
 
@@ -885,6 +963,18 @@ void AODAnalyzer::initialize()
   qCalMETEta_->clear();
   qCalMETPhi_->clear();
   qCalMETEn_->clear();
+  qCalMETBEPt_->clear();
+  qCalMETBEEta_->clear();
+  qCalMETBEPhi_->clear();
+  qCalMETBEEn_->clear();
+  qCalMETBEFOPt_->clear();
+  qCalMETBEFOEta_->clear();
+  qCalMETBEFOPhi_->clear();
+  qCalMETBEFOEn_->clear();
+  qCalMETMPt_->clear();
+  qCalMETMEta_->clear();
+  qCalMETMPhi_->clear();
+  qCalMETMEn_->clear();
   qSCEn_ ->clear();
   qSCEta_->clear();
   qSCPhi_->clear();
@@ -1167,6 +1257,7 @@ void AODAnalyzer::fillPFChMets(const edm::Handle<PFChMETCollection> & pfchmets)
   typename PFChMETCollection::const_iterator i = pfchmets->begin();
   for(;i != pfchmets->end(); i++){
     PFChMetPt_->push_back(i->et());
+    PFChMetEta_->push_back(i->eta());
     PFChMetPhi_->push_back(i->phi());
 
   }
@@ -1182,6 +1273,7 @@ void AODAnalyzer::fillPFMets(const edm::Handle<PFMETCollection> & pfmets)
   typename PFMETCollection::const_iterator i = pfmets->begin();
   for(;i != pfmets->end(); i++){
     PFMetPt_->push_back(i->et());
+    PFMetEta_->push_back(i->eta());
     PFMetPhi_->push_back(i->phi());  //try also eta and energy
 
   }
@@ -1222,13 +1314,59 @@ void AODAnalyzer::fillCaloMETs(const edm::Handle<CaloMETCollection> & caloMETs)
   return;
 
 }
-// //TODO
-// template<typename CaloJetCollection>
-// void AODAnalyzer::fillCaloJets()
 
-// //TODO
-// template<typename CaloMETCollection>
-// void AODAnalyzer::fillCaloMETs()
+
+template<typename CaloMETBECollection>
+void AODAnalyzer::fillCaloMETBEs(const edm::Handle<CaloMETBECollection> & caloMETBEs)
+{
+  // std::cout << "fills is being called!" << std::endl;
+  // std::cout << pfmets->size() <<std::endl;
+  typename CaloMETBECollection::const_iterator i = caloMETBEs->begin();
+  for(;i != caloMETBEs->end(); i++){
+        CalMETBEPt_->push_back(i->et());
+        CalMETBEEta_->push_back(i->eta());
+        CalMETBEPhi_->push_back(i->phi());
+        CalMETBEEn_->push_back(i->energy());
+
+  }
+  return;
+
+}
+
+template<typename CaloMETBEFOCollection>
+void AODAnalyzer::fillCaloMETBEFOs(const edm::Handle<CaloMETBEFOCollection> & caloMETBEFOs)
+{
+  // std::cout << "fills is being called!" << std::endl;
+  // std::cout << pfmets->size() <<std::endl;
+  typename CaloMETBEFOCollection::const_iterator i = caloMETBEFOs->begin();
+  for(;i != caloMETBEFOs->end(); i++){
+        CalMETBEFOPt_->push_back(i->et());
+        CalMETBEFOEta_->push_back(i->eta());
+        CalMETBEFOPhi_->push_back(i->phi());
+        CalMETBEFOEn_->push_back(i->energy());
+
+  }
+  return;
+
+}
+
+template<typename CaloMETMCollection>
+void AODAnalyzer::fillCaloMETMs(const edm::Handle<CaloMETMCollection> & caloMETMs)
+{
+  // std::cout << "fills is being called!" << std::endl;
+  // std::cout << pfmets->size() <<std::endl;
+  typename CaloMETMCollection::const_iterator i = caloMETMs->begin();
+  for(;i != caloMETMs->end(); i++){
+        CalMETMPt_->push_back(i->et());
+        CalMETMEta_->push_back(i->eta());
+        CalMETMPhi_->push_back(i->phi());
+        CalMETMEn_->push_back(i->energy());
+
+  }
+  return;
+
+}
+
 
 
 template<typename SuperClusterCollection>
@@ -1763,8 +1901,10 @@ void AODAnalyzer::beginJob() {
   PFJetTopCHSPhi_  = new std::vector<float>;        
 
   PFChMetPt_     = new std::vector<float>;
+  PFChMetEta_    = new std::vector<float>;  
   PFChMetPhi_    = new std::vector<float>;
   PFMetPt_     = new std::vector<float>;
+  PFMetEta_    = new std::vector<float>;
   PFMetPhi_    = new std::vector<float>;
   nVtx_      = new std::vector<int>;
   
@@ -1776,6 +1916,21 @@ void AODAnalyzer::beginJob() {
   CalMETEta_   = new std::vector<float>;
   CalMETPhi_   = new std::vector<float>;
   CalMETEn_   = new std::vector<float>;
+
+  CalMETBEPt_   = new std::vector<float>;
+  CalMETBEEta_   = new std::vector<float>;
+  CalMETBEPhi_   = new std::vector<float>;
+  CalMETBEEn_   = new std::vector<float>;
+  CalMETBEFOPt_   = new std::vector<float>;
+  CalMETBEFOEta_   = new std::vector<float>;
+  CalMETBEFOPhi_   = new std::vector<float>;
+  CalMETBEFOEn_   = new std::vector<float>;
+  CalMETMPt_   = new std::vector<float>;
+  CalMETMEta_   = new std::vector<float>;
+  CalMETMPhi_   = new std::vector<float>;
+  CalMETMEn_   = new std::vector<float>;
+
+
   SCEn_      = new std::vector<double>;
   SCEta_     = new std::vector<double>;
   SCPhi_     = new std::vector<double>;
@@ -1925,8 +2080,10 @@ void AODAnalyzer::beginJob() {
   qPFJetTopCHSPhi_  = new std::vector<float>;
 
   qPFChMetPt_     = new std::vector<float>;
+  qPFChMetEta_    = new std::vector<float>;  
   qPFChMetPhi_    = new std::vector<float>;
   qPFMetPt_     = new std::vector<float>;
+  qPFMetEta_    = new std::vector<float>;
   qPFMetPhi_    = new std::vector<float>;
  
   qCalJetPt_   = new std::vector<float>;
@@ -1937,6 +2094,19 @@ void AODAnalyzer::beginJob() {
   qCalMETEta_   = new std::vector<float>;
   qCalMETPhi_   = new std::vector<float>;
   qCalMETEn_   = new std::vector<float>;
+
+  qCalMETBEPt_   = new std::vector<float>;
+  qCalMETBEEta_   = new std::vector<float>;
+  qCalMETBEPhi_   = new std::vector<float>;
+  qCalMETBEEn_   = new std::vector<float>;
+  qCalMETBEFOPt_   = new std::vector<float>;
+  qCalMETBEFOEta_   = new std::vector<float>;
+  qCalMETBEFOPhi_   = new std::vector<float>;
+  qCalMETBEFOEn_   = new std::vector<float>;
+  qCalMETMPt_   = new std::vector<float>;
+  qCalMETMEta_   = new std::vector<float>;
+  qCalMETMPhi_   = new std::vector<float>;
+  qCalMETMEn_   = new std::vector<float>;
 
   qSCEn_     = new std::vector<double>;
   qSCEta_    = new std::vector<double>;
@@ -2084,8 +2254,10 @@ void AODAnalyzer::beginJob() {
   outTree_->Branch("qPFJetTopCHSPhi",    "std::vector<std::float>",      &qPFJetTopCHSPhi_);
 
   outTree_->Branch("qPFChMetPt",     "std::vector<std::float>",        &qPFChMetPt_);
+  outTree_->Branch("qPFChMetEta",    "std::vector<std::float>",        &qPFChMetEta_);  
   outTree_->Branch("qPFChMetPhi",    "std::vector<std::float>",        &qPFChMetPhi_);
   outTree_->Branch("qPFMetPt",     "std::vector<std::float>",        &qPFMetPt_);
+  outTree_->Branch("qPFMetEta",    "std::vector<std::float>",        &qPFMetEta_);
   outTree_->Branch("qPFMetPhi",    "std::vector<std::float>",        &qPFMetPhi_);
   outTree_->Branch("qNVtx",        "std::vector<std::int>",        &qNVtx_);
 
@@ -2098,6 +2270,22 @@ void AODAnalyzer::beginJob() {
   outTree_->Branch("qCalMETEta",    "std::vector<std::float>",        &qCalMETEta_);
   outTree_->Branch("qCalMETPhi",    "std::vector<std::float>",        &qCalMETPhi_);
   outTree_->Branch("qCalMETEn",    "std::vector<std::float>",        &qCalMETEn_);
+
+  outTree_->Branch("qCalMETBEPt",     "std::vector<std::float>",        &qCalMETBEPt_);
+  outTree_->Branch("qCalMETBEEta",    "std::vector<std::float>",        &qCalMETBEEta_);
+  outTree_->Branch("qCalMETBEPhi",    "std::vector<std::float>",        &qCalMETBEPhi_);
+  outTree_->Branch("qCalMETBEEn",    "std::vector<std::float>",         &qCalMETBEEn_);
+
+  outTree_->Branch("qCalMETBEFOPt",     "std::vector<std::float>",        &qCalMETBEFOPt_);
+  outTree_->Branch("qCalMETBEFOEta",    "std::vector<std::float>",        &qCalMETBEFOEta_);
+  outTree_->Branch("qCalMETBEFOPhi",    "std::vector<std::float>",        &qCalMETBEFOPhi_);
+  outTree_->Branch("qCalMETBEFOEn",    "std::vector<std::float>",         &qCalMETBEFOEn_);
+
+  outTree_->Branch("qCalMETMPt",     "std::vector<std::float>",        &qCalMETMPt_);
+  outTree_->Branch("qCalMETMEta",    "std::vector<std::float>",        &qCalMETMEta_);
+  outTree_->Branch("qCalMETMPhi",    "std::vector<std::float>",        &qCalMETMPhi_);
+  outTree_->Branch("qCalMETMEn",    "std::vector<std::float>",         &qCalMETMEn_);
+
   outTree_->Branch("qSCEn",     "std::vector<std::double>",        &qSCEn_);
   outTree_->Branch("qSCEta",    "std::vector<std::double>",        &qSCEta_);
   outTree_->Branch("qSCPhi",    "std::vector<std::double>",        &qSCPhi_);
@@ -2267,8 +2455,10 @@ void AODAnalyzer::endJob()
   delete PFJetTopCHSPhi_;
 
   delete PFChMetPt_;
+  delete PFChMetEta_;  
   delete PFChMetPhi_;
   delete PFMetPt_;
+  delete PFMetEta_;
   delete PFMetPhi_;
 
   delete CalJetPt_;
@@ -2279,6 +2469,20 @@ void AODAnalyzer::endJob()
   delete CalMETEta_;
   delete CalMETPhi_;
   delete CalMETEn_;
+
+  delete CalMETBEPt_;
+  delete CalMETBEEta_;
+  delete CalMETBEPhi_;
+  delete CalMETBEEn_;
+  delete CalMETBEFOPt_;
+  delete CalMETBEFOEta_;
+  delete CalMETBEFOPhi_;
+  delete CalMETBEFOEn_;
+  delete CalMETMPt_;
+  delete CalMETMEta_;
+  delete CalMETMPhi_;
+  delete CalMETMEn_;
+
 
   delete SCEn_;
   delete SCEta_;
@@ -2418,8 +2622,10 @@ void AODAnalyzer::endJob()
   delete qPFJetTopCHSPhi_;
 
   delete qPFChMetPt_;
+  delete qPFChMetEta_;  
   delete qPFChMetPhi_;
   delete qPFMetPt_;
+  delete qPFMetEta_;
   delete qPFMetPhi_;
 
   delete qCalJetPt_;
@@ -2430,6 +2636,19 @@ void AODAnalyzer::endJob()
   delete qCalMETEta_;
   delete qCalMETPhi_;
   delete qCalMETEn_;
+
+  delete qCalMETBEPt_;
+  delete qCalMETBEEta_;
+  delete qCalMETBEPhi_;
+  delete qCalMETBEEn_;
+  delete qCalMETBEFOPt_;
+  delete qCalMETBEFOEta_;
+  delete qCalMETBEFOPhi_;
+  delete qCalMETBEFOEn_;
+  delete qCalMETMPt_;
+  delete qCalMETMEta_;
+  delete qCalMETMPhi_;
+  delete qCalMETMEn_;
 
   delete qSCEn_;
   delete qSCEta_;
@@ -2614,8 +2833,10 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeMeanAndRms(PFJetTopCHSPhi_,qPFJetTopCHSPhi_);
 
   computeMeanAndRms(PFChMetPt_, qPFChMetPt_);
+  computeMeanAndRms(PFChMetEta_,  qPFChMetEta_);  
   computeMeanAndRms(PFChMetPhi_,  qPFChMetPhi_);
   computeMeanAndRms(PFMetPt_, qPFMetPt_);
+  computeMeanAndRms(PFMetEta_,  qPFMetEta_);
   computeMeanAndRms(PFMetPhi_,  qPFMetPhi_);
   computeMeanAndRms(nVtx_,    qNVtx_);
 
@@ -2628,6 +2849,22 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeMeanAndRms(CalMETEta_,qCalMETEta_);
   computeMeanAndRms(CalMETPhi_,qCalMETPhi_);
   computeMeanAndRms(CalMETEn_,qCalMETEn_);
+
+  computeMeanAndRms(CalMETBEPt_, qCalMETBEPt_);
+  computeMeanAndRms(CalMETBEEta_,qCalMETBEEta_);
+  computeMeanAndRms(CalMETBEPhi_,qCalMETBEPhi_);
+  computeMeanAndRms(CalMETBEEn_, qCalMETBEEn_);
+
+  computeMeanAndRms(CalMETBEFOPt_, qCalMETBEFOPt_);
+  computeMeanAndRms(CalMETBEFOEta_,qCalMETBEFOEta_);
+  computeMeanAndRms(CalMETBEFOPhi_,qCalMETBEFOPhi_);
+  computeMeanAndRms(CalMETBEFOEn_, qCalMETBEFOEn_);
+
+  computeMeanAndRms(CalMETMPt_, qCalMETMPt_);
+  computeMeanAndRms(CalMETMEta_,qCalMETMEta_);
+  computeMeanAndRms(CalMETMPhi_,qCalMETMPhi_);
+  computeMeanAndRms(CalMETMEn_, qCalMETMEn_);
+
 
   computeMeanAndRms(SCEn_, qSCEn_);   
   computeMeanAndRms(SCEta_, qSCEta_);  
@@ -2770,8 +3007,10 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeQuantiles(PFJetTopCHSPhi_,qPFJetTopCHSPhi_,quantiles_);      
 
   computeQuantiles(PFChMetPt_, qPFChMetPt_,     quantiles_);
+  computeQuantiles(PFChMetEta_,qPFChMetEta_,    quantiles_);  
   computeQuantiles(PFChMetPhi_,qPFChMetPhi_,    quantiles_);
   computeQuantiles(PFMetPt_, qPFMetPt_,     quantiles_);
+  computeQuantiles(PFMetEta_,qPFMetEta_,    quantiles_);
   computeQuantiles(PFMetPhi_,qPFMetPhi_,    quantiles_);
   computeQuantiles(nVtx_,    qNVtx_,    quantiles_);
 
@@ -2783,6 +3022,21 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeQuantiles(CalMETEta_,qCalMETEta_,quantiles_);
   computeQuantiles(CalMETPhi_,qCalMETPhi_,quantiles_);
   computeQuantiles(CalMETEn_,qCalMETEn_,  quantiles_);
+
+  computeQuantiles(CalMETBEPt_, qCalMETBEPt_, quantiles_);
+  computeQuantiles(CalMETBEEta_,qCalMETBEEta_,quantiles_);
+  computeQuantiles(CalMETBEPhi_,qCalMETBEPhi_,quantiles_);
+  computeQuantiles(CalMETBEEn_, qCalMETBEEn_,  quantiles_);
+
+  computeQuantiles(CalMETBEFOPt_, qCalMETBEFOPt_, quantiles_);
+  computeQuantiles(CalMETBEFOEta_,qCalMETBEFOEta_,quantiles_);
+  computeQuantiles(CalMETBEFOPhi_,qCalMETBEFOPhi_,quantiles_);
+  computeQuantiles(CalMETBEFOEn_, qCalMETBEFOEn_,  quantiles_);
+
+  computeQuantiles(CalMETMPt_, qCalMETMPt_, quantiles_);
+  computeQuantiles(CalMETMEta_,qCalMETMEta_,quantiles_);
+  computeQuantiles(CalMETMPhi_,qCalMETMPhi_,quantiles_);
+  computeQuantiles(CalMETMEn_, qCalMETMEn_,  quantiles_);
 
   computeQuantiles(SCEn_, qSCEn_,       quantiles_);
   computeQuantiles(SCEta_, qSCEta_,     quantiles_);
@@ -2990,11 +3244,29 @@ void AODAnalyzer::analyze (const edm::Event &event, const edm::EventSetup &event
   if(calojetlocalv.isValid())
     fillCaloJets(calojetlocalv);
 
+  //fill calomet
   edm::Handle<reco::CaloMETCollection> caloMETlocalv;
   event.getByToken(CaloMETToken_, caloMETlocalv);
   if(caloMETlocalv.isValid())
     fillCaloMETs(caloMETlocalv);
 
+  //fill calomet BE
+  edm::Handle<reco::CaloMETCollection> caloMETBElocalv;
+  event.getByToken(CaloMETBEToken_, caloMETBElocalv);
+  if(caloMETBElocalv.isValid())
+    fillCaloMETBEs(caloMETBElocalv);
+
+    //fill calomet BEFO
+  edm::Handle<reco::CaloMETCollection> caloMETBEFOlocalv;
+  event.getByToken(CaloMETBEFOToken_, caloMETBEFOlocalv);
+  if(caloMETBEFOlocalv.isValid())
+    fillCaloMETBEFOs(caloMETBEFOlocalv);
+
+    //fill calomet M
+  edm::Handle<reco::CaloMETCollection> caloMETMlocalv;
+  event.getByToken(CaloMETMToken_, caloMETMlocalv);
+  if(caloMETMlocalv.isValid())
+    fillCaloMETMs(caloMETMlocalv);
   //fill vtx
   edm::Handle<reco::VertexCollection> recVtxs;
   event.getByToken(vtxToken_,recVtxs);
