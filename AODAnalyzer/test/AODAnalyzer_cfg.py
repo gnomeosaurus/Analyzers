@@ -47,7 +47,7 @@ process.MyAnalysis =cms.EDAnalyzer("AODAnalyzer",
                        SuperClusterTag         = cms.untracked.InputTag("particleFlowEGamma"),
                        SuperClusterhfEMTag     = cms.untracked.InputTag("hfEMClusters"),
                        CaloClusterTag          = cms.untracked.InputTag("particleFlowEGamma","EBEEClusters"),  #ESClusters also possible instead of EBEEClusters
-                       CaloClusterhfEMTag      = cms.untracked.InputTag("hfEMClusters"), 
+                       CaloCluster5x5Tag      = cms.untracked.InputTag("multi5x5SuperClusters","multi5x5EndcapBasicClusters"),    #CHANGING HEFM TO MULTI5X5  HFEM was empty!
 
                        PhotonTag               = cms.untracked.InputTag("photons"),
                        gedPhotonTag            = cms.untracked.InputTag("gedPhotons"),
