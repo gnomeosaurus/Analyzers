@@ -296,12 +296,18 @@ private:
   std::vector<double>* SCEn_;
   std::vector<double>* SCEta_;
   std::vector<double>* SCPhi_;
+  std::vector<double>* SCEtaWidth_;
+  std::vector<double>* SCPhiWidth_;
   std::vector<double>* SCEnhfEM_;
   std::vector<double>* SCEtahfEM_;
   std::vector<double>* SCPhihfEM_;
+  std::vector<double>* SCEtaWidthhfEM_;
+  std::vector<double>* SCPhiWidthhfEM_;  
   std::vector<double>* SCEn5x5_;
   std::vector<double>* SCEta5x5_;
   std::vector<double>* SCPhi5x5_;
+  std::vector<double>* SCEtaWidth5x5_;
+  std::vector<double>* SCPhiWidth5x5_; 
   //caloclusters variables
   std::vector<double>* CCEn_;
   std::vector<double>* CCEta_;
@@ -483,12 +489,18 @@ private:
   std::vector<double>* qSCEn_;
   std::vector<double>* qSCEta_;
   std::vector<double>* qSCPhi_;
+  std::vector<double>* qSCEtaWidth_;
+  std::vector<double>* qSCPhiWidth_;  
   std::vector<double>* qSCEnhfEM_;
   std::vector<double>* qSCEtahfEM_;
   std::vector<double>* qSCPhihfEM_;
+  std::vector<double>* qSCEtaWidthhfEM_;
+  std::vector<double>* qSCPhiWidthhfEM_; 
   std::vector<double>* qSCEn5x5_;
   std::vector<double>* qSCEta5x5_;
-  std::vector<double>* qSCPhi5x5_;  
+  std::vector<double>* qSCPhi5x5_;
+  std::vector<double>* qSCEtaWidth5x5_;
+  std::vector<double>* qSCPhiWidth5x5_;    
   std::vector<double>* qCCEn_;
   std::vector<double>* qCCEta_;
   std::vector<double>* qCCPhi_;
@@ -811,12 +823,18 @@ void AODAnalyzer::initialize()
   SCEn_ ->clear();
   SCEta_->clear();
   SCPhi_->clear();
+  SCEtaWidth_->clear();
+  SCPhiWidth_->clear();  
   SCEnhfEM_ ->clear();
   SCEtahfEM_->clear();
   SCPhihfEM_->clear();
+  SCEtaWidthhfEM_->clear();
+  SCPhiWidthhfEM_->clear();  
   SCEn5x5_ ->clear();
   SCEta5x5_->clear();
-  SCPhi5x5_->clear();  
+  SCPhi5x5_->clear();
+  SCEtaWidth5x5_->clear();
+  SCPhiWidth5x5_->clear();    
   CCEn_ ->clear();
   CCEta_->clear();
   CCPhi_->clear();
@@ -978,12 +996,18 @@ void AODAnalyzer::initialize()
   qSCEn_ ->clear();
   qSCEta_->clear();
   qSCPhi_->clear();
+  qSCEtaWidth_->clear();
+  qSCPhiWidth_->clear();  
   qSCEnhfEM_ ->clear();
   qSCEtahfEM_->clear();
   qSCPhihfEM_->clear();
+  qSCEtaWidthhfEM_->clear();
+  qSCPhiWidthhfEM_->clear();  
   qSCEn5x5_ ->clear();
   qSCEta5x5_->clear();
-  qSCPhi5x5_->clear();  
+  qSCPhi5x5_->clear();
+  qSCEtaWidth5x5_->clear();
+  qSCPhiWidth5x5_->clear();  
   qCCEn_ ->clear();
   qCCEta_->clear();
   qCCPhi_->clear();
@@ -1380,9 +1404,10 @@ void AODAnalyzer::fillSC(const edm::Handle<SuperClusterCollection> & supercluste
      if(std::abs(i->eta()) < maxSCEta_ && i->energy() >= minSCEn_) // not sure if needed
       // {
       SCEn_->push_back(i->energy());
-      SCEta_->push_back(i->etaWidth());
-      SCPhi_->push_back(i->phiWidth());
-
+      SCEta_->push_back(i->eta());
+      SCPhi_->push_back(i->phi());
+      SCEtaWidth_->push_back(i->etaWidth());
+      SCPhiWidth_->push_back(i->phiWidth());
         // std::cout << "ele energy: " << i->energy()   << std::endl; 
         // std::cout << "ele SCeta: "  << i->etaWidth() << std::endl;
         // std::cout << "ele SCphi: "  << i->phiWidth() << std::endl;
@@ -1404,9 +1429,10 @@ void AODAnalyzer::fillSChfEM(const edm::Handle<SuperClusterhfEMCollection> & sup
      if(std::abs(i->eta()) < maxSCEta_ && i->energy() >= minSCEn_) // not sure if needed
       // {
       SCEnhfEM_->push_back(i->energy());
-      SCEtahfEM_->push_back(i->etaWidth());
-      SCPhihfEM_->push_back(i->phiWidth());
-
+      SCEtahfEM_->push_back(i->eta());
+      SCPhihfEM_->push_back(i->phi());
+      SCEtaWidthhfEM_->push_back(i->etaWidth());
+      SCPhiWidthhfEM_->push_back(i->phiWidth());
         // std::cout << "ele energy: " << i->energy()   << std::endl; 
         // std::cout << "ele SCeta: "  << i->etaWidth() << std::endl;
         // std::cout << "ele SCphi: "  << i->phiWidth() << std::endl;
@@ -1428,9 +1454,10 @@ void AODAnalyzer::fillSC5x5(const edm::Handle<SuperCluster5x5Collection> & super
      if(std::abs(i->eta()) < maxSCEta_ && i->energy() >= minSCEn_) // not sure if needed
       // {
       SCEn5x5_->push_back(i->energy());
-      SCEta5x5_->push_back(i->etaWidth());
-      SCPhi5x5_->push_back(i->phiWidth());
-
+      SCEta5x5_->push_back(i->eta());
+      SCPhi5x5_->push_back(i->phi());
+      SCEtaWidth5x5_->push_back(i->etaWidth());
+      SCPhiWidth5x5_->push_back(i->phiWidth());
         // std::cout << "ele energy: " << i->energy()   << std::endl; 
         // std::cout << "ele SCeta: "  << i->etaWidth() << std::endl;
         // std::cout << "ele SCphi: "  << i->phiWidth() << std::endl;
@@ -1934,12 +1961,18 @@ void AODAnalyzer::beginJob() {
   SCEn_      = new std::vector<double>;
   SCEta_     = new std::vector<double>;
   SCPhi_     = new std::vector<double>;
+  SCEtaWidth_     = new std::vector<double>;
+  SCPhiWidth_     = new std::vector<double>;  
   SCEnhfEM_      = new std::vector<double>;
   SCEtahfEM_     = new std::vector<double>;
   SCPhihfEM_     = new std::vector<double>;
+  SCEtaWidthhfEM_     = new std::vector<double>;
+  SCPhiWidthhfEM_     = new std::vector<double>;  
   SCEn5x5_      = new std::vector<double>;
   SCEta5x5_     = new std::vector<double>;
   SCPhi5x5_     = new std::vector<double>;
+  SCEtaWidth5x5_     = new std::vector<double>;
+  SCPhiWidth5x5_     = new std::vector<double>;  
   CCEn_      = new std::vector<double>;
   CCEta_     = new std::vector<double>;
   CCPhi_     = new std::vector<double>;
@@ -2108,15 +2141,21 @@ void AODAnalyzer::beginJob() {
   qCalMETMPhi_   = new std::vector<float>;
   qCalMETMEn_   = new std::vector<float>;
 
-  qSCEn_     = new std::vector<double>;
-  qSCEta_    = new std::vector<double>;
-  qSCPhi_    = new std::vector<double>;
-  qSCEnhfEM_     = new std::vector<double>;
-  qSCEtahfEM_    = new std::vector<double>;
-  qSCPhihfEM_    = new std::vector<double>;
-  qSCEn5x5_     = new std::vector<double>;
-  qSCEta5x5_    = new std::vector<double>;
-  qSCPhi5x5_    = new std::vector<double>;
+  qSCEn_      = new std::vector<double>;
+  qSCEta_     = new std::vector<double>;
+  qSCPhi_     = new std::vector<double>;
+  qSCEtaWidth_     = new std::vector<double>;
+  qSCPhiWidth_     = new std::vector<double>;  
+  qSCEnhfEM_      = new std::vector<double>;
+  qSCEtahfEM_     = new std::vector<double>;
+  qSCPhihfEM_     = new std::vector<double>;
+  qSCEtaWidthhfEM_     = new std::vector<double>;
+  qSCPhiWidthhfEM_     = new std::vector<double>;  
+  qSCEn5x5_      = new std::vector<double>;
+  qSCEta5x5_     = new std::vector<double>;
+  qSCPhi5x5_     = new std::vector<double>;
+  qSCEtaWidth5x5_     = new std::vector<double>;
+  qSCPhiWidth5x5_     = new std::vector<double>; 
   qCCEn_     = new std::vector<double>;
   qCCEta_    = new std::vector<double>;
   qCCPhi_    = new std::vector<double>;
@@ -2289,12 +2328,18 @@ void AODAnalyzer::beginJob() {
   outTree_->Branch("qSCEn",     "std::vector<std::double>",        &qSCEn_);
   outTree_->Branch("qSCEta",    "std::vector<std::double>",        &qSCEta_);
   outTree_->Branch("qSCPhi",    "std::vector<std::double>",        &qSCPhi_);
+  outTree_->Branch("qSCEtaWidth",    "std::vector<std::double>",        &qSCEtaWidth_);
+  outTree_->Branch("qSCPhiWidth",    "std::vector<std::double>",        &qSCPhiWidth_);  
   outTree_->Branch("qSCEnhfEM",     "std::vector<std::double>",        &qSCEnhfEM_);
   outTree_->Branch("qSCEtahfEM",    "std::vector<std::double>",        &qSCEtahfEM_);
   outTree_->Branch("qSCPhihfEM",    "std::vector<std::double>",        &qSCPhihfEM_);
+  outTree_->Branch("qSCEtaWidthhfEM",    "std::vector<std::double>",        &qSCEtaWidthhfEM_);
+  outTree_->Branch("qSCPhiWidthhfEM",    "std::vector<std::double>",        &qSCPhiWidthhfEM_);  
   outTree_->Branch("qSCEn5x5",     "std::vector<std::double>",        &qSCEn5x5_);
   outTree_->Branch("qSCEta5x5",    "std::vector<std::double>",        &qSCEta5x5_);
   outTree_->Branch("qSCPhi5x5",    "std::vector<std::double>",        &qSCPhi5x5_);
+  outTree_->Branch("qSCEtaWidth5x5",    "std::vector<std::double>",        &qSCEtaWidth5x5_);
+  outTree_->Branch("qSCPhiWidth5x5",    "std::vector<std::double>",        &qSCPhiWidth5x5_);  
   outTree_->Branch("qCCEn",     "std::vector<std::double>",        &qCCEn_);
   outTree_->Branch("qCCEta",    "std::vector<std::double>",        &qCCEta_);
   outTree_->Branch("qCCPhi",    "std::vector<std::double>",        &qCCPhi_);
@@ -2487,12 +2532,18 @@ void AODAnalyzer::endJob()
   delete SCEn_;
   delete SCEta_;
   delete SCPhi_;
+  delete SCEtaWidth_;
+  delete SCPhiWidth_;  
   delete SCEnhfEM_;
   delete SCEtahfEM_;
   delete SCPhihfEM_;
+  delete SCEtaWidthhfEM_;
+  delete SCPhiWidthhfEM_; 
   delete SCEn5x5_;
   delete SCEta5x5_;
   delete SCPhi5x5_;
+  delete SCEtaWidth5x5_;
+  delete SCPhiWidth5x5_;  
   delete CCEn_;
   delete CCEta_;
   delete CCPhi_;
@@ -2653,12 +2704,18 @@ void AODAnalyzer::endJob()
   delete qSCEn_;
   delete qSCEta_;
   delete qSCPhi_;
+  delete qSCEtaWidth_;
+  delete qSCPhiWidth_;  
   delete qSCEnhfEM_;
   delete qSCEtahfEM_;
   delete qSCPhihfEM_;
+  delete qSCEtaWidthhfEM_;
+  delete qSCPhiWidthhfEM_; 
   delete qSCEn5x5_;
   delete qSCEta5x5_;
   delete qSCPhi5x5_;
+  delete qSCEtaWidth5x5_;
+  delete qSCPhiWidth5x5_; 
   delete qCCEn_;
   delete qCCEta_;
   delete qCCPhi_;
@@ -2869,12 +2926,20 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeMeanAndRms(SCEn_, qSCEn_);   
   computeMeanAndRms(SCEta_, qSCEta_);  
   computeMeanAndRms(SCPhi_, qSCPhi_);
+  computeMeanAndRms(SCEtaWidth_, qSCEtaWidth_); 
+  computeMeanAndRms(SCPhiWidth_, qSCPhiWidth_);  
+
   computeMeanAndRms(SCEnhfEM_, qSCEnhfEM_);   
   computeMeanAndRms(SCEtahfEM_, qSCEtahfEM_);  
   computeMeanAndRms(SCPhihfEM_, qSCPhihfEM_); 
+  computeMeanAndRms(SCEtaWidthhfEM_, qSCEtaWidthhfEM_);  
+  computeMeanAndRms(SCPhiWidthhfEM_, qSCPhiWidthhfEM_); 
+
   computeMeanAndRms(SCEn5x5_, qSCEn5x5_);   
   computeMeanAndRms(SCEta5x5_, qSCEta5x5_);  
   computeMeanAndRms(SCPhi5x5_, qSCPhi5x5_);
+  computeMeanAndRms(SCEtaWidth5x5_, qSCEtaWidth5x5_);  
+  computeMeanAndRms(SCPhiWidth5x5_, qSCPhiWidth5x5_);  
   computeMeanAndRms(CCEn_, qCCEn_);   
   computeMeanAndRms(CCEta_, qCCEta_);  
   computeMeanAndRms(CCPhi_, qCCPhi_);
@@ -3041,12 +3106,21 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeQuantiles(SCEn_, qSCEn_,       quantiles_);
   computeQuantiles(SCEta_, qSCEta_,     quantiles_);
   computeQuantiles(SCPhi_, qSCPhi_,     quantiles_);
+  computeQuantiles(SCEtaWidth_, qSCEtaWidth_,     quantiles_);
+  computeQuantiles(SCPhiWidth_, qSCPhiWidth_,     quantiles_);
+
   computeQuantiles(SCEnhfEM_, qSCEnhfEM_,       quantiles_);
   computeQuantiles(SCEtahfEM_, qSCEtahfEM_,     quantiles_);
   computeQuantiles(SCPhihfEM_, qSCPhihfEM_,     quantiles_);
+  computeQuantiles(SCEtaWidthhfEM_, qSCEtaWidthhfEM_,     quantiles_);
+  computeQuantiles(SCPhiWidthhfEM_, qSCPhiWidthhfEM_,     quantiles_);
+
   computeQuantiles(SCEn5x5_, qSCEn5x5_,       quantiles_);
   computeQuantiles(SCEta5x5_, qSCEta5x5_,     quantiles_);
   computeQuantiles(SCPhi5x5_, qSCPhi5x5_,     quantiles_);
+  computeQuantiles(SCEtaWidth5x5_, qSCEtaWidth5x5_,     quantiles_);
+  computeQuantiles(SCPhiWidth5x5_, qSCPhiWidth5x5_,     quantiles_);
+
   computeQuantiles(CCEn_, qCCEn_,       quantiles_);
   computeQuantiles(CCEta_, qCCEta_,     quantiles_);
   computeQuantiles(CCPhi_, qCCPhi_,     quantiles_);
