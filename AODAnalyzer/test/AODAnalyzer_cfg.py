@@ -43,28 +43,34 @@ process.MyAnalysis =cms.EDAnalyzer("AODAnalyzer",
 
                        PFChMETTag              = cms.untracked.InputTag("pfChMet"),
                        PFMETTag                = cms.untracked.InputTag("pfMet"),
+
                        CaloJetTag              = cms.untracked.InputTag("ak4CaloJets"),
+
                        CaloMETTag              = cms.untracked.InputTag("caloMet"),  #calometTag
+                       CaloMETBETag            = cms.untracked.InputTag("caloMetBE"),
+                       CaloMETBEFOTag          = cms.untracked.InputTag("caloMetBEFO"),
+                       CaloMETMTag             = cms.untracked.InputTag("caloMetM"),
 
                        vtx                     = cms.untracked.InputTag("offlinePrimaryVertices"),
-                       bits                    = cms.untracked.InputTag("TriggerResults","","HLT"),  #ASK IF HLT OR RECO!!!!!!!
+                       bits                    = cms.untracked.InputTag("TriggerResults","","HLT"),  #ASK IF HLT OR RECO!!!!
                        prescales               = cms.untracked.InputTag("hltTriggerSummaryAOD"), # //PROBABLY get from https://github.com/cms-sw/cmssw/blob/master/DataFormats/PatCandidates/interface/TriggerEvent.h  ... ask about how
 
                        SuperClusterTag         = cms.untracked.InputTag("particleFlowEGamma"),
                        SuperClusterhfEMTag     = cms.untracked.InputTag("hfEMClusters"),
                        SuperCluster5x5Tag      = cms.untracked.InputTag("correctedMulti5x5SuperClustersWithPreshower"),
+
                        CaloClusterTag          = cms.untracked.InputTag("particleFlowEGamma","EBEEClusters"),  #ESClusters also possible instead of EBEEClusters
                        CaloCluster5x5Tag       = cms.untracked.InputTag("multi5x5SuperClusters","multi5x5EndcapBasicClusters"),    #CHANGING HEFM TO MULTI5X5  HFEM was empty!
 
                        PhotonTag               = cms.untracked.InputTag("photons"),
                        gedPhotonTag            = cms.untracked.InputTag("gedPhotons"),
+
                        MuonTag                 = cms.untracked.InputTag("muons"),
                        MuonCosmTag             = cms.untracked.InputTag("muonsFromCosmics"),
                        MuonCosmLegTag          = cms.untracked.InputTag("muonsFromCosmics1Leg"),
 
                        GsfElectronTag          = cms.untracked.InputTag("gedGsfElectrons"),
                        GsfElectronUncleanedTag = cms.untracked.InputTag("uncleanedOnlyGsfElectrons"),
-
 
                        EBRecHitSourceTag       = cms.untracked.InputTag("reducedEcalRecHitsEB"),
                        EERecHitSourceTag       = cms.untracked.InputTag("reducedEcalRecHitsEE"),
@@ -73,8 +79,10 @@ process.MyAnalysis =cms.EDAnalyzer("AODAnalyzer",
                        HBHERecHitTag           = cms.untracked.InputTag("reducedHcalRecHits","hbhereco"),
                        HFRecHitTag             = cms.untracked.InputTag("reducedHcalRecHits","hfreco"),
                        HORecHitTag             = cms.untracked.InputTag("reducedHcalRecHits","horeco"),
+
                        PreshowerClusterXTag    = cms.untracked.InputTag("multi5x5SuperClustersWithPreshower","preshowerXClusters"),  
                        PreshowerClusterYTag    = cms.untracked.InputTag("multi5x5SuperClustersWithPreshower","preshowerYClusters"),
+                       
                        CastorTowerTag          = cms.untracked.InputTag("CastorTowerReco"),  #add LeafCandidate variables
         
                        maxJetEta               = cms.untracked.double(5.0),   #is this ok?

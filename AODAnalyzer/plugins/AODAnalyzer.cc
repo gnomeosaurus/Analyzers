@@ -8,6 +8,26 @@
 #include "FWCore/Framework/interface/EventSetup.h"
 #include "DataFormats/Common/interface/Handle.h"
 
+//new includes for ECAL and HCAL mapping
+
+
+#include "Geometry/CaloEventSetup/interface/CaloTopologyRecord.h"
+#include "Geometry/Records/interface/CaloGeometryRecord.h"
+#include "Geometry/CaloGeometry/interface/CaloCellGeometry.h"
+#include "Geometry/CaloGeometry/interface/CaloGeometry.h"
+#include "Geometry/CaloTopology/interface/CaloTopology.h"
+
+#include "DataFormats/DetId/interface/DetId.h"
+#include "CommonTools/UtilAlgos/interface/TFileService.h"
+#include "Geometry/HcalTowerAlgo/interface/HcalGeometry.h"
+
+#include "FWCore/Framework/interface/Frameworkfwd.h"
+#include "FWCore/Framework/interface/one/EDAnalyzer.h"
+//#include "DQMServices/Core/interface/MonitorElement.h" gives error NoSocket.h
+
+//end
+
+
 #include "DataFormats/Math/interface/deltaR.h"
 
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
@@ -96,7 +116,6 @@ public:
   virtual void endLuminosityBlock    (const edm::LuminosityBlock& lumi, const edm::EventSetup& eventSetup);
   
 private:
-  
   template<typename jetCollection>
   void fillJets(const edm::Handle<jetCollection> &, std::string );
 
@@ -146,7 +165,7 @@ private:
   void fillSC5x5(const edm::Handle<SuperCluster5x5Collection> &); 
 
   template<typename CaloCluster5x5Collection>
-  void fillCChfEM(const edm::Handle<CaloCluster5x5Collection> &); 
+  void fillCC5x5(const edm::Handle<CaloCluster5x5Collection> &); 
 
   template<typename CaloClusterCollection>
   void fillCC(const edm::Handle<CaloClusterCollection> &); 
@@ -196,8 +215,8 @@ private:
   template<typename PreshowerClusterCollectionY>
   void fillPreshowerClusterY(const edm::Handle<PreshowerClusterCollectionY> &);
 
-  template<typename CastorTowerCollection>   //TODO   --find variables for LeafCandidate
-  void fillCastorTower(const edm::Handle<CastorTowerCollection> &);
+  // template<typename CastorTowerCollection>   //TODO   doesnt output any values for eta,en,phi
+  // void fillCastorTower(const edm::Handle<CastorTowerCollection> &);
 
   void initialize();
   template<typename T>
@@ -389,16 +408,23 @@ private:
   std::vector<float>* UNecEn_;
   
   //EB rechit, EE rechit and ES rechit variables
-  std::vector<float>* EBenergy_;
+  std::vector<float>* EBenergy_;   
   std::vector<float>* EBtime_;
-  std::vector<float>* EBchi2_;
+  std::vector<float>* EBchi2_;  
+  std::vector<double>* EBEta_;
+  std::vector<double>* EBPhi_;   
+
   std::vector<float>* EEenergy_;
   std::vector<float>* EEtime_;
   std::vector<float>* EEchi2_;
+  std::vector<float>* EEEta_;
+  std::vector<float>* EEPhi_; 
+
   std::vector<float>* ESenergy_;
   std::vector<float>* EStime_;
   std::vector<float>* ESchi2_;
-
+  std::vector<float>* ESEta_;
+  std::vector<float>* ESPhi_; 
   //HBHE rechit, HF rechit and HO rechit variables
   std::vector<float>* HBHEenergy_;
   std::vector<float>* HBHEtime_;
@@ -421,9 +447,9 @@ private:
   std::vector<double>* PreShYPhi_;
 
   //castor tower variables
-  std::vector<double>* CTPt_;
-  std::vector<double>* CTEta_;
-  std::vector<double>* CTPhi_;
+  // std::vector<double>* CTPt_;
+  // std::vector<double>* CTEta_;
+  // std::vector<double>* CTPhi_;
 
   std::vector<float>* qPFJetPt_;
   std::vector<float>* qPFJetEta_;
@@ -574,15 +600,23 @@ private:
   std::vector<float>* qUNeSCOP_;
   std::vector<float>* qUNecEn_;
 
-  std::vector<float>* qEBenergy_;
+  std::vector<float>* qEBenergy_;   
   std::vector<float>* qEBtime_;
-  std::vector<float>* qEBchi2_;
+  std::vector<float>* qEBchi2_;  
+  std::vector<double>* qEBEta_;
+  std::vector<double>* qEBPhi_;   
+
   std::vector<float>* qEEenergy_;
   std::vector<float>* qEEtime_;
   std::vector<float>* qEEchi2_;
+  std::vector<float>* qEEEta_;
+  std::vector<float>* qEEPhi_; 
+   
   std::vector<float>* qESenergy_;
   std::vector<float>* qEStime_;
   std::vector<float>* qESchi2_;
+  std::vector<float>* qESEta_;
+  std::vector<float>* qESPhi_; 
 
   std::vector<float>* qHBHEenergy_;
   std::vector<float>* qHBHEtime_;
@@ -603,15 +637,22 @@ private:
   std::vector<double>* qPreShYEta_;
   std::vector<double>* qPreShYPhi_;
 
-  std::vector<double>* qCTPt_;
-  std::vector<double>* qCTEta_;
-  std::vector<double>* qCTPhi_;
+  // std::vector<double>* qCTPt_;
+  // std::vector<double>* qCTEta_;
+  // std::vector<double>* qCTPhi_;
 
   std::vector<float>*   crossSection_;
   std::vector<float>*   pathRates_;
   std::vector<std::string>*   pathNames_;
   std::map<std::string,int> rateMap;
 
+   //harambe
+  // MonitorElement * eb_chi2;
+  // MonitorElement * eb_chi2_eta;
+  // MonitorElement * eb_chi2_e5;
+  // MonitorElement * eb_chi2_e5_eta
+
+  // edm::ESHandle<CaloGeometry> geomH; 
 
   edm::EDGetTokenT<reco::PFJetCollection> PFJetToken_;
   edm::EDGetTokenT<reco::PFJetCollection> PFJet4CHSToken_;
@@ -664,7 +705,7 @@ private:
   // edm::EDGetTokenT<SortedCollection<EcalRecHit,edm::StrictWeakOrdering<EcalRecHit>> eeRHSrcToken_;
   edm::EDGetTokenT<reco::PreshowerClusterCollection> preshowerXToken_;
   edm::EDGetTokenT<reco::PreshowerClusterCollection> preshowerYToken_;
-  edm::EDGetTokenT<reco::CastorTowerCollection> CastorTowerToken_;   //leafcandidate variables  //perhaps reco
+  // edm::EDGetTokenT<reco::CastorTowerCollection> CastorTowerToken_;   //leafcandidate variables  //perhaps reco
 
 
 
@@ -738,7 +779,7 @@ AODAnalyzer::AODAnalyzer(const edm::ParameterSet& cfg):
   hoRHcToken_               (consumes<HORecHitCollection>(cfg.getUntrackedParameter<edm::InputTag>("HORecHitTag"))),
   preshowerXToken_          (consumes<reco::PreshowerClusterCollection>(cfg.getUntrackedParameter<edm::InputTag>("PreshowerClusterXTag"))),
   preshowerYToken_          (consumes<reco::PreshowerClusterCollection>(cfg.getUntrackedParameter<edm::InputTag>("PreshowerClusterYTag"))),
-  CastorTowerToken_         (consumes<reco::CastorTowerCollection>(cfg.getUntrackedParameter<edm::InputTag>("CastorTowerTag"))),  //perhaps reco  https://github.com/cms-sw/cmssw/blob/09c3fce6626f70fd04223e7dacebf0b485f73f54/DataFormats/CastorReco/interface/CastorTower.h
+  // CastorTowerToken_         (consumes<reco::CastorTowerCollection>(cfg.getUntrackedParameter<edm::InputTag>("CastorTowerTag"))),  //perhaps reco  https://github.com/cms-sw/cmssw/blob/09c3fce6626f70fd04223e7dacebf0b485f73f54/DataFormats/CastorReco/interface/CastorTower.h
 
 
 
@@ -911,12 +952,20 @@ void AODAnalyzer::initialize()
   EBenergy_->clear();
   EBtime_->clear();
   EBchi2_->clear();
+  EBEta_->clear();
+  EBPhi_->clear();
+
   EEenergy_->clear();
   EEtime_->clear();
   EEchi2_->clear();
+  EEEta_->clear();
+  EEPhi_->clear();
+
   ESenergy_->clear();
   EStime_->clear();
   ESchi2_->clear();
+  ESEta_->clear();
+  ESPhi_->clear();
 
   HBHEenergy_->clear();
   HBHEtime_->clear();
@@ -937,9 +986,9 @@ void AODAnalyzer::initialize()
   PreShYEta_->clear();
   PreShYPhi_->clear();
 
-  CTPt_->clear();
-  CTEta_->clear();
-  CTPhi_->clear();
+  // CTPt_->clear();
+  // CTEta_->clear();
+  // CTPhi_->clear();
 
   qPFJetPt_->clear();
   qPFJetEta_->clear();
@@ -1084,12 +1133,20 @@ void AODAnalyzer::initialize()
   qEBenergy_->clear();
   qEBtime_->clear();
   qEBchi2_->clear();
+  qEBEta_->clear();
+  qEBPhi_->clear();
+
   qEEenergy_->clear();
   qEEtime_->clear();
   qEEchi2_->clear();
+  qEEEta_->clear();
+  qEEPhi_->clear();
+
   qESenergy_->clear();
   qEStime_->clear();
   qESchi2_->clear();
+  qESEta_->clear();
+  qESPhi_->clear();
 
   qHBHEenergy_->clear();
   qHBHEtime_->clear();
@@ -1110,9 +1167,9 @@ void AODAnalyzer::initialize()
   qPreShYEta_->clear();
   qPreShYPhi_->clear();
 
-  qCTPt_->clear();
-  qCTEta_->clear();
-  qCTPhi_->clear();
+  // qCTPt_->clear();
+  // qCTEta_->clear();
+  // qCTPhi_->clear();
 
   crossSection_->clear();
   pathRates_->clear();
@@ -1493,7 +1550,7 @@ void AODAnalyzer::fillCC(const edm::Handle<CaloClusterCollection> & caloclusters
 }
 
 template<typename CaloCluster5x5Collection>
-void AODAnalyzer::fillCChfEM(const edm::Handle<CaloCluster5x5Collection> & caloclusters5x5) //ask for jets analogy //SUPERCLUSTERS
+void AODAnalyzer::fillCC5x5(const edm::Handle<CaloCluster5x5Collection> & caloclusters5x5) //ask for jets analogy //SUPERCLUSTERS
 {
 
   // Selected jets
@@ -1716,9 +1773,34 @@ void AODAnalyzer::fillEBrecHit(const edm::Handle<EBEcalRecHitCollection> & EBhit
     EBtime_ ->push_back(i->time());
     EBchi2_ ->push_back(i->chi2());
 
+    // double eta = geomH->getGeometry(i->detid())->getPosition().eta();
+    // EBEta_->push_back(geomH->getGeometry(i->detid())->getPosition().eta());
+
+    // double phi = geomH->getGeometry(i->detid())->getPosition().phi();
+    // EBPhi_>push_back(geomH->getGeometry(i->detid())->getPosition().phi());
+    // std::cout << "EBEta: "  <<  geomH->getGeometry(i->detid())->getPosition().eta()     << std::endl; 
+    // std::cout << "EBPhi: "  <<  geomH->getGeometry(i->detid())->getPosition().phi()     << std::endl; 
   }
+//   for(EcalRecHitCollection::const_iterator hit = ebHandle->begin(); hit != ebHandle->end(); ++hit) {
+//     eb_chi2->Fill(hit->chi2() );
+//     eb_errors->Fill(hit->energyError() );
+//     double eta = geomH->getGeometry(hit->detid())->getPosition().eta();
+//     double phi = geomH->getGeometry(hit->detid())->getPosition().phi();
+//     eb_chi2_eta->Fill(eta, hit->chi2() );
+//     eb_errors_eta->Fill(eta, hit->energyError() );
+//     if(hit->energy() > mRechitEnergyThreshold)
+//     {
+//       eb_chi2_e5->Fill(hit->chi2() );
+//       eb_errors_e5->Fill(hit->energyError() );
+//       eb_chi2_e5_eta->Fill(eta, hit->chi2() );
+//       eb_errors_e5_eta->Fill(eta, hit->energyError() );
+// }
+
+
   return;
 }
+
+
 
 template<typename EEEcalRecHitCollection>
 void AODAnalyzer::fillEErecHit(const edm::Handle<EEEcalRecHitCollection> & EEhits)
@@ -1730,7 +1812,8 @@ void AODAnalyzer::fillEErecHit(const edm::Handle<EEEcalRecHitCollection> & EEhit
     EEenergy_ ->push_back(i->energy());
     EEtime_ ->push_back(i->time());
     EEchi2_ ->push_back(i->chi2());
-
+    // EEEta_>push_back(i->ieta()); 
+    // EEPhi_>push_back(i->iphi());
   }
   return;
 }
@@ -1745,7 +1828,8 @@ void AODAnalyzer::fillESrecHit(const edm::Handle<ESEcalRecHitCollection> & EShit
     ESenergy_ ->push_back(i->energy());
     EStime_ ->push_back(i->time());
     ESchi2_ ->push_back(i->chi2()); 
-
+    // EEEta_>push_back(i->ieta()); 
+    // EEPhi_>push_back(i->iphi());
   }
   return;
 }
@@ -1833,21 +1917,21 @@ void AODAnalyzer::fillPreshowerClusterY(const edm::Handle<PreshowerClusterCollec
 }
 
 
-template<typename CastorTowerCollection>
-void AODAnalyzer::fillCastorTower(const edm::Handle<CastorTowerCollection> & castors)
-{
+// template<typename CastorTowerCollection>
+// void AODAnalyzer::fillCastorTower(const edm::Handle<CastorTowerCollection> & castors)
+// {
 
-  // std::cout << "fillHOrecHit is being called!" << std::endl;
-  typename CastorTowerCollection::const_iterator i = castors->begin();
-  for(;i != castors->end(); i++){
+//   // std::cout << "fillHOrecHit is being called!" << std::endl;
+//   typename CastorTowerCollection::const_iterator i = castors->begin();
+//   for(;i != castors->end(); i++){
 
-    CTPt_->push_back(i->pt());
-    CTEta_->push_back(i->eta());
-    CTPhi_->push_back(i->phi());
+//     CTPt_->push_back(i->pt());
+//     CTEta_->push_back(i->eta());
+//     CTPhi_->push_back(i->phi());
 
-  }
-  return;
-}
+//   }
+//   return;
+// }
 
 // ----------------------------------- HO
 
@@ -2049,12 +2133,20 @@ void AODAnalyzer::beginJob() {
   EBenergy_    = new std::vector<float>;
   EBtime_      = new std::vector<float>;
   EBchi2_      = new std::vector<float>;
+  EBEta_       = new std::vector<double>;
+  EBPhi_       = new std::vector<double>;
+
   EEenergy_    = new std::vector<float>;
   EEtime_      = new std::vector<float>;
   EEchi2_      = new std::vector<float>;
+  EEEta_       = new std::vector<float>;
+  EEPhi_       = new std::vector<float>;
+
   ESenergy_    = new std::vector<float>;
   EStime_      = new std::vector<float>;
   ESchi2_      = new std::vector<float>;
+  ESEta_       = new std::vector<float>;
+  ESPhi_       = new std::vector<float>;
 
   HBHEenergy_  = new std::vector<float>;
   HBHEtime_    = new std::vector<float>;
@@ -2077,9 +2169,9 @@ void AODAnalyzer::beginJob() {
   PreShYEta_   = new std::vector<double>;
   PreShYPhi_   = new std::vector<double>;
 
-  CTPt_        = new std::vector<double>;
-  CTEta_       = new std::vector<double>;
-  CTPhi_       = new std::vector<double>;
+  // CTPt_        = new std::vector<double>;
+  // CTEta_       = new std::vector<double>;
+  // CTPhi_       = new std::vector<double>;
   
   // outTree_->Branch("MetPt",     "std::vector<std::float>",     &MetPt_);
   // outTree_->Branch("MetPhi",    "std::vector<std::float>",     &MetPhi_);
@@ -2229,15 +2321,23 @@ void AODAnalyzer::beginJob() {
   qUNecEn_     = new std::vector<float>;
   //TODO
 
-  qEBenergy_   = new std::vector<float>;
-  qEBtime_     = new std::vector<float>;
-  qEBchi2_     = new std::vector<float>;
-  qEEenergy_   = new std::vector<float>;
-  qEEtime_     = new std::vector<float>;
-  qEEchi2_     = new std::vector<float>;
-  qESenergy_   = new std::vector<float>;
-  qEStime_     = new std::vector<float>;
-  qESchi2_     = new std::vector<float>;
+  qEBenergy_    = new std::vector<float>;
+  qEBtime_      = new std::vector<float>;
+  qEBchi2_      = new std::vector<float>;
+  qEBEta_       = new std::vector<double>;
+  qEBPhi_       = new std::vector<double>;
+
+  qEEenergy_    = new std::vector<float>;
+  qEEtime_      = new std::vector<float>;
+  qEEchi2_      = new std::vector<float>;
+  qEEEta_       = new std::vector<float>;
+  qEEPhi_       = new std::vector<float>;
+
+  qESenergy_    = new std::vector<float>;
+  qEStime_      = new std::vector<float>;
+  qESchi2_      = new std::vector<float>;
+  qESEta_       = new std::vector<float>;
+  qESPhi_       = new std::vector<float>;
 
   qHBHEenergy_  = new std::vector<float>;
   qHBHEtime_    = new std::vector<float>;
@@ -2259,9 +2359,9 @@ void AODAnalyzer::beginJob() {
   qPreShYEta_   = new std::vector<double>;
   qPreShYPhi_   = new std::vector<double>;
 
-  qCTPt_        = new std::vector<double>;
-  qCTEta_       = new std::vector<double>;
-  qCTPhi_       = new std::vector<double>;
+  // qCTPt_        = new std::vector<double>;
+  // qCTEta_       = new std::vector<double>;
+  // qCTPhi_       = new std::vector<double>;
 
   qNVtx_       = new std::vector<int>;
   crossSection_= new std::vector<float>;
@@ -2415,12 +2515,20 @@ void AODAnalyzer::beginJob() {
   outTree_->Branch("qEBenergy",    "std::vector<std::float>",        &qEBenergy_);
   outTree_->Branch("qEBtime",    "std::vector<std::float>",          &qEBtime_);
   outTree_->Branch("qEBchi2",    "std::vector<std::float>",          &qEBchi2_);
+  outTree_->Branch("qEBEta",    "std::vector<std::double>",          &qEBEta_);
+  outTree_->Branch("qEBPhi",    "std::vector<std::double>",          &qEBPhi_);
+
   outTree_->Branch("qEEenergy",    "std::vector<std::float>",        &qEEenergy_);
   outTree_->Branch("qEEtime",    "std::vector<std::float>",          &qEEtime_);
   outTree_->Branch("qEEchi2",    "std::vector<std::float>",          &qEEchi2_);
+  outTree_->Branch("qEEEta",    "std::vector<std::float>",          &qEEEta_);
+  outTree_->Branch("qEEPhi",    "std::vector<std::float>",          &qEEPhi_);
+
   outTree_->Branch("qESenergy",    "std::vector<std::float>",        &qESenergy_);
   outTree_->Branch("qEStime",    "std::vector<std::float>",          &qEStime_);
   outTree_->Branch("qESchi2",    "std::vector<std::float>",          &qESchi2_);
+  outTree_->Branch("qESEta",    "std::vector<std::float>",          &qESEta_);
+  outTree_->Branch("qESPhi",    "std::vector<std::float>",          &qESPhi_);
 
   outTree_->Branch("qHBHEenergy",    "std::vector<std::float>",        &qHBHEenergy_);
   outTree_->Branch("qHBHEtime",    "std::vector<std::float>",          &qHBHEtime_);
@@ -2441,9 +2549,9 @@ void AODAnalyzer::beginJob() {
   outTree_->Branch("qPreShYEta",    "std::vector<std::double>",        &qPreShYEta_);
   outTree_->Branch("qPreShYPhi",    "std::vector<std::double>",        &qPreShYPhi_);
 
-  outTree_->Branch("qCTPt",     "std::vector<std::double>",        &qCTPt_);
-  outTree_->Branch("qCTEta",    "std::vector<std::double>",        &qCTEta_);
-  outTree_->Branch("qCTPhi",    "std::vector<std::double>",        &qCTPhi_);
+  // outTree_->Branch("qCTPt",     "std::vector<std::double>",        &qCTPt_);
+  // outTree_->Branch("qCTEta",    "std::vector<std::double>",        &qCTEta_);
+  // outTree_->Branch("qCTPhi",    "std::vector<std::double>",        &qCTPhi_);
 
   outTree_->Branch("crossSection",   "std::vector<std::float>",    &crossSection_);
   outTree_->Branch("pathRates",      "std::vector<std::float>",    &pathRates_);
@@ -2620,12 +2728,18 @@ void AODAnalyzer::endJob()
   delete EBenergy_;
   delete EBtime_;
   delete EBchi2_;
+  delete EBEta_;
+  delete EBPhi_;
   delete EEenergy_;
   delete EEtime_;
   delete EEchi2_;
+  delete EEEta_;
+  delete EEPhi_;
   delete ESenergy_;
   delete EStime_;
   delete ESchi2_;
+  delete ESEta_;
+  delete ESPhi_;
 
   delete HBHEenergy_ ;
   delete HBHEtime_ ;
@@ -2644,9 +2758,9 @@ void AODAnalyzer::endJob()
   delete PreShYCorrEn_;
   delete PreShYEta_;
   delete PreShYPhi_;
-  delete CTPt_;
-  delete CTEta_;
-  delete CTPhi_;
+  // delete CTPt_;
+  // delete CTEta_;
+  // delete CTPhi_;
 
   delete qPFJetPt_;
   delete qPFJetEta_;
@@ -2792,12 +2906,18 @@ void AODAnalyzer::endJob()
   delete qEBenergy_;
   delete qEBtime_;
   delete qEBchi2_;
+  delete qEBEta_;
+  delete qEBPhi_;
   delete qEEenergy_;
   delete qEEtime_;
   delete qEEchi2_;
+  delete qEEEta_;
+  delete qEEPhi_;
   delete qESenergy_;
   delete qEStime_;
   delete qESchi2_;
+  delete qESEta_;
+  delete qESPhi_;
 
   delete qHBHEenergy_;
   delete qHBHEtime_;
@@ -2818,9 +2938,9 @@ void AODAnalyzer::endJob()
   delete qPreShYEta_;
   delete qPreShYPhi_;
 
-  delete qCTPt_;
-  delete qCTEta_;
-  delete qCTPhi_;
+  // delete qCTPt_;
+  // delete qCTEta_;
+  // delete qCTPhi_;
 
   delete qNVtx_;
   delete crossSection_;
@@ -3017,12 +3137,21 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeMeanAndRms(EBenergy_, qEBenergy_);
   computeMeanAndRms(EBtime_, qEBtime_);
   computeMeanAndRms(EBchi2_, qEBchi2_);
+  computeMeanAndRms(EBEta_, qEBEta_);
+  computeMeanAndRms(EBPhi_, qEBPhi_);
+
   computeMeanAndRms(EEenergy_, qEEenergy_);
   computeMeanAndRms(EEtime_, qEEtime_);
   computeMeanAndRms(EEchi2_, qEEchi2_);
+  computeMeanAndRms(EEEta_, qEEEta_);
+  computeMeanAndRms(EEPhi_, qEEPhi_);
+
   computeMeanAndRms(ESenergy_, qESenergy_);
   computeMeanAndRms(EStime_, qEStime_);
   computeMeanAndRms(ESchi2_, qESchi2_);
+  computeMeanAndRms(ESEta_, qESEta_);
+  computeMeanAndRms(ESPhi_, qESPhi_);
+
   computeMeanAndRms(HBHEenergy_, qHBHEenergy_);
   computeMeanAndRms(HBHEtime_, qHBHEtime_);
   computeMeanAndRms(HBHEauxe_, qHBHEauxe_);
@@ -3042,9 +3171,9 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeMeanAndRms(PreShYEta_, qPreShYEta_);  //
   computeMeanAndRms(PreShYPhi_, qPreShYPhi_);  //
 
-  computeMeanAndRms(CTPt_, qCTPt_);   
-  computeMeanAndRms(CTEta_, qCTEta_);  
-  computeMeanAndRms(CTPhi_, qCTPhi_);
+  // computeMeanAndRms(CTPt_, qCTPt_);   
+  // computeMeanAndRms(CTEta_, qCTEta_);  
+  // computeMeanAndRms(CTPhi_, qCTPhi_);
 
 
   computeQuantiles(PFJetPt_, qPFJetPt_, quantiles_);
@@ -3197,12 +3326,21 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeQuantiles(EBenergy_, qEBenergy_, quantiles_);
   computeQuantiles(EBtime_, qEBtime_, quantiles_);
   computeQuantiles(EBchi2_, qEBchi2_, quantiles_);
+  computeQuantiles(EBEta_, qEBEta_, quantiles_);
+  computeQuantiles(EBPhi_, qEBPhi_, quantiles_);
+
+
   computeQuantiles(EEenergy_, qEEenergy_, quantiles_);
   computeQuantiles(EEtime_, qEEtime_, quantiles_);
   computeQuantiles(EEchi2_, qEEchi2_, quantiles_);
+  computeQuantiles(EEEta_, qEEEta_, quantiles_);
+  computeQuantiles(EEPhi_, qEEPhi_, quantiles_);
+
   computeQuantiles(ESenergy_, qESenergy_, quantiles_);
   computeQuantiles(EStime_, qEStime_, quantiles_);
   computeQuantiles(ESchi2_, qESchi2_, quantiles_);
+  computeQuantiles(ESEta_, qESEta_, quantiles_);
+  computeQuantiles(ESPhi_, qESPhi_, quantiles_);
 
   computeQuantiles(HBHEenergy_, qHBHEenergy_, quantiles_);
   computeQuantiles(HBHEtime_, qHBHEtime_, quantiles_);
@@ -3224,9 +3362,9 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeQuantiles(PreShYEta_, qPreShYEta_,     quantiles_);
   computeQuantiles(PreShYPhi_, qPreShYPhi_,     quantiles_);
 
-  computeQuantiles(CTPt_, qCTPt_, quantiles_);
-  computeQuantiles(CTEta_,qCTEta_,quantiles_);
-  computeQuantiles(CTPhi_,qCTPhi_,quantiles_);
+  // computeQuantiles(CTPt_, qCTPt_, quantiles_);
+  // computeQuantiles(CTEta_,qCTEta_,quantiles_);
+  // computeQuantiles(CTPhi_,qCTPhi_,quantiles_);
 
   crossSection_->push_back( (float)eventCounter/lumi_ );
   
@@ -3248,7 +3386,8 @@ void AODAnalyzer::analyze (const edm::Event &event, const edm::EventSetup &event
 {
   ++eventCounter;
 
-
+  // eventSetup.get<CaloGeometryRecord>().get(geomH);
+  // MonitorElement * eb_chi2_eta;
   //fill Jets
   edm::Handle<reco::PFJetCollection> PFJets;
   event.getByToken(PFJetToken_,PFJets);
@@ -3376,7 +3515,7 @@ void AODAnalyzer::analyze (const edm::Event &event, const edm::EventSetup &event
   event.getByToken(CaloCluster5x5Token_, CaloCluster5x5localv);
   // print the size of 
   if(CaloCluster5x5localv.isValid())
-    fillCChfEM(CaloCluster5x5localv);
+    fillCC5x5(CaloCluster5x5localv);
 
 
   edm::Handle<reco::PhotonCollection> photonlocalv;
@@ -3466,10 +3605,10 @@ void AODAnalyzer::analyze (const edm::Event &event, const edm::EventSetup &event
   if(prShYs.isValid())
     fillPreshowerClusterY(prShYs);
 
-  edm::Handle<reco::CastorTowerCollection> castorsz;
-  event.getByToken(CastorTowerToken_, castorsz);
-  if(castorsz.isValid())
-    fillCastorTower(castorsz);
+  // edm::Handle<reco::CastorTowerCollection> castorsz;
+  // event.getByToken(CastorTowerToken_, castorsz);
+  // if(castorsz.isValid())
+  //   fillCastorTower(castorsz);
   //Lorentz vector
    // Look for MET --LORENTZ VECTOR
   // edm::Handle<reco::GenMETCollection> genMet;
