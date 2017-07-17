@@ -17,6 +17,12 @@
 #include "Geometry/CaloGeometry/interface/CaloGeometry.h"
 #include "Geometry/CaloTopology/interface/CaloTopology.h"
 
+#include "DataFormats/EcalDetId/interface/EBDetId.h"
+#include "DataFormats/EcalDetId/interface/EEDetId.h"
+#include "DataFormats/EcalDetId/interface/ESDetId.h"
+
+#include "DataFormats/HcalDetId/interface/HcalDetId.h"
+
 #include "DataFormats/DetId/interface/DetId.h"
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
 #include "Geometry/HcalTowerAlgo/interface/HcalGeometry.h"
@@ -77,7 +83,7 @@
 #include "DataFormats/EcalRecHit/interface/EcalRecHitCollections.h"
 #include "DataFormats/HcalRecHit/interface/HBHERecHit.h"
 #include "DataFormats/HcalRecHit/interface/HFRecHit.h"
-#include "DataFormats/HcalRecHit/interface/HORecHit.h"
+// #include "DataFormats/HcalRecHit/interface/HORecHit.h"
 // #include "DataFormats/HcalRecHit/interface/HcalRecHitFwd.h"   --gives error
 #include "DataFormats/HcalRecHit/interface/HcalRecHitCollections.h"
 
@@ -206,8 +212,8 @@ private:
   template<typename HFRecHitCollection>
   void fillHFrecHit(const edm::Handle<HFRecHitCollection> &);
 
-  template<typename HORecHitCollection>
-  void fillHOrecHit(const edm::Handle<HORecHitCollection> &);
+  // template<typename HORecHitCollection>
+  // void fillHOrecHit(const edm::Handle<HORecHitCollection> &);
 
   template<typename PreshowerClusterCollection>
   void fillPreshowerCluster(const edm::Handle<PreshowerClusterCollection> &);
@@ -220,7 +226,7 @@ private:
 
   void initialize();
   template<typename T>
-  void computeQuantiles(std::vector<T>*, std::vector<T>*, std::vector<double>);
+  void computeQuantiles(std::vector<T>*, std::vector<T>*, std::vector<double>); //harambe
   template<typename T>
   void computeMeanAndRms(std::vector<T>*, std::vector<T>*);
   std::map<int, std::vector<std::pair<int, int> > > readJSONFile(const std::string&);
@@ -275,10 +281,10 @@ private:
 
   //PFChMet variables
   std::vector<float>* PFChMetPt_;
-  std::vector<float>* PFChMetEta_;  
+  // std::vector<float>* PFChMetEta_;  
   std::vector<float>* PFChMetPhi_;
   std::vector<float>* PFMetPt_;
-  std::vector<float>* PFMetEta_;
+  // std::vector<float>* PFMetEta_;
   std::vector<float>* PFMetPhi_;
   std::vector<int>*   nVtx_;
   //CaloJet variables
@@ -289,52 +295,52 @@ private:
 
   //CaloMet variables
   std::vector<float>* CalMETPt_;
-  std::vector<float>* CalMETEta_;
+  // std::vector<float>* CalMETEta_;
   std::vector<float>* CalMETPhi_;
   std::vector<float>* CalMETEn_;
 
   //CaloMet variables BE
   std::vector<float>* CalMETBEPt_;
-  std::vector<float>* CalMETBEEta_;
+  // std::vector<float>* CalMETBEEta_;
   std::vector<float>* CalMETBEPhi_;
   std::vector<float>* CalMETBEEn_;
 
     //CaloMet variables  BEFO
   std::vector<float>* CalMETBEFOPt_;
-  std::vector<float>* CalMETBEFOEta_;
+  // std::vector<float>* CalMETBEFOEta_;
   std::vector<float>* CalMETBEFOPhi_;
   std::vector<float>* CalMETBEFOEn_;
 
     //CaloMet variables  M
   std::vector<float>* CalMETMPt_;
-  std::vector<float>* CalMETMEta_;
+  // std::vector<float>* CalMETMEta_;
   std::vector<float>* CalMETMPhi_;
   std::vector<float>* CalMETMEn_;
 
   //std::vector<float>* SuperCluster_; // adding SuperCluster
-  std::vector<double>* SCEn_;
-  std::vector<double>* SCEta_;
-  std::vector<double>* SCPhi_;
-  std::vector<double>* SCEtaWidth_;
-  std::vector<double>* SCPhiWidth_;
-  std::vector<double>* SCEnhfEM_;
-  std::vector<double>* SCEtahfEM_;
-  std::vector<double>* SCPhihfEM_;
-  std::vector<double>* SCEtaWidthhfEM_;
-  std::vector<double>* SCPhiWidthhfEM_;  
-  std::vector<double>* SCEn5x5_;
-  std::vector<double>* SCEta5x5_;
-  std::vector<double>* SCPhi5x5_;
-  std::vector<double>* SCEtaWidth5x5_;
-  std::vector<double>* SCPhiWidth5x5_; 
+  std::vector<float>* SCEn_;
+  std::vector<float>* SCEta_;
+  std::vector<float>* SCPhi_;
+  std::vector<float>* SCEtaWidth_;
+  std::vector<float>* SCPhiWidth_;
+  std::vector<float>* SCEnhfEM_;
+  std::vector<float>* SCEtahfEM_;
+  std::vector<float>* SCPhihfEM_;
+  // std::vector<float>* SCEtaWidthhfEM_;
+  // std::vector<float>* SCPhiWidthhfEM_;  
+  std::vector<float>* SCEn5x5_;
+  std::vector<float>* SCEta5x5_;
+  std::vector<float>* SCPhi5x5_;
+  std::vector<float>* SCEtaWidth5x5_;
+  std::vector<float>* SCPhiWidth5x5_; 
   //caloclusters variables
-  std::vector<double>* CCEn_;
-  std::vector<double>* CCEta_;
-  std::vector<double>* CCPhi_;
+  std::vector<float>* CCEn_;
+  std::vector<float>* CCEta_;
+  std::vector<float>* CCPhi_;
   //calocluster hfem variables
-  std::vector<double>* CCEn5x5_;
-  std::vector<double>* CCEta5x5_;
-  std::vector<double>* CCPhi5x5_;
+  std::vector<float>* CCEn5x5_;
+  std::vector<float>* CCEta5x5_;
+  std::vector<float>* CCPhi5x5_;
 
   //photon variables
   std::vector<float>* PhoPt_;
@@ -411,45 +417,54 @@ private:
   std::vector<float>* EBenergy_;   
   std::vector<float>* EBtime_;
   std::vector<float>* EBchi2_;  
-  std::vector<double>* EBEta_;
-  std::vector<double>* EBPhi_;   
+  std::vector<float>* EBiEta_;
+  std::vector<float>* EBiPhi_;   
 
   std::vector<float>* EEenergy_;
   std::vector<float>* EEtime_;
   std::vector<float>* EEchi2_;
-  std::vector<float>* EEEta_;
-  std::vector<float>* EEPhi_; 
+  std::vector<float>* EEix_;
+  std::vector<float>* EEiy_; 
 
   std::vector<float>* ESenergy_;
   std::vector<float>* EStime_;
-  std::vector<float>* ESchi2_;
-  std::vector<float>* ESEta_;
-  std::vector<float>* ESPhi_; 
+  // std::vector<float>* ESchi2_;
+  std::vector<float>* ESix_;
+  std::vector<float>* ESiy_; 
   //HBHE rechit, HF rechit and HO rechit variables
   std::vector<float>* HBHEenergy_;
   std::vector<float>* HBHEtime_;
   std::vector<float>* HBHEauxe_;
+  std::vector<float>* HBHEieta_;
+  std::vector<float>* HBHEiphi_;
+
   std::vector<float>* HFenergy_;
   std::vector<float>* HFtime_;
   // std::vector<float>* HFchi2_;
-  std::vector<float>* HOenergy_;
-  std::vector<float>* HOtime_;
-  // std::vector<float>* HOchi2_;
+  std::vector<float>* HFieta_;
+  std::vector<float>* HFiphi_;
+
+  // std::vector<float>* HOenergy_;
+  // std::vector<float>* HOtime_;
+  // // std::vector<float>* HOchi2_;
+  // std::vector<float>* HOieta_;
+  // std::vector<float>* HOiphi_;
+
   
   //preshower variables
-  std::vector<double>* PreShEn_;
-  std::vector<double>* PreShCorrEn_;
-  std::vector<double>* PreShEta_;
-  std::vector<double>* PreShPhi_;
-  std::vector<double>* PreShYEn_;
-  std::vector<double>* PreShYCorrEn_;
-  std::vector<double>* PreShYEta_;
-  std::vector<double>* PreShYPhi_;
+  std::vector<float>* PreShEn_;
+  // std::vector<float>* PreShCorrEn_;
+  std::vector<float>* PreShEta_;
+  std::vector<float>* PreShPhi_;
+  std::vector<float>* PreShYEn_;
+  // std::vector<float>* PreShYCorrEn_;
+  std::vector<float>* PreShYEta_;
+  std::vector<float>* PreShYPhi_;
 
   //castor tower variables
-  // std::vector<double>* CTPt_;
-  // std::vector<double>* CTEta_;
-  // std::vector<double>* CTPhi_;
+  // std::vector<float>* CTPt_;
+  // std::vector<float>* CTEta_;
+  // std::vector<float>* CTPhi_;
 
   std::vector<float>* qPFJetPt_;
   std::vector<float>* qPFJetEta_;
@@ -476,10 +491,10 @@ private:
   std::vector<float>* qPFJetTopCHSPhi_;
 
   std::vector<float>* qPFChMetPt_;
-  std::vector<float>* qPFChMetEta_;   
+  // std::vector<float>* qPFChMetEta_;   
   std::vector<float>* qPFChMetPhi_;
   std::vector<float>* qPFMetPt_;
-  std::vector<float>* qPFMetEta_;  
+  // std::vector<float>* qPFMetEta_;  
   std::vector<float>* qPFMetPhi_;
   std::vector<int>*   qNVtx_;
 
@@ -489,50 +504,50 @@ private:
   std::vector<float>* qCalJetEn_;
 
   std::vector<float>* qCalMETPt_;
-  std::vector<float>* qCalMETEta_;
+  // std::vector<float>* qCalMETEta_;
   std::vector<float>* qCalMETPhi_;
   std::vector<float>* qCalMETEn_;
 
 
   std::vector<float>* qCalMETBEPt_;
-  std::vector<float>* qCalMETBEEta_;
+  // std::vector<float>* qCalMETBEEta_;
   std::vector<float>* qCalMETBEPhi_;
   std::vector<float>* qCalMETBEEn_;
 
 
   std::vector<float>* qCalMETBEFOPt_;
-  std::vector<float>* qCalMETBEFOEta_;
+  // std::vector<float>* qCalMETBEFOEta_;
   std::vector<float>* qCalMETBEFOPhi_;
   std::vector<float>* qCalMETBEFOEn_;
 
 
   std::vector<float>* qCalMETMPt_;
-  std::vector<float>* qCalMETMEta_;
+  // std::vector<float>* qCalMETMEta_;
   std::vector<float>* qCalMETMPhi_;
   std::vector<float>* qCalMETMEn_;
 
 
-  std::vector<double>* qSCEn_;
-  std::vector<double>* qSCEta_;
-  std::vector<double>* qSCPhi_;
-  std::vector<double>* qSCEtaWidth_;
-  std::vector<double>* qSCPhiWidth_;  
-  std::vector<double>* qSCEnhfEM_;
-  std::vector<double>* qSCEtahfEM_;
-  std::vector<double>* qSCPhihfEM_;
-  std::vector<double>* qSCEtaWidthhfEM_;
-  std::vector<double>* qSCPhiWidthhfEM_; 
-  std::vector<double>* qSCEn5x5_;
-  std::vector<double>* qSCEta5x5_;
-  std::vector<double>* qSCPhi5x5_;
-  std::vector<double>* qSCEtaWidth5x5_;
-  std::vector<double>* qSCPhiWidth5x5_;    
-  std::vector<double>* qCCEn_;
-  std::vector<double>* qCCEta_;
-  std::vector<double>* qCCPhi_;
-  std::vector<double>* qCCEn5x5_;
-  std::vector<double>* qCCEta5x5_;
-  std::vector<double>* qCCPhi5x5_;
+  std::vector<float>* qSCEn_;
+  std::vector<float>* qSCEta_;
+  std::vector<float>* qSCPhi_;
+  std::vector<float>* qSCEtaWidth_;
+  std::vector<float>* qSCPhiWidth_;  
+  std::vector<float>* qSCEnhfEM_;
+  std::vector<float>* qSCEtahfEM_;
+  std::vector<float>* qSCPhihfEM_;
+  // std::vector<float>* qSCEtaWidthhfEM_;
+  // std::vector<float>* qSCPhiWidthhfEM_; 
+  std::vector<float>* qSCEn5x5_;
+  std::vector<float>* qSCEta5x5_;
+  std::vector<float>* qSCPhi5x5_;
+  std::vector<float>* qSCEtaWidth5x5_;
+  std::vector<float>* qSCPhiWidth5x5_;    
+  std::vector<float>* qCCEn_;
+  std::vector<float>* qCCEta_;
+  std::vector<float>* qCCPhi_;
+  std::vector<float>* qCCEn5x5_;
+  std::vector<float>* qCCEta5x5_;
+  std::vector<float>* qCCPhi5x5_;
 
   std::vector<float>* qPhoPt_;
   std::vector<float>* qPhoEta_;
@@ -603,50 +618,58 @@ private:
   std::vector<float>* qEBenergy_;   
   std::vector<float>* qEBtime_;
   std::vector<float>* qEBchi2_;  
-  std::vector<double>* qEBEta_;
-  std::vector<double>* qEBPhi_;   
+  std::vector<float>* qEBiEta_;
+  std::vector<float>* qEBiPhi_;   
 
   std::vector<float>* qEEenergy_;
   std::vector<float>* qEEtime_;
   std::vector<float>* qEEchi2_;
-  std::vector<float>* qEEEta_;
-  std::vector<float>* qEEPhi_; 
+  std::vector<float>* qEEix_;
+  std::vector<float>* qEEiy_; 
    
   std::vector<float>* qESenergy_;
   std::vector<float>* qEStime_;
-  std::vector<float>* qESchi2_;
-  std::vector<float>* qESEta_;
-  std::vector<float>* qESPhi_; 
+  // std::vector<float>* qESchi2_;
+  std::vector<float>* qESix_;
+  std::vector<float>* qESiy_; 
 
   std::vector<float>* qHBHEenergy_;
   std::vector<float>* qHBHEtime_;
   std::vector<float>* qHBHEauxe_;
+  std::vector<float>* qHBHEieta_;
+  std::vector<float>* qHBHEiphi_;
+
   std::vector<float>* qHFenergy_;
   std::vector<float>* qHFtime_;
   // std::vector<float>* qHFchi2_;
-  std::vector<float>* qHOenergy_;
-  std::vector<float>* qHOtime_;
-  // std::vector<float>* qHOchi2_;
+  std::vector<float>* qHFieta_;
+  std::vector<float>* qHFiphi_;
 
-  std::vector<double>* qPreShEn_;
-  std::vector<double>* qPreShCorrEn_;
-  std::vector<double>* qPreShEta_;
-  std::vector<double>* qPreShPhi_;
-  std::vector<double>* qPreShYEn_;
-  std::vector<double>* qPreShYCorrEn_;
-  std::vector<double>* qPreShYEta_;
-  std::vector<double>* qPreShYPhi_;
+  // std::vector<float>* qHOenergy_;
+  // std::vector<float>* qHOtime_;
+  // // std::vector<float>* qHOchi2_;
+  // std::vector<float>* qHOieta_;
+  // std::vector<float>* qHOiphi_;
 
-  // std::vector<double>* qCTPt_;
-  // std::vector<double>* qCTEta_;
-  // std::vector<double>* qCTPhi_;
+  std::vector<float>* qPreShEn_;
+  // std::vector<float>* qPreShCorrEn_;
+  std::vector<float>* qPreShEta_;
+  std::vector<float>* qPreShPhi_;
+  std::vector<float>* qPreShYEn_;
+  // std::vector<float>* qPreShYCorrEn_;
+  std::vector<float>* qPreShYEta_;
+  std::vector<float>* qPreShYPhi_;
+
+  // std::vector<float>* qCTPt_;
+  // std::vector<float>* qCTEta_;
+  // std::vector<float>* qCTPhi_;
 
   std::vector<float>*   crossSection_;
   std::vector<float>*   pathRates_;
   std::vector<std::string>*   pathNames_;
   std::map<std::string,int> rateMap;
 
-   //harambe
+   //
   // MonitorElement * eb_chi2;
   // MonitorElement * eb_chi2_eta;
   // MonitorElement * eb_chi2_e5;
@@ -688,9 +711,6 @@ private:
   edm::EDGetTokenT<reco::GsfElectronCollection> GsfElectronToken_;
   edm::EDGetTokenT<reco::GsfElectronCollection> GsfElectronUncleanedToken_;
 
-
-  //TODO -- finish adding collections!  // edm::   //eCALlASERcORRFILTER like
-
   // edm:: 
 
   edm::EDGetTokenT<EcalRecHitCollection> ebRHSrcToken_;
@@ -699,7 +719,7 @@ private:
 
   edm::EDGetTokenT<HBHERecHitCollection> hbheRHcToken_;
   edm::EDGetTokenT<HFRecHitCollection>   hfRHcToken_;
-  edm::EDGetTokenT<HORecHitCollection>   hoRHcToken_;
+  // edm::EDGetTokenT<HORecHitCollection>   hoRHcToken_;
 
   // edm::EDGetTokenT<SortedCollection<EcalRecHit,edm::StrictWeakOrdering<EcalRecHit>> ebRHSrcToken_;
   // edm::EDGetTokenT<SortedCollection<EcalRecHit,edm::StrictWeakOrdering<EcalRecHit>> eeRHSrcToken_;
@@ -712,15 +732,15 @@ private:
 
   int eventCounter;
 
-  double maxJetEta_;
-  double minJetPt_;
-  double maxSCEta_;
-  double minSCEn_;
+  double maxJetEta_; //harambe
+  double minJetPt_;//harambe
+  double maxSCEta_;//harambe
+  double minSCEn_;//harambe
 
   std::string lumiFile_;
   std::map<int,std::map<int,float> > lumiMap;
 
-  std::vector<double> quantiles_;
+  std::vector<double> quantiles_; //harambe
 
   std::vector<std::string> subsystemNames_;
   std::vector<bool>* subsystemQuality_;
@@ -766,17 +786,13 @@ AODAnalyzer::AODAnalyzer(const edm::ParameterSet& cfg):
   GsfElectronToken_         (consumes<reco::GsfElectronCollection>(cfg.getUntrackedParameter<edm::InputTag>("GsfElectronTag"))),
   GsfElectronUncleanedToken_(consumes<reco::GsfElectronCollection>(cfg.getUntrackedParameter<edm::InputTag>("GsfElectronUncleanedTag"))),
 
-  
-  
-  //TODO -- add collections!
-  //CollectionEcalRecHitEBTToken_
   ebRHSrcToken_             (consumes<EcalRecHitCollection>(cfg.getUntrackedParameter<edm::InputTag>("EBRecHitSourceTag"))),  //ICONFIG -> cfg
   eeRHSrcToken_             (consumes<EcalRecHitCollection>(cfg.getUntrackedParameter<edm::InputTag>("EERecHitSourceTag"))),
   esRHSrcToken_             (consumes<EcalRecHitCollection>(cfg.getUntrackedParameter<edm::InputTag>("ESRecHitSourceTag"))),
 
   hbheRHcToken_             (consumes<HBHERecHitCollection>(cfg.getUntrackedParameter<edm::InputTag>("HBHERecHitTag"))),  //ICONFIG -> cfg
   hfRHcToken_               (consumes<HFRecHitCollection>(cfg.getUntrackedParameter<edm::InputTag>("HFRecHitTag"))),
-  hoRHcToken_               (consumes<HORecHitCollection>(cfg.getUntrackedParameter<edm::InputTag>("HORecHitTag"))),
+  // hoRHcToken_               (consumes<HORecHitCollection>(cfg.getUntrackedParameter<edm::InputTag>("HORecHitTag"))),
   preshowerXToken_          (consumes<reco::PreshowerClusterCollection>(cfg.getUntrackedParameter<edm::InputTag>("PreshowerClusterXTag"))),
   preshowerYToken_          (consumes<reco::PreshowerClusterCollection>(cfg.getUntrackedParameter<edm::InputTag>("PreshowerClusterYTag"))),
   // CastorTowerToken_         (consumes<reco::CastorTowerCollection>(cfg.getUntrackedParameter<edm::InputTag>("CastorTowerTag"))),  //perhaps reco  https://github.com/cms-sw/cmssw/blob/09c3fce6626f70fd04223e7dacebf0b485f73f54/DataFormats/CastorReco/interface/CastorTower.h
@@ -784,12 +800,12 @@ AODAnalyzer::AODAnalyzer(const edm::ParameterSet& cfg):
 
 
   //params for wide jet calculation
-  maxJetEta_                (cfg.getUntrackedParameter<double>("maxJetEta")),
-  minJetPt_                 (cfg.getUntrackedParameter<double>("minJetPt")),
-  maxSCEta_                 (cfg.getUntrackedParameter<double>("maxSCEta")),
-  minSCEn_                  (cfg.getUntrackedParameter<double>("minSCEn")),
+  maxJetEta_                (cfg.getUntrackedParameter<double>("maxJetEta")),//harambe
+  minJetPt_                 (cfg.getUntrackedParameter<double>("minJetPt")),//harambe
+  maxSCEta_                 (cfg.getUntrackedParameter<double>("maxSCEta")),//harambe
+  minSCEn_                  (cfg.getUntrackedParameter<double>("minSCEn")),//harambe
   lumiFile_                 (cfg.getUntrackedParameter<std::string>("lumiFile")),
-  quantiles_                (cfg.getUntrackedParameter<std::vector<double> >("quantiles")),
+  quantiles_                (cfg.getUntrackedParameter<std::vector<double> >("quantiles")),//harambe
   subsystemNames_           (cfg.getUntrackedParameter<std::vector<std::string> >("subsystems")),
   qualityFiles_             (cfg.getUntrackedParameter<std::vector<std::string> >("qualityFiles"))
 
@@ -829,10 +845,10 @@ void AODAnalyzer::initialize()
   PFJetTopCHSPhi_->clear();       
 
   PFChMetPt_->clear();
-  PFChMetEta_->clear();  
+  // PFChMetEta_->clear();  
   PFChMetPhi_->clear();
   PFMetPt_->clear();
-  PFMetEta_->clear();  
+  // PFMetEta_->clear();  
   PFMetPhi_->clear();
   nVtx_->clear();
 
@@ -842,22 +858,22 @@ void AODAnalyzer::initialize()
   CalJetEn_->clear();
 
   CalMETPt_->clear();
-  CalMETEta_->clear();
+  // CalMETEta_->clear();
   CalMETPhi_->clear();
   CalMETEn_->clear();
 
   CalMETBEPt_->clear();
-  CalMETBEEta_->clear();
+  // CalMETBEEta_->clear();
   CalMETBEPhi_->clear();
   CalMETBEEn_->clear();
 
   CalMETBEFOPt_->clear();
-  CalMETBEFOEta_->clear();
+  // CalMETBEFOEta_->clear();
   CalMETBEFOPhi_->clear();
   CalMETBEFOEn_->clear();
 
   CalMETMPt_->clear();
-  CalMETMEta_->clear();
+  // CalMETMEta_->clear();
   CalMETMPhi_->clear();
   CalMETMEn_->clear();
   //SuperCluster_ ->clear(); //adding SuperCluster
@@ -869,8 +885,8 @@ void AODAnalyzer::initialize()
   SCEnhfEM_ ->clear();
   SCEtahfEM_->clear();
   SCPhihfEM_->clear();
-  SCEtaWidthhfEM_->clear();
-  SCPhiWidthhfEM_->clear();  
+  // SCEtaWidthhfEM_->clear();
+  // SCPhiWidthhfEM_->clear();  
   SCEn5x5_ ->clear();
   SCEta5x5_->clear();
   SCPhi5x5_->clear();
@@ -952,37 +968,46 @@ void AODAnalyzer::initialize()
   EBenergy_->clear();
   EBtime_->clear();
   EBchi2_->clear();
-  EBEta_->clear();
-  EBPhi_->clear();
+  EBiEta_->clear();
+  EBiPhi_->clear();
 
   EEenergy_->clear();
   EEtime_->clear();
   EEchi2_->clear();
-  EEEta_->clear();
-  EEPhi_->clear();
+  EEix_->clear();
+  EEiy_->clear();
 
   ESenergy_->clear();
   EStime_->clear();
-  ESchi2_->clear();
-  ESEta_->clear();
-  ESPhi_->clear();
+  // ESchi2_->clear();
+  ESix_->clear();
+  ESiy_->clear();
 
   HBHEenergy_->clear();
   HBHEtime_->clear();
   HBHEauxe_->clear();
+  HBHEieta_->clear();
+  HBHEiphi_->clear();
+
   HFenergy_->clear();
   HFtime_->clear();
   // HFchi2_->clear();
-  HOenergy_->clear();
-  HOtime_->clear();
-  // HOchi2_->clear();
+  HFieta_->clear();
+  HFiphi_->clear();
+
+  // HOenergy_->clear();
+  // HOtime_->clear();
+  // // HOchi2_->clear();
+  // HOieta_->clear();
+  // HOiphi_->clear();
+
  
   PreShEn_->clear();
-  PreShCorrEn_->clear();
+  // PreShCorrEn_->clear();
   PreShEta_->clear();
   PreShPhi_->clear();
   PreShYEn_->clear();
-  PreShYCorrEn_->clear();
+  // PreShYCorrEn_->clear();
   PreShYEta_->clear();
   PreShYPhi_->clear();
 
@@ -1015,10 +1040,10 @@ void AODAnalyzer::initialize()
   qPFJetTopCHSPhi_->clear(); 
 
   qPFChMetPt_->clear();
-  qPFChMetEta_->clear();  
+  // qPFChMetEta_->clear();  
   qPFChMetPhi_->clear();
   qPFMetPt_->clear();
-  qPFMetEta_->clear();  
+  // qPFMetEta_->clear();  
   qPFMetPhi_->clear();
   qNVtx_->clear();
 
@@ -1027,19 +1052,19 @@ void AODAnalyzer::initialize()
   qCalJetPhi_->clear();
   qCalJetEn_->clear();
   qCalMETPt_->clear();
-  qCalMETEta_->clear();
+  // qCalMETEta_->clear();
   qCalMETPhi_->clear();
   qCalMETEn_->clear();
   qCalMETBEPt_->clear();
-  qCalMETBEEta_->clear();
+  // qCalMETBEEta_->clear();
   qCalMETBEPhi_->clear();
   qCalMETBEEn_->clear();
   qCalMETBEFOPt_->clear();
-  qCalMETBEFOEta_->clear();
+  // qCalMETBEFOEta_->clear();
   qCalMETBEFOPhi_->clear();
   qCalMETBEFOEn_->clear();
   qCalMETMPt_->clear();
-  qCalMETMEta_->clear();
+  // qCalMETMEta_->clear();
   qCalMETMPhi_->clear();
   qCalMETMEn_->clear();
   qSCEn_ ->clear();
@@ -1050,8 +1075,8 @@ void AODAnalyzer::initialize()
   qSCEnhfEM_ ->clear();
   qSCEtahfEM_->clear();
   qSCPhihfEM_->clear();
-  qSCEtaWidthhfEM_->clear();
-  qSCPhiWidthhfEM_->clear();  
+  // qSCEtaWidthhfEM_->clear();
+  // qSCPhiWidthhfEM_->clear();  
   qSCEn5x5_ ->clear();
   qSCEta5x5_->clear();
   qSCPhi5x5_->clear();
@@ -1111,7 +1136,7 @@ void AODAnalyzer::initialize()
   qMuCosmLegPhi_->clear();
   qMuCosmLegEn_->clear();
   qMuCosmLegCh_->clear();    
-  //TODO
+
   qSigmaIEta_->clear();
   qSigmaIPhi_->clear();  
   qr9_->clear();
@@ -1133,37 +1158,45 @@ void AODAnalyzer::initialize()
   qEBenergy_->clear();
   qEBtime_->clear();
   qEBchi2_->clear();
-  qEBEta_->clear();
-  qEBPhi_->clear();
+  qEBiEta_->clear();
+  qEBiPhi_->clear();
 
   qEEenergy_->clear();
   qEEtime_->clear();
   qEEchi2_->clear();
-  qEEEta_->clear();
-  qEEPhi_->clear();
+  qEEix_->clear();
+  qEEiy_->clear();
 
   qESenergy_->clear();
   qEStime_->clear();
-  qESchi2_->clear();
-  qESEta_->clear();
-  qESPhi_->clear();
+  // qESchi2_->clear();
+  qESix_->clear();
+  qESiy_->clear();
 
   qHBHEenergy_->clear();
   qHBHEtime_->clear();
   qHBHEauxe_->clear();
+  qHBHEieta_->clear();
+  qHBHEiphi_->clear();
+
   qHFenergy_->clear();
   qHFtime_->clear();
   // qHFchi2_->clear();
-  qHOenergy_->clear();
-  qHOtime_->clear();
-  // qHOchi2_->clear();
+  qHFieta_->clear();
+  qHFiphi_->clear();
+
+  // qHOenergy_->clear();
+  // qHOtime_->clear();
+  // // qHOchi2_->clear();
+  // qHOieta_->clear();
+  // qHOiphi_->clear();
 
   qPreShEn_->clear();
-  qPreShCorrEn_->clear();
+  // qPreShCorrEn_->clear();
   qPreShEta_->clear();
   qPreShPhi_->clear();
   qPreShYEn_->clear();
-  qPreShYCorrEn_->clear();
+  // qPreShYCorrEn_->clear();
   qPreShYEta_->clear();
   qPreShYPhi_->clear();
 
@@ -1338,7 +1371,7 @@ void AODAnalyzer::fillPFChMets(const edm::Handle<PFChMETCollection> & pfchmets)
   typename PFChMETCollection::const_iterator i = pfchmets->begin();
   for(;i != pfchmets->end(); i++){
     PFChMetPt_->push_back(i->et());
-    PFChMetEta_->push_back(i->eta());
+    // PFChMetEta_->push_back(i->eta());
     PFChMetPhi_->push_back(i->phi());
 
   }
@@ -1354,7 +1387,7 @@ void AODAnalyzer::fillPFMets(const edm::Handle<PFMETCollection> & pfmets)
   typename PFMETCollection::const_iterator i = pfmets->begin();
   for(;i != pfmets->end(); i++){
     PFMetPt_->push_back(i->et());
-    PFMetEta_->push_back(i->eta());
+    // PFMetEta_->push_back(i->eta());
     PFMetPhi_->push_back(i->phi());  //try also eta and energy
 
   }
@@ -1387,7 +1420,7 @@ void AODAnalyzer::fillCaloMETs(const edm::Handle<CaloMETCollection> & caloMETs)
   typename CaloMETCollection::const_iterator i = caloMETs->begin();
   for(;i != caloMETs->end(); i++){
         CalMETPt_->push_back(i->et());
-        CalMETEta_->push_back(i->eta());
+        // CalMETEta_->push_back(i->eta());
         CalMETPhi_->push_back(i->phi());
         CalMETEn_->push_back(i->energy());
 
@@ -1405,7 +1438,7 @@ void AODAnalyzer::fillCaloMETBEs(const edm::Handle<CaloMETBECollection> & caloME
   typename CaloMETBECollection::const_iterator i = caloMETBEs->begin();
   for(;i != caloMETBEs->end(); i++){
         CalMETBEPt_->push_back(i->et());
-        CalMETBEEta_->push_back(i->eta());
+        // CalMETBEEta_->push_back(i->eta());
         CalMETBEPhi_->push_back(i->phi());
         CalMETBEEn_->push_back(i->energy());
 
@@ -1422,7 +1455,7 @@ void AODAnalyzer::fillCaloMETBEFOs(const edm::Handle<CaloMETBEFOCollection> & ca
   typename CaloMETBEFOCollection::const_iterator i = caloMETBEFOs->begin();
   for(;i != caloMETBEFOs->end(); i++){
         CalMETBEFOPt_->push_back(i->et());
-        CalMETBEFOEta_->push_back(i->eta());
+        // CalMETBEFOEta_->push_back(i->eta());
         CalMETBEFOPhi_->push_back(i->phi());
         CalMETBEFOEn_->push_back(i->energy());
 
@@ -1439,7 +1472,7 @@ void AODAnalyzer::fillCaloMETMs(const edm::Handle<CaloMETMCollection> & caloMETM
   typename CaloMETMCollection::const_iterator i = caloMETMs->begin();
   for(;i != caloMETMs->end(); i++){
         CalMETMPt_->push_back(i->et());
-        CalMETMEta_->push_back(i->eta());
+        // CalMETMEta_->push_back(i->eta());
         CalMETMPhi_->push_back(i->phi());
         CalMETMEn_->push_back(i->energy());
 
@@ -1488,8 +1521,8 @@ void AODAnalyzer::fillSChfEM(const edm::Handle<SuperClusterhfEMCollection> & sup
       SCEnhfEM_->push_back(i->energy());
       SCEtahfEM_->push_back(i->eta());
       SCPhihfEM_->push_back(i->phi());
-      SCEtaWidthhfEM_->push_back(i->etaWidth());
-      SCPhiWidthhfEM_->push_back(i->phiWidth());
+      // SCEtaWidthhfEM_->push_back(i->etaWidth());
+      // SCPhiWidthhfEM_->push_back(i->phiWidth());
         // std::cout << "ele energy: " << i->energy()   << std::endl; 
         // std::cout << "ele SCeta: "  << i->etaWidth() << std::endl;
         // std::cout << "ele SCphi: "  << i->phiWidth() << std::endl;
@@ -1770,33 +1803,17 @@ void AODAnalyzer::fillEBrecHit(const edm::Handle<EBEcalRecHitCollection> & EBhit
   typename EBEcalRecHitCollection::const_iterator i = EBhits->begin();
   for(;i != EBhits->end(); i++){
     EBenergy_ ->push_back(i->energy());
+    // EBenergy_ ->push_back( 3.14 ); // E.g
     EBtime_ ->push_back(i->time());
     EBchi2_ ->push_back(i->chi2());
+    // EBdetid_ = (i->detid());
+    // DetId id();
+    // float eta = geomH->getGeometry(i->detid())->getPosition().eta();
+    EBiEta_->push_back( EBDetId( i->detid() ).ieta() );
+    EBiPhi_->push_back( EBDetId( i->detid() ).iphi() );
 
-    // double eta = geomH->getGeometry(i->detid())->getPosition().eta();
-    // EBEta_->push_back(geomH->getGeometry(i->detid())->getPosition().eta());
 
-    // double phi = geomH->getGeometry(i->detid())->getPosition().phi();
-    // EBPhi_>push_back(geomH->getGeometry(i->detid())->getPosition().phi());
-    // std::cout << "EBEta: "  <<  geomH->getGeometry(i->detid())->getPosition().eta()     << std::endl; 
-    // std::cout << "EBPhi: "  <<  geomH->getGeometry(i->detid())->getPosition().phi()     << std::endl; 
   }
-//   for(EcalRecHitCollection::const_iterator hit = ebHandle->begin(); hit != ebHandle->end(); ++hit) {
-//     eb_chi2->Fill(hit->chi2() );
-//     eb_errors->Fill(hit->energyError() );
-//     double eta = geomH->getGeometry(hit->detid())->getPosition().eta();
-//     double phi = geomH->getGeometry(hit->detid())->getPosition().phi();
-//     eb_chi2_eta->Fill(eta, hit->chi2() );
-//     eb_errors_eta->Fill(eta, hit->energyError() );
-//     if(hit->energy() > mRechitEnergyThreshold)
-//     {
-//       eb_chi2_e5->Fill(hit->chi2() );
-//       eb_errors_e5->Fill(hit->energyError() );
-//       eb_chi2_e5_eta->Fill(eta, hit->chi2() );
-//       eb_errors_e5_eta->Fill(eta, hit->energyError() );
-// }
-
-
   return;
 }
 
@@ -1812,8 +1829,8 @@ void AODAnalyzer::fillEErecHit(const edm::Handle<EEEcalRecHitCollection> & EEhit
     EEenergy_ ->push_back(i->energy());
     EEtime_ ->push_back(i->time());
     EEchi2_ ->push_back(i->chi2());
-    // EEEta_>push_back(i->ieta()); 
-    // EEPhi_>push_back(i->iphi());
+    EEix_->push_back( EEDetId( i->detid() ).ix() );
+    EEiy_->push_back( EEDetId( i->detid() ).iy() );
   }
   return;
 }
@@ -1827,9 +1844,9 @@ void AODAnalyzer::fillESrecHit(const edm::Handle<ESEcalRecHitCollection> & EShit
   for(;i != EShits->end(); i++){
     ESenergy_ ->push_back(i->energy());
     EStime_ ->push_back(i->time());
-    ESchi2_ ->push_back(i->chi2()); 
-    // EEEta_>push_back(i->ieta()); 
-    // EEPhi_>push_back(i->iphi());
+    // ESchi2_ ->push_back(i->chi2()); 
+    ESix_->push_back( ESDetId( i->detid() ).six() );
+    ESiy_->push_back( ESDetId( i->detid() ).siy() );
   }
   return;
 }
@@ -1841,9 +1858,14 @@ void AODAnalyzer::fillHBHErecHit(const edm::Handle<HBHERecHitCollection> & HBHEh
   // std::cout << "fillHBHErecHit is being called!" << std::endl;
   typename HBHERecHitCollection::const_iterator i = HBHEhits->begin();
   for(;i != HBHEhits->end(); i++){
+    //
+
     HBHEenergy_ ->push_back(i->energy());
     HBHEtime_ ->push_back(i->time());
     HBHEauxe_ ->push_back(i->eaux()); //const class HBHERecHit' has no member named 'chi2'
+
+    HBHEieta_ ->push_back( HcalDetId( i->detid() ).ieta() );
+    HBHEiphi_ ->push_back( HcalDetId( i->detid() ).iphi() );
     // std::cout << "ele HBHEenergy: " << i->energy()   << std::endl; 
     //std::cout << "ele HBHEchi: "  << i->eaux() << std::endl;
   }
@@ -1859,6 +1881,10 @@ void AODAnalyzer::fillHFrecHit(const edm::Handle<HFRecHitCollection> & HFhits)
   for(;i != HFhits->end(); i++){
     HFenergy_ ->push_back(i->energy());
     HFtime_ ->push_back(i->time());
+    HFieta_ ->push_back(HcalDetId( i->detid() ).ieta());
+    HFiphi_ ->push_back(HcalDetId( i->detid() ).iphi());
+    // std::cout << "ele HFenergy: " << i->energy()   << std::endl; 
+    // std::cout << "ele HFtime: "  << i->time() << std::endl;
     // HFchi2_ ->push_back(i->chi2());
     // std::cout << "ele HFenergy: " << i->energy()   << std::endl; 
     // std::cout << "ele HFtime: "  << i->time() << std::endl;
@@ -1866,21 +1892,23 @@ void AODAnalyzer::fillHFrecHit(const edm::Handle<HFRecHitCollection> & HFhits)
   return;
 }
 
-template<typename HORecHitCollection>
-void AODAnalyzer::fillHOrecHit(const edm::Handle<HORecHitCollection> & HOhits)
-{
+// template<typename HORecHitCollection>
+// void AODAnalyzer::fillHOrecHit(const edm::Handle<HORecHitCollection> & HOhits)
+// {
 
-  // std::cout << "fillHOrecHit is being called!" << std::endl;
-  typename HORecHitCollection::const_iterator i = HOhits->begin();
-  for(;i != HOhits->end(); i++){
-    HOenergy_ ->push_back(i->energy());
-    HOtime_ ->push_back(i->time());
-    // HOchi2_ ->push_back(i->chi2());
-    std::cout << "ele HOenergy: " << i->energy()   << std::endl; 
-    std::cout << "ele HOtime: "  << i->time() << std::endl;
-  }
-  return;
-}
+//   // std::cout << "fillHOrecHit is being called!" << std::endl;
+//   typename HORecHitCollection::const_iterator i = HOhits->begin();
+//   for(;i != HOhits->end(); i++){
+//     HOenergy_ ->push_back(i->energy());
+//     HOtime_ ->push_back(i->time());
+//     HOieta_ ->push_back(HcalDetId( i->detid() ).ieta());
+//     HOiphi_ ->push_back(HcalDetId( i->detid() ).iphi());
+//     // HOchi2_ ->push_back(i->chi2());
+//     std::cout << "ele HOenergy: " << i->energy()   << std::endl; 
+//     std::cout << "ele HOtime: "  << i->time() << std::endl;
+//   }
+//   return;
+// }
 
 template<typename PreshowerClusterCollection>
 void AODAnalyzer::fillPreshowerCluster(const edm::Handle<PreshowerClusterCollection> & preshowerclusterhits)
@@ -1891,7 +1919,7 @@ void AODAnalyzer::fillPreshowerCluster(const edm::Handle<PreshowerClusterCollect
   for(;i != preshowerclusterhits->end(); i++){
 
     PreShEn_->push_back(i->energy());
-    PreShCorrEn_->push_back(i->correctedEnergy());
+    // PreShCorrEn_->push_back(i->correctedEnergy());
     PreShEta_->push_back(i->eta());
     PreShPhi_->push_back(i->phi());
 
@@ -1908,7 +1936,7 @@ void AODAnalyzer::fillPreshowerClusterY(const edm::Handle<PreshowerClusterCollec
   for(;i != preshowerclusterYhits->end(); i++){
 
     PreShYEn_->push_back(i->energy());
-    PreShYCorrEn_->push_back(i->correctedEnergy());
+    // PreShYCorrEn_->push_back(i->correctedEnergy());
     PreShYEta_->push_back(i->eta());
     PreShYPhi_->push_back(i->phi());
 
@@ -1936,7 +1964,7 @@ void AODAnalyzer::fillPreshowerClusterY(const edm::Handle<PreshowerClusterCollec
 // ----------------------------------- HO
 
 template<typename T>
-void AODAnalyzer::computeQuantiles(std::vector<T>* myDistr, std::vector<T>* myQuan, std::vector<double> qq)
+void AODAnalyzer::computeQuantiles(std::vector<T>* myDistr, std::vector<T>* myQuan, std::vector<double> qq) //harambe
 {
   //need to sort the distr to compute quantiles
   std::vector<T> dummyDistr = *myDistr;
@@ -1964,13 +1992,13 @@ void AODAnalyzer::computeQuantiles(std::vector<T>* myDistr, std::vector<T>* myQu
 template<typename T>
 void AODAnalyzer::computeMeanAndRms(std::vector<T>* myDistr, std::vector<T>* myVect)
 {
-  double sum = std::accumulate(myDistr->begin(), myDistr->end(), 0.0);
-  double mean = sum / myDistr->size();
+  double sum = std::accumulate(myDistr->begin(), myDistr->end(), 0.0); //harambe
+  double mean = sum / myDistr->size(); //harambe
   myVect->push_back( mean );
 
-  std::vector<double> diff(myDistr->size());
-  std::transform(myDistr->begin(), myDistr->end(), diff.begin(), [mean](double x) { return x - mean; });
-  double sq_sum = std::inner_product(diff.begin(), diff.end(), diff.begin(), 0.0);
+  std::vector<double> diff(myDistr->size());//harambe
+  std::transform(myDistr->begin(), myDistr->end(), diff.begin(), [mean](double x) { return x - mean; });//harambe
+  double sq_sum = std::inner_product(diff.begin(), diff.end(), diff.begin(), 0.0); //harambe
   myVect->push_back( std::sqrt(sq_sum / myDistr->size()) );
 }
 
@@ -2012,10 +2040,10 @@ void AODAnalyzer::beginJob() {
   PFJetTopCHSPhi_  = new std::vector<float>;        
 
   PFChMetPt_     = new std::vector<float>;
-  PFChMetEta_    = new std::vector<float>;  
+  // PFChMetEta_    = new std::vector<float>;  
   PFChMetPhi_    = new std::vector<float>;
   PFMetPt_     = new std::vector<float>;
-  PFMetEta_    = new std::vector<float>;
+  // PFMetEta_    = new std::vector<float>;
   PFMetPhi_    = new std::vector<float>;
   nVtx_      = new std::vector<int>;
   
@@ -2024,45 +2052,45 @@ void AODAnalyzer::beginJob() {
   CalJetPhi_   = new std::vector<float>;
   CalJetEn_   = new std::vector<float>;
   CalMETPt_   = new std::vector<float>;
-  CalMETEta_   = new std::vector<float>;
+  // CalMETEta_   = new std::vector<float>;
   CalMETPhi_   = new std::vector<float>;
   CalMETEn_   = new std::vector<float>;
 
   CalMETBEPt_   = new std::vector<float>;
-  CalMETBEEta_   = new std::vector<float>;
+  // CalMETBEEta_   = new std::vector<float>;
   CalMETBEPhi_   = new std::vector<float>;
   CalMETBEEn_   = new std::vector<float>;
   CalMETBEFOPt_   = new std::vector<float>;
-  CalMETBEFOEta_   = new std::vector<float>;
+  // CalMETBEFOEta_   = new std::vector<float>;
   CalMETBEFOPhi_   = new std::vector<float>;
   CalMETBEFOEn_   = new std::vector<float>;
   CalMETMPt_   = new std::vector<float>;
-  CalMETMEta_   = new std::vector<float>;
+  // CalMETMEta_   = new std::vector<float>;
   CalMETMPhi_   = new std::vector<float>;
   CalMETMEn_   = new std::vector<float>;
 
 
-  SCEn_      = new std::vector<double>;
-  SCEta_     = new std::vector<double>;
-  SCPhi_     = new std::vector<double>;
-  SCEtaWidth_     = new std::vector<double>;
-  SCPhiWidth_     = new std::vector<double>;  
-  SCEnhfEM_      = new std::vector<double>;
-  SCEtahfEM_     = new std::vector<double>;
-  SCPhihfEM_     = new std::vector<double>;
-  SCEtaWidthhfEM_     = new std::vector<double>;
-  SCPhiWidthhfEM_     = new std::vector<double>;  
-  SCEn5x5_      = new std::vector<double>;
-  SCEta5x5_     = new std::vector<double>;
-  SCPhi5x5_     = new std::vector<double>;
-  SCEtaWidth5x5_     = new std::vector<double>;
-  SCPhiWidth5x5_     = new std::vector<double>;  
-  CCEn_      = new std::vector<double>;
-  CCEta_     = new std::vector<double>;
-  CCPhi_     = new std::vector<double>;
-  CCEn5x5_      = new std::vector<double>;
-  CCEta5x5_     = new std::vector<double>;
-  CCPhi5x5_     = new std::vector<double>;
+  SCEn_      = new std::vector<float>;
+  SCEta_     = new std::vector<float>;
+  SCPhi_     = new std::vector<float>;
+  SCEtaWidth_     = new std::vector<float>;
+  SCPhiWidth_     = new std::vector<float>;  
+  SCEnhfEM_      = new std::vector<float>;
+  SCEtahfEM_     = new std::vector<float>;
+  SCPhihfEM_     = new std::vector<float>;
+  // SCEtaWidthhfEM_     = new std::vector<float>;
+  // SCPhiWidthhfEM_     = new std::vector<float>;  
+  SCEn5x5_      = new std::vector<float>;
+  SCEta5x5_     = new std::vector<float>;
+  SCPhi5x5_     = new std::vector<float>;
+  SCEtaWidth5x5_     = new std::vector<float>;
+  SCPhiWidth5x5_     = new std::vector<float>;  
+  CCEn_      = new std::vector<float>;
+  CCEta_     = new std::vector<float>;
+  CCPhi_     = new std::vector<float>;
+  CCEn5x5_      = new std::vector<float>;
+  CCEta5x5_     = new std::vector<float>;
+  CCPhi5x5_     = new std::vector<float>;
 
   PhoPt_     = new std::vector<float>;
   PhoEta_    = new std::vector<float>;
@@ -2133,45 +2161,52 @@ void AODAnalyzer::beginJob() {
   EBenergy_    = new std::vector<float>;
   EBtime_      = new std::vector<float>;
   EBchi2_      = new std::vector<float>;
-  EBEta_       = new std::vector<double>;
-  EBPhi_       = new std::vector<double>;
+  EBiEta_       = new std::vector<float>;
+  EBiPhi_       = new std::vector<float>;
 
   EEenergy_    = new std::vector<float>;
   EEtime_      = new std::vector<float>;
   EEchi2_      = new std::vector<float>;
-  EEEta_       = new std::vector<float>;
-  EEPhi_       = new std::vector<float>;
+  EEix_       = new std::vector<float>;
+  EEiy_       = new std::vector<float>;
 
   ESenergy_    = new std::vector<float>;
   EStime_      = new std::vector<float>;
-  ESchi2_      = new std::vector<float>;
-  ESEta_       = new std::vector<float>;
-  ESPhi_       = new std::vector<float>;
+  // ESchi2_      = new std::vector<float>;
+  ESix_       = new std::vector<float>;
+  ESiy_       = new std::vector<float>;
 
   HBHEenergy_  = new std::vector<float>;
   HBHEtime_    = new std::vector<float>;
   HBHEauxe_    = new std::vector<float>;
+  HBHEieta_    = new std::vector<float>;
+  HBHEiphi_    = new std::vector<float>;
+
   HFenergy_    = new std::vector<float>;
   HFtime_      = new std::vector<float>;
+  HFieta_      = new std::vector<float>;
+  HFiphi_      = new std::vector<float>;
   // HFchi2_      = new std::vector<float>;
-  HOenergy_    = new std::vector<float>;
-  HOtime_      = new std::vector<float>;
-  // HOchi2_      = new std::vector<float>;
+  // HOenergy_    = new std::vector<float>;
+  // HOtime_      = new std::vector<float>;
+  // HOieta_      = new std::vector<float>;
+  // HOiphi_      = new std::vector<float>;  
+  // // HOchi2_      = new std::vector<float>;
 
 
-  PreShEn_    = new std::vector<double>;
-  PreShCorrEn_= new std::vector<double>;
-  PreShEta_   = new std::vector<double>;
-  PreShPhi_   = new std::vector<double>;
+  PreShEn_    = new std::vector<float>;
+  // PreShCorrEn_= new std::vector<float>;
+  PreShEta_   = new std::vector<float>;
+  PreShPhi_   = new std::vector<float>;
 
-  PreShYEn_    = new std::vector<double>;
-  PreShYCorrEn_= new std::vector<double>;
-  PreShYEta_   = new std::vector<double>;
-  PreShYPhi_   = new std::vector<double>;
+  PreShYEn_    = new std::vector<float>;
+  // PreShYCorrEn_= new std::vector<float>;
+  PreShYEta_   = new std::vector<float>;
+  PreShYPhi_   = new std::vector<float>;
 
-  // CTPt_        = new std::vector<double>;
-  // CTEta_       = new std::vector<double>;
-  // CTPhi_       = new std::vector<double>;
+  // CTPt_        = new std::vector<float>;
+  // CTEta_       = new std::vector<float>;
+  // CTPhi_       = new std::vector<float>;
   
   // outTree_->Branch("MetPt",     "std::vector<std::float>",     &MetPt_);
   // outTree_->Branch("MetPhi",    "std::vector<std::float>",     &MetPhi_);
@@ -2205,10 +2240,10 @@ void AODAnalyzer::beginJob() {
   qPFJetTopCHSPhi_  = new std::vector<float>;
 
   qPFChMetPt_     = new std::vector<float>;
-  qPFChMetEta_    = new std::vector<float>;  
+  // qPFChMetEta_    = new std::vector<float>;  
   qPFChMetPhi_    = new std::vector<float>;
   qPFMetPt_     = new std::vector<float>;
-  qPFMetEta_    = new std::vector<float>;
+  // qPFMetEta_    = new std::vector<float>;
   qPFMetPhi_    = new std::vector<float>;
  
   qCalJetPt_   = new std::vector<float>;
@@ -2216,44 +2251,44 @@ void AODAnalyzer::beginJob() {
   qCalJetPhi_   = new std::vector<float>;
   qCalJetEn_   = new std::vector<float>;
   qCalMETPt_   = new std::vector<float>;
-  qCalMETEta_   = new std::vector<float>;
+  // qCalMETEta_   = new std::vector<float>;
   qCalMETPhi_   = new std::vector<float>;
   qCalMETEn_   = new std::vector<float>;
 
   qCalMETBEPt_   = new std::vector<float>;
-  qCalMETBEEta_   = new std::vector<float>;
+  // qCalMETBEEta_   = new std::vector<float>;
   qCalMETBEPhi_   = new std::vector<float>;
   qCalMETBEEn_   = new std::vector<float>;
   qCalMETBEFOPt_   = new std::vector<float>;
-  qCalMETBEFOEta_   = new std::vector<float>;
+  // qCalMETBEFOEta_   = new std::vector<float>;
   qCalMETBEFOPhi_   = new std::vector<float>;
   qCalMETBEFOEn_   = new std::vector<float>;
   qCalMETMPt_   = new std::vector<float>;
-  qCalMETMEta_   = new std::vector<float>;
+  // qCalMETMEta_   = new std::vector<float>;
   qCalMETMPhi_   = new std::vector<float>;
   qCalMETMEn_   = new std::vector<float>;
 
-  qSCEn_      = new std::vector<double>;
-  qSCEta_     = new std::vector<double>;
-  qSCPhi_     = new std::vector<double>;
-  qSCEtaWidth_     = new std::vector<double>;
-  qSCPhiWidth_     = new std::vector<double>;  
-  qSCEnhfEM_      = new std::vector<double>;
-  qSCEtahfEM_     = new std::vector<double>;
-  qSCPhihfEM_     = new std::vector<double>;
-  qSCEtaWidthhfEM_     = new std::vector<double>;
-  qSCPhiWidthhfEM_     = new std::vector<double>;  
-  qSCEn5x5_      = new std::vector<double>;
-  qSCEta5x5_     = new std::vector<double>;
-  qSCPhi5x5_     = new std::vector<double>;
-  qSCEtaWidth5x5_     = new std::vector<double>;
-  qSCPhiWidth5x5_     = new std::vector<double>; 
-  qCCEn_     = new std::vector<double>;
-  qCCEta_    = new std::vector<double>;
-  qCCPhi_    = new std::vector<double>;
-  qCCEn5x5_     = new std::vector<double>;
-  qCCEta5x5_    = new std::vector<double>;
-  qCCPhi5x5_    = new std::vector<double>;
+  qSCEn_      = new std::vector<float>;
+  qSCEta_     = new std::vector<float>;
+  qSCPhi_     = new std::vector<float>;
+  qSCEtaWidth_     = new std::vector<float>;
+  qSCPhiWidth_     = new std::vector<float>;  
+  qSCEnhfEM_      = new std::vector<float>;
+  qSCEtahfEM_     = new std::vector<float>;
+  qSCPhihfEM_     = new std::vector<float>;
+  // qSCEtaWidthhfEM_     = new std::vector<float>;
+  // qSCPhiWidthhfEM_     = new std::vector<float>;  
+  qSCEn5x5_      = new std::vector<float>;
+  qSCEta5x5_     = new std::vector<float>;
+  qSCPhi5x5_     = new std::vector<float>;
+  qSCEtaWidth5x5_     = new std::vector<float>;
+  qSCPhiWidth5x5_     = new std::vector<float>; 
+  qCCEn_     = new std::vector<float>;
+  qCCEta_    = new std::vector<float>;
+  qCCPhi_    = new std::vector<float>;
+  qCCEn5x5_     = new std::vector<float>;
+  qCCEta5x5_    = new std::vector<float>;
+  qCCPhi5x5_    = new std::vector<float>;
 
   qPhoPt_     = new std::vector<float>;
   qPhoEta_    = new std::vector<float>;
@@ -2324,44 +2359,51 @@ void AODAnalyzer::beginJob() {
   qEBenergy_    = new std::vector<float>;
   qEBtime_      = new std::vector<float>;
   qEBchi2_      = new std::vector<float>;
-  qEBEta_       = new std::vector<double>;
-  qEBPhi_       = new std::vector<double>;
+  qEBiEta_       = new std::vector<float>;
+  qEBiPhi_       = new std::vector<float>;
 
   qEEenergy_    = new std::vector<float>;
   qEEtime_      = new std::vector<float>;
   qEEchi2_      = new std::vector<float>;
-  qEEEta_       = new std::vector<float>;
-  qEEPhi_       = new std::vector<float>;
+  qEEix_       = new std::vector<float>;
+  qEEiy_       = new std::vector<float>;
 
   qESenergy_    = new std::vector<float>;
   qEStime_      = new std::vector<float>;
-  qESchi2_      = new std::vector<float>;
-  qESEta_       = new std::vector<float>;
-  qESPhi_       = new std::vector<float>;
+  // qESchi2_      = new std::vector<float>;
+  qESix_       = new std::vector<float>;
+  qESiy_       = new std::vector<float>;
 
   qHBHEenergy_  = new std::vector<float>;
   qHBHEtime_    = new std::vector<float>;
   qHBHEauxe_    = new std::vector<float>;
+  qHBHEieta_    = new std::vector<float>;
+  qHBHEiphi_    = new std::vector<float>;
+
   qHFenergy_    = new std::vector<float>;
   qHFtime_      = new std::vector<float>;
+  qHFieta_      = new std::vector<float>;
+  qHFiphi_      = new std::vector<float>;
   // qHFchi2_      = new std::vector<float>;
-  qHOenergy_    = new std::vector<float>;
-  qHOtime_      = new std::vector<float>;
-  // qHOchi2_      = new std::vector<float>;
-//FINISH doing HBHE<HF<HO
+//   qHOenergy_    = new std::vector<float>;
+//   qHOtime_      = new std::vector<float>;
+//   qHOieta_      = new std::vector<float>;
+//   qHOiphi_      = new std::vector<float>;  
+//   // qHOchi2_      = new std::vector<float>;
+// //FINISH doing HBHE<HF<HO
 
-  qPreShEn_     = new std::vector<double>;
-  qPreShCorrEn_ = new std::vector<double>;
-  qPreShEta_    = new std::vector<double>;
-  qPreShPhi_    = new std::vector<double>;
-  qPreShYEn_    = new std::vector<double>;
-  qPreShYCorrEn_= new std::vector<double>;
-  qPreShYEta_   = new std::vector<double>;
-  qPreShYPhi_   = new std::vector<double>;
+  qPreShEn_     = new std::vector<float>;
+  // qPreShCorrEn_ = new std::vector<float>;
+  qPreShEta_    = new std::vector<float>;
+  qPreShPhi_    = new std::vector<float>;
+  qPreShYEn_    = new std::vector<float>;
+  // qPreShYCorrEn_= new std::vector<float>;
+  qPreShYEta_   = new std::vector<float>;
+  qPreShYPhi_   = new std::vector<float>;
 
-  // qCTPt_        = new std::vector<double>;
-  // qCTEta_       = new std::vector<double>;
-  // qCTPhi_       = new std::vector<double>;
+  // qCTPt_        = new std::vector<float>;
+  // qCTEta_       = new std::vector<float>;
+  // qCTPhi_       = new std::vector<float>;
 
   qNVtx_       = new std::vector<int>;
   crossSection_= new std::vector<float>;
@@ -2393,10 +2435,10 @@ void AODAnalyzer::beginJob() {
   outTree_->Branch("qPFJetTopCHSPhi",    "std::vector<std::float>",      &qPFJetTopCHSPhi_);
 
   outTree_->Branch("qPFChMetPt",     "std::vector<std::float>",        &qPFChMetPt_);
-  outTree_->Branch("qPFChMetEta",    "std::vector<std::float>",        &qPFChMetEta_);  
+  // outTree_->Branch("qPFChMetEta",    "std::vector<std::float>",        &qPFChMetEta_);  
   outTree_->Branch("qPFChMetPhi",    "std::vector<std::float>",        &qPFChMetPhi_);
   outTree_->Branch("qPFMetPt",     "std::vector<std::float>",        &qPFMetPt_);
-  outTree_->Branch("qPFMetEta",    "std::vector<std::float>",        &qPFMetEta_);
+  // outTree_->Branch("qPFMetEta",    "std::vector<std::float>",        &qPFMetEta_);
   outTree_->Branch("qPFMetPhi",    "std::vector<std::float>",        &qPFMetPhi_);
   outTree_->Branch("qNVtx",        "std::vector<std::int>",        &qNVtx_);
 
@@ -2406,46 +2448,46 @@ void AODAnalyzer::beginJob() {
   outTree_->Branch("qCalJetEn",    "std::vector<std::float>",        &qCalJetEn_);
 
   outTree_->Branch("qCalMETPt",     "std::vector<std::float>",        &qCalMETPt_);
-  outTree_->Branch("qCalMETEta",    "std::vector<std::float>",        &qCalMETEta_);
+  // outTree_->Branch("qCalMETEta",    "std::vector<std::float>",        &qCalMETEta_);
   outTree_->Branch("qCalMETPhi",    "std::vector<std::float>",        &qCalMETPhi_);
   outTree_->Branch("qCalMETEn",    "std::vector<std::float>",        &qCalMETEn_);
 
   outTree_->Branch("qCalMETBEPt",     "std::vector<std::float>",        &qCalMETBEPt_);
-  outTree_->Branch("qCalMETBEEta",    "std::vector<std::float>",        &qCalMETBEEta_);
+  // outTree_->Branch("qCalMETBEEta",    "std::vector<std::float>",        &qCalMETBEEta_);
   outTree_->Branch("qCalMETBEPhi",    "std::vector<std::float>",        &qCalMETBEPhi_);
   outTree_->Branch("qCalMETBEEn",    "std::vector<std::float>",         &qCalMETBEEn_);
 
   outTree_->Branch("qCalMETBEFOPt",     "std::vector<std::float>",        &qCalMETBEFOPt_);
-  outTree_->Branch("qCalMETBEFOEta",    "std::vector<std::float>",        &qCalMETBEFOEta_);
+  // outTree_->Branch("qCalMETBEFOEta",    "std::vector<std::float>",        &qCalMETBEFOEta_);
   outTree_->Branch("qCalMETBEFOPhi",    "std::vector<std::float>",        &qCalMETBEFOPhi_);
   outTree_->Branch("qCalMETBEFOEn",    "std::vector<std::float>",         &qCalMETBEFOEn_);
 
   outTree_->Branch("qCalMETMPt",     "std::vector<std::float>",        &qCalMETMPt_);
-  outTree_->Branch("qCalMETMEta",    "std::vector<std::float>",        &qCalMETMEta_);
+  // outTree_->Branch("qCalMETMEta",    "std::vector<std::float>",        &qCalMETMEta_);
   outTree_->Branch("qCalMETMPhi",    "std::vector<std::float>",        &qCalMETMPhi_);
   outTree_->Branch("qCalMETMEn",    "std::vector<std::float>",         &qCalMETMEn_);
 
-  outTree_->Branch("qSCEn",     "std::vector<std::double>",        &qSCEn_);
-  outTree_->Branch("qSCEta",    "std::vector<std::double>",        &qSCEta_);
-  outTree_->Branch("qSCPhi",    "std::vector<std::double>",        &qSCPhi_);
-  outTree_->Branch("qSCEtaWidth",    "std::vector<std::double>",        &qSCEtaWidth_);
-  outTree_->Branch("qSCPhiWidth",    "std::vector<std::double>",        &qSCPhiWidth_);  
-  outTree_->Branch("qSCEnhfEM",     "std::vector<std::double>",        &qSCEnhfEM_);
-  outTree_->Branch("qSCEtahfEM",    "std::vector<std::double>",        &qSCEtahfEM_);
-  outTree_->Branch("qSCPhihfEM",    "std::vector<std::double>",        &qSCPhihfEM_);
-  outTree_->Branch("qSCEtaWidthhfEM",    "std::vector<std::double>",        &qSCEtaWidthhfEM_);
-  outTree_->Branch("qSCPhiWidthhfEM",    "std::vector<std::double>",        &qSCPhiWidthhfEM_);  
-  outTree_->Branch("qSCEn5x5",     "std::vector<std::double>",        &qSCEn5x5_);
-  outTree_->Branch("qSCEta5x5",    "std::vector<std::double>",        &qSCEta5x5_);
-  outTree_->Branch("qSCPhi5x5",    "std::vector<std::double>",        &qSCPhi5x5_);
-  outTree_->Branch("qSCEtaWidth5x5",    "std::vector<std::double>",        &qSCEtaWidth5x5_);
-  outTree_->Branch("qSCPhiWidth5x5",    "std::vector<std::double>",        &qSCPhiWidth5x5_);  
-  outTree_->Branch("qCCEn",     "std::vector<std::double>",        &qCCEn_);
-  outTree_->Branch("qCCEta",    "std::vector<std::double>",        &qCCEta_);
-  outTree_->Branch("qCCPhi",    "std::vector<std::double>",        &qCCPhi_);
-  outTree_->Branch("qCCEn5x5",     "std::vector<std::double>",        &qCCEn5x5_);
-  outTree_->Branch("qCCEta5x5",    "std::vector<std::double>",        &qCCEta5x5_);
-  outTree_->Branch("qCCPhi5x5",    "std::vector<std::double>",        &qCCPhi5x5_);
+  outTree_->Branch("qSCEn",     "std::vector<std::float>",        &qSCEn_);
+  outTree_->Branch("qSCEta",    "std::vector<std::float>",        &qSCEta_);
+  outTree_->Branch("qSCPhi",    "std::vector<std::float>",        &qSCPhi_);
+  outTree_->Branch("qSCEtaWidth",    "std::vector<std::float>",        &qSCEtaWidth_);
+  outTree_->Branch("qSCPhiWidth",    "std::vector<std::float>",        &qSCPhiWidth_);  
+  outTree_->Branch("qSCEnhfEM",     "std::vector<std::float>",        &qSCEnhfEM_);
+  outTree_->Branch("qSCEtahfEM",    "std::vector<std::float>",        &qSCEtahfEM_);
+  outTree_->Branch("qSCPhihfEM",    "std::vector<std::float>",        &qSCPhihfEM_);
+  // outTree_->Branch("qSCEtaWidthhfEM",    "std::vector<std::float>",        &qSCEtaWidthhfEM_);
+  // outTree_->Branch("qSCPhiWidthhfEM",    "std::vector<std::float>",        &qSCPhiWidthhfEM_);  
+  outTree_->Branch("qSCEn5x5",     "std::vector<std::float>",        &qSCEn5x5_);
+  outTree_->Branch("qSCEta5x5",    "std::vector<std::float>",        &qSCEta5x5_);
+  outTree_->Branch("qSCPhi5x5",    "std::vector<std::float>",        &qSCPhi5x5_);
+  outTree_->Branch("qSCEtaWidth5x5",    "std::vector<std::float>",        &qSCEtaWidth5x5_);
+  outTree_->Branch("qSCPhiWidth5x5",    "std::vector<std::float>",        &qSCPhiWidth5x5_);  
+  outTree_->Branch("qCCEn",     "std::vector<std::float>",        &qCCEn_);
+  outTree_->Branch("qCCEta",    "std::vector<std::float>",        &qCCEta_);
+  outTree_->Branch("qCCPhi",    "std::vector<std::float>",        &qCCPhi_);
+  outTree_->Branch("qCCEn5x5",     "std::vector<std::float>",        &qCCEn5x5_);
+  outTree_->Branch("qCCEta5x5",    "std::vector<std::float>",        &qCCEta5x5_);
+  outTree_->Branch("qCCPhi5x5",    "std::vector<std::float>",        &qCCPhi5x5_);
 
   outTree_->Branch("qPhoPt",     "std::vector<std::float>",        &qPhoPt_);
   outTree_->Branch("qPhoEta",    "std::vector<std::float>",        &qPhoEta_);
@@ -2515,43 +2557,51 @@ void AODAnalyzer::beginJob() {
   outTree_->Branch("qEBenergy",    "std::vector<std::float>",        &qEBenergy_);
   outTree_->Branch("qEBtime",    "std::vector<std::float>",          &qEBtime_);
   outTree_->Branch("qEBchi2",    "std::vector<std::float>",          &qEBchi2_);
-  outTree_->Branch("qEBEta",    "std::vector<std::double>",          &qEBEta_);
-  outTree_->Branch("qEBPhi",    "std::vector<std::double>",          &qEBPhi_);
+  outTree_->Branch("qEBiEta",    "std::vector<std::float>",          &qEBiEta_);
+  outTree_->Branch("qEBiPhi",    "std::vector<std::float>",          &qEBiPhi_);
 
   outTree_->Branch("qEEenergy",    "std::vector<std::float>",        &qEEenergy_);
   outTree_->Branch("qEEtime",    "std::vector<std::float>",          &qEEtime_);
   outTree_->Branch("qEEchi2",    "std::vector<std::float>",          &qEEchi2_);
-  outTree_->Branch("qEEEta",    "std::vector<std::float>",          &qEEEta_);
-  outTree_->Branch("qEEPhi",    "std::vector<std::float>",          &qEEPhi_);
+  outTree_->Branch("qEEix",    "std::vector<std::float>",          &qEEix_);
+  outTree_->Branch("qEEiy",    "std::vector<std::float>",          &qEEiy_);
 
   outTree_->Branch("qESenergy",    "std::vector<std::float>",        &qESenergy_);
   outTree_->Branch("qEStime",    "std::vector<std::float>",          &qEStime_);
-  outTree_->Branch("qESchi2",    "std::vector<std::float>",          &qESchi2_);
-  outTree_->Branch("qESEta",    "std::vector<std::float>",          &qESEta_);
-  outTree_->Branch("qESPhi",    "std::vector<std::float>",          &qESPhi_);
+  // outTree_->Branch("qESchi2",    "std::vector<std::float>",          &qESchi2_);
+  outTree_->Branch("qESix",    "std::vector<std::float>",          &qESix_);
+  outTree_->Branch("qESiy",    "std::vector<std::float>",          &qESiy_);
 
   outTree_->Branch("qHBHEenergy",    "std::vector<std::float>",        &qHBHEenergy_);
   outTree_->Branch("qHBHEtime",    "std::vector<std::float>",          &qHBHEtime_);
   outTree_->Branch("qHBHEauxe",    "std::vector<std::float>",          &qHBHEauxe_);
+  outTree_->Branch("qHBHEieta",    "std::vector<std::float>",        &qHBHEieta_);
+  outTree_->Branch("qHBHEiphi",    "std::vector<std::float>",          &qHBHEiphi_);
+
   outTree_->Branch("qHFenergy",    "std::vector<std::float>",        &qHFenergy_);
   outTree_->Branch("qHFtime",    "std::vector<std::float>",          &qHFtime_);
   // outTree_->Branch("qHFchi2",    "std::vector<std::float>",          &qHFchi2_);
-  outTree_->Branch("qHOenergy",    "std::vector<std::float>",        &qHOenergy_);
-  outTree_->Branch("qHOtime",    "std::vector<std::float>",          &qHOtime_);
-  // outTree_->Branch("qHOchi2",    "std::vector<std::float>",          &qHOchi2_);
+  outTree_->Branch("qHFieta",    "std::vector<std::float>",          &qHFieta_);
+  outTree_->Branch("qHFiphi",    "std::vector<std::float>",          &qHFiphi_);
 
-  outTree_->Branch("qPreShEn",     "std::vector<std::double>",        &qPreShEn_);
-  outTree_->Branch("qPreShCorrEn", "std::vector<std::double>",        &qPreShCorrEn_);
-  outTree_->Branch("qPreShEta",    "std::vector<std::double>",        &qPreShEta_);
-  outTree_->Branch("qPreShPhi",    "std::vector<std::double>",        &qPreShPhi_);
-  outTree_->Branch("qPreShYEn",     "std::vector<std::double>",        &qPreShYEn_);
-  outTree_->Branch("qPreShYCorrEn", "std::vector<std::double>",        &qPreShYCorrEn_);
-  outTree_->Branch("qPreShYEta",    "std::vector<std::double>",        &qPreShYEta_);
-  outTree_->Branch("qPreShYPhi",    "std::vector<std::double>",        &qPreShYPhi_);
+  // outTree_->Branch("qHOenergy",    "std::vector<std::float>",        &qHOenergy_);
+  // outTree_->Branch("qHOtime",    "std::vector<std::float>",          &qHOtime_);
+  // // outTree_->Branch("qHOchi2",    "std::vector<std::float>",          &qHOchi2_);
+  // outTree_->Branch("qHOieta",    "std::vector<std::float>",          &qHOieta_);
+  // outTree_->Branch("qHOiphi",    "std::vector<std::float>",          &qHOiphi_);
 
-  // outTree_->Branch("qCTPt",     "std::vector<std::double>",        &qCTPt_);
-  // outTree_->Branch("qCTEta",    "std::vector<std::double>",        &qCTEta_);
-  // outTree_->Branch("qCTPhi",    "std::vector<std::double>",        &qCTPhi_);
+  outTree_->Branch("qPreShEn",     "std::vector<std::float>",        &qPreShEn_);
+  // outTree_->Branch("qPreShCorrEn", "std::vector<std::float>",        &qPreShCorrEn_);
+  outTree_->Branch("qPreShEta",    "std::vector<std::float>",        &qPreShEta_);
+  outTree_->Branch("qPreShPhi",    "std::vector<std::float>",        &qPreShPhi_);
+  outTree_->Branch("qPreShYEn",     "std::vector<std::float>",        &qPreShYEn_);
+  // outTree_->Branch("qPreShYCorrEn", "std::vector<std::float>",        &qPreShYCorrEn_);
+  outTree_->Branch("qPreShYEta",    "std::vector<std::float>",        &qPreShYEta_);
+  outTree_->Branch("qPreShYPhi",    "std::vector<std::float>",        &qPreShYPhi_);
+
+  // outTree_->Branch("qCTPt",     "std::vector<std::float>",        &qCTPt_);
+  // outTree_->Branch("qCTEta",    "std::vector<std::float>",        &qCTEta_);
+  // outTree_->Branch("qCTPhi",    "std::vector<std::float>",        &qCTPhi_);
 
   outTree_->Branch("crossSection",   "std::vector<std::float>",    &crossSection_);
   outTree_->Branch("pathRates",      "std::vector<std::float>",    &pathRates_);
@@ -2608,10 +2658,10 @@ void AODAnalyzer::endJob()
   delete PFJetTopCHSPhi_;
 
   delete PFChMetPt_;
-  delete PFChMetEta_;  
+  // delete PFChMetEta_;  
   delete PFChMetPhi_;
   delete PFMetPt_;
-  delete PFMetEta_;
+  // delete PFMetEta_;
   delete PFMetPhi_;
 
   delete CalJetPt_;
@@ -2619,20 +2669,20 @@ void AODAnalyzer::endJob()
   delete CalJetPhi_;
   delete CalJetEn_;
   delete CalMETPt_;
-  delete CalMETEta_;
+  // delete CalMETEta_;
   delete CalMETPhi_;
   delete CalMETEn_;
 
   delete CalMETBEPt_;
-  delete CalMETBEEta_;
+  // delete CalMETBEEta_;
   delete CalMETBEPhi_;
   delete CalMETBEEn_;
   delete CalMETBEFOPt_;
-  delete CalMETBEFOEta_;
+  // delete CalMETBEFOEta_;
   delete CalMETBEFOPhi_;
   delete CalMETBEFOEn_;
   delete CalMETMPt_;
-  delete CalMETMEta_;
+  // delete CalMETMEta_;
   delete CalMETMPhi_;
   delete CalMETMEn_;
 
@@ -2645,8 +2695,8 @@ void AODAnalyzer::endJob()
   delete SCEnhfEM_;
   delete SCEtahfEM_;
   delete SCPhihfEM_;
-  delete SCEtaWidthhfEM_;
-  delete SCPhiWidthhfEM_; 
+  // delete SCEtaWidthhfEM_;
+  // delete SCPhiWidthhfEM_; 
   delete SCEn5x5_;
   delete SCEta5x5_;
   delete SCPhi5x5_;
@@ -2728,34 +2778,40 @@ void AODAnalyzer::endJob()
   delete EBenergy_;
   delete EBtime_;
   delete EBchi2_;
-  delete EBEta_;
-  delete EBPhi_;
+  delete EBiEta_;
+  delete EBiPhi_;
   delete EEenergy_;
   delete EEtime_;
   delete EEchi2_;
-  delete EEEta_;
-  delete EEPhi_;
+  delete EEix_;
+  delete EEiy_;
   delete ESenergy_;
   delete EStime_;
-  delete ESchi2_;
-  delete ESEta_;
-  delete ESPhi_;
+  // delete ESchi2_;
+  delete ESix_;
+  delete ESiy_;
 
   delete HBHEenergy_ ;
   delete HBHEtime_ ;
   delete HBHEauxe_ ;
+  delete HBHEieta_;
+  delete HBHEiphi_;  
   delete HFenergy_ ;
   delete HFtime_ ;
   //delete HFchi2_  ;
-  delete HOenergy_ ;
-  delete HOtime_ ;
+  delete HFieta_;
+  delete HFiphi_;
+  // delete HOenergy_ ;
+  // delete HOtime_;
+  // delete HOieta_;
+  // delete HOiphi_;
   // HOchi2_    
   delete PreShEn_;
-  delete PreShCorrEn_;
+  // delete PreShCorrEn_;
   delete PreShEta_;
   delete PreShPhi_;
   delete PreShYEn_;
-  delete PreShYCorrEn_;
+  // delete PreShYCorrEn_;
   delete PreShYEta_;
   delete PreShYPhi_;
   // delete CTPt_;
@@ -2787,10 +2843,10 @@ void AODAnalyzer::endJob()
   delete qPFJetTopCHSPhi_;
 
   delete qPFChMetPt_;
-  delete qPFChMetEta_;  
+  // delete qPFChMetEta_;  
   delete qPFChMetPhi_;
   delete qPFMetPt_;
-  delete qPFMetEta_;
+  // delete qPFMetEta_;
   delete qPFMetPhi_;
 
   delete qCalJetPt_;
@@ -2798,20 +2854,20 @@ void AODAnalyzer::endJob()
   delete qCalJetPhi_;
   delete qCalJetEn_;
   delete qCalMETPt_;
-  delete qCalMETEta_;
+  // delete qCalMETEta_;
   delete qCalMETPhi_;
   delete qCalMETEn_;
 
   delete qCalMETBEPt_;
-  delete qCalMETBEEta_;
+  // delete qCalMETBEEta_;
   delete qCalMETBEPhi_;
   delete qCalMETBEEn_;
   delete qCalMETBEFOPt_;
-  delete qCalMETBEFOEta_;
+  // delete qCalMETBEFOEta_;
   delete qCalMETBEFOPhi_;
   delete qCalMETBEFOEn_;
   delete qCalMETMPt_;
-  delete qCalMETMEta_;
+  // delete qCalMETMEta_;
   delete qCalMETMPhi_;
   delete qCalMETMEn_;
 
@@ -2823,8 +2879,8 @@ void AODAnalyzer::endJob()
   delete qSCEnhfEM_;
   delete qSCEtahfEM_;
   delete qSCPhihfEM_;
-  delete qSCEtaWidthhfEM_;
-  delete qSCPhiWidthhfEM_; 
+  // delete qSCEtaWidthhfEM_;
+  // delete qSCPhiWidthhfEM_; 
   delete qSCEn5x5_;
   delete qSCEta5x5_;
   delete qSCPhi5x5_;
@@ -2906,35 +2962,41 @@ void AODAnalyzer::endJob()
   delete qEBenergy_;
   delete qEBtime_;
   delete qEBchi2_;
-  delete qEBEta_;
-  delete qEBPhi_;
+  delete qEBiEta_;
+  delete qEBiPhi_;
   delete qEEenergy_;
   delete qEEtime_;
   delete qEEchi2_;
-  delete qEEEta_;
-  delete qEEPhi_;
+  delete qEEix_;
+  delete qEEiy_;
   delete qESenergy_;
   delete qEStime_;
-  delete qESchi2_;
-  delete qESEta_;
-  delete qESPhi_;
+  // delete qESchi2_;
+  delete qESix_;
+  delete qESiy_;
 
-  delete qHBHEenergy_;
-  delete qHBHEtime_;
-  delete qHBHEauxe_;
-  delete qHFenergy_;
+  delete qHBHEenergy_ ;
+  delete qHBHEtime_ ;
+  delete qHBHEauxe_ ;
+  delete qHBHEieta_;
+  delete qHBHEiphi_;  
+  delete qHFenergy_ ;
   delete qHFtime_;
-  // delete qHFchi2_;
-  delete qHOenergy_;
-  delete qHOtime_;
-  // delete qHOchi2_;
+  //delete qHFchi2_  ;
+  delete qHFieta_;
+  delete qHFiphi_;
+  // delete qHOenergy_ ;
+  // delete qHOtime_;
+  // delete qHOieta_;
+  // delete qHOiphi_;
+  // //delete qHOchi2_;    
 
   delete qPreShEn_;
-  delete qPreShCorrEn_;
+  // delete qPreShCorrEn_;
   delete qPreShEta_;
   delete qPreShPhi_;
   delete qPreShYEn_;
-  delete qPreShYCorrEn_;
+  // delete qPreShYCorrEn_;
   delete qPreShYEta_;
   delete qPreShYPhi_;
 
@@ -3010,10 +3072,10 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeMeanAndRms(PFJetTopCHSPhi_,qPFJetTopCHSPhi_);
 
   computeMeanAndRms(PFChMetPt_, qPFChMetPt_);
-  computeMeanAndRms(PFChMetEta_,  qPFChMetEta_);  
+  // computeMeanAndRms(PFChMetEta_,  qPFChMetEta_);  
   computeMeanAndRms(PFChMetPhi_,  qPFChMetPhi_);
   computeMeanAndRms(PFMetPt_, qPFMetPt_);
-  computeMeanAndRms(PFMetEta_,  qPFMetEta_);
+  // computeMeanAndRms(PFMetEta_,  qPFMetEta_);
   computeMeanAndRms(PFMetPhi_,  qPFMetPhi_);
   computeMeanAndRms(nVtx_,    qNVtx_);
 
@@ -3023,22 +3085,22 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeMeanAndRms(CalJetEn_,qCalJetEn_);
 
   computeMeanAndRms(CalMETPt_, qCalMETPt_);
-  computeMeanAndRms(CalMETEta_,qCalMETEta_);
+  // computeMeanAndRms(CalMETEta_,qCalMETEta_);
   computeMeanAndRms(CalMETPhi_,qCalMETPhi_);
   computeMeanAndRms(CalMETEn_,qCalMETEn_);
 
   computeMeanAndRms(CalMETBEPt_, qCalMETBEPt_);
-  computeMeanAndRms(CalMETBEEta_,qCalMETBEEta_);
+  // computeMeanAndRms(CalMETBEEta_,qCalMETBEEta_);
   computeMeanAndRms(CalMETBEPhi_,qCalMETBEPhi_);
   computeMeanAndRms(CalMETBEEn_, qCalMETBEEn_);
 
   computeMeanAndRms(CalMETBEFOPt_, qCalMETBEFOPt_);
-  computeMeanAndRms(CalMETBEFOEta_,qCalMETBEFOEta_);
+  // computeMeanAndRms(CalMETBEFOEta_,qCalMETBEFOEta_);
   computeMeanAndRms(CalMETBEFOPhi_,qCalMETBEFOPhi_);
   computeMeanAndRms(CalMETBEFOEn_, qCalMETBEFOEn_);
 
   computeMeanAndRms(CalMETMPt_, qCalMETMPt_);
-  computeMeanAndRms(CalMETMEta_,qCalMETMEta_);
+  // computeMeanAndRms(CalMETMEta_,qCalMETMEta_);
   computeMeanAndRms(CalMETMPhi_,qCalMETMPhi_);
   computeMeanAndRms(CalMETMEn_, qCalMETMEn_);
 
@@ -3052,8 +3114,8 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeMeanAndRms(SCEnhfEM_, qSCEnhfEM_);   
   computeMeanAndRms(SCEtahfEM_, qSCEtahfEM_);  
   computeMeanAndRms(SCPhihfEM_, qSCPhihfEM_); 
-  computeMeanAndRms(SCEtaWidthhfEM_, qSCEtaWidthhfEM_);  
-  computeMeanAndRms(SCPhiWidthhfEM_, qSCPhiWidthhfEM_); 
+  // computeMeanAndRms(SCEtaWidthhfEM_, qSCEtaWidthhfEM_);  
+  // computeMeanAndRms(SCPhiWidthhfEM_, qSCPhiWidthhfEM_); 
 
   computeMeanAndRms(SCEn5x5_, qSCEn5x5_);   
   computeMeanAndRms(SCEta5x5_, qSCEta5x5_);  
@@ -3137,37 +3199,46 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeMeanAndRms(EBenergy_, qEBenergy_);
   computeMeanAndRms(EBtime_, qEBtime_);
   computeMeanAndRms(EBchi2_, qEBchi2_);
-  computeMeanAndRms(EBEta_, qEBEta_);
-  computeMeanAndRms(EBPhi_, qEBPhi_);
+  computeMeanAndRms(EBiEta_, qEBiEta_);
+  computeMeanAndRms(EBiPhi_, qEBiPhi_);
 
   computeMeanAndRms(EEenergy_, qEEenergy_);
   computeMeanAndRms(EEtime_, qEEtime_);
   computeMeanAndRms(EEchi2_, qEEchi2_);
-  computeMeanAndRms(EEEta_, qEEEta_);
-  computeMeanAndRms(EEPhi_, qEEPhi_);
+  computeMeanAndRms(EEix_, qEEix_);
+  computeMeanAndRms(EEiy_, qEEiy_);
 
   computeMeanAndRms(ESenergy_, qESenergy_);
   computeMeanAndRms(EStime_, qEStime_);
-  computeMeanAndRms(ESchi2_, qESchi2_);
-  computeMeanAndRms(ESEta_, qESEta_);
-  computeMeanAndRms(ESPhi_, qESPhi_);
+  // computeMeanAndRms(ESchi2_, qESchi2_);
+  computeMeanAndRms(ESix_, qESix_);
+  computeMeanAndRms(ESiy_, qESiy_);
 
   computeMeanAndRms(HBHEenergy_, qHBHEenergy_);
   computeMeanAndRms(HBHEtime_, qHBHEtime_);
   computeMeanAndRms(HBHEauxe_, qHBHEauxe_);
+  computeMeanAndRms(HBHEieta_, qHBHEieta_);
+  computeMeanAndRms(HBHEiphi_, qHBHEiphi_);
+
   computeMeanAndRms(HFenergy_, qHFenergy_);
   computeMeanAndRms(HFtime_, qHFtime_);
   // computeMeanAndRms(HFchi2_, qHFchi2_);
-  computeMeanAndRms(HOenergy_, qHOenergy_);
-  computeMeanAndRms(HOtime_, qHOtime_);
-  // computeMeanAndRms(HOchi2_, qHOchi2_);
+  computeMeanAndRms(HFieta_, qHFieta_);
+  computeMeanAndRms(HFiphi_, qHFiphi_);
+
+  // computeMeanAndRms(HOenergy_, qHOenergy_);
+  // computeMeanAndRms(HOtime_, qHOtime_);
+  // // computeMeanAndRms(HOchi2_, qHOchi2_);
+  // computeMeanAndRms(HOieta_, qHOieta_);
+  // computeMeanAndRms(HOiphi_, qHOiphi_);
+
 
   computeMeanAndRms(PreShEn_, qPreShEn_);   
-  computeMeanAndRms(PreShCorrEn_, qPreShCorrEn_);   
+  // computeMeanAndRms(PreShCorrEn_, qPreShCorrEn_);   
   computeMeanAndRms(PreShEta_, qPreShEta_);  //
   computeMeanAndRms(PreShPhi_, qPreShPhi_);  //
   computeMeanAndRms(PreShYEn_, qPreShYEn_);   
-  computeMeanAndRms(PreShYCorrEn_, qPreShYCorrEn_);   
+  // computeMeanAndRms(PreShYCorrEn_, qPreShYCorrEn_);   
   computeMeanAndRms(PreShYEta_, qPreShYEta_);  //
   computeMeanAndRms(PreShYPhi_, qPreShYPhi_);  //
 
@@ -3201,10 +3272,10 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeQuantiles(PFJetTopCHSPhi_,qPFJetTopCHSPhi_,quantiles_);      
 
   computeQuantiles(PFChMetPt_, qPFChMetPt_,     quantiles_);
-  computeQuantiles(PFChMetEta_,qPFChMetEta_,    quantiles_);  
+  // computeQuantiles(PFChMetEta_,qPFChMetEta_,    quantiles_);  
   computeQuantiles(PFChMetPhi_,qPFChMetPhi_,    quantiles_);
   computeQuantiles(PFMetPt_, qPFMetPt_,     quantiles_);
-  computeQuantiles(PFMetEta_,qPFMetEta_,    quantiles_);
+  // computeQuantiles(PFMetEta_,qPFMetEta_,    quantiles_);
   computeQuantiles(PFMetPhi_,qPFMetPhi_,    quantiles_);
   computeQuantiles(nVtx_,    qNVtx_,    quantiles_);
 
@@ -3213,22 +3284,22 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeQuantiles(CalJetPhi_,qCalJetPhi_,quantiles_);
   computeQuantiles(CalJetEn_,qCalJetEn_,  quantiles_);
   computeQuantiles(CalMETPt_, qCalMETPt_, quantiles_);
-  computeQuantiles(CalMETEta_,qCalMETEta_,quantiles_);
+  // computeQuantiles(CalMETEta_,qCalMETEta_,quantiles_);
   computeQuantiles(CalMETPhi_,qCalMETPhi_,quantiles_);
   computeQuantiles(CalMETEn_,qCalMETEn_,  quantiles_);
 
   computeQuantiles(CalMETBEPt_, qCalMETBEPt_, quantiles_);
-  computeQuantiles(CalMETBEEta_,qCalMETBEEta_,quantiles_);
+  // computeQuantiles(CalMETBEEta_,qCalMETBEEta_,quantiles_);
   computeQuantiles(CalMETBEPhi_,qCalMETBEPhi_,quantiles_);
   computeQuantiles(CalMETBEEn_, qCalMETBEEn_,  quantiles_);
 
   computeQuantiles(CalMETBEFOPt_, qCalMETBEFOPt_, quantiles_);
-  computeQuantiles(CalMETBEFOEta_,qCalMETBEFOEta_,quantiles_);
+  // computeQuantiles(CalMETBEFOEta_,qCalMETBEFOEta_,quantiles_);
   computeQuantiles(CalMETBEFOPhi_,qCalMETBEFOPhi_,quantiles_);
   computeQuantiles(CalMETBEFOEn_, qCalMETBEFOEn_,  quantiles_);
 
   computeQuantiles(CalMETMPt_, qCalMETMPt_, quantiles_);
-  computeQuantiles(CalMETMEta_,qCalMETMEta_,quantiles_);
+  // computeQuantiles(CalMETMEta_,qCalMETMEta_,quantiles_);
   computeQuantiles(CalMETMPhi_,qCalMETMPhi_,quantiles_);
   computeQuantiles(CalMETMEn_, qCalMETMEn_,  quantiles_);
 
@@ -3241,8 +3312,8 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeQuantiles(SCEnhfEM_, qSCEnhfEM_,       quantiles_);
   computeQuantiles(SCEtahfEM_, qSCEtahfEM_,     quantiles_);
   computeQuantiles(SCPhihfEM_, qSCPhihfEM_,     quantiles_);
-  computeQuantiles(SCEtaWidthhfEM_, qSCEtaWidthhfEM_,     quantiles_);
-  computeQuantiles(SCPhiWidthhfEM_, qSCPhiWidthhfEM_,     quantiles_);
+  // computeQuantiles(SCEtaWidthhfEM_, qSCEtaWidthhfEM_,     quantiles_);
+  // computeQuantiles(SCPhiWidthhfEM_, qSCPhiWidthhfEM_,     quantiles_);
 
   computeQuantiles(SCEn5x5_, qSCEn5x5_,       quantiles_);
   computeQuantiles(SCEta5x5_, qSCEta5x5_,     quantiles_);
@@ -3326,39 +3397,47 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeQuantiles(EBenergy_, qEBenergy_, quantiles_);
   computeQuantiles(EBtime_, qEBtime_, quantiles_);
   computeQuantiles(EBchi2_, qEBchi2_, quantiles_);
-  computeQuantiles(EBEta_, qEBEta_, quantiles_);
-  computeQuantiles(EBPhi_, qEBPhi_, quantiles_);
+  computeQuantiles(EBiEta_, qEBiEta_, quantiles_);
+  computeQuantiles(EBiPhi_, qEBiPhi_, quantiles_);
 
 
   computeQuantiles(EEenergy_, qEEenergy_, quantiles_);
   computeQuantiles(EEtime_, qEEtime_, quantiles_);
   computeQuantiles(EEchi2_, qEEchi2_, quantiles_);
-  computeQuantiles(EEEta_, qEEEta_, quantiles_);
-  computeQuantiles(EEPhi_, qEEPhi_, quantiles_);
+  computeQuantiles(EEix_, qEEix_, quantiles_);
+  computeQuantiles(EEiy_, qEEiy_, quantiles_);
 
   computeQuantiles(ESenergy_, qESenergy_, quantiles_);
   computeQuantiles(EStime_, qEStime_, quantiles_);
-  computeQuantiles(ESchi2_, qESchi2_, quantiles_);
-  computeQuantiles(ESEta_, qESEta_, quantiles_);
-  computeQuantiles(ESPhi_, qESPhi_, quantiles_);
+  // computeQuantiles(ESchi2_, qESchi2_, quantiles_);
+  computeQuantiles(ESix_, qESix_, quantiles_);
+  computeQuantiles(ESiy_, qESiy_, quantiles_);
 
   computeQuantiles(HBHEenergy_, qHBHEenergy_, quantiles_);
   computeQuantiles(HBHEtime_, qHBHEtime_, quantiles_);
   computeQuantiles(HBHEauxe_, qHBHEauxe_, quantiles_);
+  computeQuantiles(HBHEieta_, qHBHEieta_, quantiles_);
+  computeQuantiles(HBHEiphi_, qHBHEiphi_, quantiles_);
+
   computeQuantiles(HFenergy_, qHFenergy_, quantiles_);
   computeQuantiles(HFtime_, qHFtime_, quantiles_);
   // computeQuantiles(HFchi2_, qHFchi2_, quantiles_);
-  computeQuantiles(HOenergy_, qHOenergy_, quantiles_);
-  computeQuantiles(HOtime_, qHOtime_, quantiles_);
-  // computeQuantiles(HOchi2_, qHOchi2_, quantiles_);
+  computeQuantiles(HFieta_, qHFieta_, quantiles_);
+  computeQuantiles(HFiphi_, qHFiphi_, quantiles_);
+
+  // computeQuantiles(HOenergy_, qHOenergy_, quantiles_);
+  // computeQuantiles(HOtime_, qHOtime_, quantiles_);
+  // // computeQuantiles(HOchi2_, qHOchi2_, quantiles_);
+  // computeQuantiles(HOieta_, qHOieta_, quantiles_);
+  // computeQuantiles(HOiphi_, qHOiphi_, quantiles_);  
 
 
   computeQuantiles(PreShEn_, qPreShEn_,       quantiles_);
-  computeQuantiles(PreShCorrEn_, qPreShCorrEn_,   quantiles_);
+  // computeQuantiles(PreShCorrEn_, qPreShCorrEn_,   quantiles_);
   computeQuantiles(PreShEta_, qPreShEta_,     quantiles_);
   computeQuantiles(PreShPhi_, qPreShPhi_,     quantiles_);
   computeQuantiles(PreShYEn_, qPreShYEn_,       quantiles_);
-  computeQuantiles(PreShYCorrEn_, qPreShYCorrEn_,   quantiles_);
+  // computeQuantiles(PreShYCorrEn_, qPreShYCorrEn_,   quantiles_);
   computeQuantiles(PreShYEta_, qPreShYEta_,     quantiles_);
   computeQuantiles(PreShYPhi_, qPreShYPhi_,     quantiles_);
 
@@ -3590,10 +3669,10 @@ void AODAnalyzer::analyze (const edm::Event &event, const edm::EventSetup &event
     fillHFrecHit(hfRHs);
 
   //fill horeco
-  edm::Handle<HORecHitCollection> hoRHs;
-  event.getByToken(hoRHcToken_, hoRHs);
-  if(hoRHs.isValid())
-    fillHOrecHit(hoRHs);
+  // edm::Handle<HORecHitCollection> hoRHs;
+  // event.getByToken(hoRHcToken_, hoRHs);
+  // if(hoRHs.isValid())
+  //   fillHOrecHit(hoRHs);
 
   edm::Handle<reco::PreshowerClusterCollection> prShs;
   event.getByToken(preshowerXToken_, prShs);
