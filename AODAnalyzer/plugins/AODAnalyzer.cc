@@ -346,7 +346,7 @@ private:
   std::vector<float>* PhoPt_;
   std::vector<float>* PhoEta_;
   std::vector<float>* PhoPhi_;
-  std::vector<float>* PhoEn_;
+  // std::vector<float>* PhoEn_;
 
   std::vector<float>* Phoe1x5_;
   std::vector<float>* Phoe2x5_;
@@ -363,7 +363,7 @@ private:
   std::vector<float>* gedPhoEta_;
   std::vector<float>* gedPhoPhi_;
   // CURRENTLY FILLING ENERGY() AND NOT CORRECTED ENERGY
-  std::vector<float>* gedPhoEn_;
+  // std::vector<float>* gedPhoEn_;
   // CURRENTLY FILLING ENERGY() AND NOT CORRECTED ENERGY
 
   std::vector<float>* gedPhoe1x5_;
@@ -381,17 +381,17 @@ private:
   std::vector<float>* MuPt_;
   std::vector<float>* MuEta_;
   std::vector<float>* MuPhi_;
-  std::vector<float>* MuEn_;
+  // std::vector<float>* MuEn_;
   std::vector<float>* MuCh_;
   std::vector<float>* MuCosmPt_;
   std::vector<float>* MuCosmEta_;
   std::vector<float>* MuCosmPhi_;
-  std::vector<float>* MuCosmEn_;
+  // std::vector<float>* MuCosmEn_;
   std::vector<float>* MuCosmCh_;
   std::vector<float>* MuCosmLegPt_;
   std::vector<float>* MuCosmLegEta_;
   std::vector<float>* MuCosmLegPhi_;
-  std::vector<float>* MuCosmLegEn_;
+  // std::vector<float>* MuCosmLegEn_;
   std::vector<float>* MuCosmLegCh_;
   // GSF variables
   std::vector<float>* SigmaIEta_;
@@ -552,7 +552,7 @@ private:
   std::vector<float>* qPhoPt_;
   std::vector<float>* qPhoEta_;
   std::vector<float>* qPhoPhi_;
-  std::vector<float>* qPhoEn_;
+  // std::vector<float>* qPhoEn_;
 
   std::vector<float>* qPhoe1x5_;
   std::vector<float>* qPhoe2x5_;
@@ -568,7 +568,7 @@ private:
   std::vector<float>* qgedPhoPt_;
   std::vector<float>* qgedPhoEta_;
   std::vector<float>* qgedPhoPhi_;
-  std::vector<float>* qgedPhoEn_;
+  // std::vector<float>* qgedPhoEn_;
 
   std::vector<float>* qgedPhoe1x5_;
   std::vector<float>* qgedPhoe2x5_;
@@ -584,17 +584,17 @@ private:
   std::vector<float>* qMuPt_;
   std::vector<float>* qMuEta_;
   std::vector<float>* qMuPhi_;
-  std::vector<float>* qMuEn_;
+  // std::vector<float>* qMuEn_;
   std::vector<float>* qMuCh_;
   std::vector<float>* qMuCosmPt_;
   std::vector<float>* qMuCosmEta_;
   std::vector<float>* qMuCosmPhi_;
-  std::vector<float>* qMuCosmEn_;
+  // std::vector<float>* qMuCosmEn_;
   std::vector<float>* qMuCosmCh_;
   std::vector<float>* qMuCosmLegPt_;
   std::vector<float>* qMuCosmLegEta_;
   std::vector<float>* qMuCosmLegPhi_;
-  std::vector<float>* qMuCosmLegEn_;
+  // std::vector<float>* qMuCosmLegEn_;
   std::vector<float>* qMuCosmLegCh_;  
   //TODO
   std::vector<float>* qSigmaIEta_;
@@ -902,7 +902,7 @@ void AODAnalyzer::initialize()
   PhoPt_->clear();
   PhoEta_->clear();
   PhoPhi_->clear();
-  PhoEn_->clear();
+  // PhoEn_->clear();
 
   Phoe1x5_->clear();
   Phoe2x5_->clear();
@@ -918,7 +918,7 @@ void AODAnalyzer::initialize()
   gedPhoPt_->clear();
   gedPhoEta_->clear();
   gedPhoPhi_->clear();
-  gedPhoEn_->clear();
+  // gedPhoEn_->clear();
 
   gedPhoe1x5_->clear();
   gedPhoe2x5_->clear();
@@ -934,17 +934,17 @@ void AODAnalyzer::initialize()
   MuPt_->clear();
   MuEta_->clear();
   MuPhi_->clear();
-  MuEn_->clear();
+  // MuEn_->clear();
   MuCh_->clear();
   MuCosmPt_->clear();
   MuCosmEta_->clear();
   MuCosmPhi_->clear();
-  MuCosmEn_->clear();
+  // MuCosmEn_->clear();
   MuCosmCh_->clear();
   MuCosmLegPt_->clear();
   MuCosmLegEta_->clear();
   MuCosmLegPhi_->clear();
-  MuCosmLegEn_->clear();
+  // MuCosmLegEn_->clear();
   MuCosmLegCh_->clear();
 
   SigmaIEta_->clear();
@@ -1092,7 +1092,7 @@ void AODAnalyzer::initialize()
   qPhoPt_->clear();
   qPhoEta_->clear();
   qPhoPhi_->clear();
-  qPhoEn_->clear();
+  // qPhoEn_->clear();
 
   qPhoe1x5_->clear();
   qPhoe2x5_->clear();
@@ -1108,7 +1108,7 @@ void AODAnalyzer::initialize()
   qgedPhoPt_->clear();
   qgedPhoEta_->clear();
   qgedPhoPhi_->clear();
-  qgedPhoEn_->clear();
+  // qgedPhoEn_->clear();
 
   qgedPhoe1x5_->clear();
   qgedPhoe2x5_->clear();
@@ -1124,17 +1124,17 @@ void AODAnalyzer::initialize()
   qMuPt_->clear();
   qMuEta_->clear();
   qMuPhi_->clear();
-  qMuEn_->clear();
+  // qMuEn_->clear();
   qMuCh_->clear();
   qMuCosmPt_->clear();
   qMuCosmEta_->clear();
   qMuCosmPhi_->clear();
-  qMuCosmEn_->clear();
+  // qMuCosmEn_->clear();
   qMuCosmCh_->clear();
   qMuCosmLegPt_->clear();
   qMuCosmLegEta_->clear();
   qMuCosmLegPhi_->clear();
-  qMuCosmLegEn_->clear();
+  // qMuCosmLegEn_->clear();
   qMuCosmLegCh_->clear();    
 
   qSigmaIEta_->clear();
@@ -1615,7 +1615,7 @@ void AODAnalyzer::fillPhotons(const edm::Handle<PhotonCollection> & photons)
         PhoPt_->push_back(i->et());
         PhoEta_->push_back(i->eta());
         PhoPhi_->push_back(i->phi());
-        PhoEn_->push_back(i->energy());   //GETCORRECTEDENERGY!!
+        // PhoEn_->push_back(i->energy());   //GETCORRECTEDENERGY!!
         Phoe1x5_->push_back(i->e1x5());   
         Phoe2x5_->push_back(i->e2x5());
         Phoe3x3_->push_back(i->e3x3());
@@ -1645,7 +1645,7 @@ void AODAnalyzer::fillgedPhotons(const edm::Handle<PhotongedCollection> & gedpho
         gedPhoPt_->push_back(i->et());
         gedPhoEta_->push_back(i->eta());
         gedPhoPhi_->push_back(i->phi());
-        gedPhoEn_->push_back(i->energy());
+        // gedPhoEn_->push_back(i->energy());
         gedPhoe1x5_->push_back(i->e1x5());   
         gedPhoe2x5_->push_back(i->e2x5());
         gedPhoe3x3_->push_back(i->e3x3());
@@ -1675,7 +1675,7 @@ void AODAnalyzer::fillMuons(const edm::Handle<MuonCollection> & muons)
         MuPt_->push_back(i->et());
         MuEta_->push_back(i->eta());
         MuPhi_->push_back(i->phi());
-        MuEn_->push_back(i->energy());   //GETCORRECTEDENERGY!!
+        // MuEn_->push_back(i->energy());   //GETCORRECTEDENERGY!!
         MuCh_->push_back(i->charge());
         // std::cout << "ele energy: " << i->energy()   << std::endl; 
         // std::cout << "ele SCeta: "  << i->etaWidth() << std::endl;
@@ -1697,7 +1697,7 @@ void AODAnalyzer::fillCosmMuons(const edm::Handle<MuonCosmCollection> & muonsCos
         MuCosmPt_->push_back(i->et());
         MuCosmEta_->push_back(i->eta());
         MuCosmPhi_->push_back(i->phi());
-        MuCosmEn_->push_back(i->energy());   //GETCORRECTEDENERGY!!
+        // MuCosmEn_->push_back(i->energy());   //GETCORRECTEDENERGY!!
         MuCosmCh_->push_back(i->charge());
         // std::cout << "ele energy: " << i->energy()   << std::endl; 
         // std::cout << "ele SCeta: "  << i->etaWidth() << std::endl;
@@ -1720,7 +1720,7 @@ void AODAnalyzer::fillCosmLegMuons(const edm::Handle<MuonCosmLegCollection> & mu
         MuCosmLegPt_->push_back(i->et());
         MuCosmLegEta_->push_back(i->eta());
         MuCosmLegPhi_->push_back(i->phi());
-        MuCosmLegEn_->push_back(i->energy());   //GETCORRECTEDENERGY!!
+        // MuCosmLegEn_->push_back(i->energy());   //GETCORRECTEDENERGY!!
         MuCosmLegCh_->push_back(i->charge());
         // std::cout << "ele energy: " << i->energy()   << std::endl; 
         // std::cout << "ele SCeta: "  << i->etaWidth() << std::endl;
@@ -2095,7 +2095,7 @@ void AODAnalyzer::beginJob() {
   PhoPt_     = new std::vector<float>;
   PhoEta_    = new std::vector<float>;
   PhoPhi_    = new std::vector<float>;
-  PhoEn_ = new std::vector<float>;
+  // PhoEn_ = new std::vector<float>;
 
   Phoe1x5_   = new std::vector<float>;
   Phoe2x5_   = new std::vector<float>;
@@ -2111,7 +2111,7 @@ void AODAnalyzer::beginJob() {
   gedPhoPt_     = new std::vector<float>;
   gedPhoEta_    = new std::vector<float>;
   gedPhoPhi_    = new std::vector<float>;
-  gedPhoEn_ = new std::vector<float>;
+  // gedPhoEn_ = new std::vector<float>;
 
   gedPhoe1x5_   = new std::vector<float>;
   gedPhoe2x5_   = new std::vector<float>;
@@ -2127,17 +2127,17 @@ void AODAnalyzer::beginJob() {
   MuPt_         = new std::vector<float>;
   MuEta_        = new std::vector<float>;
   MuPhi_        = new std::vector<float>;
-  MuEn_         = new std::vector<float>;
+  // MuEn_         = new std::vector<float>;
   MuCh_         = new std::vector<float>;
   MuCosmPt_         = new std::vector<float>;
   MuCosmEta_        = new std::vector<float>;
   MuCosmPhi_        = new std::vector<float>;
-  MuCosmEn_         = new std::vector<float>;
+  // MuCosmEn_         = new std::vector<float>;
   MuCosmCh_         = new std::vector<float>;
   MuCosmLegPt_         = new std::vector<float>;
   MuCosmLegEta_        = new std::vector<float>;
   MuCosmLegPhi_        = new std::vector<float>;
-  MuCosmLegEn_         = new std::vector<float>;
+  // MuCosmLegEn_         = new std::vector<float>;
   MuCosmLegCh_         = new std::vector<float>;
   //TODO
   SigmaIEta_ = new std::vector<float>;
@@ -2293,7 +2293,7 @@ void AODAnalyzer::beginJob() {
   qPhoPt_     = new std::vector<float>;
   qPhoEta_    = new std::vector<float>;
   qPhoPhi_    = new std::vector<float>;
-  qPhoEn_ = new std::vector<float>;
+  // qPhoEn_ = new std::vector<float>;
 
   qPhoe1x5_   = new std::vector<float>;
   qPhoe2x5_   = new std::vector<float>;
@@ -2309,7 +2309,7 @@ void AODAnalyzer::beginJob() {
   qgedPhoPt_     = new std::vector<float>;
   qgedPhoEta_    = new std::vector<float>;
   qgedPhoPhi_    = new std::vector<float>;
-  qgedPhoEn_ = new std::vector<float>;
+  // qgedPhoEn_ = new std::vector<float>;
 
   qgedPhoe1x5_   = new std::vector<float>;
   qgedPhoe2x5_   = new std::vector<float>;
@@ -2325,17 +2325,17 @@ void AODAnalyzer::beginJob() {
   qMuPt_   = new std::vector<float>;
   qMuEta_   = new std::vector<float>;
   qMuPhi_   = new std::vector<float>;
-  qMuEn_   = new std::vector<float>;
+  // qMuEn_   = new std::vector<float>;
   qMuCh_   = new std::vector<float>;
   qMuCosmPt_   = new std::vector<float>;
   qMuCosmEta_   = new std::vector<float>;
   qMuCosmPhi_   = new std::vector<float>;
-  qMuCosmEn_   = new std::vector<float>;
+  // qMuCosmEn_   = new std::vector<float>;
   qMuCosmCh_   = new std::vector<float>;
   qMuCosmLegPt_   = new std::vector<float>;
   qMuCosmLegEta_   = new std::vector<float>;
   qMuCosmLegPhi_   = new std::vector<float>;
-  qMuCosmLegEn_   = new std::vector<float>;
+  // qMuCosmLegEn_   = new std::vector<float>;
   qMuCosmLegCh_   = new std::vector<float>;  
   qSigmaIEta_= new std::vector<float>;
   qSigmaIPhi_= new std::vector<float>;
@@ -2492,7 +2492,7 @@ void AODAnalyzer::beginJob() {
   outTree_->Branch("qPhoPt",     "std::vector<std::float>",        &qPhoPt_);
   outTree_->Branch("qPhoEta",    "std::vector<std::float>",        &qPhoEta_);
   outTree_->Branch("qPhoPhi",    "std::vector<std::float>",        &qPhoPhi_);
-  outTree_->Branch("qPhoEn_",    "std::vector<std::float>",    &qPhoEn_);
+  // outTree_->Branch("qPhoEn_",    "std::vector<std::float>",    &qPhoEn_);
 
   outTree_->Branch("qPhoe1x5_",     "std::vector<std::float>",        &qPhoe1x5_);
   outTree_->Branch("qPhoe2x5_",    "std::vector<std::float>",        &qPhoe2x5_);
@@ -2508,7 +2508,7 @@ void AODAnalyzer::beginJob() {
   outTree_->Branch("qgedPhoPt",     "std::vector<std::float>",     &qgedPhoPt_);
   outTree_->Branch("qgedPhoEta",    "std::vector<std::float>",     &qgedPhoEta_);
   outTree_->Branch("qgedPhoPhi",    "std::vector<std::float>",     &qgedPhoPhi_);
-  outTree_->Branch("qgedPhoEn_",    "std::vector<std::float>", &qgedPhoEn_);
+  // outTree_->Branch("qgedPhoEn_",    "std::vector<std::float>", &qgedPhoEn_);
 
   outTree_->Branch("qgedPhoe1x5_",     "std::vector<std::float>",        &qgedPhoe1x5_);
   outTree_->Branch("qgedPhoe2x5_",    "std::vector<std::float>",        &qgedPhoe2x5_);
@@ -2524,17 +2524,17 @@ void AODAnalyzer::beginJob() {
   outTree_->Branch("qMuPt",     "std::vector<std::float>",        &qMuPt_);
   outTree_->Branch("qMuEta",    "std::vector<std::float>",        &qMuEta_);
   outTree_->Branch("qMuPhi",    "std::vector<std::float>",        &qMuPhi_);
-  outTree_->Branch("qMuEn_",    "std::vector<std::float>",        &qMuEn_);
+  // outTree_->Branch("qMuEn_",    "std::vector<std::float>",        &qMuEn_);
   outTree_->Branch("qMuCh_",    "std::vector<std::float>",        &qMuCh_);
   outTree_->Branch("qMuCosmPt",     "std::vector<std::float>",        &qMuCosmPt_);
   outTree_->Branch("qMuCosmEta",    "std::vector<std::float>",        &qMuCosmEta_);
   outTree_->Branch("qMuCosmPhi",    "std::vector<std::float>",        &qMuCosmPhi_);
-  outTree_->Branch("qMuCosmEn_",    "std::vector<std::float>",        &qMuCosmEn_);
+  // outTree_->Branch("qMuCosmEn_",    "std::vector<std::float>",        &qMuCosmEn_);
   outTree_->Branch("qMuCosmCh_",    "std::vector<std::float>",        &qMuCosmCh_);
   outTree_->Branch("qMuCosmLegPt",     "std::vector<std::float>",        &qMuCosmLegPt_);
   outTree_->Branch("qMuCosmLegEta",    "std::vector<std::float>",        &qMuCosmLegEta_);
   outTree_->Branch("qMuCosmLegPhi",    "std::vector<std::float>",        &qMuCosmLegPhi_);
-  outTree_->Branch("qMuCosmLegEn_",    "std::vector<std::float>",        &qMuCosmLegEn_);
+  // outTree_->Branch("qMuCosmLegEn_",    "std::vector<std::float>",        &qMuCosmLegEn_);
   outTree_->Branch("qMuCosmLegCh_",    "std::vector<std::float>",        &qMuCosmLegCh_);
   outTree_->Branch("qSigmaIEta",    "std::vector<std::float>",     &qSigmaIEta_);
   outTree_->Branch("qSigmaIPhi",    "std::vector<std::float>",     &qSigmaIPhi_);
@@ -2712,7 +2712,7 @@ void AODAnalyzer::endJob()
   delete PhoPt_;
   delete PhoEta_;
   delete PhoPhi_;
-  delete PhoEn_;
+  // delete PhoEn_;
 
   delete Phoe1x5_;
   delete Phoe2x5_;
@@ -2728,7 +2728,7 @@ void AODAnalyzer::endJob()
   delete gedPhoPt_;
   delete gedPhoEta_;
   delete gedPhoPhi_;
-  delete gedPhoEn_;
+  // delete gedPhoEn_;
 
   delete gedPhoe1x5_;
   delete gedPhoe2x5_;
@@ -2744,17 +2744,17 @@ void AODAnalyzer::endJob()
   delete MuPt_;
   delete MuEta_;
   delete MuPhi_;
-  delete MuEn_;
+  // delete MuEn_;
   delete MuCh_;
   delete MuCosmPt_;
   delete MuCosmEta_;
   delete MuCosmPhi_;
-  delete MuCosmEn_;
+  // delete MuCosmEn_;
   delete MuCosmCh_;
   delete MuCosmLegPt_;
   delete MuCosmLegEta_;
   delete MuCosmLegPhi_;
-  delete MuCosmLegEn_;
+  // delete MuCosmLegEn_;
   delete MuCosmLegCh_;    
   //TODO
   delete SigmaIEta_;
@@ -2896,7 +2896,7 @@ void AODAnalyzer::endJob()
   delete qPhoPt_;
   delete qPhoEta_;
   delete qPhoPhi_;
-  delete qPhoEn_;
+  // delete qPhoEn_;
 
   delete qPhoe1x5_;
   delete qPhoe2x5_;
@@ -2912,7 +2912,7 @@ void AODAnalyzer::endJob()
   delete qgedPhoPt_;
   delete qgedPhoEta_;
   delete qgedPhoPhi_;
-  delete qgedPhoEn_;
+  // delete qgedPhoEn_;
 
   delete qgedPhoe1x5_;
   delete qgedPhoe2x5_;
@@ -2928,17 +2928,17 @@ void AODAnalyzer::endJob()
   delete qMuPt_;
   delete qMuEta_;
   delete qMuPhi_;
-  delete qMuEn_;
+  // delete qMuEn_;
   delete qMuCh_;
   delete qMuCosmPt_;
   delete qMuCosmEta_;
   delete qMuCosmPhi_;
-  delete qMuCosmEn_;
+  // delete qMuCosmEn_;
   delete qMuCosmCh_;
   delete qMuCosmLegPt_;
   delete qMuCosmLegEta_;
   delete qMuCosmLegPhi_;
-  delete qMuCosmLegEn_;
+  // delete qMuCosmLegEn_;
   delete qMuCosmLegCh_;    
   //TODO
   delete qSigmaIEta_;
@@ -3133,7 +3133,7 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeMeanAndRms(PhoPt_, qPhoPt_);
   computeMeanAndRms(PhoEta_,qPhoEta_);
   computeMeanAndRms(PhoPhi_,qPhoPhi_);
-  computeMeanAndRms(PhoEn_,qPhoEn_);
+  // computeMeanAndRms(PhoEn_,qPhoEn_);
 
   computeMeanAndRms(Phoe1x5_, qPhoe1x5_);
   computeMeanAndRms(Phoe2x5_,qPhoe2x5_);
@@ -3150,7 +3150,7 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeMeanAndRms(gedPhoPt_, qgedPhoPt_);
   computeMeanAndRms(gedPhoEta_,qgedPhoEta_);
   computeMeanAndRms(gedPhoPhi_,qgedPhoPhi_);
-  computeMeanAndRms(gedPhoEn_,qgedPhoEn_);
+  // computeMeanAndRms(gedPhoEn_,qgedPhoEn_);
 
   computeMeanAndRms(gedPhoe1x5_, qgedPhoe1x5_);
   computeMeanAndRms(gedPhoe2x5_,qgedPhoe2x5_);
@@ -3166,17 +3166,17 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeMeanAndRms(MuPt_, qMuPt_);
   computeMeanAndRms(MuEta_,qMuEta_);
   computeMeanAndRms(MuPhi_,qMuPhi_);
-  computeMeanAndRms(MuEn_,qMuEn_);
+  // computeMeanAndRms(MuEn_,qMuEn_);
   computeMeanAndRms(MuCh_,qMuCh_);
   computeMeanAndRms(MuCosmPt_, qMuCosmPt_);
   computeMeanAndRms(MuCosmEta_,qMuCosmEta_);
   computeMeanAndRms(MuCosmPhi_,qMuCosmPhi_);
-  computeMeanAndRms(MuCosmEn_, qMuCosmEn_);
+  // computeMeanAndRms(MuCosmEn_, qMuCosmEn_);
   computeMeanAndRms(MuCosmCh_, qMuCosmCh_);
   computeMeanAndRms(MuCosmLegPt_, qMuCosmLegPt_);
   computeMeanAndRms(MuCosmLegEta_,qMuCosmLegEta_);
   computeMeanAndRms(MuCosmLegPhi_,qMuCosmLegPhi_);
-  computeMeanAndRms(MuCosmLegEn_, qMuCosmLegEn_);
+  // computeMeanAndRms(MuCosmLegEn_, qMuCosmLegEn_);
   computeMeanAndRms(MuCosmLegCh_, qMuCosmLegCh_);    
   //TODO
   computeMeanAndRms(SigmaIEta_, qSigmaIEta_);
@@ -3331,7 +3331,7 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeQuantiles(PhoPt_, qPhoPt_, quantiles_);
   computeQuantiles(PhoEta_,qPhoEta_,quantiles_);
   computeQuantiles(PhoPhi_,qPhoPhi_,quantiles_);
-  computeQuantiles(PhoEn_,qPhoEn_,quantiles_);
+  // computeQuantiles(PhoEn_,qPhoEn_,quantiles_);
 
   computeQuantiles(Phoe1x5_, qPhoe1x5_, quantiles_);
   computeQuantiles(Phoe2x5_,qPhoe2x5_,quantiles_);
@@ -3347,7 +3347,7 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeQuantiles(gedPhoPt_, qgedPhoPt_, quantiles_);
   computeQuantiles(gedPhoEta_,qgedPhoEta_,quantiles_);
   computeQuantiles(gedPhoPhi_,qgedPhoPhi_,quantiles_);
-  computeQuantiles(gedPhoEn_,qgedPhoEn_,quantiles_);
+  // computeQuantiles(gedPhoEn_,qgedPhoEn_,quantiles_);
 
   computeQuantiles(gedPhoe1x5_, qgedPhoe1x5_, quantiles_);
   computeQuantiles(gedPhoe2x5_,qgedPhoe2x5_,quantiles_);
@@ -3363,17 +3363,17 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeQuantiles(MuPt_, qMuPt_, quantiles_);
   computeQuantiles(MuEta_,qMuEta_,quantiles_);
   computeQuantiles(MuPhi_,qMuPhi_,quantiles_);
-  computeQuantiles(MuEn_,qMuEn_,quantiles_);
+  // computeQuantiles(MuEn_,qMuEn_,quantiles_);
   computeQuantiles(MuCh_,qMuCh_,quantiles_);
   computeQuantiles(MuCosmPt_, qMuCosmPt_, quantiles_);
   computeQuantiles(MuCosmEta_,qMuCosmEta_,quantiles_);
   computeQuantiles(MuCosmPhi_,qMuCosmPhi_,quantiles_);
-  computeQuantiles(MuCosmEn_, qMuCosmEn_,quantiles_);
+  // computeQuantiles(MuCosmEn_, qMuCosmEn_,quantiles_);
   computeQuantiles(MuCosmCh_, qMuCosmCh_,quantiles_);
   computeQuantiles(MuCosmLegPt_, qMuCosmLegPt_, quantiles_);
   computeQuantiles(MuCosmLegEta_,qMuCosmLegEta_,quantiles_);
   computeQuantiles(MuCosmLegPhi_,qMuCosmLegPhi_,quantiles_);
-  computeQuantiles(MuCosmLegEn_, qMuCosmLegEn_,quantiles_);
+  // computeQuantiles(MuCosmLegEn_, qMuCosmLegEn_,quantiles_);
   computeQuantiles(MuCosmLegCh_, qMuCosmLegCh_,quantiles_);    
   //TODOCosm
   computeQuantiles(SigmaIEta_, qSigmaIEta_, quantiles_);
