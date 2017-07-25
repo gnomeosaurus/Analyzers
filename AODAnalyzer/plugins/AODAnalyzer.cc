@@ -677,6 +677,8 @@ private:
 
   // edm::ESHandle<CaloGeometry> geomH; 
 
+
+
   edm::EDGetTokenT<reco::PFJetCollection> PFJetToken_;
   edm::EDGetTokenT<reco::PFJetCollection> PFJet4CHSToken_;
   edm::EDGetTokenT<reco::PFJetCollection> PFJet8CHSToken_;
@@ -693,8 +695,11 @@ private:
   edm::EDGetTokenT<reco::CaloMETCollection> CaloMETMToken_;
   edm::EDGetTokenT<reco::VertexCollection>  vtxToken_;
 
-  edm::EDGetTokenT<edm::TriggerResults> triggerBits_;
-  edm::EDGetTokenT<trigger::TriggerEvent> triggerPrescales_;  //pat::PackedTriggerPrescales
+  edm::EDGetTokenT<edm::TriggerResults>     triggerBits_;
+  // edm::EDGetTokenT<edm::TriggerResults>  triggerEvent_;
+  //edm::EDGetTokenT<pat::PackedTriggerPrescales> triggerPrescales_;
+  
+
   edm::EDGetTokenT<reco::SuperClusterCollection>   SuperClusterToken_;  //adding SuperCluster
   edm::EDGetTokenT<reco::SuperClusterCollection>    SuperClusterhfEMToken_;
   edm::EDGetTokenT<reco::SuperClusterCollection>   SuperCluster5x5Token_;  //adding SuperCluster
@@ -771,7 +776,8 @@ AODAnalyzer::AODAnalyzer(const edm::ParameterSet& cfg):
  
   vtxToken_                 (consumes<reco::VertexCollection>(cfg.getUntrackedParameter<edm::InputTag>("vtx"))),
   triggerBits_              (consumes<edm::TriggerResults>(cfg.getUntrackedParameter<edm::InputTag>("bits"))),
-  triggerPrescales_         (consumes<trigger::TriggerEvent>(cfg.getUntrackedParameter<edm::InputTag>("prescales"))),  // pat::PackedTriggerPrescales
+  // triggerEvent_             (consumes<edm::TriggerResults>(cfg.getUntrackedParameter<edm::InputTag>("triggerEvent"))),  // pat::PackedTriggerPrescales
+  // triggerPrescales_         (consumes<pat::PackedTriggerPrescales>(cfg.getUntrackedParameter<edm::InputTag>("prescales"))),  // pat::PackedTriggerPrescales
   SuperClusterToken_        (consumes<reco::SuperClusterCollection>(cfg.getUntrackedParameter<edm::InputTag>("SuperClusterTag"))),
   SuperClusterhfEMToken_    (consumes<reco::SuperClusterCollection>(cfg.getUntrackedParameter<edm::InputTag>("SuperClusterhfEMTag"))),
   SuperCluster5x5Token_     (consumes<reco::SuperClusterCollection>(cfg.getUntrackedParameter<edm::InputTag>("SuperCluster5x5Tag"))),
@@ -1679,7 +1685,8 @@ void AODAnalyzer::fillMuons(const edm::Handle<MuonCollection> & muons)
         MuCh_->push_back(i->charge());
         // std::cout << "ele energy: " << i->energy()   << std::endl; 
         // std::cout << "ele SCeta: "  << i->etaWidth() << std::endl;
-        // std::cout << "ele SCphi: "  << i->phiWidth() << std::endl;
+          //std::cout << "ele charge: "  << i->charge() << std::endl;
+
       // }
   }
   return;
@@ -1701,7 +1708,8 @@ void AODAnalyzer::fillCosmMuons(const edm::Handle<MuonCosmCollection> & muonsCos
         MuCosmCh_->push_back(i->charge());
         // std::cout << "ele energy: " << i->energy()   << std::endl; 
         // std::cout << "ele SCeta: "  << i->etaWidth() << std::endl;
-        // std::cout << "ele SCphi: "  << i->phiWidth() << std::endl;
+         //  std::cout << "ele cosm charge: "  << i->charge() << std::endl;
+
       // }
   }
   return;
@@ -1725,6 +1733,8 @@ void AODAnalyzer::fillCosmLegMuons(const edm::Handle<MuonCosmLegCollection> & mu
         // std::cout << "ele energy: " << i->energy()   << std::endl; 
         // std::cout << "ele SCeta: "  << i->etaWidth() << std::endl;
         // std::cout << "ele SCphi: "  << i->phiWidth() << std::endl;
+         //std::cout << "ele cosmlegcharge: "  << i->charge() << std::endl;
+
       // }
   }
   return;
@@ -3451,6 +3461,10 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
     {
       pathNames_->push_back(itr->first);
       pathRates_->push_back(itr->second/lumi_);
+       std::cout << "pathRates_: " << itr->second/lumi_ << std::endl; //TEST -- works
+       std::cout << "pathNames_: " << itr->first << std::endl; //TEST -- works
+
+
     }
 
 
@@ -3565,10 +3579,25 @@ void AODAnalyzer::analyze (const edm::Event &event, const edm::EventSetup &event
   if(recVtxs.isValid())
     nVtx_->push_back(recVtxs->size());
 
+
+  //Bits
+  edm::Handle<edm::TriggerResults> triggerBits;
+  event.getByToken(triggerBits_, triggerBits);
+
+
+
+  //Prescales
+  // edm::Handle<edm::TriggerResults> triggerEvent;
+  // event.getByToken(triggerEvent_, triggerEvent);
+
+  // edm::Handle<pat::PackedTriggerPrescales> triggerPrescales;
+  // event.getByToken(triggerPrescales_, triggerPrescales);
+
+  // edm::Handle<trigger::TriggerEvent> triggerEvent;
+  // event.getByToken( "patTriggerEvent", triggerEvent );
   //Fill SuperCluster
   edm::Handle<reco::SuperClusterCollection> SuperClusterlocalv;
   event.getByToken(SuperClusterToken_, SuperClusterlocalv);
-  // print the size of SuperClusterlocalv
   if(SuperClusterlocalv.isValid())
     fillSC(SuperClusterlocalv);
 
@@ -3739,21 +3768,19 @@ void AODAnalyzer::analyze (const edm::Event &event, const edm::EventSetup &event
   // }    --lorentz
 
   //fill hlt
-  edm::Handle<edm::TriggerResults> triggerBits;
-  edm::Handle<trigger::TriggerEvent> triggerPrescales;
+ //<pat::PackedTriggerPrescales> triggerPrescales_;   //ERROR here
 
-  event.getByToken(triggerBits_, triggerBits);
-  event.getByToken(triggerPrescales_, triggerPrescales);
+
   
  //  const edm::TriggerNames &names = event.triggerNames(*triggerBits);
  //  for (unsigned int i = 0, n = triggerBits->size(); i < n; ++i) 
  //    {
  //      if(rateMap.find(names.triggerName(i)) != rateMap.end())
-	// rateMap[names.triggerName(i)] += triggerPrescales->getPrescaleForIndex(i)*triggerBits->accept(i);
+	// rateMap[names.triggerName(i)] += triggerPrescales->getPrescaleForIndex(i)*triggerBits->accept(i); //triggerPrescales
  //     else
-	// rateMap[names.triggerName(i)] = triggerPrescales->getPrescaleForIndex(i)*triggerBits->accept(i);
+	// rateMap[names.triggerName(i)] = triggerPrescales->getPrescaleForIndex(i)*triggerBits->accept(i); //triggerprecales
 
- //      std::cout << names.triggerName(i) << " " << triggerPrescales->getPrescaleForIndex(i) << " " << triggerBits->accept(i) << std::endl;
+ //      std::cout << names.triggerName(i) << " " << triggerPrescales->getPrescaleForIndex(i) << " " << triggerBits->accept(i) << std::endl; //triggerprescales
 										     
  //    }
 }

@@ -52,8 +52,9 @@ process.MyAnalysis =cms.EDAnalyzer("AODAnalyzer",
                        CaloMETMTag             = cms.untracked.InputTag("caloMetM"),
 
                        vtx                     = cms.untracked.InputTag("offlinePrimaryVertices"),
-                       bits                    = cms.untracked.InputTag("TriggerResults","","HLT"),  #ASK IF HLT OR RECO!!!!
-                       prescales               = cms.untracked.InputTag("hltTriggerSummaryAOD"), # //PROBABLY get from https://github.com/cms-sw/cmssw/blob/master/DataFormats/PatCandidates/interface/TriggerEvent.h  ... ask about how
+                       bits                    = cms.untracked.InputTag("TriggerResults","","HLT"),  #should be fine
+                       #prescales               = cms.untracked.InputTag("patTrigger"), # TriggerResults//PROBABLY get from https://github.com/cms-sw/cmssw/blob/master/DataFormats/PatCandidates/interface/TriggerEvent.h  ... ask about how
+                       #triggerResults          = cms.untracked.InputTag("TriggerResults","","HLT"),
 
                        SuperClusterTag         = cms.untracked.InputTag("particleFlowEGamma"),
                        SuperClusterhfEMTag     = cms.untracked.InputTag("hfEMClusters"),
