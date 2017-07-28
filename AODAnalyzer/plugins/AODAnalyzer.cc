@@ -22,6 +22,7 @@
 #include "DataFormats/EcalDetId/interface/ESDetId.h"
 
 #include "DataFormats/HcalDetId/interface/HcalDetId.h"
+#include "HLTrigger/HLTcore/interface/HLTConfigProvider.h"
 
 #include "DataFormats/DetId/interface/DetId.h"
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
@@ -45,11 +46,12 @@
 #include "DataFormats/JetReco/interface/JetCollection.h"
 
 #include "DataFormats/Common/interface/TriggerResults.h"
+#include "DataFormats/Provenance/interface/ParameterSetID.h"
 #include "FWCore/Common/interface/TriggerNames.h"
 #include "DataFormats/PatCandidates/interface/PackedTriggerPrescales.h"
 #include "DataFormats/PatCandidates/interface/TriggerEvent.h"
 #include "DataFormats/HLTReco/interface/TriggerEvent.h"
-
+#include "DataFormats/Common/interface/HLTGlobalStatus.h"
 
 #include "DataFormats/EgammaReco/interface/SuperCluster.h"
 #include "DataFormats/EgammaReco/interface/SuperClusterFwd.h" //added because of SuperCluster (collection)
@@ -116,7 +118,7 @@ public:
   virtual void analyze (const edm::Event& event, const edm::EventSetup & eventSetup);
   virtual void beginJob();
   virtual void endJob();
-  virtual void beginRun(const edm::Run & run,    const edm::EventSetup & eventSetup) {};
+  virtual void beginRun(const edm::Run & run,    const edm::EventSetup & eventSetup);
   virtual void endRun  (const edm::Run & run,    const edm::EventSetup & eventSetup) {};
   virtual void beginLuminosityBlock  (const edm::LuminosityBlock& lumi, const edm::EventSetup& eventSetup);
   virtual void endLuminosityBlock    (const edm::LuminosityBlock& lumi, const edm::EventSetup& eventSetup);
@@ -146,7 +148,7 @@ private:
   template<typename PFMETCollection>
   void fillPFMets(const edm::Handle<PFMETCollection> &);
 
-  template<typename CaloJetCollection> //select variables
+  template<typename CaloJetCollection> 
   void fillCaloJets(const edm::Handle<CaloJetCollection> &);
 
   template<typename CaloMETCollection>
@@ -226,7 +228,7 @@ private:
 
   void initialize();
   template<typename T>
-  void computeQuantiles(std::vector<T>*, std::vector<T>*, std::vector<double>); //harambe
+  void computeQuantiles(std::vector<T>*, std::vector<T>*, std::vector<double>); 
   template<typename T>
   void computeMeanAndRms(std::vector<T>*, std::vector<T>*);
   std::map<int, std::vector<std::pair<int, int> > > readJSONFile(const std::string&);
@@ -236,16 +238,13 @@ private:
 
   /// file service and tree
   edm::Service<TFileService> outfile_;
+  HLTConfigProvider hltConfigProvider_;
 
   TTree* outTree_;
   int    runId_;
   int    lumiId_;
   float  lumi_;
   int    isSig_;
-
-
-
-
 
 
   //PFJet variables
@@ -281,12 +280,13 @@ private:
 
   //PFChMet variables
   std::vector<float>* PFChMetPt_;
-  // std::vector<float>* PFChMetEta_;  
+  // std::vector<float>* PFChMetEta_;  //MET doesn't have ETA
   std::vector<float>* PFChMetPhi_;
   std::vector<float>* PFMetPt_;
-  // std::vector<float>* PFMetEta_;
+  // std::vector<float>* PFMetEta_;  //MET doesn't have ETA
   std::vector<float>* PFMetPhi_;
   std::vector<int>*   nVtx_;
+
   //CaloJet variables
   std::vector<float>* CalJetPt_;
   std::vector<float>* CalJetEta_;
@@ -295,29 +295,29 @@ private:
 
   //CaloMet variables
   std::vector<float>* CalMETPt_;
-  // std::vector<float>* CalMETEta_;
+  // std::vector<float>* CalMETEta_;  //MET doesn't have ETA
   std::vector<float>* CalMETPhi_;
   std::vector<float>* CalMETEn_;
 
   //CaloMet variables BE
   std::vector<float>* CalMETBEPt_;
-  // std::vector<float>* CalMETBEEta_;
+  // std::vector<float>* CalMETBEEta_;   //MET doesn't have ETA
   std::vector<float>* CalMETBEPhi_;
   std::vector<float>* CalMETBEEn_;
 
     //CaloMet variables  BEFO
   std::vector<float>* CalMETBEFOPt_;
-  // std::vector<float>* CalMETBEFOEta_;
+  // std::vector<float>* CalMETBEFOEta_;  //MET doesn't have ETA
   std::vector<float>* CalMETBEFOPhi_;
   std::vector<float>* CalMETBEFOEn_;
 
     //CaloMet variables  M
   std::vector<float>* CalMETMPt_;
-  // std::vector<float>* CalMETMEta_;
+  // std::vector<float>* CalMETMEta_;   //MET doesn't have ETA
   std::vector<float>* CalMETMPhi_;
   std::vector<float>* CalMETMEn_;
 
-  //std::vector<float>* SuperCluster_; // adding SuperCluster
+  // SuperCluster variables
   std::vector<float>* SCEn_;
   std::vector<float>* SCEta_;
   std::vector<float>* SCPhi_;
@@ -326,17 +326,19 @@ private:
   std::vector<float>* SCEnhfEM_;
   std::vector<float>* SCEtahfEM_;
   std::vector<float>* SCPhihfEM_;
-  // std::vector<float>* SCEtaWidthhfEM_;
-  // std::vector<float>* SCPhiWidthhfEM_;  
+  // std::vector<float>* SCEtaWidthhfEM_;  //ouputted 0
+  // std::vector<float>* SCPhiWidthhfEM_;  //outputted 0
   std::vector<float>* SCEn5x5_;
   std::vector<float>* SCEta5x5_;
   std::vector<float>* SCPhi5x5_;
   std::vector<float>* SCEtaWidth5x5_;
   std::vector<float>* SCPhiWidth5x5_; 
+
   //caloclusters variables
   std::vector<float>* CCEn_;
   std::vector<float>* CCEta_;
   std::vector<float>* CCPhi_;
+
   //calocluster hfem variables
   std::vector<float>* CCEn5x5_;
   std::vector<float>* CCEta5x5_;
@@ -346,8 +348,7 @@ private:
   std::vector<float>* PhoPt_;
   std::vector<float>* PhoEta_;
   std::vector<float>* PhoPhi_;
-  // std::vector<float>* PhoEn_;
-
+  std::vector<float>* PhoEn_;
   std::vector<float>* Phoe1x5_;
   std::vector<float>* Phoe2x5_;
   std::vector<float>* Phoe3x3_;
@@ -359,11 +360,12 @@ private:
   std::vector<float>* Phor2x5_;
   std::vector<float>* Phor9_;
 
+  //ged photon variables
   std::vector<float>* gedPhoPt_;
   std::vector<float>* gedPhoEta_;
   std::vector<float>* gedPhoPhi_;
   // CURRENTLY FILLING ENERGY() AND NOT CORRECTED ENERGY
-  // std::vector<float>* gedPhoEn_;
+  std::vector<float>* gedPhoEn_;
   // CURRENTLY FILLING ENERGY() AND NOT CORRECTED ENERGY
 
   std::vector<float>* gedPhoe1x5_;
@@ -381,18 +383,22 @@ private:
   std::vector<float>* MuPt_;
   std::vector<float>* MuEta_;
   std::vector<float>* MuPhi_;
-  // std::vector<float>* MuEn_;
+  std::vector<float>* MuEn_;
   std::vector<float>* MuCh_;
+  std::vector<float>* MuChi2_;
   std::vector<float>* MuCosmPt_;
   std::vector<float>* MuCosmEta_;
   std::vector<float>* MuCosmPhi_;
-  // std::vector<float>* MuCosmEn_;
+  std::vector<float>* MuCosmEn_;
   std::vector<float>* MuCosmCh_;
+  std::vector<float>* MuCosmChi2_;
   std::vector<float>* MuCosmLegPt_;
   std::vector<float>* MuCosmLegEta_;
   std::vector<float>* MuCosmLegPhi_;
-  // std::vector<float>* MuCosmLegEn_;
+  std::vector<float>* MuCosmLegEn_;
   std::vector<float>* MuCosmLegCh_;
+  std::vector<float>* MuCosmLegChi2_;
+
   // GSF variables
   std::vector<float>* SigmaIEta_;
   std::vector<float>* SigmaIPhi_;
@@ -552,7 +558,7 @@ private:
   std::vector<float>* qPhoPt_;
   std::vector<float>* qPhoEta_;
   std::vector<float>* qPhoPhi_;
-  // std::vector<float>* qPhoEn_;
+  std::vector<float>* qPhoEn_;
 
   std::vector<float>* qPhoe1x5_;
   std::vector<float>* qPhoe2x5_;
@@ -568,7 +574,7 @@ private:
   std::vector<float>* qgedPhoPt_;
   std::vector<float>* qgedPhoEta_;
   std::vector<float>* qgedPhoPhi_;
-  // std::vector<float>* qgedPhoEn_;
+  std::vector<float>* qgedPhoEn_;
 
   std::vector<float>* qgedPhoe1x5_;
   std::vector<float>* qgedPhoe2x5_;
@@ -584,18 +590,21 @@ private:
   std::vector<float>* qMuPt_;
   std::vector<float>* qMuEta_;
   std::vector<float>* qMuPhi_;
-  // std::vector<float>* qMuEn_;
+  std::vector<float>* qMuEn_;
   std::vector<float>* qMuCh_;
+  std::vector<float>* qMuChi2_;
   std::vector<float>* qMuCosmPt_;
   std::vector<float>* qMuCosmEta_;
   std::vector<float>* qMuCosmPhi_;
-  // std::vector<float>* qMuCosmEn_;
+  std::vector<float>* qMuCosmEn_;
   std::vector<float>* qMuCosmCh_;
+  std::vector<float>* qMuCosmChi2_;
   std::vector<float>* qMuCosmLegPt_;
   std::vector<float>* qMuCosmLegEta_;
   std::vector<float>* qMuCosmLegPhi_;
-  // std::vector<float>* qMuCosmLegEn_;
-  std::vector<float>* qMuCosmLegCh_;  
+  std::vector<float>* qMuCosmLegEn_;
+  std::vector<float>* qMuCosmLegCh_;
+  std::vector<float>* qMuCosmLegChi2_; 
   //TODO
   std::vector<float>* qSigmaIEta_;
   std::vector<float>* qSigmaIPhi_;
@@ -689,25 +698,25 @@ private:
   edm::EDGetTokenT<reco::PFMETCollection> PFMETToken_;
 
   edm::EDGetTokenT<reco::CaloJetCollection> CaloJetToken_;
-  edm::EDGetTokenT<reco::CaloMETCollection> CaloMETToken_;      //variables
+  edm::EDGetTokenT<reco::CaloMETCollection> CaloMETToken_;      
   edm::EDGetTokenT<reco::CaloMETCollection> CaloMETBEToken_;
   edm::EDGetTokenT<reco::CaloMETCollection> CaloMETBEFOToken_;
   edm::EDGetTokenT<reco::CaloMETCollection> CaloMETMToken_;
   edm::EDGetTokenT<reco::VertexCollection>  vtxToken_;
 
   edm::EDGetTokenT<edm::TriggerResults>     triggerBits_;
-  // edm::EDGetTokenT<edm::TriggerResults>  triggerEvent_;
-  //edm::EDGetTokenT<pat::PackedTriggerPrescales> triggerPrescales_;
+  edm::EDGetTokenT<edm::TriggerResults>  triggerResultsToken_;
+  //edm::EDGetTokenT<pat::PackedTriggerPrescales> triggerPrescales_;  //pat::PackedTriggerPrescales is only present in miniAOD. Have to find alternative using TriggerResults
   
 
-  edm::EDGetTokenT<reco::SuperClusterCollection>   SuperClusterToken_;  //adding SuperCluster
+  edm::EDGetTokenT<reco::SuperClusterCollection>   SuperClusterToken_;  
   edm::EDGetTokenT<reco::SuperClusterCollection>    SuperClusterhfEMToken_;
-  edm::EDGetTokenT<reco::SuperClusterCollection>   SuperCluster5x5Token_;  //adding SuperCluster
+  edm::EDGetTokenT<reco::SuperClusterCollection>   SuperCluster5x5Token_;  
 
-  edm::EDGetTokenT<reco::CaloClusterCollection>   CaloClusterToken_;  //adding SuperCluster
+  edm::EDGetTokenT<reco::CaloClusterCollection>   CaloClusterToken_;  
   edm::EDGetTokenT<reco::CaloClusterCollection>   CaloCluster5x5Token_;
 
-  edm::EDGetTokenT<reco::PhotonCollection> PhotonToken_;   //TWO types of Photons -- one collection?
+  edm::EDGetTokenT<reco::PhotonCollection> PhotonToken_;  
   edm::EDGetTokenT<reco::PhotonCollection> gedPhotonToken_;
   edm::EDGetTokenT<reco::MuonCollection>   MuonToken_;
   edm::EDGetTokenT<reco::MuonCollection>   MuonCosmToken_;
@@ -715,8 +724,6 @@ private:
 
   edm::EDGetTokenT<reco::GsfElectronCollection> GsfElectronToken_;
   edm::EDGetTokenT<reco::GsfElectronCollection> GsfElectronUncleanedToken_;
-
-  // edm:: 
 
   edm::EDGetTokenT<EcalRecHitCollection> ebRHSrcToken_;
   edm::EDGetTokenT<EcalRecHitCollection> eeRHSrcToken_;
@@ -737,15 +744,15 @@ private:
 
   int eventCounter;
 
-  double maxJetEta_; //harambe
-  double minJetPt_;//harambe
-  double maxSCEta_;//harambe
-  double minSCEn_;//harambe
+  double maxJetEta_;
+  double minJetPt_;
+  double maxSCEta_;
+  double minSCEn_;
 
   std::string lumiFile_;
   std::map<int,std::map<int,float> > lumiMap;
 
-  std::vector<double> quantiles_; //harambe
+  std::vector<double> quantiles_;
 
   std::vector<std::string> subsystemNames_;
   std::vector<bool>* subsystemQuality_;
@@ -760,7 +767,7 @@ private:
 
 
 AODAnalyzer::AODAnalyzer(const edm::ParameterSet& cfg): 
-  PFJetToken_               (consumes<reco::PFJetCollection>(cfg.getUntrackedParameter<edm::InputTag>("PFJetTag"))),  //reco instead of pat
+  PFJetToken_               (consumes<reco::PFJetCollection>(cfg.getUntrackedParameter<edm::InputTag>("PFJetTag"))),  
   PFJet4CHSToken_           (consumes<reco::PFJetCollection>(cfg.getUntrackedParameter<edm::InputTag>("PFJet4CHSTag"))),
   PFJet8CHSToken_           (consumes<reco::PFJetCollection>(cfg.getUntrackedParameter<edm::InputTag>("PFJet8CHSTag"))),
   PFJetEIToken_             (consumes<reco::PFJetCollection>(cfg.getUntrackedParameter<edm::InputTag>("PFJetEITag"))),
@@ -769,15 +776,15 @@ AODAnalyzer::AODAnalyzer(const edm::ParameterSet& cfg):
   PFChMETToken_             (consumes<reco::PFMETCollection>(cfg.getUntrackedParameter<edm::InputTag>("PFChMETTag"))),
   PFMETToken_               (consumes<reco::PFMETCollection>(cfg.getUntrackedParameter<edm::InputTag>("PFMETTag"))),
   CaloJetToken_             (consumes<reco::CaloJetCollection>(cfg.getUntrackedParameter<edm::InputTag>("CaloJetTag"))),
-  CaloMETToken_             (consumes<reco::CaloMETCollection>(cfg.getUntrackedParameter<edm::InputTag>("CaloMETTag"))),  ///std::vector<reco::CaloMET>
-  CaloMETBEToken_           (consumes<reco::CaloMETCollection>(cfg.getUntrackedParameter<edm::InputTag>("CaloMETBETag"))),  ///std::vector<reco::CaloMET> 
-  CaloMETBEFOToken_         (consumes<reco::CaloMETCollection>(cfg.getUntrackedParameter<edm::InputTag>("CaloMETBEFOTag"))),  ///std::vector<reco::CaloMET> 
-  CaloMETMToken_            (consumes<reco::CaloMETCollection>(cfg.getUntrackedParameter<edm::InputTag>("CaloMETMTag"))),  ///std::vector<reco::CaloMET> 
+  CaloMETToken_             (consumes<reco::CaloMETCollection>(cfg.getUntrackedParameter<edm::InputTag>("CaloMETTag"))),  
+  CaloMETBEToken_           (consumes<reco::CaloMETCollection>(cfg.getUntrackedParameter<edm::InputTag>("CaloMETBETag"))),  
+  CaloMETBEFOToken_         (consumes<reco::CaloMETCollection>(cfg.getUntrackedParameter<edm::InputTag>("CaloMETBEFOTag"))),  
+  CaloMETMToken_            (consumes<reco::CaloMETCollection>(cfg.getUntrackedParameter<edm::InputTag>("CaloMETMTag"))), 
  
   vtxToken_                 (consumes<reco::VertexCollection>(cfg.getUntrackedParameter<edm::InputTag>("vtx"))),
   triggerBits_              (consumes<edm::TriggerResults>(cfg.getUntrackedParameter<edm::InputTag>("bits"))),
-  // triggerEvent_             (consumes<edm::TriggerResults>(cfg.getUntrackedParameter<edm::InputTag>("triggerEvent"))),  // pat::PackedTriggerPrescales
-  // triggerPrescales_         (consumes<pat::PackedTriggerPrescales>(cfg.getUntrackedParameter<edm::InputTag>("prescales"))),  // pat::PackedTriggerPrescales
+  triggerResultsToken_      (consumes<edm::TriggerResults>(cfg.getUntrackedParameter<edm::InputTag>("triggerResultsTag"))),  // alternative for pat::PackedTriggerPrescales
+  //triggerPrescales_         (consumes<pat::PackedTriggerPrescales>(cfg.getUntrackedParameter<edm::InputTag>("prescales"))),  // pat::PackedTriggerPrescales is not in AOD
   SuperClusterToken_        (consumes<reco::SuperClusterCollection>(cfg.getUntrackedParameter<edm::InputTag>("SuperClusterTag"))),
   SuperClusterhfEMToken_    (consumes<reco::SuperClusterCollection>(cfg.getUntrackedParameter<edm::InputTag>("SuperClusterhfEMTag"))),
   SuperCluster5x5Token_     (consumes<reco::SuperClusterCollection>(cfg.getUntrackedParameter<edm::InputTag>("SuperCluster5x5Tag"))),
@@ -792,26 +799,26 @@ AODAnalyzer::AODAnalyzer(const edm::ParameterSet& cfg):
   GsfElectronToken_         (consumes<reco::GsfElectronCollection>(cfg.getUntrackedParameter<edm::InputTag>("GsfElectronTag"))),
   GsfElectronUncleanedToken_(consumes<reco::GsfElectronCollection>(cfg.getUntrackedParameter<edm::InputTag>("GsfElectronUncleanedTag"))),
 
-  ebRHSrcToken_             (consumes<EcalRecHitCollection>(cfg.getUntrackedParameter<edm::InputTag>("EBRecHitSourceTag"))),  //ICONFIG -> cfg
+  ebRHSrcToken_             (consumes<EcalRecHitCollection>(cfg.getUntrackedParameter<edm::InputTag>("EBRecHitSourceTag"))),  
   eeRHSrcToken_             (consumes<EcalRecHitCollection>(cfg.getUntrackedParameter<edm::InputTag>("EERecHitSourceTag"))),
   esRHSrcToken_             (consumes<EcalRecHitCollection>(cfg.getUntrackedParameter<edm::InputTag>("ESRecHitSourceTag"))),
 
-  hbheRHcToken_             (consumes<HBHERecHitCollection>(cfg.getUntrackedParameter<edm::InputTag>("HBHERecHitTag"))),  //ICONFIG -> cfg
+  hbheRHcToken_             (consumes<HBHERecHitCollection>(cfg.getUntrackedParameter<edm::InputTag>("HBHERecHitTag"))),
   hfRHcToken_               (consumes<HFRecHitCollection>(cfg.getUntrackedParameter<edm::InputTag>("HFRecHitTag"))),
   // hoRHcToken_               (consumes<HORecHitCollection>(cfg.getUntrackedParameter<edm::InputTag>("HORecHitTag"))),
   preshowerXToken_          (consumes<reco::PreshowerClusterCollection>(cfg.getUntrackedParameter<edm::InputTag>("PreshowerClusterXTag"))),
   preshowerYToken_          (consumes<reco::PreshowerClusterCollection>(cfg.getUntrackedParameter<edm::InputTag>("PreshowerClusterYTag"))),
   // CastorTowerToken_         (consumes<reco::CastorTowerCollection>(cfg.getUntrackedParameter<edm::InputTag>("CastorTowerTag"))),  //perhaps reco  https://github.com/cms-sw/cmssw/blob/09c3fce6626f70fd04223e7dacebf0b485f73f54/DataFormats/CastorReco/interface/CastorTower.h
 
-
+  // hltPrescaleProvider_(cfg, consumesCollector(), *this),
 
   //params for wide jet calculation
-  maxJetEta_                (cfg.getUntrackedParameter<double>("maxJetEta")),//harambe
-  minJetPt_                 (cfg.getUntrackedParameter<double>("minJetPt")),//harambe
-  maxSCEta_                 (cfg.getUntrackedParameter<double>("maxSCEta")),//harambe
-  minSCEn_                  (cfg.getUntrackedParameter<double>("minSCEn")),//harambe
+  maxJetEta_                (cfg.getUntrackedParameter<double>("maxJetEta")),
+  minJetPt_                 (cfg.getUntrackedParameter<double>("minJetPt")),
+  maxSCEta_                 (cfg.getUntrackedParameter<double>("maxSCEta")),
+  minSCEn_                  (cfg.getUntrackedParameter<double>("minSCEn")),
   lumiFile_                 (cfg.getUntrackedParameter<std::string>("lumiFile")),
-  quantiles_                (cfg.getUntrackedParameter<std::vector<double> >("quantiles")),//harambe
+  quantiles_                (cfg.getUntrackedParameter<std::vector<double> >("quantiles")),
   subsystemNames_           (cfg.getUntrackedParameter<std::vector<std::string> >("subsystems")),
   qualityFiles_             (cfg.getUntrackedParameter<std::vector<std::string> >("qualityFiles"))
 
@@ -851,10 +858,10 @@ void AODAnalyzer::initialize()
   PFJetTopCHSPhi_->clear();       
 
   PFChMetPt_->clear();
-  // PFChMetEta_->clear();  
+  // PFChMetEta_->clear();  //MET doesn't have ETA
   PFChMetPhi_->clear();
   PFMetPt_->clear();
-  // PFMetEta_->clear();  
+  // PFMetEta_->clear();  //MET doesn't have ETA
   PFMetPhi_->clear();
   nVtx_->clear();
 
@@ -864,25 +871,25 @@ void AODAnalyzer::initialize()
   CalJetEn_->clear();
 
   CalMETPt_->clear();
-  // CalMETEta_->clear();
+  // CalMETEta_->clear();  //MET doesn't have ETA
   CalMETPhi_->clear();
   CalMETEn_->clear();
 
   CalMETBEPt_->clear();
-  // CalMETBEEta_->clear();
+  // CalMETBEEta_->clear();  //MET doesn't have ETA
   CalMETBEPhi_->clear();
   CalMETBEEn_->clear();
 
   CalMETBEFOPt_->clear();
-  // CalMETBEFOEta_->clear();
+  // CalMETBEFOEta_->clear();  //MET doesn't have ETA
   CalMETBEFOPhi_->clear();
   CalMETBEFOEn_->clear();
 
   CalMETMPt_->clear();
-  // CalMETMEta_->clear();
+  // CalMETMEta_->clear();  //MET doesn't have ETA
   CalMETMPhi_->clear();
   CalMETMEn_->clear();
-  //SuperCluster_ ->clear(); //adding SuperCluster
+
   SCEn_ ->clear();
   SCEta_->clear();
   SCPhi_->clear();
@@ -891,8 +898,8 @@ void AODAnalyzer::initialize()
   SCEnhfEM_ ->clear();
   SCEtahfEM_->clear();
   SCPhihfEM_->clear();
-  // SCEtaWidthhfEM_->clear();
-  // SCPhiWidthhfEM_->clear();  
+  // SCEtaWidthhfEM_->clear();  //outputted 0
+  // SCPhiWidthhfEM_->clear();  //outputted 0
   SCEn5x5_ ->clear();
   SCEta5x5_->clear();
   SCPhi5x5_->clear();
@@ -908,7 +915,7 @@ void AODAnalyzer::initialize()
   PhoPt_->clear();
   PhoEta_->clear();
   PhoPhi_->clear();
-  // PhoEn_->clear();
+  PhoEn_->clear();
 
   Phoe1x5_->clear();
   Phoe2x5_->clear();
@@ -924,7 +931,7 @@ void AODAnalyzer::initialize()
   gedPhoPt_->clear();
   gedPhoEta_->clear();
   gedPhoPhi_->clear();
-  // gedPhoEn_->clear();
+  gedPhoEn_->clear();
 
   gedPhoe1x5_->clear();
   gedPhoe2x5_->clear();
@@ -940,19 +947,21 @@ void AODAnalyzer::initialize()
   MuPt_->clear();
   MuEta_->clear();
   MuPhi_->clear();
-  // MuEn_->clear();
+  MuEn_->clear();
   MuCh_->clear();
+  MuChi2_->clear();
   MuCosmPt_->clear();
   MuCosmEta_->clear();
   MuCosmPhi_->clear();
-  // MuCosmEn_->clear();
+  MuCosmEn_->clear();
   MuCosmCh_->clear();
+  MuCosmChi2_->clear();  
   MuCosmLegPt_->clear();
   MuCosmLegEta_->clear();
   MuCosmLegPhi_->clear();
-  // MuCosmLegEn_->clear();
+  MuCosmLegEn_->clear();
   MuCosmLegCh_->clear();
-
+  MuCosmLegChi2_->clear();
   SigmaIEta_->clear();
   SigmaIPhi_->clear();
   r9_->clear();
@@ -1098,7 +1107,7 @@ void AODAnalyzer::initialize()
   qPhoPt_->clear();
   qPhoEta_->clear();
   qPhoPhi_->clear();
-  // qPhoEn_->clear();
+  qPhoEn_->clear();
 
   qPhoe1x5_->clear();
   qPhoe2x5_->clear();
@@ -1114,7 +1123,7 @@ void AODAnalyzer::initialize()
   qgedPhoPt_->clear();
   qgedPhoEta_->clear();
   qgedPhoPhi_->clear();
-  // qgedPhoEn_->clear();
+  qgedPhoEn_->clear();
 
   qgedPhoe1x5_->clear();
   qgedPhoe2x5_->clear();
@@ -1130,18 +1139,21 @@ void AODAnalyzer::initialize()
   qMuPt_->clear();
   qMuEta_->clear();
   qMuPhi_->clear();
-  // qMuEn_->clear();
+  qMuEn_->clear();
   qMuCh_->clear();
+  qMuChi2_->clear();
   qMuCosmPt_->clear();
   qMuCosmEta_->clear();
   qMuCosmPhi_->clear();
-  // qMuCosmEn_->clear();
+  qMuCosmEn_->clear();
   qMuCosmCh_->clear();
+  qMuCosmChi2_->clear();  
   qMuCosmLegPt_->clear();
   qMuCosmLegEta_->clear();
   qMuCosmLegPhi_->clear();
-  // qMuCosmLegEn_->clear();
-  qMuCosmLegCh_->clear();    
+  qMuCosmLegEn_->clear();
+  qMuCosmLegCh_->clear();
+  qMuCosmLegChi2_->clear();    
 
   qSigmaIEta_->clear();
   qSigmaIPhi_->clear();  
@@ -1621,7 +1633,7 @@ void AODAnalyzer::fillPhotons(const edm::Handle<PhotonCollection> & photons)
         PhoPt_->push_back(i->et());
         PhoEta_->push_back(i->eta());
         PhoPhi_->push_back(i->phi());
-        // PhoEn_->push_back(i->energy());   //GETCORRECTEDENERGY!!
+        PhoEn_->push_back(i->energy());   //GETCORRECTEDENERGY!!
         Phoe1x5_->push_back(i->e1x5());   
         Phoe2x5_->push_back(i->e2x5());
         Phoe3x3_->push_back(i->e3x3());
@@ -1651,7 +1663,7 @@ void AODAnalyzer::fillgedPhotons(const edm::Handle<PhotongedCollection> & gedpho
         gedPhoPt_->push_back(i->et());
         gedPhoEta_->push_back(i->eta());
         gedPhoPhi_->push_back(i->phi());
-        // gedPhoEn_->push_back(i->energy());
+        gedPhoEn_->push_back(i->energy());
         gedPhoe1x5_->push_back(i->e1x5());   
         gedPhoe2x5_->push_back(i->e2x5());
         gedPhoe3x3_->push_back(i->e3x3());
@@ -1681,8 +1693,9 @@ void AODAnalyzer::fillMuons(const edm::Handle<MuonCollection> & muons)
         MuPt_->push_back(i->et());
         MuEta_->push_back(i->eta());
         MuPhi_->push_back(i->phi());
-        // MuEn_->push_back(i->energy());   //GETCORRECTEDENERGY!!
+        MuEn_->push_back(i->energy());   //GETCORRECTEDENERGY!!
         MuCh_->push_back(i->charge());
+        MuChi2_->push_back(i->vertexNormalizedChi2());  
         // std::cout << "ele energy: " << i->energy()   << std::endl; 
         // std::cout << "ele SCeta: "  << i->etaWidth() << std::endl;
           //std::cout << "ele charge: "  << i->charge() << std::endl;
@@ -1704,8 +1717,9 @@ void AODAnalyzer::fillCosmMuons(const edm::Handle<MuonCosmCollection> & muonsCos
         MuCosmPt_->push_back(i->et());
         MuCosmEta_->push_back(i->eta());
         MuCosmPhi_->push_back(i->phi());
-        // MuCosmEn_->push_back(i->energy());   //GETCORRECTEDENERGY!!
+        MuCosmEn_->push_back(i->energy());   //GETCORRECTEDENERGY!!
         MuCosmCh_->push_back(i->charge());
+        MuCosmChi2_->push_back(i->vertexNormalizedChi2());
         // std::cout << "ele energy: " << i->energy()   << std::endl; 
         // std::cout << "ele SCeta: "  << i->etaWidth() << std::endl;
          //  std::cout << "ele cosm charge: "  << i->charge() << std::endl;
@@ -1728,8 +1742,9 @@ void AODAnalyzer::fillCosmLegMuons(const edm::Handle<MuonCosmLegCollection> & mu
         MuCosmLegPt_->push_back(i->et());
         MuCosmLegEta_->push_back(i->eta());
         MuCosmLegPhi_->push_back(i->phi());
-        // MuCosmLegEn_->push_back(i->energy());   //GETCORRECTEDENERGY!!
+        MuCosmLegEn_->push_back(i->energy());   //GETCORRECTEDENERGY!!
         MuCosmLegCh_->push_back(i->charge());
+        MuCosmLegChi2_->push_back(i->vertexNormalizedChi2());
         // std::cout << "ele energy: " << i->energy()   << std::endl; 
         // std::cout << "ele SCeta: "  << i->etaWidth() << std::endl;
         // std::cout << "ele SCphi: "  << i->phiWidth() << std::endl;
@@ -2002,13 +2017,13 @@ void AODAnalyzer::computeQuantiles(std::vector<T>* myDistr, std::vector<T>* myQu
 template<typename T>
 void AODAnalyzer::computeMeanAndRms(std::vector<T>* myDistr, std::vector<T>* myVect)
 {
-  double sum = std::accumulate(myDistr->begin(), myDistr->end(), 0.0); //harambe
-  double mean = sum / myDistr->size(); //harambe
+  double sum = std::accumulate(myDistr->begin(), myDistr->end(), 0.0); 
+  double mean = sum / myDistr->size(); 
   myVect->push_back( mean );
 
-  std::vector<double> diff(myDistr->size());//harambe
-  std::transform(myDistr->begin(), myDistr->end(), diff.begin(), [mean](double x) { return x - mean; });//harambe
-  double sq_sum = std::inner_product(diff.begin(), diff.end(), diff.begin(), 0.0); //harambe
+  std::vector<double> diff(myDistr->size());
+  std::transform(myDistr->begin(), myDistr->end(), diff.begin(), [mean](double x) { return x - mean; });
+  double sq_sum = std::inner_product(diff.begin(), diff.end(), diff.begin(), 0.0); 
   myVect->push_back( std::sqrt(sq_sum / myDistr->size()) );
 }
 
@@ -2050,10 +2065,10 @@ void AODAnalyzer::beginJob() {
   PFJetTopCHSPhi_  = new std::vector<float>;        
 
   PFChMetPt_     = new std::vector<float>;
-  // PFChMetEta_    = new std::vector<float>;  
+  // PFChMetEta_    = new std::vector<float>; //MET doesn't have ETA  
   PFChMetPhi_    = new std::vector<float>;
   PFMetPt_     = new std::vector<float>;
-  // PFMetEta_    = new std::vector<float>;
+  // PFMetEta_    = new std::vector<float>; //MET doesn't have ETA 
   PFMetPhi_    = new std::vector<float>;
   nVtx_      = new std::vector<int>;
   
@@ -2062,20 +2077,20 @@ void AODAnalyzer::beginJob() {
   CalJetPhi_   = new std::vector<float>;
   CalJetEn_   = new std::vector<float>;
   CalMETPt_   = new std::vector<float>;
-  // CalMETEta_   = new std::vector<float>;
+  // CalMETEta_   = new std::vector<float>; //MET doesn't have ETA 
   CalMETPhi_   = new std::vector<float>;
   CalMETEn_   = new std::vector<float>;
 
   CalMETBEPt_   = new std::vector<float>;
-  // CalMETBEEta_   = new std::vector<float>;
+  // CalMETBEEta_   = new std::vector<float>; //MET doesn't have ETA 
   CalMETBEPhi_   = new std::vector<float>;
   CalMETBEEn_   = new std::vector<float>;
   CalMETBEFOPt_   = new std::vector<float>;
-  // CalMETBEFOEta_   = new std::vector<float>;
+  // CalMETBEFOEta_   = new std::vector<float>; //MET doesn't have ETA 
   CalMETBEFOPhi_   = new std::vector<float>;
   CalMETBEFOEn_   = new std::vector<float>;
   CalMETMPt_   = new std::vector<float>;
-  // CalMETMEta_   = new std::vector<float>;
+  // CalMETMEta_   = new std::vector<float>;  //MET doesn't have ETA 
   CalMETMPhi_   = new std::vector<float>;
   CalMETMEn_   = new std::vector<float>;
 
@@ -2105,7 +2120,7 @@ void AODAnalyzer::beginJob() {
   PhoPt_     = new std::vector<float>;
   PhoEta_    = new std::vector<float>;
   PhoPhi_    = new std::vector<float>;
-  // PhoEn_ = new std::vector<float>;
+  PhoEn_ = new std::vector<float>;
 
   Phoe1x5_   = new std::vector<float>;
   Phoe2x5_   = new std::vector<float>;
@@ -2121,7 +2136,7 @@ void AODAnalyzer::beginJob() {
   gedPhoPt_     = new std::vector<float>;
   gedPhoEta_    = new std::vector<float>;
   gedPhoPhi_    = new std::vector<float>;
-  // gedPhoEn_ = new std::vector<float>;
+  gedPhoEn_ = new std::vector<float>;
 
   gedPhoe1x5_   = new std::vector<float>;
   gedPhoe2x5_   = new std::vector<float>;
@@ -2137,18 +2152,21 @@ void AODAnalyzer::beginJob() {
   MuPt_         = new std::vector<float>;
   MuEta_        = new std::vector<float>;
   MuPhi_        = new std::vector<float>;
-  // MuEn_         = new std::vector<float>;
+  MuEn_         = new std::vector<float>;
   MuCh_         = new std::vector<float>;
+  MuChi2_         = new std::vector<float>;  
   MuCosmPt_         = new std::vector<float>;
   MuCosmEta_        = new std::vector<float>;
   MuCosmPhi_        = new std::vector<float>;
-  // MuCosmEn_         = new std::vector<float>;
+  MuCosmEn_         = new std::vector<float>;
   MuCosmCh_         = new std::vector<float>;
+  MuCosmChi2_         = new std::vector<float>;  
   MuCosmLegPt_         = new std::vector<float>;
   MuCosmLegEta_        = new std::vector<float>;
   MuCosmLegPhi_        = new std::vector<float>;
-  // MuCosmLegEn_         = new std::vector<float>;
+  MuCosmLegEn_         = new std::vector<float>;
   MuCosmLegCh_         = new std::vector<float>;
+  MuCosmLegChi2_         = new std::vector<float>;  
   //TODO
   SigmaIEta_ = new std::vector<float>;
   SigmaIPhi_ = new std::vector<float>;
@@ -2303,7 +2321,7 @@ void AODAnalyzer::beginJob() {
   qPhoPt_     = new std::vector<float>;
   qPhoEta_    = new std::vector<float>;
   qPhoPhi_    = new std::vector<float>;
-  // qPhoEn_ = new std::vector<float>;
+  qPhoEn_ = new std::vector<float>;
 
   qPhoe1x5_   = new std::vector<float>;
   qPhoe2x5_   = new std::vector<float>;
@@ -2319,7 +2337,7 @@ void AODAnalyzer::beginJob() {
   qgedPhoPt_     = new std::vector<float>;
   qgedPhoEta_    = new std::vector<float>;
   qgedPhoPhi_    = new std::vector<float>;
-  // qgedPhoEn_ = new std::vector<float>;
+  qgedPhoEn_ = new std::vector<float>;
 
   qgedPhoe1x5_   = new std::vector<float>;
   qgedPhoe2x5_   = new std::vector<float>;
@@ -2332,21 +2350,24 @@ void AODAnalyzer::beginJob() {
   qgedPhor2x5_   = new std::vector<float>;
   qgedPhor9_     = new std::vector<float>;
 
-  qMuPt_   = new std::vector<float>;
-  qMuEta_   = new std::vector<float>;
-  qMuPhi_   = new std::vector<float>;
-  // qMuEn_   = new std::vector<float>;
-  qMuCh_   = new std::vector<float>;
-  qMuCosmPt_   = new std::vector<float>;
-  qMuCosmEta_   = new std::vector<float>;
-  qMuCosmPhi_   = new std::vector<float>;
-  // qMuCosmEn_   = new std::vector<float>;
-  qMuCosmCh_   = new std::vector<float>;
-  qMuCosmLegPt_   = new std::vector<float>;
-  qMuCosmLegEta_   = new std::vector<float>;
-  qMuCosmLegPhi_   = new std::vector<float>;
-  // qMuCosmLegEn_   = new std::vector<float>;
-  qMuCosmLegCh_   = new std::vector<float>;  
+  qMuPt_         = new std::vector<float>;
+  qMuEta_        = new std::vector<float>;
+  qMuPhi_        = new std::vector<float>;
+  qMuEn_         = new std::vector<float>;
+  qMuCh_         = new std::vector<float>;
+  qMuChi2_         = new std::vector<float>;  
+  qMuCosmPt_         = new std::vector<float>;
+  qMuCosmEta_        = new std::vector<float>;
+  qMuCosmPhi_        = new std::vector<float>;
+  qMuCosmEn_         = new std::vector<float>;
+  qMuCosmCh_         = new std::vector<float>;
+  qMuCosmChi2_         = new std::vector<float>;  
+  qMuCosmLegPt_         = new std::vector<float>;
+  qMuCosmLegEta_        = new std::vector<float>;
+  qMuCosmLegPhi_        = new std::vector<float>;
+  qMuCosmLegEn_         = new std::vector<float>;
+  qMuCosmLegCh_         = new std::vector<float>;
+  qMuCosmLegChi2_         = new std::vector<float>;
   qSigmaIEta_= new std::vector<float>;
   qSigmaIPhi_= new std::vector<float>;
   qr9_       = new std::vector<float>;
@@ -2364,7 +2385,7 @@ void AODAnalyzer::beginJob() {
   qUNdrSumEt_  = new std::vector<float>;
   qUNeSCOP_    = new std::vector<float>;
   qUNecEn_     = new std::vector<float>;
-  //TODO
+
 
   qEBenergy_    = new std::vector<float>;
   qEBtime_      = new std::vector<float>;
@@ -2400,7 +2421,6 @@ void AODAnalyzer::beginJob() {
 //   qHOieta_      = new std::vector<float>;
 //   qHOiphi_      = new std::vector<float>;  
 //   // qHOchi2_      = new std::vector<float>;
-// //FINISH doing HBHE<HF<HO
 
   qPreShEn_     = new std::vector<float>;
   // qPreShCorrEn_ = new std::vector<float>;
@@ -2502,7 +2522,7 @@ void AODAnalyzer::beginJob() {
   outTree_->Branch("qPhoPt",     "std::vector<std::float>",        &qPhoPt_);
   outTree_->Branch("qPhoEta",    "std::vector<std::float>",        &qPhoEta_);
   outTree_->Branch("qPhoPhi",    "std::vector<std::float>",        &qPhoPhi_);
-  // outTree_->Branch("qPhoEn_",    "std::vector<std::float>",    &qPhoEn_);
+  outTree_->Branch("qPhoEn_",    "std::vector<std::float>",    &qPhoEn_);
 
   outTree_->Branch("qPhoe1x5_",     "std::vector<std::float>",        &qPhoe1x5_);
   outTree_->Branch("qPhoe2x5_",    "std::vector<std::float>",        &qPhoe2x5_);
@@ -2518,7 +2538,7 @@ void AODAnalyzer::beginJob() {
   outTree_->Branch("qgedPhoPt",     "std::vector<std::float>",     &qgedPhoPt_);
   outTree_->Branch("qgedPhoEta",    "std::vector<std::float>",     &qgedPhoEta_);
   outTree_->Branch("qgedPhoPhi",    "std::vector<std::float>",     &qgedPhoPhi_);
-  // outTree_->Branch("qgedPhoEn_",    "std::vector<std::float>", &qgedPhoEn_);
+  outTree_->Branch("qgedPhoEn_",    "std::vector<std::float>", &qgedPhoEn_);
 
   outTree_->Branch("qgedPhoe1x5_",     "std::vector<std::float>",        &qgedPhoe1x5_);
   outTree_->Branch("qgedPhoe2x5_",    "std::vector<std::float>",        &qgedPhoe2x5_);
@@ -2534,18 +2554,21 @@ void AODAnalyzer::beginJob() {
   outTree_->Branch("qMuPt",     "std::vector<std::float>",        &qMuPt_);
   outTree_->Branch("qMuEta",    "std::vector<std::float>",        &qMuEta_);
   outTree_->Branch("qMuPhi",    "std::vector<std::float>",        &qMuPhi_);
-  // outTree_->Branch("qMuEn_",    "std::vector<std::float>",        &qMuEn_);
+  outTree_->Branch("qMuEn_",    "std::vector<std::float>",        &qMuEn_);
   outTree_->Branch("qMuCh_",    "std::vector<std::float>",        &qMuCh_);
+  outTree_->Branch("qMuChi2_",    "std::vector<std::float>",        &qMuChi2_);  
   outTree_->Branch("qMuCosmPt",     "std::vector<std::float>",        &qMuCosmPt_);
   outTree_->Branch("qMuCosmEta",    "std::vector<std::float>",        &qMuCosmEta_);
   outTree_->Branch("qMuCosmPhi",    "std::vector<std::float>",        &qMuCosmPhi_);
-  // outTree_->Branch("qMuCosmEn_",    "std::vector<std::float>",        &qMuCosmEn_);
+  outTree_->Branch("qMuCosmEn_",    "std::vector<std::float>",        &qMuCosmEn_);
   outTree_->Branch("qMuCosmCh_",    "std::vector<std::float>",        &qMuCosmCh_);
+  outTree_->Branch("qMuCosmChi2_",    "std::vector<std::float>",        &qMuCosmChi2_);    
   outTree_->Branch("qMuCosmLegPt",     "std::vector<std::float>",        &qMuCosmLegPt_);
   outTree_->Branch("qMuCosmLegEta",    "std::vector<std::float>",        &qMuCosmLegEta_);
   outTree_->Branch("qMuCosmLegPhi",    "std::vector<std::float>",        &qMuCosmLegPhi_);
-  // outTree_->Branch("qMuCosmLegEn_",    "std::vector<std::float>",        &qMuCosmLegEn_);
+  outTree_->Branch("qMuCosmLegEn_",    "std::vector<std::float>",        &qMuCosmLegEn_);
   outTree_->Branch("qMuCosmLegCh_",    "std::vector<std::float>",        &qMuCosmLegCh_);
+  outTree_->Branch("qMuCosmLegChi2_",    "std::vector<std::float>",        &qMuCosmLegChi2_);   
   outTree_->Branch("qSigmaIEta",    "std::vector<std::float>",     &qSigmaIEta_);
   outTree_->Branch("qSigmaIPhi",    "std::vector<std::float>",     &qSigmaIPhi_);
   outTree_->Branch("qr9",    "std::vector<std::float>",            &qr9_);
@@ -2722,7 +2745,7 @@ void AODAnalyzer::endJob()
   delete PhoPt_;
   delete PhoEta_;
   delete PhoPhi_;
-  // delete PhoEn_;
+  delete PhoEn_;
 
   delete Phoe1x5_;
   delete Phoe2x5_;
@@ -2738,7 +2761,7 @@ void AODAnalyzer::endJob()
   delete gedPhoPt_;
   delete gedPhoEta_;
   delete gedPhoPhi_;
-  // delete gedPhoEn_;
+  delete gedPhoEn_;
 
   delete gedPhoe1x5_;
   delete gedPhoe2x5_;
@@ -2754,18 +2777,21 @@ void AODAnalyzer::endJob()
   delete MuPt_;
   delete MuEta_;
   delete MuPhi_;
-  // delete MuEn_;
+  delete MuEn_;
   delete MuCh_;
+  delete MuChi2_;  
   delete MuCosmPt_;
   delete MuCosmEta_;
   delete MuCosmPhi_;
-  // delete MuCosmEn_;
+  delete MuCosmEn_;
   delete MuCosmCh_;
+  delete MuCosmChi2_;    
   delete MuCosmLegPt_;
   delete MuCosmLegEta_;
   delete MuCosmLegPhi_;
-  // delete MuCosmLegEn_;
+  delete MuCosmLegEn_;
   delete MuCosmLegCh_;    
+  delete MuCosmLegChi2_;  
   //TODO
   delete SigmaIEta_;
   delete SigmaIPhi_;
@@ -2906,7 +2932,7 @@ void AODAnalyzer::endJob()
   delete qPhoPt_;
   delete qPhoEta_;
   delete qPhoPhi_;
-  // delete qPhoEn_;
+  delete qPhoEn_;
 
   delete qPhoe1x5_;
   delete qPhoe2x5_;
@@ -2922,7 +2948,7 @@ void AODAnalyzer::endJob()
   delete qgedPhoPt_;
   delete qgedPhoEta_;
   delete qgedPhoPhi_;
-  // delete qgedPhoEn_;
+  delete qgedPhoEn_;
 
   delete qgedPhoe1x5_;
   delete qgedPhoe2x5_;
@@ -2938,18 +2964,21 @@ void AODAnalyzer::endJob()
   delete qMuPt_;
   delete qMuEta_;
   delete qMuPhi_;
-  // delete qMuEn_;
+  delete qMuEn_;
   delete qMuCh_;
+  delete qMuChi2_;  
   delete qMuCosmPt_;
   delete qMuCosmEta_;
   delete qMuCosmPhi_;
-  // delete qMuCosmEn_;
+  delete qMuCosmEn_;
   delete qMuCosmCh_;
+  delete qMuCosmChi2_;    
   delete qMuCosmLegPt_;
   delete qMuCosmLegEta_;
   delete qMuCosmLegPhi_;
-  // delete qMuCosmLegEn_;
+  delete qMuCosmLegEn_;
   delete qMuCosmLegCh_;    
+  delete qMuCosmLegChi2_;    
   //TODO
   delete qSigmaIEta_;
   delete qSigmaIPhi_;
@@ -3143,7 +3172,7 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeMeanAndRms(PhoPt_, qPhoPt_);
   computeMeanAndRms(PhoEta_,qPhoEta_);
   computeMeanAndRms(PhoPhi_,qPhoPhi_);
-  // computeMeanAndRms(PhoEn_,qPhoEn_);
+  computeMeanAndRms(PhoEn_,qPhoEn_);
 
   computeMeanAndRms(Phoe1x5_, qPhoe1x5_);
   computeMeanAndRms(Phoe2x5_,qPhoe2x5_);
@@ -3160,7 +3189,7 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeMeanAndRms(gedPhoPt_, qgedPhoPt_);
   computeMeanAndRms(gedPhoEta_,qgedPhoEta_);
   computeMeanAndRms(gedPhoPhi_,qgedPhoPhi_);
-  // computeMeanAndRms(gedPhoEn_,qgedPhoEn_);
+  computeMeanAndRms(gedPhoEn_,qgedPhoEn_);
 
   computeMeanAndRms(gedPhoe1x5_, qgedPhoe1x5_);
   computeMeanAndRms(gedPhoe2x5_,qgedPhoe2x5_);
@@ -3176,18 +3205,21 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeMeanAndRms(MuPt_, qMuPt_);
   computeMeanAndRms(MuEta_,qMuEta_);
   computeMeanAndRms(MuPhi_,qMuPhi_);
-  // computeMeanAndRms(MuEn_,qMuEn_);
+  computeMeanAndRms(MuEn_,qMuEn_);
   computeMeanAndRms(MuCh_,qMuCh_);
+  computeMeanAndRms(MuChi2_,qMuChi2_);  
   computeMeanAndRms(MuCosmPt_, qMuCosmPt_);
   computeMeanAndRms(MuCosmEta_,qMuCosmEta_);
   computeMeanAndRms(MuCosmPhi_,qMuCosmPhi_);
-  // computeMeanAndRms(MuCosmEn_, qMuCosmEn_);
+  computeMeanAndRms(MuCosmEn_, qMuCosmEn_);
   computeMeanAndRms(MuCosmCh_, qMuCosmCh_);
+  computeMeanAndRms(MuCosmChi2_,qMuCosmChi2_);   
   computeMeanAndRms(MuCosmLegPt_, qMuCosmLegPt_);
   computeMeanAndRms(MuCosmLegEta_,qMuCosmLegEta_);
   computeMeanAndRms(MuCosmLegPhi_,qMuCosmLegPhi_);
-  // computeMeanAndRms(MuCosmLegEn_, qMuCosmLegEn_);
-  computeMeanAndRms(MuCosmLegCh_, qMuCosmLegCh_);    
+  computeMeanAndRms(MuCosmLegEn_, qMuCosmLegEn_);
+  computeMeanAndRms(MuCosmLegCh_, qMuCosmLegCh_); 
+  computeMeanAndRms(MuCosmLegChi2_,qMuCosmLegChi2_);      
   //TODO
   computeMeanAndRms(SigmaIEta_, qSigmaIEta_);
   computeMeanAndRms(SigmaIPhi_, qSigmaIPhi_);
@@ -3341,7 +3373,7 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeQuantiles(PhoPt_, qPhoPt_, quantiles_);
   computeQuantiles(PhoEta_,qPhoEta_,quantiles_);
   computeQuantiles(PhoPhi_,qPhoPhi_,quantiles_);
-  // computeQuantiles(PhoEn_,qPhoEn_,quantiles_);
+  computeQuantiles(PhoEn_,qPhoEn_,quantiles_);
 
   computeQuantiles(Phoe1x5_, qPhoe1x5_, quantiles_);
   computeQuantiles(Phoe2x5_,qPhoe2x5_,quantiles_);
@@ -3357,7 +3389,7 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeQuantiles(gedPhoPt_, qgedPhoPt_, quantiles_);
   computeQuantiles(gedPhoEta_,qgedPhoEta_,quantiles_);
   computeQuantiles(gedPhoPhi_,qgedPhoPhi_,quantiles_);
-  // computeQuantiles(gedPhoEn_,qgedPhoEn_,quantiles_);
+  computeQuantiles(gedPhoEn_,qgedPhoEn_,quantiles_);
 
   computeQuantiles(gedPhoe1x5_, qgedPhoe1x5_, quantiles_);
   computeQuantiles(gedPhoe2x5_,qgedPhoe2x5_,quantiles_);
@@ -3373,18 +3405,21 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeQuantiles(MuPt_, qMuPt_, quantiles_);
   computeQuantiles(MuEta_,qMuEta_,quantiles_);
   computeQuantiles(MuPhi_,qMuPhi_,quantiles_);
-  // computeQuantiles(MuEn_,qMuEn_,quantiles_);
+  computeQuantiles(MuEn_,qMuEn_,quantiles_);
   computeQuantiles(MuCh_,qMuCh_,quantiles_);
+  computeQuantiles(MuChi2_,qMuChi2_,quantiles_);  
   computeQuantiles(MuCosmPt_, qMuCosmPt_, quantiles_);
   computeQuantiles(MuCosmEta_,qMuCosmEta_,quantiles_);
   computeQuantiles(MuCosmPhi_,qMuCosmPhi_,quantiles_);
-  // computeQuantiles(MuCosmEn_, qMuCosmEn_,quantiles_);
+  computeQuantiles(MuCosmEn_, qMuCosmEn_,quantiles_);
   computeQuantiles(MuCosmCh_, qMuCosmCh_,quantiles_);
+  computeQuantiles(MuCosmChi2_,qMuCosmChi2_,quantiles_);   
   computeQuantiles(MuCosmLegPt_, qMuCosmLegPt_, quantiles_);
   computeQuantiles(MuCosmLegEta_,qMuCosmLegEta_,quantiles_);
   computeQuantiles(MuCosmLegPhi_,qMuCosmLegPhi_,quantiles_);
-  // computeQuantiles(MuCosmLegEn_, qMuCosmLegEn_,quantiles_);
-  computeQuantiles(MuCosmLegCh_, qMuCosmLegCh_,quantiles_);    
+  computeQuantiles(MuCosmLegEn_, qMuCosmLegEn_,quantiles_);
+  computeQuantiles(MuCosmLegCh_, qMuCosmLegCh_,quantiles_);
+  computeQuantiles(MuCosmLegChi2_,qMuCosmLegChi2_,quantiles_);       
   //TODOCosm
   computeQuantiles(SigmaIEta_, qSigmaIEta_, quantiles_);
   computeQuantiles(SigmaIPhi_, qSigmaIPhi_, quantiles_);
@@ -3461,8 +3496,8 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
     {
       pathNames_->push_back(itr->first);
       pathRates_->push_back(itr->second/lumi_);
-       std::cout << "pathRates_: " << itr->second/lumi_ << std::endl; //TEST -- works
-       std::cout << "pathNames_: " << itr->first << std::endl; //TEST -- works
+       std::cout << "pathRates_: " << itr->second/lumi_ << std::endl; //TEST -- doesnt work
+       std::cout << "pathNames_: " << itr->first << std::endl; //TEST -- doesnt work
 
 
     }
@@ -3475,12 +3510,19 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
 }
 
 
+
+void AODAnalyzer::beginRun (const edm::Run &run, const edm::EventSetup &eventSetup) 
+{
+ bool isConfigChanged = false;
+ edm::InputTag myTag("TriggerResults::HLT");
+ hltConfigProvider_.init(run, eventSetup, myTag.process(), isConfigChanged);
+}
+
+
 void AODAnalyzer::analyze (const edm::Event &event, const edm::EventSetup &eventSetup) 
 {
   ++eventCounter;
 
-  // eventSetup.get<CaloGeometryRecord>().get(geomH);
-  // MonitorElement * eb_chi2_eta;
   //fill Jets
   edm::Handle<reco::PFJetCollection> PFJets;
   event.getByToken(PFJetToken_,PFJets);
@@ -3573,6 +3615,7 @@ void AODAnalyzer::analyze (const edm::Event &event, const edm::EventSetup &event
   event.getByToken(CaloMETMToken_, caloMETMlocalv);
   if(caloMETMlocalv.isValid())
     fillCaloMETMs(caloMETMlocalv);
+
   //fill vtx
   edm::Handle<reco::VertexCollection> recVtxs;
   event.getByToken(vtxToken_,recVtxs);
@@ -3585,16 +3628,17 @@ void AODAnalyzer::analyze (const edm::Event &event, const edm::EventSetup &event
   event.getByToken(triggerBits_, triggerBits);
 
 
-
-  //Prescales
-  // edm::Handle<edm::TriggerResults> triggerEvent;
-  // event.getByToken(triggerEvent_, triggerEvent);
+  // Prescales (alternative for pat::PackedTriggerPrescales in order to get pathRates)
+  edm::Handle<edm::TriggerResults> triggerResults;
+  event.getByToken(triggerResultsToken_, triggerResults);
 
   // edm::Handle<pat::PackedTriggerPrescales> triggerPrescales;
   // event.getByToken(triggerPrescales_, triggerPrescales);
 
   // edm::Handle<trigger::TriggerEvent> triggerEvent;
   // event.getByToken( "patTriggerEvent", triggerEvent );
+  
+
   //Fill SuperCluster
   edm::Handle<reco::SuperClusterCollection> SuperClusterlocalv;
   event.getByToken(SuperClusterToken_, SuperClusterlocalv);
@@ -3603,28 +3647,24 @@ void AODAnalyzer::analyze (const edm::Event &event, const edm::EventSetup &event
 
   edm::Handle<reco::SuperClusterCollection> SuperClusterhfEMlocalv;
   event.getByToken(SuperClusterhfEMToken_, SuperClusterhfEMlocalv);
-  // print the size of SuperClusterlocalv
   if(SuperClusterhfEMlocalv.isValid())
     fillSChfEM(SuperClusterhfEMlocalv);
 
   edm::Handle<reco::SuperClusterCollection> SuperCluster5x5localv;
   event.getByToken(SuperCluster5x5Token_, SuperCluster5x5localv);
-  // print the size of SuperClusterlocalv
   if(SuperCluster5x5localv.isValid())
     fillSC5x5(SuperCluster5x5localv);
+
     //Fill CaloCluster
   edm::Handle<reco::CaloClusterCollection> CaloClusterlocalv;
   event.getByToken(CaloClusterToken_, CaloClusterlocalv);
-  // print the size of 
   if(CaloClusterlocalv.isValid())
     fillCC(CaloClusterlocalv);
 
   edm::Handle<reco::CaloClusterCollection> CaloCluster5x5localv;
   event.getByToken(CaloCluster5x5Token_, CaloCluster5x5localv);
-  // print the size of 
   if(CaloCluster5x5localv.isValid())
     fillCC5x5(CaloCluster5x5localv);
-
 
   edm::Handle<reco::PhotonCollection> photonlocalv;
   event.getByToken(PhotonToken_, photonlocalv);
@@ -3651,7 +3691,6 @@ void AODAnalyzer::analyze (const edm::Event &event, const edm::EventSetup &event
   if(muonCosmLeglocalv.isValid())
     fillCosmLegMuons(muonCosmLeglocalv);
 
-  //TODO --fill fill Muons
   //fill GsF
   edm::Handle<reco::GsfElectronCollection> GsfElectronlocalv;
   event.getByToken(GsfElectronToken_, GsfElectronlocalv);
@@ -3666,12 +3705,10 @@ void AODAnalyzer::analyze (const edm::Event &event, const edm::EventSetup &event
   
 
   //fill EcalRec EB    
-  edm::Handle<EcalRecHitCollection> ebRHs;    //finish fill ee, eb and so on
+  edm::Handle<EcalRecHitCollection> ebRHs;   
   event.getByToken(ebRHSrcToken_, ebRHs);
   if(ebRHs.isValid())
     fillEBrecHit(ebRHs);
-
-
 
   //fill EcalRec EE
   edm::Handle<EcalRecHitCollection> eeRHs;
@@ -3686,7 +3723,7 @@ void AODAnalyzer::analyze (const edm::Event &event, const edm::EventSetup &event
     fillESrecHit(esRHs);
 
   //fill hbhereco  
-  edm::Handle<HBHERecHitCollection> hbheRHs;    //finish fill ee, eb and so on
+  edm::Handle<HBHERecHitCollection> hbheRHs;    
   event.getByToken(hbheRHcToken_, hbheRHs);
   if(hbheRHs.isValid())
     fillHBHErecHit(hbheRHs);
@@ -3703,6 +3740,7 @@ void AODAnalyzer::analyze (const edm::Event &event, const edm::EventSetup &event
   // if(hoRHs.isValid())
   //   fillHOrecHit(hoRHs);
 
+  // fill PreshowerCluster
   edm::Handle<reco::PreshowerClusterCollection> prShs;
   event.getByToken(preshowerXToken_, prShs);
   if(prShs.isValid())
@@ -3717,72 +3755,67 @@ void AODAnalyzer::analyze (const edm::Event &event, const edm::EventSetup &event
   // event.getByToken(CastorTowerToken_, castorsz);
   // if(castorsz.isValid())
   //   fillCastorTower(castorsz);
-  //Lorentz vector
-   // Look for MET --LORENTZ VECTOR
-  // edm::Handle<reco::GenMETCollection> genMet;
-  // iEvent.getByToken(MCMET_, genMet);
-  // LorentzVector MET(0.,0.,0.,0.);
-  // if(genMet.isValid()){
-  //   MET = LorentzVector(
-  //       genMet->front().px(),
-  //       genMet->front().py(),
-  //       0,
-  //       genMet->front().pt()
-  //   );
-  // }     
-  // product_MET->push_back(MET);
-
-  //  ANOTHER line I found --   reco::MET::LorentzVector p4(mhx, mhy, 0, sqrt(mhx*mhx + mhy*mhy));
-  // ANOTHER LINE i found --    Particle::LorentzVector p,p1,p2;
-
-  //   // Take the SA container       -- LORENTZ
-  // LogTrace(metname)<<" Taking the StandAlone muons: "<<theSACollectionLabel;
-  // Handle<TrackCollection> tracks; 
-  // event.getByToken(tracksToken,tracks);
-
-  // // Create a RecoChargedCandidate collection
-  // LogTrace(metname)<<" Creating the RecoChargedCandidate collection";
-  // auto candidates = std::make_unique<RecoChargedCandidateCollection>();
-
-  // for (unsigned int i=0; i<tracks->size(); i++) {
-  //     TrackRef tkref(tracks,i);
-  //     Particle::Charge q = tkref->charge();
-  //     Particle::LorentzVector p4(tkref->px(), tkref->py(), tkref->pz(), tkref->p());
-  //     Particle::Point vtx(tkref->vx(),tkref->vy(), tkref->vz());
-  //     int pid = 13;
-  //     if(abs(q)==1) pid = q < 0 ? 13 : -13;
-  //     else LogWarning(metname) << "L2MuonCandidate has charge = "<<q;
-  //     RecoChargedCandidate cand(q, p4, vtx, pid);
-  //     cand.setTrack(tkref);
-  //     candidates->push_back(cand);
-  // }                                -- LORENTZ
 
 
-   ///        --lorentz
-  // if(selectedMuons.size() == 4){
-  //   reco::Candidate::LorentzVector p4CM;
-  //   for (pat::MuonCollection::const_iterator muon = selectedMuons.begin();  muon != selectedMuons.end(); ++muon){
-  //     p4CM = p4CM + muon->p4();
-  //   }
-  //   h4MuInvMass->Fill(p4CM.mass());
-  // }    --lorentz
+  // -----------------------------------------------------------------
+  // --------Hunt for pathRates---------------------------------------
+    // This was in https://github.com/deguio/Analyzers/blob/master/miniAODAnalyzer/plugins/miniAODAnalyzer.cc#L518
+   //=====================================================================================================================================
+  const edm::TriggerNames &names = event.triggerNames(*triggerBits);
+  for (unsigned int i = 0, n = triggerBits->size(); i < n; ++i) 
+    {
+      if(rateMap.find(names.triggerName(i)) != rateMap.end())
+  rateMap[names.triggerName(i)] += triggerPrescales->getPrescaleForIndex(i)*triggerBits->accept(i);
+      else
+  rateMap[names.triggerName(i)] = triggerPrescales->getPrescaleForIndex(i)*triggerBits->accept(i);
+
+      std::cout << names.triggerName(i) << " " << triggerPrescales->getPrescaleForIndex(i) << " " << triggerBits->accept(i) << std::endl;
+  ======================================================================================================================================
+
+
+
+
+
 
   //fill hlt
  //<pat::PackedTriggerPrescales> triggerPrescales_;   //ERROR here
 
+ // int prescaleSet(const edm::Event& iEvent, const edm::EventSetup& iSetup) const; 
+ // const int prescaleFactorSetIndex(const edm::Event& iEvent);
+  // const edm::TriggerNames &names = event.triggerNames(*triggerBits);
 
-  
- //  const edm::TriggerNames &names = event.triggerNames(*triggerBits);
- //  for (unsigned int i = 0, n = triggerBits->size(); i < n; ++i) 
- //    {
- //      if(rateMap.find(names.triggerName(i)) != rateMap.end())
-	// rateMap[names.triggerName(i)] += triggerPrescales->getPrescaleForIndex(i)*triggerBits->accept(i); //triggerPrescales
- //     else
-	// rateMap[names.triggerName(i)] = triggerPrescales->getPrescaleForIndex(i)*triggerBits->accept(i); //triggerprecales
 
- //      std::cout << names.triggerName(i) << " " << triggerPrescales->getPrescaleForIndex(i) << " " << triggerBits->accept(i) << std::endl; //triggerprescales
-										     
- //    }
+    // const std::vector<std::string>& triggerNames =
+    //   hltConfigProvider_.triggerNames();
+//  bool isConfigChanged = false;
+
+//     isValidHltConfig_ =
+//     hltConfigProvider_.init(r, edm::EventSetup, trigTag_.process(), isConfigChanged);
+
+
+
+   const std::vector<std::string>& triggerNames =
+        hltConfigProvider_.triggerNames();
+    for (size_t ts = 0; ts < triggerNames.size(); ts++) {
+      std::string trig = triggerNames[ts];
+
+        std::cout << "HLT name " << trig;
+        // See if the trigger is prescaled;
+        /// number of prescale sets available
+        const unsigned int prescaleSize = hltConfigProvider_.prescaleSize();
+        for (unsigned int ps = 0; ps < prescaleSize; ps++) 
+          {
+            const unsigned int prescaleValue = hltConfigProvider_.prescaleValue(ps, trig);
+                std::cout << prescaleValue << " ";
+          //  std::cout<< " prescaleValue[" << ps << "] =" << prescaleValue
+            //<<std::endl;
+    
+           }
+          std::cout << std::endl;
+  }
+
+  // --------------------------------------------------------------
+  // ---------------------------------------------------------------
 }
 
 
@@ -3869,8 +3902,6 @@ AODAnalyzer::readJSONFile(const std::string& inFileName)
 
 
 
-
-
 bool AODAnalyzer::AcceptEventByRunAndLumiSection(const int& runId, const int& lumiId,
 						       std::map<int, std::vector<std::pair<int, int> > >& jsonMap)
 {
@@ -3893,10 +3924,6 @@ bool AODAnalyzer::AcceptEventByRunAndLumiSection(const int& runId, const int& lu
   
   return true;
 }
-
-
-
-
 
 
 

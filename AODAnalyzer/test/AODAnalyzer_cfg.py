@@ -10,7 +10,8 @@ process.source = cms.Source("PoolSource",
                                    # '/store/data/Run2016G/ZeroBias/MINIAOD/PromptReco-v1/000/280/385/00000/08080C9F-C078-E611-AEF1-FA163E5647FC.root',
                                    # '/store/data/Run2016G/ZeroBias/MINIAOD/PromptReco-v1/000/280/385/00000/084B4FBE-C078-E611-9740-02163E013993.root',
                                    # '/store/data/Run2016G/ZeroBias/MINIAOD/PromptReco-v1/000/280/385/00000/0A6B1BD0-C078-E611-A332-02163E014113.root',
-                                   "/store/data/Run2016H/DoubleEG/AOD/PromptReco-v3/000/284/044/00000/42E8B572-A29F-E611-A76B-FA163E4C7CB3.root",
+                                   #"/store/data/Run2016H/DoubleEG/AOD/PromptReco-v3/000/284/044/00000/42E8B572-A29F-E611-A76B-FA163E4C7CB3.root",  #FILE I WAS testing all the time on
+                                   "/store/data/Run2016H/DoubleEG/AOD/18Apr2017-v1/10000/0018A28C-824D-E711-A0D1-0CC47A78A4BA.root" #one out of 5779 files in the pd production dataset
                         ),
                     secondaryFileNames = cms.untracked.vstring(),
 #                   lumisToProcess = cms.untracked.VLuminosityBlockRange('258158:1-258158:1786'),
@@ -54,7 +55,7 @@ process.MyAnalysis =cms.EDAnalyzer("AODAnalyzer",
                        vtx                     = cms.untracked.InputTag("offlinePrimaryVertices"),
                        bits                    = cms.untracked.InputTag("TriggerResults","","HLT"),  #should be fine
                        #prescales               = cms.untracked.InputTag("patTrigger"), # TriggerResults//PROBABLY get from https://github.com/cms-sw/cmssw/blob/master/DataFormats/PatCandidates/interface/TriggerEvent.h  ... ask about how
-                       #triggerResults          = cms.untracked.InputTag("TriggerResults","","HLT"),
+                       triggerResultsTag       = cms.untracked.InputTag("TriggerResults","","HLT"),
 
                        SuperClusterTag         = cms.untracked.InputTag("particleFlowEGamma"),
                        SuperClusterhfEMTag     = cms.untracked.InputTag("hfEMClusters"),
@@ -107,7 +108,7 @@ process.TFileService = cms.Service("TFileService",
                                    closeFileFast = cms.untracked.bool(False),
                                    )
  
-process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(-1))
+process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(100))
 process.options =  cms.untracked.PSet(
                    #allowUnscheduled = cms.untracked.bool(True),
                    wantSummary = cms.untracked.bool(True),
