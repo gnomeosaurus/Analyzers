@@ -705,7 +705,7 @@ private:
   edm::EDGetTokenT<reco::VertexCollection>  vtxToken_;
 
   edm::EDGetTokenT<edm::TriggerResults>     triggerBits_;
-  edm::EDGetTokenT<edm::TriggerResults>  triggerResultsToken_;
+  // edm::EDGetTokenT<edm::TriggerResults>  triggerResultsToken_;
   //edm::EDGetTokenT<pat::PackedTriggerPrescales> triggerPrescales_;  //pat::PackedTriggerPrescales is only present in miniAOD. Have to find alternative using TriggerResults
   
 
@@ -783,7 +783,7 @@ AODAnalyzer::AODAnalyzer(const edm::ParameterSet& cfg):
  
   vtxToken_                 (consumes<reco::VertexCollection>(cfg.getUntrackedParameter<edm::InputTag>("vtx"))),
   triggerBits_              (consumes<edm::TriggerResults>(cfg.getUntrackedParameter<edm::InputTag>("bits"))),
-  triggerResultsToken_      (consumes<edm::TriggerResults>(cfg.getUntrackedParameter<edm::InputTag>("triggerResultsTag"))),  // alternative for pat::PackedTriggerPrescales
+  // triggerResultsToken_      (consumes<edm::TriggerResults>(cfg.getUntrackedParameter<edm::InputTag>("triggerResultsTag"))),  // alternative for pat::PackedTriggerPrescales
   //triggerPrescales_         (consumes<pat::PackedTriggerPrescales>(cfg.getUntrackedParameter<edm::InputTag>("prescales"))),  // pat::PackedTriggerPrescales is not in AOD
   SuperClusterToken_        (consumes<reco::SuperClusterCollection>(cfg.getUntrackedParameter<edm::InputTag>("SuperClusterTag"))),
   SuperClusterhfEMToken_    (consumes<reco::SuperClusterCollection>(cfg.getUntrackedParameter<edm::InputTag>("SuperClusterhfEMTag"))),
@@ -3496,8 +3496,8 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
     {
       pathNames_->push_back(itr->first);
       pathRates_->push_back(itr->second/lumi_);
-       std::cout << "pathRates_: " << itr->second/lumi_ << std::endl; //TEST -- doesnt work
-       std::cout << "pathNames_: " << itr->first << std::endl; //TEST -- doesnt work
+       // std::cout << "pathRates_: " << itr->second/lumi_ << std::endl; //TEST -- works
+       // std::cout << "pathNames_: " << itr->first << std::endl; //TEST -- works
 
 
     }
@@ -3629,8 +3629,8 @@ void AODAnalyzer::analyze (const edm::Event &event, const edm::EventSetup &event
 
 
   // Prescales (alternative for pat::PackedTriggerPrescales in order to get pathRates)
-  edm::Handle<edm::TriggerResults> triggerResults;
-  event.getByToken(triggerResultsToken_, triggerResults);
+  // edm::Handle<edm::TriggerResults> triggerResults;
+  // event.getByToken(triggerResultsToken_, triggerResults);
 
   // edm::Handle<pat::PackedTriggerPrescales> triggerPrescales;
   // event.getByToken(triggerPrescales_, triggerPrescales);
@@ -3761,59 +3761,65 @@ void AODAnalyzer::analyze (const edm::Event &event, const edm::EventSetup &event
   // --------Hunt for pathRates---------------------------------------
     // This was in https://github.com/deguio/Analyzers/blob/master/miniAODAnalyzer/plugins/miniAODAnalyzer.cc#L518
    //=====================================================================================================================================
-  const edm::TriggerNames &names = event.triggerNames(*triggerBits);
-  for (unsigned int i = 0, n = triggerBits->size(); i < n; ++i) 
-    {
-      if(rateMap.find(names.triggerName(i)) != rateMap.end())
-  rateMap[names.triggerName(i)] += triggerPrescales->getPrescaleForIndex(i)*triggerBits->accept(i);
-      else
-  rateMap[names.triggerName(i)] = triggerPrescales->getPrescaleForIndex(i)*triggerBits->accept(i);
-
-      std::cout << names.triggerName(i) << " " << triggerPrescales->getPrescaleForIndex(i) << " " << triggerBits->accept(i) << std::endl;
-  ======================================================================================================================================
-
-
-
-
-
-
-  //fill hlt
- //<pat::PackedTriggerPrescales> triggerPrescales_;   //ERROR here
-
- // int prescaleSet(const edm::Event& iEvent, const edm::EventSetup& iSetup) const; 
- // const int prescaleFactorSetIndex(const edm::Event& iEvent);
   // const edm::TriggerNames &names = event.triggerNames(*triggerBits);
+  // for (unsigned int i = 0, n = triggerBits->size(); i < n; ++i) 
+  //   {
+  //     if(rateMap.find(names.triggerName(i)) != rateMap.end())
+  // rateMap[names.triggerName(i)] += triggerPrescales->getPrescaleForIndex(i)*triggerBits->accept(i);
+  //     else
+  // rateMap[names.triggerName(i)] = triggerPrescales->getPrescaleForIndex(i)*triggerBits->accept(i);
 
+  //     std::cout << names.triggerName(i) << " " << triggerPrescales->getPrescaleForIndex(i) << " " << triggerBits->accept(i) << std::endl;
+  // ======================================================================================================================================
 
-    // const std::vector<std::string>& triggerNames =
-    //   hltConfigProvider_.triggerNames();
-//  bool isConfigChanged = false;
+ //PLAYGROUND-------------------------
 
-//     isValidHltConfig_ =
-//     hltConfigProvider_.init(r, edm::EventSetup, trigTag_.process(), isConfigChanged);
+   const edm::TriggerNames &names = event.triggerNames(*triggerBits);
+   const std::vector<std::string>& triggerNames = hltConfigProvider_.triggerNames();
+   for (size_t ts = 0; ts < triggerNames.size(); ts++) {
+       std::string trig = triggerNames[ts]; //--adding because of test
 
+        // std::cout << "HLT name " << trig;  //adding because of test
 
-
-   const std::vector<std::string>& triggerNames =
-        hltConfigProvider_.triggerNames();
-    for (size_t ts = 0; ts < triggerNames.size(); ts++) {
-      std::string trig = triggerNames[ts];
-
-        std::cout << "HLT name " << trig;
-        // See if the trigger is prescaled;
-        /// number of prescale sets available
-        const unsigned int prescaleSize = hltConfigProvider_.prescaleSize();
+    const unsigned int prescaleSize = hltConfigProvider_.prescaleSize();
         for (unsigned int ps = 0; ps < prescaleSize; ps++) 
           {
             const unsigned int prescaleValue = hltConfigProvider_.prescaleValue(ps, trig);
-                std::cout << prescaleValue << " ";
-          //  std::cout<< " prescaleValue[" << ps << "] =" << prescaleValue
-            //<<std::endl;
-    
-           }
-          std::cout << std::endl;
-  }
+               if(rateMap.find(names.triggerName(ts)) != rateMap.end())
+                  rateMap[names.triggerName(ts)] += prescaleValue;
+               else
+                  rateMap[names.triggerName(ts)] = prescaleValue;
+                // std::cout << prescaleValue << " ";  //adding because of test
+          }
+          // std::cout << std::endl; //adding because of test
+      }
 
+
+
+
+
+ //PLAYGROUND ENDS...-------------------------------------
+  // FEDES CODE
+  //  const std::vector<std::string>& triggerNames =
+  //       hltConfigProvider_.triggerNames();
+  //   for (size_t ts = 0; ts < triggerNames.size(); ts++) {
+  //     std::string trig = triggerNames[ts];
+
+  //       std::cout << "HLT name " << trig;
+  //       // See if the trigger is prescaled;
+  //       /// number of prescale sets available
+  //       const unsigned int prescaleSize = hltConfigProvider_.prescaleSize();
+  //       for (unsigned int ps = 0; ps < prescaleSize; ps++) 
+  //         {
+  //           const unsigned int prescaleValue = hltConfigProvider_.prescaleValue(ps, trig);
+  //               std::cout << prescaleValue << " ";
+  //         //  std::cout<< " prescaleValue[" << ps << "] =" << prescaleValue
+  //           //<<std::endl;
+    
+  //          }
+  //         std::cout << std::endl;
+  // }
+  // FEDES CODE
   // --------------------------------------------------------------
   // ---------------------------------------------------------------
 }
