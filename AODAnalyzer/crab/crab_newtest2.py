@@ -17,7 +17,7 @@ config.JobType.maxJobRuntimeMin = 2750 #45 h
 config.section_('Data')
 # config.Data.inputDataset = '/DoubleEG/Run2016H-PromptReco-v1/AOD'
 config.Data.inputDataset = '/DoubleEG/Run2016H-18Apr2017-v1/AOD'
-config.Data.unitsPerJob = 40 #without '' since it must be an int
+config.Data.unitsPerJob = 80 #without '' since it must be an int
 config.Data.splitting = 'LumiBased'
 config.Data.publication = False
 config.Data.runRange = '281613-282000'
