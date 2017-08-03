@@ -108,7 +108,7 @@ process.TFileService = cms.Service("TFileService",
                                    closeFileFast = cms.untracked.bool(False),
                                    )
  
-process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(1000))
+process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(3))
 process.options =  cms.untracked.PSet(
                    #allowUnscheduled = cms.untracked.bool(True),
                    wantSummary = cms.untracked.bool(True),
