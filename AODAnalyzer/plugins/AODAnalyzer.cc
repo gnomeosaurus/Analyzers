@@ -176,7 +176,7 @@ private:
 
   //___________________________Sorted variables end here.
 
-   template<typename PFJet8CHSCollection>
+  template<typename PFJet8CHSCollection>
   void fill8CHSJets(const edm::Handle<PFJet8CHSCollection> &, std::string );
 
   template<typename PFJetEICollection>
@@ -414,27 +414,27 @@ private:
   std::vector<float>* PFJet8CHSSDPhi_;
 
 
-  // //8CHSSoftDrop sorted variables
-  // std::vector<float>* PFJet8CHSSD0Pt_;
-  // std::vector<float>* PFJet8CHSSD1Pt_;
-  // std::vector<float>* PFJet8CHSSD2Pt_;
-  // std::vector<float>* PFJet8CHSSD3Pt_;
-  // std::vector<float>* PFJet8CHSSD4Pt_;
-  // std::vector<float>* PFJet8CHSSD5Pt_;
+  //8CHSSoftDrop sorted variables
+  std::vector<float>* PFJet8CHSSD0Pt_;
+  std::vector<float>* PFJet8CHSSD1Pt_;
+  std::vector<float>* PFJet8CHSSD2Pt_;
+  std::vector<float>* PFJet8CHSSD3Pt_;
+  std::vector<float>* PFJet8CHSSD4Pt_;
+  std::vector<float>* PFJet8CHSSD5Pt_;
 
-  // std::vector<float>* PFJet8CHSSD0Eta_;
-  // std::vector<float>* PFJet8CHSSD1Eta_;
-  // std::vector<float>* PFJet8CHSSD2Eta_;
-  // std::vector<float>* PFJet8CHSSD3Eta_;
-  // std::vector<float>* PFJet8CHSSD4Eta_;
-  // std::vector<float>* PFJet8CHSSD5Eta_;
+  std::vector<float>* PFJet8CHSSD0Eta_;
+  std::vector<float>* PFJet8CHSSD1Eta_;
+  std::vector<float>* PFJet8CHSSD2Eta_;
+  std::vector<float>* PFJet8CHSSD3Eta_;
+  std::vector<float>* PFJet8CHSSD4Eta_;
+  std::vector<float>* PFJet8CHSSD5Eta_;
 
-  // std::vector<float>* PFJet8CHSSD0Phi_;
-  // std::vector<float>* PFJet8CHSSD1Phi_;
-  // std::vector<float>* PFJet8CHSSD2Phi_;
-  // std::vector<float>* PFJet8CHSSD3Phi_;
-  // std::vector<float>* PFJet8CHSSD4Phi_;
-  // std::vector<float>* PFJet8CHSSD5Phi_;
+  std::vector<float>* PFJet8CHSSD0Phi_;
+  std::vector<float>* PFJet8CHSSD1Phi_;
+  std::vector<float>* PFJet8CHSSD2Phi_;
+  std::vector<float>* PFJet8CHSSD3Phi_;
+  std::vector<float>* PFJet8CHSSD4Phi_;
+  std::vector<float>* PFJet8CHSSD5Phi_;
 
 
   //TopCHS variables
@@ -443,27 +443,27 @@ private:
   std::vector<float>* PFJetTopCHSPhi_;
 
 
-  // //TopCHS sorted variables
-  // std::vector<float>* PFJetTopCHS0Pt_;
-  // std::vector<float>* PFJetTopCHS1Pt_;
-  // std::vector<float>* PFJetTopCHS2Pt_;
-  // std::vector<float>* PFJetTopCHS3Pt_;
-  // std::vector<float>* PFJetTopCHS4Pt_;
-  // std::vector<float>* PFJetTopCHS5Pt_;
+  //TopCHS sorted variables
+  std::vector<float>* PFJetTopCHS0Pt_;
+  std::vector<float>* PFJetTopCHS1Pt_;
+  std::vector<float>* PFJetTopCHS2Pt_;
+  std::vector<float>* PFJetTopCHS3Pt_;
+  std::vector<float>* PFJetTopCHS4Pt_;
+  std::vector<float>* PFJetTopCHS5Pt_;
 
-  // std::vector<float>* PFJetTopCHS0Eta_;
-  // std::vector<float>* PFJetTopCHS1Eta_;
-  // std::vector<float>* PFJetTopCHS2Eta_;
-  // std::vector<float>* PFJetTopCHS3Eta_;
-  // std::vector<float>* PFJetTopCHS4Eta_;
-  // std::vector<float>* PFJetTopCHS5Eta_;
+  std::vector<float>* PFJetTopCHS0Eta_;
+  std::vector<float>* PFJetTopCHS1Eta_;
+  std::vector<float>* PFJetTopCHS2Eta_;
+  std::vector<float>* PFJetTopCHS3Eta_;
+  std::vector<float>* PFJetTopCHS4Eta_;
+  std::vector<float>* PFJetTopCHS5Eta_;
 
-  // std::vector<float>* PFJetTopCHS0Phi_;
-  // std::vector<float>* PFJetTopCHS1Phi_;
-  // std::vector<float>* PFJetTopCHS2Phi_;
-  // std::vector<float>* PFJetTopCHS3Phi_;
-  // std::vector<float>* PFJetTopCHS4Phi_;
-  // std::vector<float>* PFJetTopCHS5Phi_;
+  std::vector<float>* PFJetTopCHS0Phi_;
+  std::vector<float>* PFJetTopCHS1Phi_;
+  std::vector<float>* PFJetTopCHS2Phi_;
+  std::vector<float>* PFJetTopCHS3Phi_;
+  std::vector<float>* PFJetTopCHS4Phi_;
+  std::vector<float>* PFJetTopCHS5Phi_;
 
 
   //PFChMet variables
@@ -942,49 +942,49 @@ private:
   std::vector<float>* qPFJetEI4Phi_;
   std::vector<float>* qPFJetEI5Phi_;
 
-  // //8CHSSoftDrop sorted variables
-  // std::vector<float>* qPFJet8CHSSD0Pt_;
-  // std::vector<float>* qPFJet8CHSSD1Pt_;
-  // std::vector<float>* qPFJet8CHSSD2Pt_;
-  // std::vector<float>* qPFJet8CHSSD3Pt_;
-  // std::vector<float>* qPFJet8CHSSD4Pt_;
-  // std::vector<float>* qPFJet8CHSSD5Pt_;
+  //8CHSSoftDrop sorted variables
+  std::vector<float>* qPFJet8CHSSD0Pt_;
+  std::vector<float>* qPFJet8CHSSD1Pt_;
+  std::vector<float>* qPFJet8CHSSD2Pt_;
+  std::vector<float>* qPFJet8CHSSD3Pt_;
+  std::vector<float>* qPFJet8CHSSD4Pt_;
+  std::vector<float>* qPFJet8CHSSD5Pt_;
 
-  // std::vector<float>* qPFJet8CHSSD0Eta_;
-  // std::vector<float>* qPFJet8CHSSD1Eta_;
-  // std::vector<float>* qPFJet8CHSSD2Eta_;
-  // std::vector<float>* qPFJet8CHSSD3Eta_;
-  // std::vector<float>* qPFJet8CHSSD4Eta_;
-  // std::vector<float>* qPFJet8CHSSD5Eta_;
+  std::vector<float>* qPFJet8CHSSD0Eta_;
+  std::vector<float>* qPFJet8CHSSD1Eta_;
+  std::vector<float>* qPFJet8CHSSD2Eta_;
+  std::vector<float>* qPFJet8CHSSD3Eta_;
+  std::vector<float>* qPFJet8CHSSD4Eta_;
+  std::vector<float>* qPFJet8CHSSD5Eta_;
 
-  // std::vector<float>* qPFJet8CHSSD0Phi_;
-  // std::vector<float>* qPFJet8CHSSD1Phi_;
-  // std::vector<float>* qPFJet8CHSSD2Phi_;
-  // std::vector<float>* qPFJet8CHSSD3Phi_;
-  // std::vector<float>* qPFJet8CHSSD4Phi_;
-  // std::vector<float>* qPFJet8CHSSD5Phi_;
+  std::vector<float>* qPFJet8CHSSD0Phi_;
+  std::vector<float>* qPFJet8CHSSD1Phi_;
+  std::vector<float>* qPFJet8CHSSD2Phi_;
+  std::vector<float>* qPFJet8CHSSD3Phi_;
+  std::vector<float>* qPFJet8CHSSD4Phi_;
+  std::vector<float>* qPFJet8CHSSD5Phi_;
 
-  // //TopCHS sorted variables
-  // std::vector<float>* qPFJetTopCHS0Pt_;
-  // std::vector<float>* qPFJetTopCHS1Pt_;
-  // std::vector<float>* qPFJetTopCHS2Pt_;
-  // std::vector<float>* qPFJetTopCHS3Pt_;
-  // std::vector<float>* qPFJetTopCHS4Pt_;
-  // std::vector<float>* qPFJetTopCHS5Pt_;
+  //TopCHS sorted variables
+  std::vector<float>* qPFJetTopCHS0Pt_;
+  std::vector<float>* qPFJetTopCHS1Pt_;
+  std::vector<float>* qPFJetTopCHS2Pt_;
+  std::vector<float>* qPFJetTopCHS3Pt_;
+  std::vector<float>* qPFJetTopCHS4Pt_;
+  std::vector<float>* qPFJetTopCHS5Pt_;
 
-  // std::vector<float>* qPFJetTopCHS0Eta_;
-  // std::vector<float>* qPFJetTopCHS1Eta_;
-  // std::vector<float>* qPFJetTopCHS2Eta_;
-  // std::vector<float>* qPFJetTopCHS3Eta_;
-  // std::vector<float>* qPFJetTopCHS4Eta_;
-  // std::vector<float>* qPFJetTopCHS5Eta_;
+  std::vector<float>* qPFJetTopCHS0Eta_;
+  std::vector<float>* qPFJetTopCHS1Eta_;
+  std::vector<float>* qPFJetTopCHS2Eta_;
+  std::vector<float>* qPFJetTopCHS3Eta_;
+  std::vector<float>* qPFJetTopCHS4Eta_;
+  std::vector<float>* qPFJetTopCHS5Eta_;
 
-  // std::vector<float>* qPFJetTopCHS0Phi_;
-  // std::vector<float>* qPFJetTopCHS1Phi_;
-  // std::vector<float>* qPFJetTopCHS2Phi_;
-  // std::vector<float>* qPFJetTopCHS3Phi_;
-  // std::vector<float>* qPFJetTopCHS4Phi_;
-  // std::vector<float>* qPFJetTopCHS5Phi_;
+  std::vector<float>* qPFJetTopCHS0Phi_;
+  std::vector<float>* qPFJetTopCHS1Phi_;
+  std::vector<float>* qPFJetTopCHS2Phi_;
+  std::vector<float>* qPFJetTopCHS3Phi_;
+  std::vector<float>* qPFJetTopCHS4Phi_;
+  std::vector<float>* qPFJetTopCHS5Phi_;
 
 //______________________________________
   std::vector<float>* qPFJet4CHSPt_;
@@ -1621,48 +1621,48 @@ void AODAnalyzer::initialize()
   PFJetEI4Phi_->clear();
   PFJetEI5Phi_->clear();
 
-  // //8CHSSoftDrop sorted variables
-  // PFJet8CHSSD0Pt_->clear();
-  // PFJet8CHSSD1Pt_->clear();
-  // PFJet8CHSSD2Pt_->clear();
-  // PFJet8CHSSD3Pt_->clear();
-  // PFJet8CHSSD4Pt_->clear();
-  // PFJet8CHSSD5Pt_->clear();
+  //8CHSSoftDrop sorted variables
+  PFJet8CHSSD0Pt_->clear();
+  PFJet8CHSSD1Pt_->clear();
+  PFJet8CHSSD2Pt_->clear();
+  PFJet8CHSSD3Pt_->clear();
+  PFJet8CHSSD4Pt_->clear();
+  PFJet8CHSSD5Pt_->clear();
 
-  // PFJet8CHSSD0Eta_->clear();
-  // PFJet8CHSSD1Eta_->clear();
-  // PFJet8CHSSD2Eta_->clear();
-  // PFJet8CHSSD3Eta_->clear();
-  // PFJet8CHSSD4Eta_->clear();
-  // PFJet8CHSSD5Eta_->clear();
+  PFJet8CHSSD0Eta_->clear();
+  PFJet8CHSSD1Eta_->clear();
+  PFJet8CHSSD2Eta_->clear();
+  PFJet8CHSSD3Eta_->clear();
+  PFJet8CHSSD4Eta_->clear();
+  PFJet8CHSSD5Eta_->clear();
 
-  // PFJet8CHSSD0Phi_->clear();
-  // PFJet8CHSSD1Phi_->clear();
-  // PFJet8CHSSD2Phi_->clear();
-  // PFJet8CHSSD3Phi_->clear();
-  // PFJet8CHSSD4Phi_->clear();
-  // PFJet8CHSSD5Phi_->clear();
-  // //TopCHS sorted variables
-  // PFJetTopCHS0Pt_->clear();
-  // PFJetTopCHS1Pt_->clear();
-  // PFJetTopCHS2Pt_->clear();
-  // PFJetTopCHS3Pt_->clear();
-  // PFJetTopCHS4Pt_->clear();
-  // PFJetTopCHS5Pt_->clear();
+  PFJet8CHSSD0Phi_->clear();
+  PFJet8CHSSD1Phi_->clear();
+  PFJet8CHSSD2Phi_->clear();
+  PFJet8CHSSD3Phi_->clear();
+  PFJet8CHSSD4Phi_->clear();
+  PFJet8CHSSD5Phi_->clear();
+  //TopCHS sorted variables
+  PFJetTopCHS0Pt_->clear();
+  PFJetTopCHS1Pt_->clear();
+  PFJetTopCHS2Pt_->clear();
+  PFJetTopCHS3Pt_->clear();
+  PFJetTopCHS4Pt_->clear();
+  PFJetTopCHS5Pt_->clear();
 
-  // PFJetTopCHS0Eta_->clear();
-  // PFJetTopCHS1Eta_->clear();
-  // PFJetTopCHS2Eta_->clear();
-  // PFJetTopCHS3Eta_->clear();
-  // PFJetTopCHS4Eta_->clear();
-  // PFJetTopCHS5Eta_->clear();
+  PFJetTopCHS0Eta_->clear();
+  PFJetTopCHS1Eta_->clear();
+  PFJetTopCHS2Eta_->clear();
+  PFJetTopCHS3Eta_->clear();
+  PFJetTopCHS4Eta_->clear();
+  PFJetTopCHS5Eta_->clear();
 
-  // PFJetTopCHS0Phi_->clear();
-  // PFJetTopCHS1Phi_->clear();
-  // PFJetTopCHS2Phi_->clear();
-  // PFJetTopCHS3Phi_->clear();
-  // PFJetTopCHS4Phi_->clear();
-  // PFJetTopCHS5Phi_->clear();
+  PFJetTopCHS0Phi_->clear();
+  PFJetTopCHS1Phi_->clear();
+  PFJetTopCHS2Phi_->clear();
+  PFJetTopCHS3Phi_->clear();
+  PFJetTopCHS4Phi_->clear();
+  PFJetTopCHS5Phi_->clear();
 
 
   //CaloJet sorted variables
@@ -2128,48 +2128,48 @@ void AODAnalyzer::initialize()
   qPFJetEI4Phi_->clear();
   qPFJetEI5Phi_->clear();
 
-  // //8CHSSoftDrop sorted variables
-  // qPFJet8CHSSD0Pt_->clear();
-  // qPFJet8CHSSD1Pt_->clear();
-  // qPFJet8CHSSD2Pt_->clear();
-  // qPFJet8CHSSD3Pt_->clear();
-  // qPFJet8CHSSD4Pt_->clear();
-  // qPFJet8CHSSD5Pt_->clear();
+  //8CHSSoftDrop sorted variables
+  qPFJet8CHSSD0Pt_->clear();
+  qPFJet8CHSSD1Pt_->clear();
+  qPFJet8CHSSD2Pt_->clear();
+  qPFJet8CHSSD3Pt_->clear();
+  qPFJet8CHSSD4Pt_->clear();
+  qPFJet8CHSSD5Pt_->clear();
 
-  // qPFJet8CHSSD0Eta_->clear();
-  // qPFJet8CHSSD1Eta_->clear();
-  // qPFJet8CHSSD2Eta_->clear();
-  // qPFJet8CHSSD3Eta_->clear();
-  // qPFJet8CHSSD4Eta_->clear();
-  // qPFJet8CHSSD5Eta_->clear();
+  qPFJet8CHSSD0Eta_->clear();
+  qPFJet8CHSSD1Eta_->clear();
+  qPFJet8CHSSD2Eta_->clear();
+  qPFJet8CHSSD3Eta_->clear();
+  qPFJet8CHSSD4Eta_->clear();
+  qPFJet8CHSSD5Eta_->clear();
 
-  // qPFJet8CHSSD0Phi_->clear();
-  // qPFJet8CHSSD1Phi_->clear();
-  // qPFJet8CHSSD2Phi_->clear();
-  // qPFJet8CHSSD3Phi_->clear();
-  // qPFJet8CHSSD4Phi_->clear();
-  // qPFJet8CHSSD5Phi_->clear();
-  // //TopCHS sorted variables
-  // qPFJetTopCHS0Pt_->clear();
-  // qPFJetTopCHS1Pt_->clear();
-  // qPFJetTopCHS2Pt_->clear();
-  // qPFJetTopCHS3Pt_->clear();
-  // qPFJetTopCHS4Pt_->clear();
-  // qPFJetTopCHS5Pt_->clear();
+  qPFJet8CHSSD0Phi_->clear();
+  qPFJet8CHSSD1Phi_->clear();
+  qPFJet8CHSSD2Phi_->clear();
+  qPFJet8CHSSD3Phi_->clear();
+  qPFJet8CHSSD4Phi_->clear();
+  qPFJet8CHSSD5Phi_->clear();
+  //TopCHS sorted variables
+  qPFJetTopCHS0Pt_->clear();
+  qPFJetTopCHS1Pt_->clear();
+  qPFJetTopCHS2Pt_->clear();
+  qPFJetTopCHS3Pt_->clear();
+  qPFJetTopCHS4Pt_->clear();
+  qPFJetTopCHS5Pt_->clear();
 
-  // qPFJetTopCHS0Eta_->clear();
-  // qPFJetTopCHS1Eta_->clear();
-  // qPFJetTopCHS2Eta_->clear();
-  // qPFJetTopCHS3Eta_->clear();
-  // qPFJetTopCHS4Eta_->clear();
-  // qPFJetTopCHS5Eta_->clear();
+  qPFJetTopCHS0Eta_->clear();
+  qPFJetTopCHS1Eta_->clear();
+  qPFJetTopCHS2Eta_->clear();
+  qPFJetTopCHS3Eta_->clear();
+  qPFJetTopCHS4Eta_->clear();
+  qPFJetTopCHS5Eta_->clear();
 
-  // qPFJetTopCHS0Phi_->clear();
-  // qPFJetTopCHS1Phi_->clear();
-  // qPFJetTopCHS2Phi_->clear();
-  // qPFJetTopCHS3Phi_->clear();
-  // qPFJetTopCHS4Phi_->clear();
-  // qPFJetTopCHS5Phi_->clear();
+  qPFJetTopCHS0Phi_->clear();
+  qPFJetTopCHS1Phi_->clear();
+  qPFJetTopCHS2Phi_->clear();
+  qPFJetTopCHS3Phi_->clear();
+  qPFJetTopCHS4Phi_->clear();
+  qPFJetTopCHS5Phi_->clear();
 
 
   //CaloJet sorted variables
@@ -2549,12 +2549,73 @@ void AODAnalyzer::initialize()
   subsystemQuality_->clear();
 }
 
+// template<typename jetCollection>
+// std::vector<float> extractPts( const edm::Handle<jetCollection> & candidates, int padding ) {
+
+//   int j = 0;
+//   std::vector<float> result;
+//   typename jetCollection::const_iterator i = candidates->begin();
+
+//   for (;i != candidates->end(); i++ ){
+//     result.push_back( i->pt() );
+//     j++;
+//   }
+
+//   while( j < padding ) {
+//     result.push_back( 0 );
+//   }
+
+//   return result;
+
+// }
+// template<typename jetCollection>
+// std::vector<float> extractEtas( const edm::Handle<jetCollection> & candidates, int padding ) {
+
+//   int j = 0;
+//   std::vector<float> result;
+//   typename jetCollection::const_iterator i = candidates->begin();
+
+//   for (;i != candidates->end(); i++ ){
+//     result.push_back( i->eta() );
+//     j++;
+//   }
+
+//   while( j < padding ) {
+//     result.push_back( 0 );
+//   }
+
+//   return result;
+
+// }
+// template<typename jetCollection>
+// std::vector<float> extractPhis( const edm::Handle<jetCollection> & candidates, int padding ) {
+
+//   int j = 0;
+//   std::vector<float> result;
+//   typename jetCollection::const_iterator i = candidates->begin();
+
+//   for (;i != candidates->end(); i++ ){
+//     result.push_back( i->phi() );
+//     j++;
+//   }
+
+//   while( j < padding ) {
+//     result.push_back( 0 );
+//   }
+
+//   return result;
+
+// }
+
 template<typename jetCollection>
 void AODAnalyzer::fillJets(const edm::Handle<jetCollection> & jets, std::string type)
 {
   // Selected jets
   //reco::CaloJetCollection recojets;
   typename jetCollection::const_iterator i = jets->begin();
+
+
+
   for(;i != jets->end(); i++){
     // if(std::abs(i->eta()) < maxJetEta_ && i->pt() >= minJetPt_)
     //   {
@@ -2574,8 +2635,168 @@ void AODAnalyzer::fillJets(const edm::Handle<jetCollection> & jets, std::string 
 	  }
 	 
 
+  }
+  
+  
+  // std::vector<float> jetpeetees = extractPts(edm::Handle<reco::PFJetCollection>, std::int(6)); 
+
+
+
+
+    if ((jets->size())==0){
+
+  PFJet0Pt_->push_back(0); 
+  PFJet1Pt_->push_back(0); 
+  PFJet2Pt_->push_back(0); 
+  PFJet3Pt_->push_back(0); 
+  PFJet4Pt_->push_back(0); 
+  PFJet5Pt_->push_back(0); 
+
+  PFJet0Eta_->push_back(0);
+  PFJet1Eta_->push_back(0);
+  PFJet2Eta_->push_back(0);
+  PFJet3Eta_->push_back(0);
+  PFJet4Eta_->push_back(0);
+  PFJet5Eta_->push_back(0);
+
+  PFJet0Phi_->push_back(0);
+  PFJet1Phi_->push_back(0);
+  PFJet2Phi_->push_back(0);
+  PFJet3Phi_->push_back(0);
+  PFJet4Phi_->push_back(0);
+  PFJet5Phi_->push_back(0);
+   
+  }
+  
+  
+  else if ((jets->size())==1){
+
+  PFJet0Pt_->push_back(jets->begin()->pt());  
+  PFJet1Pt_->push_back(0); 
+  PFJet2Pt_->push_back(0); 
+  PFJet3Pt_->push_back(0); 
+  PFJet4Pt_->push_back(0); 
+  PFJet5Pt_->push_back(0); 
+
+  PFJet0Eta_->push_back(jets->begin()->eta()); 
+  PFJet1Eta_->push_back(0);
+  PFJet2Eta_->push_back(0);
+  PFJet3Eta_->push_back(0);
+  PFJet4Eta_->push_back(0);
+  PFJet5Eta_->push_back(0);
+
+  PFJet0Phi_->push_back(jets->begin()->phi()); 
+  PFJet1Phi_->push_back(0);
+  PFJet2Phi_->push_back(0);
+  PFJet3Phi_->push_back(0);
+  PFJet4Phi_->push_back(0);
+  PFJet5Phi_->push_back(0);
+
+  } 
+
+  else if ((jets->size())==2){ 
+ //PFJet1Pt_->push_back((jets->begin()+jets->size()/5)->pt()); 
+
+  PFJet0Pt_->push_back(jets->begin()->pt());  
+  PFJet1Pt_->push_back((jets->begin()+1)->pt());
+  PFJet2Pt_->push_back(0); 
+  PFJet3Pt_->push_back(0); 
+  PFJet4Pt_->push_back(0); 
+  PFJet5Pt_->push_back(0); 
+
+  PFJet0Eta_->push_back(jets->begin()->eta()); 
+  PFJet1Eta_->push_back((jets->begin()+1)->eta());  
+  PFJet2Eta_->push_back(0);
+  PFJet3Eta_->push_back(0);
+  PFJet4Eta_->push_back(0);
+  PFJet5Eta_->push_back(0);
+
+  PFJet0Phi_->push_back(jets->begin()->phi()); 
+  PFJet1Phi_->push_back((jets->begin()+1)->phi()); 
+  PFJet2Phi_->push_back(0);
+  PFJet3Phi_->push_back(0);
+  PFJet4Phi_->push_back(0);
+  PFJet5Phi_->push_back(0);
+    
+  
+  }
+
+  else if ((jets->size())==3){
+
+  PFJet0Pt_->push_back(jets->begin()->pt());  
+  PFJet1Pt_->push_back((jets->begin()+1)->pt());   
+  PFJet2Pt_->push_back((jets->begin()+2)->pt()); 
+  PFJet3Pt_->push_back(0); 
+  PFJet4Pt_->push_back(0); 
+  PFJet5Pt_->push_back(0); 
+
+  PFJet0Eta_->push_back(jets->begin()->eta()); 
+  PFJet1Eta_->push_back((jets->begin()+1)->eta()); 
+  PFJet2Eta_->push_back((jets->begin()+2)->eta()); 
+  PFJet3Eta_->push_back(0);
+  PFJet4Eta_->push_back(0);
+  PFJet5Eta_->push_back(0);
+
+  PFJet0Phi_->push_back(jets->begin()->phi()); 
+  PFJet1Phi_->push_back((jets->begin()+1)->phi()); 
+  PFJet2Phi_->push_back((jets->begin()+2)->phi()); 
+  PFJet3Phi_->push_back(0);
+  PFJet4Phi_->push_back(0);
+  PFJet5Phi_->push_back(0);
 
   }
+
+  else if ((jets->size())==4){
+
+  PFJet0Pt_->push_back(jets->begin()->pt());  
+  PFJet1Pt_->push_back((jets->begin()+1)->pt());  
+  PFJet2Pt_->push_back((jets->begin()+2)->pt()); 
+  PFJet3Pt_->push_back((jets->begin()+3)->pt());  
+  PFJet4Pt_->push_back(0); 
+  PFJet5Pt_->push_back(0); 
+
+  PFJet0Eta_->push_back(jets->begin()->eta()); 
+  PFJet1Eta_->push_back((jets->begin()+1)->eta()); 
+  PFJet2Eta_->push_back((jets->begin()+2)->eta()); 
+  PFJet3Eta_->push_back((jets->begin()+3)->eta());  
+  PFJet4Eta_->push_back(0);
+  PFJet5Eta_->push_back(0);
+
+  PFJet0Phi_->push_back(jets->begin()->phi()); 
+  PFJet1Phi_->push_back((jets->begin()+1)->phi()); 
+  PFJet2Phi_->push_back((jets->begin()+2)->phi()); 
+  PFJet3Phi_->push_back((jets->begin()+3)->phi());  
+  PFJet4Phi_->push_back(0);
+  PFJet5Phi_->push_back(0);  
+
+  }
+
+  else if ((jets->size())==5){
+
+  PFJet0Pt_->push_back(jets->begin()->pt());  
+  PFJet1Pt_->push_back((jets->begin()+1)->pt()); 
+  PFJet2Pt_->push_back((jets->begin()+2)->pt()); 
+  PFJet3Pt_->push_back((jets->begin()+3)->pt());  
+  PFJet4Pt_->push_back((jets->begin()+4)->pt()); 
+  PFJet5Pt_->push_back(0); 
+
+  PFJet0Eta_->push_back(jets->begin()->eta()); 
+  PFJet1Eta_->push_back((jets->begin()+1)->eta());
+  PFJet2Eta_->push_back((jets->begin()+2)->eta()); 
+  PFJet3Eta_->push_back((jets->begin()+3)->eta());  
+  PFJet4Eta_->push_back((jets->begin()+4)->eta());  
+  PFJet5Eta_->push_back(0);
+
+  PFJet0Phi_->push_back(jets->begin()->phi()); 
+  PFJet1Phi_->push_back((jets->begin()+1)->phi());
+  PFJet2Phi_->push_back((jets->begin()+2)->phi()); 
+  PFJet3Phi_->push_back((jets->begin()+3)->phi()); 
+  PFJet4Phi_->push_back((jets->begin()+4)->phi());  
+  PFJet5Phi_->push_back(0);  
+
+  }
+
+  else{
         // std::cout << "end of Jets collision "  << std::endl; //TODO
   PFJet0Pt_->push_back(jets->begin()->pt()); 
           // std::cout << "ele Jet 0pt: " << (jets->begin()->pt())   << std::endl;
@@ -2631,6 +2852,10 @@ void AODAnalyzer::fillJets(const edm::Handle<jetCollection> & jets, std::string 
   PFJet5Phi_->push_back((jets->begin()+jets->size()-1)->phi());
        // std::cout << "ele Jet 5Phi: " << ((jets->begin()+jets->size()-1)->phi())   << std::endl;             
      
+}
+
+
+
   return;
 }
 
@@ -2663,7 +2888,160 @@ void AODAnalyzer::fill4CHSJets(const edm::Handle<PFJet4CHSCollection> & jets4CHS
       // }
   }
 
-        // std::cout << "end of Jets collision "  << std::endl; //TODO
+    if ((jets4CHS->size())==0){
+
+  PFJet4CHS0Pt_->push_back(0); 
+  PFJet4CHS1Pt_->push_back(0); 
+  PFJet4CHS2Pt_->push_back(0); 
+  PFJet4CHS3Pt_->push_back(0); 
+  PFJet4CHS4Pt_->push_back(0); 
+  PFJet4CHS5Pt_->push_back(0); 
+
+  PFJet4CHS0Eta_->push_back(0);
+  PFJet4CHS1Eta_->push_back(0);
+  PFJet4CHS2Eta_->push_back(0);
+  PFJet4CHS3Eta_->push_back(0);
+  PFJet4CHS4Eta_->push_back(0);
+  PFJet4CHS5Eta_->push_back(0);
+
+  PFJet4CHS0Phi_->push_back(0);
+  PFJet4CHS1Phi_->push_back(0);
+  PFJet4CHS2Phi_->push_back(0);
+  PFJet4CHS3Phi_->push_back(0);
+  PFJet4CHS4Phi_->push_back(0);
+  PFJet4CHS5Phi_->push_back(0);
+   
+  }
+  
+  
+  else if ((jets4CHS->size())==1){
+
+  PFJet4CHS0Pt_->push_back(jets4CHS->begin()->pt());  
+  PFJet4CHS1Pt_->push_back(0); 
+  PFJet4CHS2Pt_->push_back(0); 
+  PFJet4CHS3Pt_->push_back(0); 
+  PFJet4CHS4Pt_->push_back(0); 
+  PFJet4CHS5Pt_->push_back(0); 
+
+  PFJet4CHS0Eta_->push_back(jets4CHS->begin()->eta()); 
+  PFJet4CHS1Eta_->push_back(0);
+  PFJet4CHS2Eta_->push_back(0);
+  PFJet4CHS3Eta_->push_back(0);
+  PFJet4CHS4Eta_->push_back(0);
+  PFJet4CHS5Eta_->push_back(0);
+
+  PFJet4CHS0Phi_->push_back(jets4CHS->begin()->phi()); 
+  PFJet4CHS1Phi_->push_back(0);
+  PFJet4CHS2Phi_->push_back(0);
+  PFJet4CHS3Phi_->push_back(0);
+  PFJet4CHS4Phi_->push_back(0);
+  PFJet4CHS5Phi_->push_back(0);
+
+  } 
+
+  else if ((jets4CHS->size())==2){ 
+
+  PFJet4CHS0Pt_->push_back(jets4CHS->begin()->pt());  
+  PFJet4CHS1Pt_->push_back((jets4CHS->begin()+1)->pt());
+  PFJet4CHS2Pt_->push_back(0); 
+  PFJet4CHS3Pt_->push_back(0); 
+  PFJet4CHS4Pt_->push_back(0); 
+  PFJet4CHS5Pt_->push_back(0); 
+
+  PFJet4CHS0Eta_->push_back(jets4CHS->begin()->eta()); 
+  PFJet4CHS1Eta_->push_back((jets4CHS->begin()+1)->eta());  
+  PFJet4CHS2Eta_->push_back(0);
+  PFJet4CHS3Eta_->push_back(0);
+  PFJet4CHS4Eta_->push_back(0);
+  PFJet4CHS5Eta_->push_back(0);
+
+  PFJet4CHS0Phi_->push_back(jets4CHS->begin()->phi()); 
+  PFJet4CHS1Phi_->push_back((jets4CHS->begin()+1)->phi()); 
+  PFJet4CHS2Phi_->push_back(0);
+  PFJet4CHS3Phi_->push_back(0);
+  PFJet4CHS4Phi_->push_back(0);
+  PFJet4CHS5Phi_->push_back(0);
+    
+  
+  }
+
+  else if ((jets4CHS->size())==3){
+
+  PFJet4CHS0Pt_->push_back(jets4CHS->begin()->pt());  
+  PFJet4CHS1Pt_->push_back((jets4CHS->begin()+1)->pt());   
+  PFJet4CHS2Pt_->push_back((jets4CHS->begin()+2)->pt()); 
+  PFJet4CHS3Pt_->push_back(0); 
+  PFJet4CHS4Pt_->push_back(0); 
+  PFJet4CHS5Pt_->push_back(0); 
+
+  PFJet4CHS0Eta_->push_back(jets4CHS->begin()->eta()); 
+  PFJet4CHS1Eta_->push_back((jets4CHS->begin()+1)->eta()); 
+  PFJet4CHS2Eta_->push_back((jets4CHS->begin()+2)->eta()); 
+  PFJet4CHS3Eta_->push_back(0);
+  PFJet4CHS4Eta_->push_back(0);
+  PFJet4CHS5Eta_->push_back(0);
+
+  PFJet4CHS0Phi_->push_back(jets4CHS->begin()->phi()); 
+  PFJet4CHS1Phi_->push_back((jets4CHS->begin()+1)->phi()); 
+  PFJet4CHS2Phi_->push_back((jets4CHS->begin()+2)->phi()); 
+  PFJet4CHS3Phi_->push_back(0);
+  PFJet4CHS4Phi_->push_back(0);
+  PFJet4CHS5Phi_->push_back(0);
+
+  }
+
+  else if ((jets4CHS->size())==4){
+
+  PFJet4CHS0Pt_->push_back(jets4CHS->begin()->pt());  
+  PFJet4CHS1Pt_->push_back((jets4CHS->begin()+1)->pt());  
+  PFJet4CHS2Pt_->push_back((jets4CHS->begin()+2)->pt()); 
+  PFJet4CHS3Pt_->push_back((jets4CHS->begin()+3)->pt());  
+  PFJet4CHS4Pt_->push_back(0); 
+  PFJet4CHS5Pt_->push_back(0); 
+
+  PFJet4CHS0Eta_->push_back(jets4CHS->begin()->eta()); 
+  PFJet4CHS1Eta_->push_back((jets4CHS->begin()+1)->eta()); 
+  PFJet4CHS2Eta_->push_back((jets4CHS->begin()+2)->eta()); 
+  PFJet4CHS3Eta_->push_back((jets4CHS->begin()+3)->eta());  
+  PFJet4CHS4Eta_->push_back(0);
+  PFJet4CHS5Eta_->push_back(0);
+
+  PFJet4CHS0Phi_->push_back(jets4CHS->begin()->phi()); 
+  PFJet4CHS1Phi_->push_back((jets4CHS->begin()+1)->phi()); 
+  PFJet4CHS2Phi_->push_back((jets4CHS->begin()+2)->phi()); 
+  PFJet4CHS3Phi_->push_back((jets4CHS->begin()+3)->phi());  
+  PFJet4CHS4Phi_->push_back(0);
+  PFJet4CHS5Phi_->push_back(0);  
+
+  }
+
+  else if ((jets4CHS->size())==5){
+
+  PFJet4CHS0Pt_->push_back(jets4CHS->begin()->pt());  
+  PFJet4CHS1Pt_->push_back((jets4CHS->begin()+1)->pt()); 
+  PFJet4CHS2Pt_->push_back((jets4CHS->begin()+2)->pt()); 
+  PFJet4CHS3Pt_->push_back((jets4CHS->begin()+3)->pt());  
+  PFJet4CHS4Pt_->push_back((jets4CHS->begin()+4)->pt()); 
+  PFJet4CHS5Pt_->push_back(0); 
+
+  PFJet4CHS0Eta_->push_back(jets4CHS->begin()->eta()); 
+  PFJet4CHS1Eta_->push_back((jets4CHS->begin()+1)->eta());
+  PFJet4CHS2Eta_->push_back((jets4CHS->begin()+2)->eta()); 
+  PFJet4CHS3Eta_->push_back((jets4CHS->begin()+3)->eta());  
+  PFJet4CHS4Eta_->push_back((jets4CHS->begin()+4)->eta());  
+  PFJet4CHS5Eta_->push_back(0);
+
+  PFJet4CHS0Phi_->push_back(jets4CHS->begin()->phi()); 
+  PFJet4CHS1Phi_->push_back((jets4CHS->begin()+1)->phi());
+  PFJet4CHS2Phi_->push_back((jets4CHS->begin()+2)->phi()); 
+  PFJet4CHS3Phi_->push_back((jets4CHS->begin()+3)->phi()); 
+  PFJet4CHS4Phi_->push_back((jets4CHS->begin()+4)->phi());  
+  PFJet4CHS5Phi_->push_back(0);  
+
+  }
+
+  else{
+        // std::cout << "end of jets4CHS collision "  << std::endl; //TODO
   PFJet4CHS0Pt_->push_back(jets4CHS->begin()->pt()); 
           // std::cout << "ele Jet 0pt: " << (jets4CHS->begin()->pt())   << std::endl;
 
@@ -2716,7 +3094,9 @@ void AODAnalyzer::fill4CHSJets(const edm::Handle<PFJet4CHSCollection> & jets4CHS
         // std::cout << "ele Jet 4Phi: " << ((jets4CHS->begin()+jets4CHS->size()*4/5)->phi())  << std::endl; 
 
   PFJet4CHS5Phi_->push_back((jets4CHS->begin()+jets4CHS->size()-1)->phi());
-       // std::cout << "ele Jet 5Phi: " << ((jets4CHS->begin()+jets4CHS->size()-1)->phi())   << std::endl; 
+       // std::cout << "ele Jet 5Phi: " << ((jets4CHS->begin()+jets4CHS->size()-1)->phi())   << std::endl;             
+     
+}
 
 
 
@@ -2746,7 +3126,161 @@ void AODAnalyzer::fill8CHSJets(const edm::Handle<PFJet8CHSCollection> & jets8CHS
       // }
   }
 
-       // std::cout << "end of Jets collision "  << std::endl; //TODO
+  //      // std::cout << "end of Jets collision "  << std::endl; //TODO
+    if ((jets8CHS->size())==0){
+
+  PFJet8CHS0Pt_->push_back(0); 
+  PFJet8CHS1Pt_->push_back(0); 
+  PFJet8CHS2Pt_->push_back(0); 
+  PFJet8CHS3Pt_->push_back(0); 
+  PFJet8CHS4Pt_->push_back(0); 
+  PFJet8CHS5Pt_->push_back(0); 
+
+  PFJet8CHS0Eta_->push_back(0);
+  PFJet8CHS1Eta_->push_back(0);
+  PFJet8CHS2Eta_->push_back(0);
+  PFJet8CHS3Eta_->push_back(0);
+  PFJet8CHS4Eta_->push_back(0);
+  PFJet8CHS5Eta_->push_back(0);
+
+  PFJet8CHS0Phi_->push_back(0);
+  PFJet8CHS1Phi_->push_back(0);
+  PFJet8CHS2Phi_->push_back(0);
+  PFJet8CHS3Phi_->push_back(0);
+  PFJet8CHS4Phi_->push_back(0);
+  PFJet8CHS5Phi_->push_back(0);
+   
+  }
+  
+  
+  else if ((jets8CHS->size())==1){
+
+  PFJet8CHS0Pt_->push_back(jets8CHS->begin()->pt());  
+  PFJet8CHS1Pt_->push_back(0); 
+  PFJet8CHS2Pt_->push_back(0); 
+  PFJet8CHS3Pt_->push_back(0); 
+  PFJet8CHS4Pt_->push_back(0); 
+  PFJet8CHS5Pt_->push_back(0); 
+
+  PFJet8CHS0Eta_->push_back(jets8CHS->begin()->eta()); 
+  PFJet8CHS1Eta_->push_back(0);
+  PFJet8CHS2Eta_->push_back(0);
+  PFJet8CHS3Eta_->push_back(0);
+  PFJet8CHS4Eta_->push_back(0);
+  PFJet8CHS5Eta_->push_back(0);
+
+  PFJet8CHS0Phi_->push_back(jets8CHS->begin()->phi()); 
+  PFJet8CHS1Phi_->push_back(0);
+  PFJet8CHS2Phi_->push_back(0);
+  PFJet8CHS3Phi_->push_back(0);
+  PFJet8CHS4Phi_->push_back(0);
+  PFJet8CHS5Phi_->push_back(0);
+
+  } 
+
+  else if ((jets8CHS->size())==2){ 
+
+  PFJet8CHS0Pt_->push_back(jets8CHS->begin()->pt());  
+  PFJet8CHS1Pt_->push_back((jets8CHS->begin()+1)->pt());
+  PFJet8CHS2Pt_->push_back(0); 
+  PFJet8CHS3Pt_->push_back(0); 
+  PFJet8CHS4Pt_->push_back(0); 
+  PFJet8CHS5Pt_->push_back(0); 
+
+  PFJet8CHS0Eta_->push_back(jets8CHS->begin()->eta()); 
+  PFJet8CHS1Eta_->push_back((jets8CHS->begin()+1)->eta());  
+  PFJet8CHS2Eta_->push_back(0);
+  PFJet8CHS3Eta_->push_back(0);
+  PFJet8CHS4Eta_->push_back(0);
+  PFJet8CHS5Eta_->push_back(0);
+
+  PFJet8CHS0Phi_->push_back(jets8CHS->begin()->phi()); 
+  PFJet8CHS1Phi_->push_back((jets8CHS->begin()+1)->phi()); 
+  PFJet8CHS2Phi_->push_back(0);
+  PFJet8CHS3Phi_->push_back(0);
+  PFJet8CHS4Phi_->push_back(0);
+  PFJet8CHS5Phi_->push_back(0);
+    
+  
+  }
+
+  else if ((jets8CHS->size())==3){
+
+  PFJet8CHS0Pt_->push_back(jets8CHS->begin()->pt());  
+  PFJet8CHS1Pt_->push_back((jets8CHS->begin()+1)->pt());   
+  PFJet8CHS2Pt_->push_back((jets8CHS->begin()+2)->pt()); 
+  PFJet8CHS3Pt_->push_back(0); 
+  PFJet8CHS4Pt_->push_back(0); 
+  PFJet8CHS5Pt_->push_back(0); 
+
+  PFJet8CHS0Eta_->push_back(jets8CHS->begin()->eta()); 
+  PFJet8CHS1Eta_->push_back((jets8CHS->begin()+1)->eta()); 
+  PFJet8CHS2Eta_->push_back((jets8CHS->begin()+2)->eta()); 
+  PFJet8CHS3Eta_->push_back(0);
+  PFJet8CHS4Eta_->push_back(0);
+  PFJet8CHS5Eta_->push_back(0);
+
+  PFJet8CHS0Phi_->push_back(jets8CHS->begin()->phi()); 
+  PFJet8CHS1Phi_->push_back((jets8CHS->begin()+1)->phi()); 
+  PFJet8CHS2Phi_->push_back((jets8CHS->begin()+2)->phi()); 
+  PFJet8CHS3Phi_->push_back(0);
+  PFJet8CHS4Phi_->push_back(0);
+  PFJet8CHS5Phi_->push_back(0);
+
+  }
+
+  else if ((jets8CHS->size())==4){
+
+  PFJet8CHS0Pt_->push_back(jets8CHS->begin()->pt());  
+  PFJet8CHS1Pt_->push_back((jets8CHS->begin()+1)->pt());  
+  PFJet8CHS2Pt_->push_back((jets8CHS->begin()+2)->pt()); 
+  PFJet8CHS3Pt_->push_back((jets8CHS->begin()+3)->pt());  
+  PFJet8CHS4Pt_->push_back(0); 
+  PFJet8CHS5Pt_->push_back(0); 
+
+  PFJet8CHS0Eta_->push_back(jets8CHS->begin()->eta()); 
+  PFJet8CHS1Eta_->push_back((jets8CHS->begin()+1)->eta()); 
+  PFJet8CHS2Eta_->push_back((jets8CHS->begin()+2)->eta()); 
+  PFJet8CHS3Eta_->push_back((jets8CHS->begin()+3)->eta());  
+  PFJet8CHS4Eta_->push_back(0);
+  PFJet8CHS5Eta_->push_back(0);
+
+  PFJet8CHS0Phi_->push_back(jets8CHS->begin()->phi()); 
+  PFJet8CHS1Phi_->push_back((jets8CHS->begin()+1)->phi()); 
+  PFJet8CHS2Phi_->push_back((jets8CHS->begin()+2)->phi()); 
+  PFJet8CHS3Phi_->push_back((jets8CHS->begin()+3)->phi());  
+  PFJet8CHS4Phi_->push_back(0);
+  PFJet8CHS5Phi_->push_back(0);  
+
+  }
+
+  else if ((jets8CHS->size())==5){
+
+  PFJet8CHS0Pt_->push_back(jets8CHS->begin()->pt());  
+  PFJet8CHS1Pt_->push_back((jets8CHS->begin()+1)->pt()); 
+  PFJet8CHS2Pt_->push_back((jets8CHS->begin()+2)->pt()); 
+  PFJet8CHS3Pt_->push_back((jets8CHS->begin()+3)->pt());  
+  PFJet8CHS4Pt_->push_back((jets8CHS->begin()+4)->pt()); 
+  PFJet8CHS5Pt_->push_back(0); 
+
+  PFJet8CHS0Eta_->push_back(jets8CHS->begin()->eta()); 
+  PFJet8CHS1Eta_->push_back((jets8CHS->begin()+1)->eta());
+  PFJet8CHS2Eta_->push_back((jets8CHS->begin()+2)->eta()); 
+  PFJet8CHS3Eta_->push_back((jets8CHS->begin()+3)->eta());  
+  PFJet8CHS4Eta_->push_back((jets8CHS->begin()+4)->eta());  
+  PFJet8CHS5Eta_->push_back(0);
+
+  PFJet8CHS0Phi_->push_back(jets8CHS->begin()->phi()); 
+  PFJet8CHS1Phi_->push_back((jets8CHS->begin()+1)->phi());
+  PFJet8CHS2Phi_->push_back((jets8CHS->begin()+2)->phi()); 
+  PFJet8CHS3Phi_->push_back((jets8CHS->begin()+3)->phi()); 
+  PFJet8CHS4Phi_->push_back((jets8CHS->begin()+4)->phi());  
+  PFJet8CHS5Phi_->push_back(0);  
+
+  }
+
+  else{
+        // std::cout << "end of jets8CHS collision "  << std::endl; //TODO
   PFJet8CHS0Pt_->push_back(jets8CHS->begin()->pt()); 
           // std::cout << "ele Jet 0pt: " << (jets8CHS->begin()->pt())   << std::endl;
 
@@ -2799,7 +3333,9 @@ void AODAnalyzer::fill8CHSJets(const edm::Handle<PFJet8CHSCollection> & jets8CHS
         // std::cout << "ele Jet 4Phi: " << ((jets8CHS->begin()+jets8CHS->size()*4/5)->phi())  << std::endl; 
 
   PFJet8CHS5Phi_->push_back((jets8CHS->begin()+jets8CHS->size()-1)->phi());
-       // std::cout << "ele Jet 5Phi: " << ((jets8CHS->begin()+jets8CHS->size()-1)->phi())   << std::endl; 
+       // std::cout << "ele Jet 5Phi: " << ((jets8CHS->begin()+jets8CHS->size()-1)->phi())   << std::endl;             
+     
+}
 
 
   return;
@@ -2827,7 +3363,161 @@ void AODAnalyzer::fillEIJets(const edm::Handle<PFJetEICollection> & jetsEI, std:
   
       // }
   }
-     // std::cout << "end of Jets collision "  << std::endl; //TODO
+  //    // std::cout << "end of Jets collision "  << std::endl; //TODO
+     if ((jetsEI->size())==0){
+
+  PFJetEI0Pt_->push_back(0); 
+  PFJetEI1Pt_->push_back(0); 
+  PFJetEI2Pt_->push_back(0); 
+  PFJetEI3Pt_->push_back(0); 
+  PFJetEI4Pt_->push_back(0); 
+  PFJetEI5Pt_->push_back(0); 
+
+  PFJetEI0Eta_->push_back(0);
+  PFJetEI1Eta_->push_back(0);
+  PFJetEI2Eta_->push_back(0);
+  PFJetEI3Eta_->push_back(0);
+  PFJetEI4Eta_->push_back(0);
+  PFJetEI5Eta_->push_back(0);
+
+  PFJetEI0Phi_->push_back(0);
+  PFJetEI1Phi_->push_back(0);
+  PFJetEI2Phi_->push_back(0);
+  PFJetEI3Phi_->push_back(0);
+  PFJetEI4Phi_->push_back(0);
+  PFJetEI5Phi_->push_back(0);
+   
+  }
+  
+  
+  else if ((jetsEI->size())==1){
+
+  PFJetEI0Pt_->push_back(jetsEI->begin()->pt());  
+  PFJetEI1Pt_->push_back(0); 
+  PFJetEI2Pt_->push_back(0); 
+  PFJetEI3Pt_->push_back(0); 
+  PFJetEI4Pt_->push_back(0); 
+  PFJetEI5Pt_->push_back(0); 
+
+  PFJetEI0Eta_->push_back(jetsEI->begin()->eta()); 
+  PFJetEI1Eta_->push_back(0);
+  PFJetEI2Eta_->push_back(0);
+  PFJetEI3Eta_->push_back(0);
+  PFJetEI4Eta_->push_back(0);
+  PFJetEI5Eta_->push_back(0);
+
+  PFJetEI0Phi_->push_back(jetsEI->begin()->phi()); 
+  PFJetEI1Phi_->push_back(0);
+  PFJetEI2Phi_->push_back(0);
+  PFJetEI3Phi_->push_back(0);
+  PFJetEI4Phi_->push_back(0);
+  PFJetEI5Phi_->push_back(0);
+
+  } 
+
+  else if ((jetsEI->size())==2){ 
+
+  PFJetEI0Pt_->push_back(jetsEI->begin()->pt());  
+  PFJetEI1Pt_->push_back((jetsEI->begin()+1)->pt());
+  PFJetEI2Pt_->push_back(0); 
+  PFJetEI3Pt_->push_back(0); 
+  PFJetEI4Pt_->push_back(0); 
+  PFJetEI5Pt_->push_back(0); 
+
+  PFJetEI0Eta_->push_back(jetsEI->begin()->eta()); 
+  PFJetEI1Eta_->push_back((jetsEI->begin()+1)->eta());  
+  PFJetEI2Eta_->push_back(0);
+  PFJetEI3Eta_->push_back(0);
+  PFJetEI4Eta_->push_back(0);
+  PFJetEI5Eta_->push_back(0);
+
+  PFJetEI0Phi_->push_back(jetsEI->begin()->phi()); 
+  PFJetEI1Phi_->push_back((jetsEI->begin()+1)->phi()); 
+  PFJetEI2Phi_->push_back(0);
+  PFJetEI3Phi_->push_back(0);
+  PFJetEI4Phi_->push_back(0);
+  PFJetEI5Phi_->push_back(0);
+    
+  
+  }
+
+  else if ((jetsEI->size())==3){
+
+  PFJetEI0Pt_->push_back(jetsEI->begin()->pt());  
+  PFJetEI1Pt_->push_back((jetsEI->begin()+1)->pt());   
+  PFJetEI2Pt_->push_back((jetsEI->begin()+2)->pt()); 
+  PFJetEI3Pt_->push_back(0); 
+  PFJetEI4Pt_->push_back(0); 
+  PFJetEI5Pt_->push_back(0); 
+
+  PFJetEI0Eta_->push_back(jetsEI->begin()->eta()); 
+  PFJetEI1Eta_->push_back((jetsEI->begin()+1)->eta()); 
+  PFJetEI2Eta_->push_back((jetsEI->begin()+2)->eta()); 
+  PFJetEI3Eta_->push_back(0);
+  PFJetEI4Eta_->push_back(0);
+  PFJetEI5Eta_->push_back(0);
+
+  PFJetEI0Phi_->push_back(jetsEI->begin()->phi()); 
+  PFJetEI1Phi_->push_back((jetsEI->begin()+1)->phi()); 
+  PFJetEI2Phi_->push_back((jetsEI->begin()+2)->phi()); 
+  PFJetEI3Phi_->push_back(0);
+  PFJetEI4Phi_->push_back(0);
+  PFJetEI5Phi_->push_back(0);
+
+  }
+
+  else if ((jetsEI->size())==4){
+
+  PFJetEI0Pt_->push_back(jetsEI->begin()->pt());  
+  PFJetEI1Pt_->push_back((jetsEI->begin()+1)->pt());  
+  PFJetEI2Pt_->push_back((jetsEI->begin()+2)->pt()); 
+  PFJetEI3Pt_->push_back((jetsEI->begin()+3)->pt());  
+  PFJetEI4Pt_->push_back(0); 
+  PFJetEI5Pt_->push_back(0); 
+
+  PFJetEI0Eta_->push_back(jetsEI->begin()->eta()); 
+  PFJetEI1Eta_->push_back((jetsEI->begin()+1)->eta()); 
+  PFJetEI2Eta_->push_back((jetsEI->begin()+2)->eta()); 
+  PFJetEI3Eta_->push_back((jetsEI->begin()+3)->eta());  
+  PFJetEI4Eta_->push_back(0);
+  PFJetEI5Eta_->push_back(0);
+
+  PFJetEI0Phi_->push_back(jetsEI->begin()->phi()); 
+  PFJetEI1Phi_->push_back((jetsEI->begin()+1)->phi()); 
+  PFJetEI2Phi_->push_back((jetsEI->begin()+2)->phi()); 
+  PFJetEI3Phi_->push_back((jetsEI->begin()+3)->phi());  
+  PFJetEI4Phi_->push_back(0);
+  PFJetEI5Phi_->push_back(0);  
+
+  }
+
+  else if ((jetsEI->size())==5){
+
+  PFJetEI0Pt_->push_back(jetsEI->begin()->pt());  
+  PFJetEI1Pt_->push_back((jetsEI->begin()+1)->pt()); 
+  PFJetEI2Pt_->push_back((jetsEI->begin()+2)->pt()); 
+  PFJetEI3Pt_->push_back((jetsEI->begin()+3)->pt());  
+  PFJetEI4Pt_->push_back((jetsEI->begin()+4)->pt()); 
+  PFJetEI5Pt_->push_back(0); 
+
+  PFJetEI0Eta_->push_back(jetsEI->begin()->eta()); 
+  PFJetEI1Eta_->push_back((jetsEI->begin()+1)->eta());
+  PFJetEI2Eta_->push_back((jetsEI->begin()+2)->eta()); 
+  PFJetEI3Eta_->push_back((jetsEI->begin()+3)->eta());  
+  PFJetEI4Eta_->push_back((jetsEI->begin()+4)->eta());  
+  PFJetEI5Eta_->push_back(0);
+
+  PFJetEI0Phi_->push_back(jetsEI->begin()->phi()); 
+  PFJetEI1Phi_->push_back((jetsEI->begin()+1)->phi());
+  PFJetEI2Phi_->push_back((jetsEI->begin()+2)->phi()); 
+  PFJetEI3Phi_->push_back((jetsEI->begin()+3)->phi()); 
+  PFJetEI4Phi_->push_back((jetsEI->begin()+4)->phi());  
+  PFJetEI5Phi_->push_back(0);  
+
+  }
+
+  else{
+        // std::cout << "end of jetsEI collision "  << std::endl; //TODO
   PFJetEI0Pt_->push_back(jetsEI->begin()->pt()); 
           // std::cout << "ele Jet 0pt: " << (jetsEI->begin()->pt())   << std::endl;
 
@@ -2880,7 +3570,9 @@ void AODAnalyzer::fillEIJets(const edm::Handle<PFJetEICollection> & jetsEI, std:
         // std::cout << "ele Jet 4Phi: " << ((jetsEI->begin()+jetsEI->size()*4/5)->phi())  << std::endl; 
 
   PFJetEI5Phi_->push_back((jetsEI->begin()+jetsEI->size()-1)->phi());
-       // std::cout << "ele Jet 5Phi: " << ((jetsEI->begin()+jetsEI->size()-1)->phi())   << std::endl; 
+       // std::cout << "ele Jet 5Phi: " << ((jetsEI->begin()+jetsEI->size()-1)->phi())   << std::endl;             
+     
+}
 
 
   return;
@@ -2909,59 +3601,215 @@ void AODAnalyzer::fill8CHSoftDropJets(const edm::Handle<PFJet8CHSSoftDropCollect
       // }
   }
      // std::cout << "end of Jets collision "  << std::endl; //TODO
-  // PFJet8CHSSD0Pt_->push_back(jets8CHSSoftDrop->begin()->pt()); 
-  // std::cout << "ele Jet 0pt: " << (jets8CHSSoftDrop->begin()->pt())   << std::endl;
+    if ((jets8CHSSoftDrop->size())==0){
 
-  // PFJet8CHSSD1Pt_->push_back((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()/5)->pt()); 
-         // std::cout << "ele Jet 1pt: " << ((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()/5)->pt())    << std::endl;
+  PFJet8CHSSD0Pt_->push_back(0); 
+  PFJet8CHSSD1Pt_->push_back(0); 
+  PFJet8CHSSD2Pt_->push_back(0); 
+  PFJet8CHSSD3Pt_->push_back(0); 
+  PFJet8CHSSD4Pt_->push_back(0); 
+  PFJet8CHSSD5Pt_->push_back(0); 
 
-  // PFJet8CHSSD2Pt_->push_back((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()*2/5)->pt());
-  //       // std::cout << "ele Jet 2pt: " << ((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()*2/5)->pt())  << std::endl;
+  PFJet8CHSSD0Eta_->push_back(0);
+  PFJet8CHSSD1Eta_->push_back(0);
+  PFJet8CHSSD2Eta_->push_back(0);
+  PFJet8CHSSD3Eta_->push_back(0);
+  PFJet8CHSSD4Eta_->push_back(0);
+  PFJet8CHSSD5Eta_->push_back(0);
+
+  PFJet8CHSSD0Phi_->push_back(0);
+  PFJet8CHSSD1Phi_->push_back(0);
+  PFJet8CHSSD2Phi_->push_back(0);
+  PFJet8CHSSD3Phi_->push_back(0);
+  PFJet8CHSSD4Phi_->push_back(0);
+  PFJet8CHSSD5Phi_->push_back(0);
+   
+  }
   
-  // PFJet8CHSSD3Pt_->push_back((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()*3/5)->pt());
-  //       // std::cout << "ele Jet 3pt: " << ((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()*3/5)->pt())  << std::endl;
-
-  // PFJet8CHSSD4Pt_->push_back((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()*4/5)->pt());
-  //       // std::cout << "ele Jet 4pt: " << ((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()*4/5)->pt())  << std::endl; 
-
-  // PFJet8CHSSD5Pt_->push_back((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()-1)->pt());
-  //      // std::cout << "ele Jet 5pt: " << ((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()-1)->pt())   << std::endl;
-
-  // PFJet8CHSSD0Eta_->push_back(jets8CHSSoftDrop->begin()->eta()); 
-  //         // std::cout << "ele Jet 0eta: " << (jets8CHSSoftDrop->begin()->eta())   << std::endl;
-
-  // PFJet8CHSSD1Eta_->push_back((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()/5)->eta()); 
-  //       // std::cout << "ele Jet 1eta: " << ((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()/5)->eta())    << std::endl;
-
-  // PFJet8CHSSD2Eta_->push_back((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()*2/5)->eta());
-  //       // std::cout << "ele Jet 2eta: " << ((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()*2/5)->eta())  << std::endl;
   
-  // PFJet8CHSSD3Eta_->push_back((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()*3/5)->eta());
-  //       // std::cout << "ele Jet 3eta: " << ((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()*3/5)->eta())  << std::endl;
+  else if ((jets8CHSSoftDrop->size())==1){
 
-  // PFJet8CHSSD4Eta_->push_back((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()*4/5)->eta());
-  //       // std::cout << "ele Jet 4eta: " << ((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()*4/5)->eta())  << std::endl; 
+  PFJet8CHSSD0Pt_->push_back(jets8CHSSoftDrop->begin()->pt());  
+  PFJet8CHSSD1Pt_->push_back(0); 
+  PFJet8CHSSD2Pt_->push_back(0); 
+  PFJet8CHSSD3Pt_->push_back(0); 
+  PFJet8CHSSD4Pt_->push_back(0); 
+  PFJet8CHSSD5Pt_->push_back(0); 
 
-  // PFJet8CHSSD5Eta_->push_back((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()-1)->eta());
-  //      // std::cout << "ele Jet 5eta: " << ((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()-1)->eta())   << std::endl; 
+  PFJet8CHSSD0Eta_->push_back(jets8CHSSoftDrop->begin()->eta()); 
+  PFJet8CHSSD1Eta_->push_back(0);
+  PFJet8CHSSD2Eta_->push_back(0);
+  PFJet8CHSSD3Eta_->push_back(0);
+  PFJet8CHSSD4Eta_->push_back(0);
+  PFJet8CHSSD5Eta_->push_back(0);
 
-  // PFJet8CHSSD0Phi_->push_back(jets8CHSSoftDrop->begin()->phi()); 
-  //         // std::cout << "ele Jet 0Phi: " << (jets8CHSSoftDrop->begin()->phi())   << std::endl;
+  PFJet8CHSSD0Phi_->push_back(jets8CHSSoftDrop->begin()->phi()); 
+  PFJet8CHSSD1Phi_->push_back(0);
+  PFJet8CHSSD2Phi_->push_back(0);
+  PFJet8CHSSD3Phi_->push_back(0);
+  PFJet8CHSSD4Phi_->push_back(0);
+  PFJet8CHSSD5Phi_->push_back(0);
 
-  // PFJet8CHSSD1Phi_->push_back((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()/5)->phi()); 
-  //       // std::cout << "ele Jet 1Phi: " << ((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()/5)->phi())    << std::endl;
+  } 
 
-  // PFJet8CHSSD2Phi_->push_back((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()*2/5)->phi());
-  //       // std::cout << "ele Jet 2Phi: " << ((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()*2/5)->phi())  << std::endl;
+  else if ((jets8CHSSoftDrop->size())==2){ 
+
+  PFJet8CHSSD0Pt_->push_back(jets8CHSSoftDrop->begin()->pt());  
+  PFJet8CHSSD1Pt_->push_back((jets8CHSSoftDrop->begin()+1)->pt());
+  PFJet8CHSSD2Pt_->push_back(0); 
+  PFJet8CHSSD3Pt_->push_back(0); 
+  PFJet8CHSSD4Pt_->push_back(0); 
+  PFJet8CHSSD5Pt_->push_back(0); 
+
+  PFJet8CHSSD0Eta_->push_back(jets8CHSSoftDrop->begin()->eta()); 
+  PFJet8CHSSD1Eta_->push_back((jets8CHSSoftDrop->begin()+1)->eta());  
+  PFJet8CHSSD2Eta_->push_back(0);
+  PFJet8CHSSD3Eta_->push_back(0);
+  PFJet8CHSSD4Eta_->push_back(0);
+  PFJet8CHSSD5Eta_->push_back(0);
+
+  PFJet8CHSSD0Phi_->push_back(jets8CHSSoftDrop->begin()->phi()); 
+  PFJet8CHSSD1Phi_->push_back((jets8CHSSoftDrop->begin()+1)->phi()); 
+  PFJet8CHSSD2Phi_->push_back(0);
+  PFJet8CHSSD3Phi_->push_back(0);
+  PFJet8CHSSD4Phi_->push_back(0);
+  PFJet8CHSSD5Phi_->push_back(0);
+    
   
-  // PFJet8CHSSD3Phi_->push_back((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()*3/5)->phi());
-  //       // std::cout << "ele Jet 3Phi: " << ((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()*3/5)->phi())  << std::endl;
+  }
 
-  // PFJet8CHSSD4Phi_->push_back((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()*4/5)->phi());
-  //       // std::cout << "ele Jet 4Phi: " << ((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()*4/5)->phi())  << std::endl; 
+  else if ((jets8CHSSoftDrop->size())==3){
 
-  // PFJet8CHSSD5Phi_->push_back((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()-1)->phi());
-  //      // std::cout << "ele Jet 5Phi: " << ((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()-1)->phi())   << std::endl; 
+  PFJet8CHSSD0Pt_->push_back(jets8CHSSoftDrop->begin()->pt());  
+  PFJet8CHSSD1Pt_->push_back((jets8CHSSoftDrop->begin()+1)->pt());   
+  PFJet8CHSSD2Pt_->push_back((jets8CHSSoftDrop->begin()+2)->pt()); 
+  PFJet8CHSSD3Pt_->push_back(0); 
+  PFJet8CHSSD4Pt_->push_back(0); 
+  PFJet8CHSSD5Pt_->push_back(0); 
+
+  PFJet8CHSSD0Eta_->push_back(jets8CHSSoftDrop->begin()->eta()); 
+  PFJet8CHSSD1Eta_->push_back((jets8CHSSoftDrop->begin()+1)->eta()); 
+  PFJet8CHSSD2Eta_->push_back((jets8CHSSoftDrop->begin()+2)->eta()); 
+  PFJet8CHSSD3Eta_->push_back(0);
+  PFJet8CHSSD4Eta_->push_back(0);
+  PFJet8CHSSD5Eta_->push_back(0);
+
+  PFJet8CHSSD0Phi_->push_back(jets8CHSSoftDrop->begin()->phi()); 
+  PFJet8CHSSD1Phi_->push_back((jets8CHSSoftDrop->begin()+1)->phi()); 
+  PFJet8CHSSD2Phi_->push_back((jets8CHSSoftDrop->begin()+2)->phi()); 
+  PFJet8CHSSD3Phi_->push_back(0);
+  PFJet8CHSSD4Phi_->push_back(0);
+  PFJet8CHSSD5Phi_->push_back(0);
+
+  }
+
+  else if ((jets8CHSSoftDrop->size())==4){
+
+  PFJet8CHSSD0Pt_->push_back(jets8CHSSoftDrop->begin()->pt());  
+  PFJet8CHSSD1Pt_->push_back((jets8CHSSoftDrop->begin()+1)->pt());  
+  PFJet8CHSSD2Pt_->push_back((jets8CHSSoftDrop->begin()+2)->pt()); 
+  PFJet8CHSSD3Pt_->push_back((jets8CHSSoftDrop->begin()+3)->pt());  
+  PFJet8CHSSD4Pt_->push_back(0); 
+  PFJet8CHSSD5Pt_->push_back(0); 
+
+  PFJet8CHSSD0Eta_->push_back(jets8CHSSoftDrop->begin()->eta()); 
+  PFJet8CHSSD1Eta_->push_back((jets8CHSSoftDrop->begin()+1)->eta()); 
+  PFJet8CHSSD2Eta_->push_back((jets8CHSSoftDrop->begin()+2)->eta()); 
+  PFJet8CHSSD3Eta_->push_back((jets8CHSSoftDrop->begin()+3)->eta());  
+  PFJet8CHSSD4Eta_->push_back(0);
+  PFJet8CHSSD5Eta_->push_back(0);
+
+  PFJet8CHSSD0Phi_->push_back(jets8CHSSoftDrop->begin()->phi()); 
+  PFJet8CHSSD1Phi_->push_back((jets8CHSSoftDrop->begin()+1)->phi()); 
+  PFJet8CHSSD2Phi_->push_back((jets8CHSSoftDrop->begin()+2)->phi()); 
+  PFJet8CHSSD3Phi_->push_back((jets8CHSSoftDrop->begin()+3)->phi());  
+  PFJet8CHSSD4Phi_->push_back(0);
+  PFJet8CHSSD5Phi_->push_back(0);  
+
+  }
+
+  else if ((jets8CHSSoftDrop->size())==5){
+
+  PFJet8CHSSD0Pt_->push_back(jets8CHSSoftDrop->begin()->pt());  
+  PFJet8CHSSD1Pt_->push_back((jets8CHSSoftDrop->begin()+1)->pt()); 
+  PFJet8CHSSD2Pt_->push_back((jets8CHSSoftDrop->begin()+2)->pt()); 
+  PFJet8CHSSD3Pt_->push_back((jets8CHSSoftDrop->begin()+3)->pt());  
+  PFJet8CHSSD4Pt_->push_back((jets8CHSSoftDrop->begin()+4)->pt()); 
+  PFJet8CHSSD5Pt_->push_back(0); 
+
+  PFJet8CHSSD0Eta_->push_back(jets8CHSSoftDrop->begin()->eta()); 
+  PFJet8CHSSD1Eta_->push_back((jets8CHSSoftDrop->begin()+1)->eta());
+  PFJet8CHSSD2Eta_->push_back((jets8CHSSoftDrop->begin()+2)->eta()); 
+  PFJet8CHSSD3Eta_->push_back((jets8CHSSoftDrop->begin()+3)->eta());  
+  PFJet8CHSSD4Eta_->push_back((jets8CHSSoftDrop->begin()+4)->eta());  
+  PFJet8CHSSD5Eta_->push_back(0);
+
+  PFJet8CHSSD0Phi_->push_back(jets8CHSSoftDrop->begin()->phi()); 
+  PFJet8CHSSD1Phi_->push_back((jets8CHSSoftDrop->begin()+1)->phi());
+  PFJet8CHSSD2Phi_->push_back((jets8CHSSoftDrop->begin()+2)->phi()); 
+  PFJet8CHSSD3Phi_->push_back((jets8CHSSoftDrop->begin()+3)->phi()); 
+  PFJet8CHSSD4Phi_->push_back((jets8CHSSoftDrop->begin()+4)->phi());  
+  PFJet8CHSSD5Phi_->push_back(0);  
+
+  }
+
+  else{
+        // std::cout << "end of jets8CHSSoftDrop collision "  << std::endl; //TODO
+  PFJet8CHSSD0Pt_->push_back(jets8CHSSoftDrop->begin()->pt()); 
+          // std::cout << "ele Jet 0pt: " << (jets8CHSSoftDrop->begin()->pt())   << std::endl;
+
+  PFJet8CHSSD1Pt_->push_back((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()/5)->pt()); 
+        // std::cout << "ele Jet 1pt: " << ((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()/5)->pt())    << std::endl;
+
+  PFJet8CHSSD2Pt_->push_back((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()*2/5)->pt());
+        // std::cout << "ele Jet 2pt: " << ((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()*2/5)->pt())  << std::endl;
+  
+  PFJet8CHSSD3Pt_->push_back((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()*3/5)->pt());
+        // std::cout << "ele Jet 3pt: " << ((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()*3/5)->pt())  << std::endl;
+
+  PFJet8CHSSD4Pt_->push_back((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()*4/5)->pt());
+        // std::cout << "ele Jet 4pt: " << ((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()*4/5)->pt())  << std::endl; 
+
+  PFJet8CHSSD5Pt_->push_back((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()-1)->pt());
+       // std::cout << "ele Jet 5pt: " << ((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()-1)->pt())   << std::endl;
+
+  PFJet8CHSSD0Eta_->push_back(jets8CHSSoftDrop->begin()->eta()); 
+          // std::cout << "ele Jet 0eta: " << (jets8CHSSoftDrop->begin()->eta())   << std::endl;
+
+  PFJet8CHSSD1Eta_->push_back((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()/5)->eta()); 
+        // std::cout << "ele Jet 1eta: " << ((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()/5)->eta())    << std::endl;
+
+  PFJet8CHSSD2Eta_->push_back((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()*2/5)->eta());
+        // std::cout << "ele Jet 2eta: " << ((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()*2/5)->eta())  << std::endl;
+  
+  PFJet8CHSSD3Eta_->push_back((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()*3/5)->eta());
+        // std::cout << "ele Jet 3eta: " << ((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()*3/5)->eta())  << std::endl;
+
+  PFJet8CHSSD4Eta_->push_back((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()*4/5)->eta());
+        // std::cout << "ele Jet 4eta: " << ((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()*4/5)->eta())  << std::endl; 
+
+  PFJet8CHSSD5Eta_->push_back((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()-1)->eta());
+       // std::cout << "ele Jet 5eta: " << ((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()-1)->eta())   << std::endl; 
+
+  PFJet8CHSSD0Phi_->push_back(jets8CHSSoftDrop->begin()->phi()); 
+          // std::cout << "ele Jet 0Phi: " << (jets8CHSSoftDrop->begin()->phi())   << std::endl;
+
+  PFJet8CHSSD1Phi_->push_back((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()/5)->phi()); 
+        // std::cout << "ele Jet 1Phi: " << ((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()/5)->phi())    << std::endl;
+
+  PFJet8CHSSD2Phi_->push_back((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()*2/5)->phi());
+        // std::cout << "ele Jet 2Phi: " << ((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()*2/5)->phi())  << std::endl;
+  
+  PFJet8CHSSD3Phi_->push_back((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()*3/5)->phi());
+        // std::cout << "ele Jet 3Phi: " << ((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()*3/5)->phi())  << std::endl;
+
+  PFJet8CHSSD4Phi_->push_back((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()*4/5)->phi());
+        // std::cout << "ele Jet 4Phi: " << ((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()*4/5)->phi())  << std::endl; 
+
+  PFJet8CHSSD5Phi_->push_back((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()-1)->phi());
+       // std::cout << "ele Jet 5Phi: " << ((jets8CHSSoftDrop->begin()+jets8CHSSoftDrop->size()-1)->phi())   << std::endl;             
+     
+}
 
   return;
 }
@@ -2990,59 +3838,215 @@ void AODAnalyzer::fillTopCHSJets(const edm::Handle<PFJetTopCHSCollection> & jets
   }
 
   //    // std::cout << "end of Jets collision "  << std::endl; //TODO
-  // PFJetTopCHS0Pt_->push_back(jetsTopCHS->begin()->pt()); 
-  //         // std::cout << "ele Jet 0pt: " << (jetsTopCHS->begin()->pt())   << std::endl;
+    if ((jetsTopCHS->size())==0){
 
-  // PFJetTopCHS1Pt_->push_back((jetsTopCHS->begin()+jetsTopCHS->size()/5)->pt()); 
-  //       // std::cout << "ele Jet 1pt: " << ((jetsTopCHS->begin()+jetsTopCHS->size()/5)->pt())    << std::endl;
+  PFJetTopCHS0Pt_->push_back(0); 
+  PFJetTopCHS1Pt_->push_back(0); 
+  PFJetTopCHS2Pt_->push_back(0); 
+  PFJetTopCHS3Pt_->push_back(0); 
+  PFJetTopCHS4Pt_->push_back(0); 
+  PFJetTopCHS5Pt_->push_back(0); 
 
-  // PFJetTopCHS2Pt_->push_back((jetsTopCHS->begin()+jetsTopCHS->size()*2/5)->pt());
-  //       // std::cout << "ele Jet 2pt: " << ((jetsTopCHS->begin()+jetsTopCHS->size()*2/5)->pt())  << std::endl;
+  PFJetTopCHS0Eta_->push_back(0);
+  PFJetTopCHS1Eta_->push_back(0);
+  PFJetTopCHS2Eta_->push_back(0);
+  PFJetTopCHS3Eta_->push_back(0);
+  PFJetTopCHS4Eta_->push_back(0);
+  PFJetTopCHS5Eta_->push_back(0);
+
+  PFJetTopCHS0Phi_->push_back(0);
+  PFJetTopCHS1Phi_->push_back(0);
+  PFJetTopCHS2Phi_->push_back(0);
+  PFJetTopCHS3Phi_->push_back(0);
+  PFJetTopCHS4Phi_->push_back(0);
+  PFJetTopCHS5Phi_->push_back(0);
+   
+  }
   
-  // PFJetTopCHS3Pt_->push_back((jetsTopCHS->begin()+jetsTopCHS->size()*3/5)->pt());
-  //       // std::cout << "ele Jet 3pt: " << ((jetsTopCHS->begin()+jetsTopCHS->size()*3/5)->pt())  << std::endl;
-
-  // PFJetTopCHS4Pt_->push_back((jetsTopCHS->begin()+jetsTopCHS->size()*4/5)->pt());
-  //       // std::cout << "ele Jet 4pt: " << ((jetsTopCHS->begin()+jetsTopCHS->size()*4/5)->pt())  << std::endl; 
-
-  // PFJetTopCHS5Pt_->push_back((jetsTopCHS->begin()+jetsTopCHS->size()-1)->pt());
-  //      // std::cout << "ele Jet 5pt: " << ((jetsTopCHS->begin()+jetsTopCHS->size()-1)->pt())   << std::endl;
-
-  // PFJetTopCHS0Eta_->push_back(jetsTopCHS->begin()->eta()); 
-  //         // std::cout << "ele Jet 0eta: " << (jetsTopCHS->begin()->eta())   << std::endl;
-
-  // PFJetTopCHS1Eta_->push_back((jetsTopCHS->begin()+jetsTopCHS->size()/5)->eta()); 
-  //       // std::cout << "ele Jet 1eta: " << ((jetsTopCHS->begin()+jetsTopCHS->size()/5)->eta())    << std::endl;
-
-  // PFJetTopCHS2Eta_->push_back((jetsTopCHS->begin()+jetsTopCHS->size()*2/5)->eta());
-  //       // std::cout << "ele Jet 2eta: " << ((jetsTopCHS->begin()+jetsTopCHS->size()*2/5)->eta())  << std::endl;
   
-  // PFJetTopCHS3Eta_->push_back((jetsTopCHS->begin()+jetsTopCHS->size()*3/5)->eta());
-  //       // std::cout << "ele Jet 3eta: " << ((jetsTopCHS->begin()+jetsTopCHS->size()*3/5)->eta())  << std::endl;
+  else if ((jetsTopCHS->size())==1){
 
-  // PFJetTopCHS4Eta_->push_back((jetsTopCHS->begin()+jetsTopCHS->size()*4/5)->eta());
-  //       // std::cout << "ele Jet 4eta: " << ((jetsTopCHS->begin()+jetsTopCHS->size()*4/5)->eta())  << std::endl; 
+  PFJetTopCHS0Pt_->push_back(jetsTopCHS->begin()->pt());  
+  PFJetTopCHS1Pt_->push_back(0); 
+  PFJetTopCHS2Pt_->push_back(0); 
+  PFJetTopCHS3Pt_->push_back(0); 
+  PFJetTopCHS4Pt_->push_back(0); 
+  PFJetTopCHS5Pt_->push_back(0); 
 
-  // PFJetTopCHS5Eta_->push_back((jetsTopCHS->begin()+jetsTopCHS->size()-1)->eta());
-  //      // std::cout << "ele Jet 5eta: " << ((jetsTopCHS->begin()+jetsTopCHS->size()-1)->eta())   << std::endl; 
+  PFJetTopCHS0Eta_->push_back(jetsTopCHS->begin()->eta()); 
+  PFJetTopCHS1Eta_->push_back(0);
+  PFJetTopCHS2Eta_->push_back(0);
+  PFJetTopCHS3Eta_->push_back(0);
+  PFJetTopCHS4Eta_->push_back(0);
+  PFJetTopCHS5Eta_->push_back(0);
 
-  // PFJetTopCHS0Phi_->push_back(jetsTopCHS->begin()->phi()); 
-  //         // std::cout << "ele Jet 0Phi: " << (jetsTopCHS->begin()->phi())   << std::endl;
+  PFJetTopCHS0Phi_->push_back(jetsTopCHS->begin()->phi()); 
+  PFJetTopCHS1Phi_->push_back(0);
+  PFJetTopCHS2Phi_->push_back(0);
+  PFJetTopCHS3Phi_->push_back(0);
+  PFJetTopCHS4Phi_->push_back(0);
+  PFJetTopCHS5Phi_->push_back(0);
 
-  // PFJetTopCHS1Phi_->push_back((jetsTopCHS->begin()+jetsTopCHS->size()/5)->phi()); 
-  //       // std::cout << "ele Jet 1Phi: " << ((jetsTopCHS->begin()+jetsTopCHS->size()/5)->phi())    << std::endl;
+  } 
 
-  // PFJetTopCHS2Phi_->push_back((jetsTopCHS->begin()+jetsTopCHS->size()*2/5)->phi());
-  //       // std::cout << "ele Jet 2Phi: " << ((jetsTopCHS->begin()+jetsTopCHS->size()*2/5)->phi())  << std::endl;
+  else if ((jetsTopCHS->size())==2){ 
+
+  PFJetTopCHS0Pt_->push_back(jetsTopCHS->begin()->pt());  
+  PFJetTopCHS1Pt_->push_back((jetsTopCHS->begin()+1)->pt());
+  PFJetTopCHS2Pt_->push_back(0); 
+  PFJetTopCHS3Pt_->push_back(0); 
+  PFJetTopCHS4Pt_->push_back(0); 
+  PFJetTopCHS5Pt_->push_back(0); 
+
+  PFJetTopCHS0Eta_->push_back(jetsTopCHS->begin()->eta()); 
+  PFJetTopCHS1Eta_->push_back((jetsTopCHS->begin()+1)->eta());  
+  PFJetTopCHS2Eta_->push_back(0);
+  PFJetTopCHS3Eta_->push_back(0);
+  PFJetTopCHS4Eta_->push_back(0);
+  PFJetTopCHS5Eta_->push_back(0);
+
+  PFJetTopCHS0Phi_->push_back(jetsTopCHS->begin()->phi()); 
+  PFJetTopCHS1Phi_->push_back((jetsTopCHS->begin()+1)->phi()); 
+  PFJetTopCHS2Phi_->push_back(0);
+  PFJetTopCHS3Phi_->push_back(0);
+  PFJetTopCHS4Phi_->push_back(0);
+  PFJetTopCHS5Phi_->push_back(0);
+    
   
-  // PFJetTopCHS3Phi_->push_back((jetsTopCHS->begin()+jetsTopCHS->size()*3/5)->phi());
-  //       // std::cout << "ele Jet 3Phi: " << ((jetsTopCHS->begin()+jetsTopCHS->size()*3/5)->phi())  << std::endl;
+  }
 
-  // PFJetTopCHS4Phi_->push_back((jetsTopCHS->begin()+jetsTopCHS->size()*4/5)->phi());
-  //       // std::cout << "ele Jet 4Phi: " << ((jetsTopCHS->begin()+jetsTopCHS->size()*4/5)->phi())  << std::endl; 
+  else if ((jetsTopCHS->size())==3){
 
-  // PFJetTopCHS5Phi_->push_back((jetsTopCHS->begin()+jetsTopCHS->size()-1)->phi());
-  //      // std::cout << "ele Jet 5Phi: " << ((jetsTopCHS->begin()+jetsTopCHS->size()-1)->phi())   << std::endl; 
+  PFJetTopCHS0Pt_->push_back(jetsTopCHS->begin()->pt());  
+  PFJetTopCHS1Pt_->push_back((jetsTopCHS->begin()+1)->pt());   
+  PFJetTopCHS2Pt_->push_back((jetsTopCHS->begin()+2)->pt()); 
+  PFJetTopCHS3Pt_->push_back(0); 
+  PFJetTopCHS4Pt_->push_back(0); 
+  PFJetTopCHS5Pt_->push_back(0); 
+
+  PFJetTopCHS0Eta_->push_back(jetsTopCHS->begin()->eta()); 
+  PFJetTopCHS1Eta_->push_back((jetsTopCHS->begin()+1)->eta()); 
+  PFJetTopCHS2Eta_->push_back((jetsTopCHS->begin()+2)->eta()); 
+  PFJetTopCHS3Eta_->push_back(0);
+  PFJetTopCHS4Eta_->push_back(0);
+  PFJetTopCHS5Eta_->push_back(0);
+
+  PFJetTopCHS0Phi_->push_back(jetsTopCHS->begin()->phi()); 
+  PFJetTopCHS1Phi_->push_back((jetsTopCHS->begin()+1)->phi()); 
+  PFJetTopCHS2Phi_->push_back((jetsTopCHS->begin()+2)->phi()); 
+  PFJetTopCHS3Phi_->push_back(0);
+  PFJetTopCHS4Phi_->push_back(0);
+  PFJetTopCHS5Phi_->push_back(0);
+
+  }
+
+  else if ((jetsTopCHS->size())==4){
+
+  PFJetTopCHS0Pt_->push_back(jetsTopCHS->begin()->pt());  
+  PFJetTopCHS1Pt_->push_back((jetsTopCHS->begin()+1)->pt());  
+  PFJetTopCHS2Pt_->push_back((jetsTopCHS->begin()+2)->pt()); 
+  PFJetTopCHS3Pt_->push_back((jetsTopCHS->begin()+3)->pt());  
+  PFJetTopCHS4Pt_->push_back(0); 
+  PFJetTopCHS5Pt_->push_back(0); 
+
+  PFJetTopCHS0Eta_->push_back(jetsTopCHS->begin()->eta()); 
+  PFJetTopCHS1Eta_->push_back((jetsTopCHS->begin()+1)->eta()); 
+  PFJetTopCHS2Eta_->push_back((jetsTopCHS->begin()+2)->eta()); 
+  PFJetTopCHS3Eta_->push_back((jetsTopCHS->begin()+3)->eta());  
+  PFJetTopCHS4Eta_->push_back(0);
+  PFJetTopCHS5Eta_->push_back(0);
+
+  PFJetTopCHS0Phi_->push_back(jetsTopCHS->begin()->phi()); 
+  PFJetTopCHS1Phi_->push_back((jetsTopCHS->begin()+1)->phi()); 
+  PFJetTopCHS2Phi_->push_back((jetsTopCHS->begin()+2)->phi()); 
+  PFJetTopCHS3Phi_->push_back((jetsTopCHS->begin()+3)->phi());  
+  PFJetTopCHS4Phi_->push_back(0);
+  PFJetTopCHS5Phi_->push_back(0);  
+
+  }
+
+  else if ((jetsTopCHS->size())==5){
+
+  PFJetTopCHS0Pt_->push_back(jetsTopCHS->begin()->pt());  
+  PFJetTopCHS1Pt_->push_back((jetsTopCHS->begin()+1)->pt()); 
+  PFJetTopCHS2Pt_->push_back((jetsTopCHS->begin()+2)->pt()); 
+  PFJetTopCHS3Pt_->push_back((jetsTopCHS->begin()+3)->pt());  
+  PFJetTopCHS4Pt_->push_back((jetsTopCHS->begin()+4)->pt()); 
+  PFJetTopCHS5Pt_->push_back(0); 
+
+  PFJetTopCHS0Eta_->push_back(jetsTopCHS->begin()->eta()); 
+  PFJetTopCHS1Eta_->push_back((jetsTopCHS->begin()+1)->eta());
+  PFJetTopCHS2Eta_->push_back((jetsTopCHS->begin()+2)->eta()); 
+  PFJetTopCHS3Eta_->push_back((jetsTopCHS->begin()+3)->eta());  
+  PFJetTopCHS4Eta_->push_back((jetsTopCHS->begin()+4)->eta());  
+  PFJetTopCHS5Eta_->push_back(0);
+
+  PFJetTopCHS0Phi_->push_back(jetsTopCHS->begin()->phi()); 
+  PFJetTopCHS1Phi_->push_back((jetsTopCHS->begin()+1)->phi());
+  PFJetTopCHS2Phi_->push_back((jetsTopCHS->begin()+2)->phi()); 
+  PFJetTopCHS3Phi_->push_back((jetsTopCHS->begin()+3)->phi()); 
+  PFJetTopCHS4Phi_->push_back((jetsTopCHS->begin()+4)->phi());  
+  PFJetTopCHS5Phi_->push_back(0);  
+
+  }
+
+  else{
+        // std::cout << "end of jetsTopCHS collision "  << std::endl; //TODO
+  PFJetTopCHS0Pt_->push_back(jetsTopCHS->begin()->pt()); 
+          // std::cout << "ele Jet 0pt: " << (jetsTopCHS->begin()->pt())   << std::endl;
+
+  PFJetTopCHS1Pt_->push_back((jetsTopCHS->begin()+jetsTopCHS->size()/5)->pt()); 
+        // std::cout << "ele Jet 1pt: " << ((jetsTopCHS->begin()+jetsTopCHS->size()/5)->pt())    << std::endl;
+
+  PFJetTopCHS2Pt_->push_back((jetsTopCHS->begin()+jetsTopCHS->size()*2/5)->pt());
+        // std::cout << "ele Jet 2pt: " << ((jetsTopCHS->begin()+jetsTopCHS->size()*2/5)->pt())  << std::endl;
+  
+  PFJetTopCHS3Pt_->push_back((jetsTopCHS->begin()+jetsTopCHS->size()*3/5)->pt());
+        // std::cout << "ele Jet 3pt: " << ((jetsTopCHS->begin()+jetsTopCHS->size()*3/5)->pt())  << std::endl;
+
+  PFJetTopCHS4Pt_->push_back((jetsTopCHS->begin()+jetsTopCHS->size()*4/5)->pt());
+        // std::cout << "ele Jet 4pt: " << ((jetsTopCHS->begin()+jetsTopCHS->size()*4/5)->pt())  << std::endl; 
+
+  PFJetTopCHS5Pt_->push_back((jetsTopCHS->begin()+jetsTopCHS->size()-1)->pt());
+       // std::cout << "ele Jet 5pt: " << ((jetsTopCHS->begin()+jetsTopCHS->size()-1)->pt())   << std::endl;
+
+  PFJetTopCHS0Eta_->push_back(jetsTopCHS->begin()->eta()); 
+          // std::cout << "ele Jet 0eta: " << (jetsTopCHS->begin()->eta())   << std::endl;
+
+  PFJetTopCHS1Eta_->push_back((jetsTopCHS->begin()+jetsTopCHS->size()/5)->eta()); 
+        // std::cout << "ele Jet 1eta: " << ((jetsTopCHS->begin()+jetsTopCHS->size()/5)->eta())    << std::endl;
+
+  PFJetTopCHS2Eta_->push_back((jetsTopCHS->begin()+jetsTopCHS->size()*2/5)->eta());
+        // std::cout << "ele Jet 2eta: " << ((jetsTopCHS->begin()+jetsTopCHS->size()*2/5)->eta())  << std::endl;
+  
+  PFJetTopCHS3Eta_->push_back((jetsTopCHS->begin()+jetsTopCHS->size()*3/5)->eta());
+        // std::cout << "ele Jet 3eta: " << ((jetsTopCHS->begin()+jetsTopCHS->size()*3/5)->eta())  << std::endl;
+
+  PFJetTopCHS4Eta_->push_back((jetsTopCHS->begin()+jetsTopCHS->size()*4/5)->eta());
+        // std::cout << "ele Jet 4eta: " << ((jetsTopCHS->begin()+jetsTopCHS->size()*4/5)->eta())  << std::endl; 
+
+  PFJetTopCHS5Eta_->push_back((jetsTopCHS->begin()+jetsTopCHS->size()-1)->eta());
+       // std::cout << "ele Jet 5eta: " << ((jetsTopCHS->begin()+jetsTopCHS->size()-1)->eta())   << std::endl; 
+
+  PFJetTopCHS0Phi_->push_back(jetsTopCHS->begin()->phi()); 
+          // std::cout << "ele Jet 0Phi: " << (jetsTopCHS->begin()->phi())   << std::endl;
+
+  PFJetTopCHS1Phi_->push_back((jetsTopCHS->begin()+jetsTopCHS->size()/5)->phi()); 
+        // std::cout << "ele Jet 1Phi: " << ((jetsTopCHS->begin()+jetsTopCHS->size()/5)->phi())    << std::endl;
+
+  PFJetTopCHS2Phi_->push_back((jetsTopCHS->begin()+jetsTopCHS->size()*2/5)->phi());
+        // std::cout << "ele Jet 2Phi: " << ((jetsTopCHS->begin()+jetsTopCHS->size()*2/5)->phi())  << std::endl;
+  
+  PFJetTopCHS3Phi_->push_back((jetsTopCHS->begin()+jetsTopCHS->size()*3/5)->phi());
+        // std::cout << "ele Jet 3Phi: " << ((jetsTopCHS->begin()+jetsTopCHS->size()*3/5)->phi())  << std::endl;
+
+  PFJetTopCHS4Phi_->push_back((jetsTopCHS->begin()+jetsTopCHS->size()*4/5)->phi());
+        // std::cout << "ele Jet 4Phi: " << ((jetsTopCHS->begin()+jetsTopCHS->size()*4/5)->phi())  << std::endl; 
+
+  PFJetTopCHS5Phi_->push_back((jetsTopCHS->begin()+jetsTopCHS->size()-1)->phi());
+       // std::cout << "ele Jet 5Phi: " << ((jetsTopCHS->begin()+jetsTopCHS->size()-1)->phi())   << std::endl;             
+     
+}
   return;
 }
 
@@ -3096,8 +4100,199 @@ void AODAnalyzer::fillCaloJets(const edm::Handle<CaloJetCollection> & calojets)
 
 
   }
-     // sort muons by pt
-       // std::cout << "end of calojets collision "  << std::endl; //TODO
+     
+  //      // std::cout << "end of calojets collision "  << std::endl; //TODO
+    if ((calojets->size())==0){
+
+  CalJet0Pt_->push_back(0); 
+  CalJet1Pt_->push_back(0); 
+  CalJet2Pt_->push_back(0); 
+  CalJet3Pt_->push_back(0); 
+  CalJet4Pt_->push_back(0); 
+  CalJet5Pt_->push_back(0); 
+
+  CalJet0Eta_->push_back(0);
+  CalJet1Eta_->push_back(0);
+  CalJet2Eta_->push_back(0);
+  CalJet3Eta_->push_back(0);
+  CalJet4Eta_->push_back(0);
+  CalJet5Eta_->push_back(0);
+
+  CalJet0Phi_->push_back(0);
+  CalJet1Phi_->push_back(0);
+  CalJet2Phi_->push_back(0);
+  CalJet3Phi_->push_back(0);
+  CalJet4Phi_->push_back(0);
+  CalJet5Phi_->push_back(0);
+
+  CalJet0En_->push_back(0);
+  CalJet1En_->push_back(0);
+  CalJet2En_->push_back(0);
+  CalJet3En_->push_back(0);
+  CalJet4En_->push_back(0);   
+  CalJet5En_->push_back(0);
+  }
+  
+  
+  else if ((calojets->size())==1){
+
+  CalJet0Pt_->push_back(calojets->begin()->pt());  
+  CalJet1Pt_->push_back(0); 
+  CalJet2Pt_->push_back(0); 
+  CalJet3Pt_->push_back(0); 
+  CalJet4Pt_->push_back(0); 
+  CalJet5Pt_->push_back(0); 
+
+  CalJet0Eta_->push_back(calojets->begin()->eta()); 
+  CalJet1Eta_->push_back(0);
+  CalJet2Eta_->push_back(0);
+  CalJet3Eta_->push_back(0);
+  CalJet4Eta_->push_back(0);
+  CalJet5Eta_->push_back(0);
+
+  CalJet0Phi_->push_back(calojets->begin()->phi()); 
+  CalJet1Phi_->push_back(0);
+  CalJet2Phi_->push_back(0);
+  CalJet3Phi_->push_back(0);
+  CalJet4Phi_->push_back(0);
+  CalJet5Phi_->push_back(0);
+
+  CalJet0En_->push_back(calojets->begin()->energy()); 
+  CalJet1En_->push_back(0);
+  CalJet2En_->push_back(0);
+  CalJet3En_->push_back(0);
+  CalJet4En_->push_back(0);   
+  CalJet5En_->push_back(0);
+
+  } 
+
+  else if ((calojets->size())==2){ 
+
+  CalJet0Pt_->push_back(calojets->begin()->pt());  
+  CalJet1Pt_->push_back((calojets->begin()+1)->pt());
+  CalJet2Pt_->push_back(0); 
+  CalJet3Pt_->push_back(0); 
+  CalJet4Pt_->push_back(0); 
+  CalJet5Pt_->push_back(0); 
+
+  CalJet0Eta_->push_back(calojets->begin()->eta()); 
+  CalJet1Eta_->push_back((calojets->begin()+1)->eta());  
+  CalJet2Eta_->push_back(0);
+  CalJet3Eta_->push_back(0);
+  CalJet4Eta_->push_back(0);
+  CalJet5Eta_->push_back(0);
+
+  CalJet0Phi_->push_back(calojets->begin()->phi()); 
+  CalJet1Phi_->push_back((calojets->begin()+1)->phi()); 
+  CalJet2Phi_->push_back(0);
+  CalJet3Phi_->push_back(0);
+  CalJet4Phi_->push_back(0);
+  CalJet5Phi_->push_back(0);
+  
+  CalJet0En_->push_back(calojets->begin()->energy()); 
+  CalJet1En_->push_back((calojets->begin()+1)->energy()); 
+  CalJet2En_->push_back(0);
+  CalJet3En_->push_back(0);
+  CalJet4En_->push_back(0);   
+  CalJet5En_->push_back(0);    
+  
+  }
+
+  else if ((calojets->size())==3){
+
+  CalJet0Pt_->push_back(calojets->begin()->pt());  
+  CalJet1Pt_->push_back((calojets->begin()+1)->pt());   
+  CalJet2Pt_->push_back((calojets->begin()+2)->pt()); 
+  CalJet3Pt_->push_back(0); 
+  CalJet4Pt_->push_back(0); 
+  CalJet5Pt_->push_back(0); 
+
+  CalJet0Eta_->push_back(calojets->begin()->eta()); 
+  CalJet1Eta_->push_back((calojets->begin()+1)->eta()); 
+  CalJet2Eta_->push_back((calojets->begin()+2)->eta()); 
+  CalJet3Eta_->push_back(0);
+  CalJet4Eta_->push_back(0);
+  CalJet5Eta_->push_back(0);
+
+  CalJet0Phi_->push_back(calojets->begin()->phi()); 
+  CalJet1Phi_->push_back((calojets->begin()+1)->phi()); 
+  CalJet2Phi_->push_back((calojets->begin()+2)->phi()); 
+  CalJet3Phi_->push_back(0);
+  CalJet4Phi_->push_back(0);
+  CalJet5Phi_->push_back(0);
+
+  CalJet0En_->push_back(calojets->begin()->energy()); 
+  CalJet1En_->push_back((calojets->begin()+1)->energy()); 
+  CalJet2En_->push_back((calojets->begin()+2)->energy());
+  CalJet3En_->push_back(0);
+  CalJet4En_->push_back(0);   
+  CalJet5En_->push_back(0);
+  }
+
+  else if ((calojets->size())==4){
+
+  CalJet0Pt_->push_back(calojets->begin()->pt());  
+  CalJet1Pt_->push_back((calojets->begin()+1)->pt());  
+  CalJet2Pt_->push_back((calojets->begin()+2)->pt()); 
+  CalJet3Pt_->push_back((calojets->begin()+3)->pt());  
+  CalJet4Pt_->push_back(0); 
+  CalJet5Pt_->push_back(0); 
+
+  CalJet0Eta_->push_back(calojets->begin()->eta()); 
+  CalJet1Eta_->push_back((calojets->begin()+1)->eta()); 
+  CalJet2Eta_->push_back((calojets->begin()+2)->eta()); 
+  CalJet3Eta_->push_back((calojets->begin()+3)->eta());  
+  CalJet4Eta_->push_back(0);
+  CalJet5Eta_->push_back(0);
+
+  CalJet0Phi_->push_back(calojets->begin()->phi()); 
+  CalJet1Phi_->push_back((calojets->begin()+1)->phi()); 
+  CalJet2Phi_->push_back((calojets->begin()+2)->phi()); 
+  CalJet3Phi_->push_back((calojets->begin()+3)->phi());  
+  CalJet4Phi_->push_back(0);
+  CalJet5Phi_->push_back(0);  
+
+  CalJet0En_->push_back(calojets->begin()->energy()); 
+  CalJet1En_->push_back((calojets->begin()+1)->energy()); 
+  CalJet2En_->push_back((calojets->begin()+2)->energy());
+  CalJet3En_->push_back((calojets->begin()+3)->energy());
+  CalJet4En_->push_back(0);   
+  CalJet5En_->push_back(0);
+  }
+
+  else if ((calojets->size())==5){
+
+  CalJet0Pt_->push_back(calojets->begin()->pt());  
+  CalJet1Pt_->push_back((calojets->begin()+1)->pt()); 
+  CalJet2Pt_->push_back((calojets->begin()+2)->pt()); 
+  CalJet3Pt_->push_back((calojets->begin()+3)->pt());  
+  CalJet4Pt_->push_back((calojets->begin()+4)->pt()); 
+  CalJet5Pt_->push_back(0); 
+
+  CalJet0Eta_->push_back(calojets->begin()->eta()); 
+  CalJet1Eta_->push_back((calojets->begin()+1)->eta());
+  CalJet2Eta_->push_back((calojets->begin()+2)->eta()); 
+  CalJet3Eta_->push_back((calojets->begin()+3)->eta());  
+  CalJet4Eta_->push_back((calojets->begin()+4)->eta());  
+  CalJet5Eta_->push_back(0);
+
+  CalJet0Phi_->push_back(calojets->begin()->phi()); 
+  CalJet1Phi_->push_back((calojets->begin()+1)->phi());
+  CalJet2Phi_->push_back((calojets->begin()+2)->phi()); 
+  CalJet3Phi_->push_back((calojets->begin()+3)->phi()); 
+  CalJet4Phi_->push_back((calojets->begin()+4)->phi());  
+  CalJet5Phi_->push_back(0);  
+
+  CalJet0En_->push_back(calojets->begin()->energy()); 
+  CalJet1En_->push_back((calojets->begin()+1)->energy()); 
+  CalJet2En_->push_back((calojets->begin()+2)->energy());
+  CalJet3En_->push_back((calojets->begin()+3)->energy());
+  CalJet4En_->push_back((calojets->begin()+4)->energy());
+  CalJet5En_->push_back(0);
+  }
+
+  else{
+        // std::cout << "end of calojets collision "  << std::endl; //TODO
   CalJet0Pt_->push_back(calojets->begin()->pt()); 
           // std::cout << "ele Jet 0pt: " << (calojets->begin()->pt())   << std::endl;
 
@@ -3135,7 +4330,7 @@ void AODAnalyzer::fillCaloJets(const edm::Handle<CaloJetCollection> & calojets)
        // std::cout << "ele Jet 5eta: " << ((calojets->begin()+calojets->size()-1)->eta())   << std::endl; 
 
   CalJet0Phi_->push_back(calojets->begin()->phi()); 
-        // std::cout << "ele Jet 0Phi: " << (calojets->begin()->phi())   << std::endl;
+          // std::cout << "ele Jet 0Phi: " << (calojets->begin()->phi())   << std::endl;
 
   CalJet1Phi_->push_back((calojets->begin()+calojets->size()/5)->phi()); 
         // std::cout << "ele Jet 1Phi: " << ((calojets->begin()+calojets->size()/5)->phi())    << std::endl;
@@ -3150,7 +4345,7 @@ void AODAnalyzer::fillCaloJets(const edm::Handle<CaloJetCollection> & calojets)
         // std::cout << "ele Jet 4Phi: " << ((calojets->begin()+calojets->size()*4/5)->phi())  << std::endl; 
 
   CalJet5Phi_->push_back((calojets->begin()+calojets->size()-1)->phi());
-       // std::cout << "ele Jet 5Phi: " << ((calojets->begin()+calojets->size()-1)->phi())   << std::endl; 
+       // std::cout << "ele Jet 5Phi: " << ((calojets->begin()+calojets->size()-1)->phi())   << std::endl;   
 
   CalJet0En_->push_back(calojets->begin()->energy()); 
           // std::cout << "ele Jet 0En: " << (calojets->begin()->energy())   << std::endl;
@@ -3168,8 +4363,9 @@ void AODAnalyzer::fillCaloJets(const edm::Handle<CaloJetCollection> & calojets)
         // std::cout << "ele Jet 4En: " << ((calojets->begin()+calojets->size()*4/5)->energy())  << std::endl; 
 
   CalJet5En_->push_back((calojets->begin()+calojets->size()-1)->energy());
-       // std::cout << "ele Jet 5En: " << ((calojets->begin()+calojets->size()-1)->energy())   << std::endl;             
-
+       // std::cout << "ele Jet 5En: " << ((calojets->begin()+calojets->size()-1)->energy())   << std::endl;                    
+     
+}
   return;
 
 }
@@ -3371,9 +4567,10 @@ void AODAnalyzer::fillCC5x5(const edm::Handle<CaloCluster5x5Collection> & calocl
 template<typename PhotonCollection>
 void AODAnalyzer::fillPhotons(const edm::Handle<PhotonCollection> & photons)
 {
+  std::vector<reco::Photon> myPhotons;
    typename PhotonCollection::const_iterator i = photons->begin();
    for(;i != photons->end(); i++){
-     
+     //bobo
         PhoPt_->push_back(i->pt());
         PhoEta_->push_back(i->eta());
         PhoPhi_->push_back(i->phi());
@@ -3388,6 +4585,7 @@ void AODAnalyzer::fillPhotons(const edm::Handle<PhotonCollection> & photons)
         Phor1x5_->push_back(i->r1x5());
         Phor2x5_->push_back(i->r2x5());
         Phor9_->push_back(i->r9());
+        myPhotons.push_back(*i);
         // std::cout << "ele energy: " << i->energy()   << std::endl; 
         // std::cout << "ele SCeta: "  << i->etaWidth() << std::endl;
         // std::cout << "ele SCphi: "  << i->phiWidth() << std::endl;
@@ -3397,6 +4595,272 @@ void AODAnalyzer::fillPhotons(const edm::Handle<PhotonCollection> & photons)
   }
 
         // std::cout << "end of Photons collision "  << std::endl; //TODO
+  std::sort( myPhotons.begin(), myPhotons.end(), GreaterByPt<reco::Photon>());
+
+//       if ((myPhotons->size())==0){
+
+//   Pho0Pt_->push_back(0); 
+//   Pho1Pt_->push_back(0); 
+//   Pho2Pt_->push_back(0); 
+//   Pho3Pt_->push_back(0); 
+//   Pho4Pt_->push_back(0); 
+//   Pho5Pt_->push_back(0); 
+
+//   Pho0Eta_->push_back(0);
+//   Pho1Eta_->push_back(0);
+//   Pho2Eta_->push_back(0);
+//   Pho3Eta_->push_back(0);
+//   Pho4Eta_->push_back(0);
+//   Pho5Eta_->push_back(0);
+
+//   Pho0Phi_->push_back(0);
+//   Pho1Phi_->push_back(0);
+//   Pho2Phi_->push_back(0);
+//   Pho3Phi_->push_back(0);
+//   Pho4Phi_->push_back(0);
+//   Pho5Phi_->push_back(0);
+
+//   Pho0En_->push_back(0);
+//   Pho1En_->push_back(0);
+//   Pho2En_->push_back(0);
+//   Pho3En_->push_back(0);
+//   Pho4En_->push_back(0);   
+//   Pho5En_->push_back(0);
+//   }
+  
+  
+//   else if ((myPhotons->size())==1){
+
+//   Pho0Pt_->push_back(myPhotons->begin()->pt());  
+//   Pho1Pt_->push_back(0); 
+//   Pho2Pt_->push_back(0); 
+//   Pho3Pt_->push_back(0); 
+//   Pho4Pt_->push_back(0); 
+//   Pho5Pt_->push_back(0); 
+
+//   Pho0Eta_->push_back(myPhotons->begin()->eta()); 
+//   Pho1Eta_->push_back(0);
+//   Pho2Eta_->push_back(0);
+//   Pho3Eta_->push_back(0);
+//   Pho4Eta_->push_back(0);
+//   Pho5Eta_->push_back(0);
+
+//   Pho0Phi_->push_back(myPhotons->begin()->phi()); 
+//   Pho1Phi_->push_back(0);
+//   Pho2Phi_->push_back(0);
+//   Pho3Phi_->push_back(0);
+//   Pho4Phi_->push_back(0);
+//   Pho5Phi_->push_back(0);
+
+//   Pho0En_->push_back(myPhotons->begin()->energy()); 
+//   Pho1En_->push_back(0);
+//   Pho2En_->push_back(0);
+//   Pho3En_->push_back(0);
+//   Pho4En_->push_back(0);   
+//   Pho5En_->push_back(0);
+
+//   } 
+
+//   else if ((myPhotons->size())==2){ 
+
+//   Pho0Pt_->push_back(myPhotons->begin()->pt());  
+//   Pho1Pt_->push_back((myPhotons->begin()+1)->pt());
+//   Pho2Pt_->push_back(0); 
+//   Pho3Pt_->push_back(0); 
+//   Pho4Pt_->push_back(0); 
+//   Pho5Pt_->push_back(0); 
+
+//   Pho0Eta_->push_back(myPhotons->begin()->eta()); 
+//   Pho1Eta_->push_back((myPhotons->begin()+1)->eta());  
+//   Pho2Eta_->push_back(0);
+//   Pho3Eta_->push_back(0);
+//   Pho4Eta_->push_back(0);
+//   Pho5Eta_->push_back(0);
+
+//   Pho0Phi_->push_back(myPhotons->begin()->phi()); 
+//   Pho1Phi_->push_back((myPhotons->begin()+1)->phi()); 
+//   Pho2Phi_->push_back(0);
+//   Pho3Phi_->push_back(0);
+//   Pho4Phi_->push_back(0);
+//   Pho5Phi_->push_back(0);
+  
+//   Pho0En_->push_back(myPhotons->begin()->energy()); 
+//   Pho1En_->push_back((myPhotons->begin()+1)->energy()); 
+//   Pho2En_->push_back(0);
+//   Pho3En_->push_back(0);
+//   Pho4En_->push_back(0);   
+//   Pho5En_->push_back(0);    
+  
+//   }
+
+//   else if ((myPhotons->size())==3){
+
+//   Pho0Pt_->push_back(myPhotons->begin()->pt());  
+//   Pho1Pt_->push_back((myPhotons->begin()+1)->pt());   
+//   Pho2Pt_->push_back((myPhotons->begin()+2)->pt()); 
+//   Pho3Pt_->push_back(0); 
+//   Pho4Pt_->push_back(0); 
+//   Pho5Pt_->push_back(0); 
+
+//   Pho0Eta_->push_back(myPhotons->begin()->eta()); 
+//   Pho1Eta_->push_back((myPhotons->begin()+1)->eta()); 
+//   Pho2Eta_->push_back((myPhotons->begin()+2)->eta()); 
+//   Pho3Eta_->push_back(0);
+//   Pho4Eta_->push_back(0);
+//   Pho5Eta_->push_back(0);
+
+//   Pho0Phi_->push_back(myPhotons->begin()->phi()); 
+//   Pho1Phi_->push_back((myPhotons->begin()+1)->phi()); 
+//   Pho2Phi_->push_back((myPhotons->begin()+2)->phi()); 
+//   Pho3Phi_->push_back(0);
+//   Pho4Phi_->push_back(0);
+//   Pho5Phi_->push_back(0);
+
+//   Pho0En_->push_back(myPhotons->begin()->energy()); 
+//   Pho1En_->push_back((myPhotons->begin()+1)->energy()); 
+//   Pho2En_->push_back((myPhotons->begin()+2)->energy());
+//   Pho3En_->push_back(0);
+//   Pho4En_->push_back(0);   
+//   Pho5En_->push_back(0);
+//   }
+
+//   else if ((myPhotons->size())==4){
+
+//   Pho0Pt_->push_back(myPhotons->begin()->pt());  
+//   Pho1Pt_->push_back((myPhotons->begin()+1)->pt());  
+//   Pho2Pt_->push_back((myPhotons->begin()+2)->pt()); 
+//   Pho3Pt_->push_back((myPhotons->begin()+3)->pt());  
+//   Pho4Pt_->push_back(0); 
+//   Pho5Pt_->push_back(0); 
+
+//   Pho0Eta_->push_back(myPhotons->begin()->eta()); 
+//   Pho1Eta_->push_back((myPhotons->begin()+1)->eta()); 
+//   Pho2Eta_->push_back((myPhotons->begin()+2)->eta()); 
+//   Pho3Eta_->push_back((myPhotons->begin()+3)->eta());  
+//   Pho4Eta_->push_back(0);
+//   Pho5Eta_->push_back(0);
+
+//   Pho0Phi_->push_back(myPhotons->begin()->phi()); 
+//   Pho1Phi_->push_back((myPhotons->begin()+1)->phi()); 
+//   Pho2Phi_->push_back((myPhotons->begin()+2)->phi()); 
+//   Pho3Phi_->push_back((myPhotons->begin()+3)->phi());  
+//   Pho4Phi_->push_back(0);
+//   Pho5Phi_->push_back(0);  
+
+//   Pho0En_->push_back(myPhotons->begin()->energy()); 
+//   Pho1En_->push_back((myPhotons->begin()+1)->energy()); 
+//   Pho2En_->push_back((myPhotons->begin()+2)->energy());
+//   Pho3En_->push_back((myPhotons->begin()+3)->energy());
+//   Pho4En_->push_back(0);   
+//   Pho5En_->push_back(0);
+//   }
+
+//   else if ((myPhotons->size())==5){
+
+//   Pho0Pt_->push_back(myPhotons->begin()->pt());  
+//   Pho1Pt_->push_back((myPhotons->begin()+1)->pt()); 
+//   Pho2Pt_->push_back((myPhotons->begin()+2)->pt()); 
+//   Pho3Pt_->push_back((myPhotons->begin()+3)->pt());  
+//   Pho4Pt_->push_back((myPhotons->begin()+4)->pt()); 
+//   Pho5Pt_->push_back(0); 
+
+//   Pho0Eta_->push_back(myPhotons->begin()->eta()); 
+//   Pho1Eta_->push_back((myPhotons->begin()+1)->eta());
+//   Pho2Eta_->push_back((myPhotons->begin()+2)->eta()); 
+//   Pho3Eta_->push_back((myPhotons->begin()+3)->eta());  
+//   Pho4Eta_->push_back((myPhotons->begin()+4)->eta());  
+//   Pho5Eta_->push_back(0);
+
+//   Pho0Phi_->push_back(myPhotons->begin()->phi()); 
+//   Pho1Phi_->push_back((myPhotons->begin()+1)->phi());
+//   Pho2Phi_->push_back((myPhotons->begin()+2)->phi()); 
+//   Pho3Phi_->push_back((myPhotons->begin()+3)->phi()); 
+//   Pho4Phi_->push_back((myPhotons->begin()+4)->phi());  
+//   Pho5Phi_->push_back(0);  
+
+//   Pho0En_->push_back(myPhotons->begin()->energy()); 
+//   Pho1En_->push_back((myPhotons->begin()+1)->energy()); 
+//   Pho2En_->push_back((myPhotons->begin()+2)->energy());
+//   Pho3En_->push_back((myPhotons->begin()+3)->energy());
+//   Pho4En_->push_back((myPhotons->begin()+4)->energy());
+//   Pho5En_->push_back(0);
+//   }
+
+//   else{
+//         // std::cout << "end of myPhotons collision "  << std::endl; //TODO
+//   Pho0Pt_->push_back(myPhotons->begin()->pt()); 
+//           // std::cout << "ele Jet 0pt: " << (myPhotons->begin()->pt())   << std::endl;
+
+//   Pho1Pt_->push_back((myPhotons->begin()+myPhotons->size()/5)->pt()); 
+//         // std::cout << "ele Jet 1pt: " << ((myPhotons->begin()+myPhotons->size()/5)->pt())    << std::endl;
+
+//   Pho2Pt_->push_back((myPhotons->begin()+myPhotons->size()*2/5)->pt());
+//         // std::cout << "ele Jet 2pt: " << ((myPhotons->begin()+myPhotons->size()*2/5)->pt())  << std::endl;
+  
+//   Pho3Pt_->push_back((myPhotons->begin()+myPhotons->size()*3/5)->pt());
+//         // std::cout << "ele Jet 3pt: " << ((myPhotons->begin()+myPhotons->size()*3/5)->pt())  << std::endl;
+
+//   Pho4Pt_->push_back((myPhotons->begin()+myPhotons->size()*4/5)->pt());
+//         // std::cout << "ele Jet 4pt: " << ((myPhotons->begin()+myPhotons->size()*4/5)->pt())  << std::endl; 
+
+//   Pho5Pt_->push_back((myPhotons->begin()+myPhotons->size()-1)->pt());
+//        // std::cout << "ele Jet 5pt: " << ((myPhotons->begin()+myPhotons->size()-1)->pt())   << std::endl;
+
+//   Pho0Eta_->push_back(myPhotons->begin()->eta()); 
+//           // std::cout << "ele Jet 0eta: " << (myPhotons->begin()->eta())   << std::endl;
+
+//   Pho1Eta_->push_back((myPhotons->begin()+myPhotons->size()/5)->eta()); 
+//         // std::cout << "ele Jet 1eta: " << ((myPhotons->begin()+myPhotons->size()/5)->eta())    << std::endl;
+
+//   Pho2Eta_->push_back((myPhotons->begin()+myPhotons->size()*2/5)->eta());
+//         // std::cout << "ele Jet 2eta: " << ((myPhotons->begin()+myPhotons->size()*2/5)->eta())  << std::endl;
+  
+//   Pho3Eta_->push_back((myPhotons->begin()+myPhotons->size()*3/5)->eta());
+//         // std::cout << "ele Jet 3eta: " << ((myPhotons->begin()+myPhotons->size()*3/5)->eta())  << std::endl;
+
+//   Pho4Eta_->push_back((myPhotons->begin()+myPhotons->size()*4/5)->eta());
+//         // std::cout << "ele Jet 4eta: " << ((myPhotons->begin()+myPhotons->size()*4/5)->eta())  << std::endl; 
+
+//   Pho5Eta_->push_back((myPhotons->begin()+myPhotons->size()-1)->eta());
+//        // std::cout << "ele Jet 5eta: " << ((myPhotons->begin()+myPhotons->size()-1)->eta())   << std::endl; 
+
+//   Pho0Phi_->push_back(myPhotons->begin()->phi()); 
+//           // std::cout << "ele Jet 0Phi: " << (myPhotons->begin()->phi())   << std::endl;
+
+//   Pho1Phi_->push_back((myPhotons->begin()+myPhotons->size()/5)->phi()); 
+//         // std::cout << "ele Jet 1Phi: " << ((myPhotons->begin()+myPhotons->size()/5)->phi())    << std::endl;
+
+//   Pho2Phi_->push_back((myPhotons->begin()+myPhotons->size()*2/5)->phi());
+//         // std::cout << "ele Jet 2Phi: " << ((myPhotons->begin()+myPhotons->size()*2/5)->phi())  << std::endl;
+  
+//   Pho3Phi_->push_back((myPhotons->begin()+myPhotons->size()*3/5)->phi());
+//         // std::cout << "ele Jet 3Phi: " << ((myPhotons->begin()+myPhotons->size()*3/5)->phi())  << std::endl;
+
+//   Pho4Phi_->push_back((myPhotons->begin()+myPhotons->size()*4/5)->phi());
+//         // std::cout << "ele Jet 4Phi: " << ((myPhotons->begin()+myPhotons->size()*4/5)->phi())  << std::endl; 
+
+//   Pho5Phi_->push_back((myPhotons->begin()+myPhotons->size()-1)->phi());
+//        // std::cout << "ele Jet 5Phi: " << ((myPhotons->begin()+myPhotons->size()-1)->phi())   << std::endl;   
+
+//   Pho0En_->push_back(myPhotons->begin()->energy()); 
+//           // std::cout << "ele Jet 0En: " << (myPhotons->begin()->energy())   << std::endl;
+
+//   Pho1En_->push_back((myPhotons->begin()+myPhotons->size()/5)->energy()); 
+//         // std::cout << "ele Jet 1En: " << ((myPhotons->begin()+myPhotons->size()/5)->energy())    << std::endl;
+
+//   Pho2En_->push_back((myPhotons->begin()+myPhotons->size()*2/5)->energy());
+//         // std::cout << "ele Jet 2En: " << ((myPhotons->begin()+myPhotons->size()*2/5)->energy())  << std::endl;
+  
+//   Pho3En_->push_back((myPhotons->begin()+myPhotons->size()*3/5)->energy());
+//         // std::cout << "ele Jet 3En: " << ((myPhotons->begin()+myPhotons->size()*3/5)->energy())  << std::endl;
+
+//   Pho4En_->push_back((myPhotons->begin()+myPhotons->size()*4/5)->energy());
+//         // std::cout << "ele Jet 4En: " << ((myPhotons->begin()+myPhotons->size()*4/5)->energy())  << std::endl; 
+
+//   Pho5En_->push_back((myPhotons->begin()+myPhotons->size()-1)->energy());
+//        // std::cout << "ele Jet 5En: " << ((myPhotons->begin()+myPhotons->size()-1)->energy())   << std::endl;                    
+     
+// }
 
   return;
 
@@ -3406,6 +4870,7 @@ void AODAnalyzer::fillPhotons(const edm::Handle<PhotonCollection> & photons)
 template<typename PhotongedCollection>
 void AODAnalyzer::fillgedPhotons(const edm::Handle<PhotongedCollection> & gedphotons)
 {
+   std::vector<reco::Photon> myGedPhotons;
    typename PhotongedCollection::const_iterator i = gedphotons->begin();
    for(;i != gedphotons->end(); i++){
      
@@ -3423,11 +4888,280 @@ void AODAnalyzer::fillgedPhotons(const edm::Handle<PhotongedCollection> & gedpho
         gedPhor1x5_->push_back(i->r1x5());
         gedPhor2x5_->push_back(i->r2x5());
         gedPhor9_->push_back(i->r9());
+        myGedPhotons.push_back(*i);
         // std::cout << "ele energy: " << i->energy()   << std::endl; 
         // std::cout << "ele SCeta: "  << i->etaWidth() << std::endl;
         // std::cout << "ele SCphi: "  << i->phiWidth() << std::endl;
       // }
   }
+
+    std::sort( myGedPhotons.begin(), myGedPhotons.end(), GreaterByPt<reco::Photon>());
+
+//     if ((myGedPhotons->size())==0){
+
+//   Pho0Pt_->push_back(0); 
+//   Pho1Pt_->push_back(0); 
+//   Pho2Pt_->push_back(0); 
+//   Pho3Pt_->push_back(0); 
+//   Pho4Pt_->push_back(0); 
+//   Pho5Pt_->push_back(0); 
+
+//   Pho0Eta_->push_back(0);
+//   Pho1Eta_->push_back(0);
+//   Pho2Eta_->push_back(0);
+//   Pho3Eta_->push_back(0);
+//   Pho4Eta_->push_back(0);
+//   Pho5Eta_->push_back(0);
+
+//   Pho0Phi_->push_back(0);
+//   Pho1Phi_->push_back(0);
+//   Pho2Phi_->push_back(0);
+//   Pho3Phi_->push_back(0);
+//   Pho4Phi_->push_back(0);
+//   Pho5Phi_->push_back(0);
+
+//   Pho0En_->push_back(0);
+//   Pho1En_->push_back(0);
+//   Pho2En_->push_back(0);
+//   Pho3En_->push_back(0);
+//   Pho4En_->push_back(0);   
+//   Pho5En_->push_back(0);
+//   }
+  
+  
+//   else if ((myGedPhotons->size())==1){
+
+//   Pho0Pt_->push_back(myGedPhotons->begin()->pt());  
+//   Pho1Pt_->push_back(0); 
+//   Pho2Pt_->push_back(0); 
+//   Pho3Pt_->push_back(0); 
+//   Pho4Pt_->push_back(0); 
+//   Pho5Pt_->push_back(0); 
+
+//   Pho0Eta_->push_back(myGedPhotons->begin()->eta()); 
+//   Pho1Eta_->push_back(0);
+//   Pho2Eta_->push_back(0);
+//   Pho3Eta_->push_back(0);
+//   Pho4Eta_->push_back(0);
+//   Pho5Eta_->push_back(0);
+
+//   Pho0Phi_->push_back(myGedPhotons->begin()->phi()); 
+//   Pho1Phi_->push_back(0);
+//   Pho2Phi_->push_back(0);
+//   Pho3Phi_->push_back(0);
+//   Pho4Phi_->push_back(0);
+//   Pho5Phi_->push_back(0);
+
+//   Pho0En_->push_back(myGedPhotons->begin()->energy()); 
+//   Pho1En_->push_back(0);
+//   Pho2En_->push_back(0);
+//   Pho3En_->push_back(0);
+//   Pho4En_->push_back(0);   
+//   Pho5En_->push_back(0);
+
+//   } 
+
+//   else if ((myGedPhotons->size())==2){ 
+
+//   Pho0Pt_->push_back(myGedPhotons->begin()->pt());  
+//   Pho1Pt_->push_back((myGedPhotons->begin()+1)->pt());
+//   Pho2Pt_->push_back(0); 
+//   Pho3Pt_->push_back(0); 
+//   Pho4Pt_->push_back(0); 
+//   Pho5Pt_->push_back(0); 
+
+//   Pho0Eta_->push_back(myGedPhotons->begin()->eta()); 
+//   Pho1Eta_->push_back((myGedPhotons->begin()+1)->eta());  
+//   Pho2Eta_->push_back(0);
+//   Pho3Eta_->push_back(0);
+//   Pho4Eta_->push_back(0);
+//   Pho5Eta_->push_back(0);
+
+//   Pho0Phi_->push_back(myGedPhotons->begin()->phi()); 
+//   Pho1Phi_->push_back((myGedPhotons->begin()+1)->phi()); 
+//   Pho2Phi_->push_back(0);
+//   Pho3Phi_->push_back(0);
+//   Pho4Phi_->push_back(0);
+//   Pho5Phi_->push_back(0);
+  
+//   Pho0En_->push_back(myGedPhotons->begin()->energy()); 
+//   Pho1En_->push_back((myGedPhotons->begin()+1)->energy()); 
+//   Pho2En_->push_back(0);
+//   Pho3En_->push_back(0);
+//   Pho4En_->push_back(0);   
+//   Pho5En_->push_back(0);    
+  
+//   }
+
+//   else if ((myGedPhotons->size())==3){
+
+//   Pho0Pt_->push_back(myGedPhotons->begin()->pt());  
+//   Pho1Pt_->push_back((myGedPhotons->begin()+1)->pt());   
+//   Pho2Pt_->push_back((myGedPhotons->begin()+2)->pt()); 
+//   Pho3Pt_->push_back(0); 
+//   Pho4Pt_->push_back(0); 
+//   Pho5Pt_->push_back(0); 
+
+//   Pho0Eta_->push_back(myGedPhotons->begin()->eta()); 
+//   Pho1Eta_->push_back((myGedPhotons->begin()+1)->eta()); 
+//   Pho2Eta_->push_back((myGedPhotons->begin()+2)->eta()); 
+//   Pho3Eta_->push_back(0);
+//   Pho4Eta_->push_back(0);
+//   Pho5Eta_->push_back(0);
+
+//   Pho0Phi_->push_back(myGedPhotons->begin()->phi()); 
+//   Pho1Phi_->push_back((myGedPhotons->begin()+1)->phi()); 
+//   Pho2Phi_->push_back((myGedPhotons->begin()+2)->phi()); 
+//   Pho3Phi_->push_back(0);
+//   Pho4Phi_->push_back(0);
+//   Pho5Phi_->push_back(0);
+
+//   Pho0En_->push_back(myGedPhotons->begin()->energy()); 
+//   Pho1En_->push_back((myGedPhotons->begin()+1)->energy()); 
+//   Pho2En_->push_back((myGedPhotons->begin()+2)->energy());
+//   Pho3En_->push_back(0);
+//   Pho4En_->push_back(0);   
+//   Pho5En_->push_back(0);
+//   }
+
+//   else if ((myGedPhotons->size())==4){
+
+//   Pho0Pt_->push_back(myGedPhotons->begin()->pt());  
+//   Pho1Pt_->push_back((myGedPhotons->begin()+1)->pt());  
+//   Pho2Pt_->push_back((myGedPhotons->begin()+2)->pt()); 
+//   Pho3Pt_->push_back((myGedPhotons->begin()+3)->pt());  
+//   Pho4Pt_->push_back(0); 
+//   Pho5Pt_->push_back(0); 
+
+//   Pho0Eta_->push_back(myGedPhotons->begin()->eta()); 
+//   Pho1Eta_->push_back((myGedPhotons->begin()+1)->eta()); 
+//   Pho2Eta_->push_back((myGedPhotons->begin()+2)->eta()); 
+//   Pho3Eta_->push_back((myGedPhotons->begin()+3)->eta());  
+//   Pho4Eta_->push_back(0);
+//   Pho5Eta_->push_back(0);
+
+//   Pho0Phi_->push_back(myGedPhotons->begin()->phi()); 
+//   Pho1Phi_->push_back((myGedPhotons->begin()+1)->phi()); 
+//   Pho2Phi_->push_back((myGedPhotons->begin()+2)->phi()); 
+//   Pho3Phi_->push_back((myGedPhotons->begin()+3)->phi());  
+//   Pho4Phi_->push_back(0);
+//   Pho5Phi_->push_back(0);  
+
+//   Pho0En_->push_back(myGedPhotons->begin()->energy()); 
+//   Pho1En_->push_back((myGedPhotons->begin()+1)->energy()); 
+//   Pho2En_->push_back((myGedPhotons->begin()+2)->energy());
+//   Pho3En_->push_back((myGedPhotons->begin()+3)->energy());
+//   Pho4En_->push_back(0);   
+//   Pho5En_->push_back(0);
+//   }
+
+//   else if ((myGedPhotons->size())==5){
+
+//   Pho0Pt_->push_back(myGedPhotons->begin()->pt());  
+//   Pho1Pt_->push_back((myGedPhotons->begin()+1)->pt()); 
+//   Pho2Pt_->push_back((myGedPhotons->begin()+2)->pt()); 
+//   Pho3Pt_->push_back((myGedPhotons->begin()+3)->pt());  
+//   Pho4Pt_->push_back((myGedPhotons->begin()+4)->pt()); 
+//   Pho5Pt_->push_back(0); 
+
+//   Pho0Eta_->push_back(myGedPhotons->begin()->eta()); 
+//   Pho1Eta_->push_back((myGedPhotons->begin()+1)->eta());
+//   Pho2Eta_->push_back((myGedPhotons->begin()+2)->eta()); 
+//   Pho3Eta_->push_back((myGedPhotons->begin()+3)->eta());  
+//   Pho4Eta_->push_back((myGedPhotons->begin()+4)->eta());  
+//   Pho5Eta_->push_back(0);
+
+//   Pho0Phi_->push_back(myGedPhotons->begin()->phi()); 
+//   Pho1Phi_->push_back((myGedPhotons->begin()+1)->phi());
+//   Pho2Phi_->push_back((myGedPhotons->begin()+2)->phi()); 
+//   Pho3Phi_->push_back((myGedPhotons->begin()+3)->phi()); 
+//   Pho4Phi_->push_back((myGedPhotons->begin()+4)->phi());  
+//   Pho5Phi_->push_back(0);  
+
+//   Pho0En_->push_back(myGedPhotons->begin()->energy()); 
+//   Pho1En_->push_back((myGedPhotons->begin()+1)->energy()); 
+//   Pho2En_->push_back((myGedPhotons->begin()+2)->energy());
+//   Pho3En_->push_back((myGedPhotons->begin()+3)->energy());
+//   Pho4En_->push_back((myGedPhotons->begin()+4)->energy());
+//   Pho5En_->push_back(0);
+//   }
+
+//   else{
+//         // std::cout << "end of myGedPhotons collision "  << std::endl; //TODO
+//   Pho0Pt_->push_back(myGedPhotons->begin()->pt()); 
+//           // std::cout << "ele Jet 0pt: " << (myGedPhotons->begin()->pt())   << std::endl;
+
+//   Pho1Pt_->push_back((myGedPhotons->begin()+myGedPhotons->size()/5)->pt()); 
+//         // std::cout << "ele Jet 1pt: " << ((myGedPhotons->begin()+myGedPhotons->size()/5)->pt())    << std::endl;
+
+//   Pho2Pt_->push_back((myGedPhotons->begin()+myGedPhotons->size()*2/5)->pt());
+//         // std::cout << "ele Jet 2pt: " << ((myGedPhotons->begin()+myGedPhotons->size()*2/5)->pt())  << std::endl;
+  
+//   Pho3Pt_->push_back((myGedPhotons->begin()+myGedPhotons->size()*3/5)->pt());
+//         // std::cout << "ele Jet 3pt: " << ((myGedPhotons->begin()+myGedPhotons->size()*3/5)->pt())  << std::endl;
+
+//   Pho4Pt_->push_back((myGedPhotons->begin()+myGedPhotons->size()*4/5)->pt());
+//         // std::cout << "ele Jet 4pt: " << ((myGedPhotons->begin()+myGedPhotons->size()*4/5)->pt())  << std::endl; 
+
+//   Pho5Pt_->push_back((myGedPhotons->begin()+myGedPhotons->size()-1)->pt());
+//        // std::cout << "ele Jet 5pt: " << ((myGedPhotons->begin()+myGedPhotons->size()-1)->pt())   << std::endl;
+
+//   Pho0Eta_->push_back(myGedPhotons->begin()->eta()); 
+//           // std::cout << "ele Jet 0eta: " << (myGedPhotons->begin()->eta())   << std::endl;
+
+//   Pho1Eta_->push_back((myGedPhotons->begin()+myGedPhotons->size()/5)->eta()); 
+//         // std::cout << "ele Jet 1eta: " << ((myGedPhotons->begin()+myGedPhotons->size()/5)->eta())    << std::endl;
+
+//   Pho2Eta_->push_back((myGedPhotons->begin()+myGedPhotons->size()*2/5)->eta());
+//         // std::cout << "ele Jet 2eta: " << ((myGedPhotons->begin()+myGedPhotons->size()*2/5)->eta())  << std::endl;
+  
+//   Pho3Eta_->push_back((myGedPhotons->begin()+myGedPhotons->size()*3/5)->eta());
+//         // std::cout << "ele Jet 3eta: " << ((myGedPhotons->begin()+myGedPhotons->size()*3/5)->eta())  << std::endl;
+
+//   Pho4Eta_->push_back((myGedPhotons->begin()+myGedPhotons->size()*4/5)->eta());
+//         // std::cout << "ele Jet 4eta: " << ((myGedPhotons->begin()+myGedPhotons->size()*4/5)->eta())  << std::endl; 
+
+//   Pho5Eta_->push_back((myGedPhotons->begin()+myGedPhotons->size()-1)->eta());
+//        // std::cout << "ele Jet 5eta: " << ((myGedPhotons->begin()+myGedPhotons->size()-1)->eta())   << std::endl; 
+
+//   Pho0Phi_->push_back(myGedPhotons->begin()->phi()); 
+//           // std::cout << "ele Jet 0Phi: " << (myGedPhotons->begin()->phi())   << std::endl;
+
+//   Pho1Phi_->push_back((myGedPhotons->begin()+myGedPhotons->size()/5)->phi()); 
+//         // std::cout << "ele Jet 1Phi: " << ((myGedPhotons->begin()+myGedPhotons->size()/5)->phi())    << std::endl;
+
+//   Pho2Phi_->push_back((myGedPhotons->begin()+myGedPhotons->size()*2/5)->phi());
+//         // std::cout << "ele Jet 2Phi: " << ((myGedPhotons->begin()+myGedPhotons->size()*2/5)->phi())  << std::endl;
+  
+//   Pho3Phi_->push_back((myGedPhotons->begin()+myGedPhotons->size()*3/5)->phi());
+//         // std::cout << "ele Jet 3Phi: " << ((myGedPhotons->begin()+myGedPhotons->size()*3/5)->phi())  << std::endl;
+
+//   Pho4Phi_->push_back((myGedPhotons->begin()+myGedPhotons->size()*4/5)->phi());
+//         // std::cout << "ele Jet 4Phi: " << ((myGedPhotons->begin()+myGedPhotons->size()*4/5)->phi())  << std::endl; 
+
+//   Pho5Phi_->push_back((myGedPhotons->begin()+myGedPhotons->size()-1)->phi());
+//        // std::cout << "ele Jet 5Phi: " << ((myGedPhotons->begin()+myGedPhotons->size()-1)->phi())   << std::endl;   
+
+//   Pho0En_->push_back(myGedPhotons->begin()->energy()); 
+//           // std::cout << "ele Jet 0En: " << (myGedPhotons->begin()->energy())   << std::endl;
+
+//   Pho1En_->push_back((myGedPhotons->begin()+myGedPhotons->size()/5)->energy()); 
+//         // std::cout << "ele Jet 1En: " << ((myGedPhotons->begin()+myGedPhotons->size()/5)->energy())    << std::endl;
+
+//   Pho2En_->push_back((myGedPhotons->begin()+myGedPhotons->size()*2/5)->energy());
+//         // std::cout << "ele Jet 2En: " << ((myGedPhotons->begin()+myGedPhotons->size()*2/5)->energy())  << std::endl;
+  
+//   Pho3En_->push_back((myGedPhotons->begin()+myGedPhotons->size()*3/5)->energy());
+//         // std::cout << "ele Jet 3En: " << ((myGedPhotons->begin()+myGedPhotons->size()*3/5)->energy())  << std::endl;
+
+//   Pho4En_->push_back((myGedPhotons->begin()+myGedPhotons->size()*4/5)->energy());
+//         // std::cout << "ele Jet 4En: " << ((myGedPhotons->begin()+myGedPhotons->size()*4/5)->energy())  << std::endl; 
+
+//   Pho5En_->push_back((myGedPhotons->begin()+myGedPhotons->size()-1)->energy());
+//        // std::cout << "ele Jet 5En: " << ((myGedPhotons->begin()+myGedPhotons->size()-1)->energy())   << std::endl;                    
+     
+// }
+
   return;
 
 
@@ -3436,12 +5170,10 @@ void AODAnalyzer::fillgedPhotons(const edm::Handle<PhotongedCollection> & gedpho
 template<typename MuonCollection>
 void AODAnalyzer::fillMuons(const edm::Handle<MuonCollection> & muons)
 {
-   // https://github.com/cms-sw/cmssw/blob/1f04ccd3079678a4be345749f9ad13ea2edce89e/DataFormats/CTPPSDigi/src/CTPPSPixelDigiCollection.cc  -- Change muons to temporary
-   // https://github.com/cms-sw/cmssw/blob/09c3fce6626f70fd04223e7dacebf0b485f73f54/SimCalorimetry/CaloSimAlgos/interface/CaloDigiCollectionSorter.h
-   // https://github.com/cms-sw/cmssw/blob/09c3fce6626f70fd04223e7dacebf0b485f73f54/RecoTauTag/RecoTau/src/RecoTauCommonUtilities.cc 
-
+  
+   std::vector<reco::Muon> myMuons;
    typename MuonCollection::const_iterator i = muons->begin();
-   
+   //bobo
    for(;i != muons->end(); i++){
 
         // Mu0Pt_->push_back(i->pt());
@@ -3458,6 +5190,7 @@ void AODAnalyzer::fillMuons(const edm::Handle<MuonCollection> & muons)
         std::cout << "ele Muon charge: "  << i->charge() << std::endl;
         std::cout << "ele Muon vertexNormalizedChi2: "  << i->vertexNormalizedChi2() << std::endl;
 
+        myMuons.push_back(*i);
         // std::sort(MuPt_->begin(), MuPt_->end()); 
         // std::cout << "ele Muon in the loop pt: " << i->pt()   << std::endl; //TODO
       // }
@@ -3473,89 +5206,284 @@ void AODAnalyzer::fillMuons(const edm::Handle<MuonCollection> & muons)
     // std::sort(muonsvector.begin(), muonsvector.end(), GreaterByPt<reco::Muon>()); 
              
   // muons->clear();
-  std::sort( muons->begin(), muons->end(), GreaterByPt<reco::Muon>());
+  std::sort( myMuons.begin(), myMuons.end(), GreaterByPt<reco::Muon>());
   //   [] ( const reco::Muon & muon1, const reco::Muon & muon2 ) { 
   //   return (muon1.pt() > muon2.pt());
   // } );
 
 
-  Mu0Pt_->push_back(muons->begin()->pt()); 
-          std::cout << "ele Jet 0pt: " << (muons->begin()->pt())   << std::endl;
+         std::cout << "Muons sorted "  << std::endl; //TODO
+         std::cout << "Muons size: " << myMuons.size() << std::endl; //TODO
+         // std::cout << "Muons 1pt: "  << myMuons.size()*1/5 << std::endl; //TODO
+         // std::cout << "Muons 2pt: "  << myMuons.size()*2/5 << std::endl; //TODO
+         // std::cout << "Muons 3pt: "  << myMuons.size()*3/5 << std::endl; //TODO
+         // std::cout << "Muons 4pt: "  << myMuons.size()*4/5 << std::endl; //TODO
+         // std::cout << "Muons 5pt: "  << myMuons.size()-1 << std::endl; //TODO
 
-  Mu1Pt_->push_back((muons->begin()+muons->size()/5)->pt()); 
-        std::cout << "ele Jet 1pt: " << ((muons->begin()+muons->size()/5)->pt())    << std::endl;
+    if ((myMuons.size())==0){
 
-  Mu2Pt_->push_back((muons->begin()+muons->size()*2/5)->pt());
-        std::cout << "ele Jet 2pt: " << ((muons->begin()+muons->size()*2/5)->pt())  << std::endl;
+  Mu0Pt_->push_back(0); 
+  Mu1Pt_->push_back(0); 
+  Mu2Pt_->push_back(0); 
+  Mu3Pt_->push_back(0); 
+  Mu4Pt_->push_back(0); 
+  Mu5Pt_->push_back(0); 
+
+  Mu0Eta_->push_back(0);
+  Mu1Eta_->push_back(0);
+  Mu2Eta_->push_back(0);
+  Mu3Eta_->push_back(0);
+  Mu4Eta_->push_back(0);
+  Mu5Eta_->push_back(0);
+
+  Mu0Phi_->push_back(0);
+  Mu1Phi_->push_back(0);
+  Mu2Phi_->push_back(0);
+  Mu3Phi_->push_back(0);
+  Mu4Phi_->push_back(0);
+  Mu5Phi_->push_back(0);
+
+  Mu0En_->push_back(0);
+  Mu1En_->push_back(0);
+  Mu2En_->push_back(0);
+  Mu3En_->push_back(0);
+  Mu4En_->push_back(0);   
+  Mu5En_->push_back(0);
+  }
   
-  Mu3Pt_->push_back((muons->begin()+muons->size()*3/5)->pt());
-        std::cout << "ele Jet 3pt: " << ((muons->begin()+muons->size()*3/5)->pt())  << std::endl;
+  
+  else if ((myMuons.size())==1){
 
-  Mu4Pt_->push_back((muons->begin()+muons->size()*4/5)->pt());
-        std::cout << "ele Jet 4pt: " << ((muons->begin()+muons->size()*4/5)->pt())  << std::endl; 
+  Mu0Pt_->push_back(myMuons.begin()->pt());  
+  Mu1Pt_->push_back(0); 
+  Mu2Pt_->push_back(0); 
+  Mu3Pt_->push_back(0); 
+  Mu4Pt_->push_back(0); 
+  Mu5Pt_->push_back(0); 
 
-  Mu5Pt_->push_back((muons->begin()+muons->size()-1)->pt());
-       std::cout << "ele Jet 5pt: " << ((muons->begin()+muons->size()-1)->pt())   << std::endl;
-  //        // Mu0Eta_
-         // Mu1Eta_
-         // Mu2Eta_
-         // Mu3Eta_
-         // Mu4Eta_
-         // Mu5Eta_
+  Mu0Eta_->push_back(myMuons.begin()->eta()); 
+  Mu1Eta_->push_back(0);
+  Mu2Eta_->push_back(0);
+  Mu3Eta_->push_back(0);
+  Mu4Eta_->push_back(0);
+  Mu5Eta_->push_back(0);
 
-         // Mu0Phi_
-         // Mu1Phi_
-         // Mu2Phi_
-         // Mu3Phi_
-         // Mu4Phi_
-         // Mu5Phi_
+  Mu0Phi_->push_back(myMuons.begin()->phi()); 
+  Mu1Phi_->push_back(0);
+  Mu2Phi_->push_back(0);
+  Mu3Phi_->push_back(0);
+  Mu4Phi_->push_back(0);
+  Mu5Phi_->push_back(0);
 
-         // Mu0En_
-         // Mu1En_
-         // Mu2En_
-         // Mu3En_
-         // Mu4En_
-         // Mu5En_
+  Mu0En_->push_back(myMuons.begin()->energy()); 
+  Mu1En_->push_back(0);
+  Mu2En_->push_back(0);
+  Mu3En_->push_back(0);
+  Mu4En_->push_back(0);   
+  Mu5En_->push_back(0);
 
+  } 
 
+  else if ((myMuons.size())==2){ 
 
+  Mu0Pt_->push_back(myMuons.begin()->pt());  
+  Mu1Pt_->push_back((myMuons.begin()+1)->pt());
+  Mu2Pt_->push_back(0); 
+  Mu3Pt_->push_back(0); 
+  Mu4Pt_->push_back(0); 
+  Mu5Pt_->push_back(0); 
 
+  Mu0Eta_->push_back(myMuons.begin()->eta()); 
+  Mu1Eta_->push_back((myMuons.begin()+1)->eta());  
+  Mu2Eta_->push_back(0);
+  Mu3Eta_->push_back(0);
+  Mu4Eta_->push_back(0);
+  Mu5Eta_->push_back(0);
 
+  Mu0Phi_->push_back(myMuons.begin()->phi()); 
+  Mu1Phi_->push_back((myMuons.begin()+1)->phi()); 
+  Mu2Phi_->push_back(0);
+  Mu3Phi_->push_back(0);
+  Mu4Phi_->push_back(0);
+  Mu5Phi_->push_back(0);
+  
+  Mu0En_->push_back(myMuons.begin()->energy()); 
+  Mu1En_->push_back((myMuons.begin()+1)->energy()); 
+  Mu2En_->push_back(0);
+  Mu3En_->push_back(0);
+  Mu4En_->push_back(0);   
+  Mu5En_->push_back(0);    
+  
+  }
 
-        // temporary.insert(std::end(temporary), sort_begin, sort_end);
+  else if ((myMuons.size())==3){
 
-        // std::sort(MuPt_->begin(), MuPt_->end()); 
-        // Mu0Pt_->push_back(muons->begin()->pt());
-        //     std::cout << "ele Mu0pt: " << (muons->begin()->pt())   << std::endl;
-        // //         std::cout << "ele Muon pt begin: " << i->pt()   << std::endl; //TODO
+  Mu0Pt_->push_back(myMuons.begin()->pt());  
+  Mu1Pt_->push_back((myMuons.begin()+1)->pt());   
+  Mu2Pt_->push_back((myMuons.begin()+2)->pt()); 
+  Mu3Pt_->push_back(0); 
+  Mu4Pt_->push_back(0); 
+  Mu5Pt_->push_back(0); 
 
+  Mu0Eta_->push_back(myMuons.begin()->eta()); 
+  Mu1Eta_->push_back((myMuons.begin()+1)->eta()); 
+  Mu2Eta_->push_back((myMuons.begin()+2)->eta()); 
+  Mu3Eta_->push_back(0);
+  Mu4Eta_->push_back(0);
+  Mu5Eta_->push_back(0);
 
+  Mu0Phi_->push_back(myMuons.begin()->phi()); 
+  Mu1Phi_->push_back((myMuons.begin()+1)->phi()); 
+  Mu2Phi_->push_back((myMuons.begin()+2)->phi()); 
+  Mu3Phi_->push_back(0);
+  Mu4Phi_->push_back(0);
+  Mu5Phi_->push_back(0);
 
-  //-------------------------------------------------------------
-  // typename CaloJetCollection::const_iterator i = calojets->begin();
-  // for(;i != calojets->end(); i++){
-  //       CalJetPt_->push_back(i->pt());
-  //       CalJetEta_->push_back(i->eta());
-  //       CalJetPhi_->push_back(i->phi());
-  //       CalJetEn_->push_back(i->energy());
-  //     // std::cout << "ele CaloJets pt: " << i->pt()   << std::endl; //TODO
-  //     // std::cout << "ele CaloJets eta: " << i->eta()   << std::endl; //TODO
-  //     // std::cout << "ele CaloJets phi: " << i->phi()   << std::endl; //TODO
-  //     // std::cout << "ele CaloJets energy: " << i->energy()   << std::endl; //TODO
+  Mu0En_->push_back(myMuons.begin()->energy()); 
+  Mu1En_->push_back((myMuons.begin()+1)->energy()); 
+  Mu2En_->push_back((myMuons.begin()+2)->energy());
+  Mu3En_->push_back(0);
+  Mu4En_->push_back(0);   
+  Mu5En_->push_back(0);
+  }
 
+  else if ((myMuons.size())==4){
 
-  // }
+  Mu0Pt_->push_back(myMuons.begin()->pt());  
+  Mu1Pt_->push_back((myMuons.begin()+1)->pt());  
+  Mu2Pt_->push_back((myMuons.begin()+2)->pt()); 
+  Mu3Pt_->push_back((myMuons.begin()+3)->pt());  
+  Mu4Pt_->push_back(0); 
+  Mu5Pt_->push_back(0); 
 
-  //      // std::cout << "end of calojets collision "  << std::endl; //TODO
-  // CalJet0Pt_->push_back(calojets->begin()->pt()); 
-  //         // std::cout << "ele Jet 0pt: " << (calojets->begin()->pt())   << std::endl;
+  Mu0Eta_->push_back(myMuons.begin()->eta()); 
+  Mu1Eta_->push_back((myMuons.begin()+1)->eta()); 
+  Mu2Eta_->push_back((myMuons.begin()+2)->eta()); 
+  Mu3Eta_->push_back((myMuons.begin()+3)->eta());  
+  Mu4Eta_->push_back(0);
+  Mu5Eta_->push_back(0);
 
-  //____________________________________________________________________
+  Mu0Phi_->push_back(myMuons.begin()->phi()); 
+  Mu1Phi_->push_back((myMuons.begin()+1)->phi()); 
+  Mu2Phi_->push_back((myMuons.begin()+2)->phi()); 
+  Mu3Phi_->push_back((myMuons.begin()+3)->phi());  
+  Mu4Phi_->push_back(0);
+  Mu5Phi_->push_back(0);  
 
+  Mu0En_->push_back(myMuons.begin()->energy()); 
+  Mu1En_->push_back((myMuons.begin()+1)->energy()); 
+  Mu2En_->push_back((myMuons.begin()+2)->energy());
+  Mu3En_->push_back((myMuons.begin()+3)->energy());
+  Mu4En_->push_back(0);   
+  Mu5En_->push_back(0);
+  }
 
+  else if ((myMuons.size())==5){
 
+  Mu0Pt_->push_back(myMuons.begin()->pt());  
+  Mu1Pt_->push_back((myMuons.begin()+1)->pt()); 
+  Mu2Pt_->push_back((myMuons.begin()+2)->pt()); 
+  Mu3Pt_->push_back((myMuons.begin()+3)->pt());  
+  Mu4Pt_->push_back((myMuons.begin()+4)->pt()); 
+  Mu5Pt_->push_back(0); 
 
+  Mu0Eta_->push_back(myMuons.begin()->eta()); 
+  Mu1Eta_->push_back((myMuons.begin()+1)->eta());
+  Mu2Eta_->push_back((myMuons.begin()+2)->eta()); 
+  Mu3Eta_->push_back((myMuons.begin()+3)->eta());  
+  Mu4Eta_->push_back((myMuons.begin()+4)->eta());  
+  Mu5Eta_->push_back(0);
 
+  Mu0Phi_->push_back(myMuons.begin()->phi()); 
+  Mu1Phi_->push_back((myMuons.begin()+1)->phi());
+  Mu2Phi_->push_back((myMuons.begin()+2)->phi()); 
+  Mu3Phi_->push_back((myMuons.begin()+3)->phi()); 
+  Mu4Phi_->push_back((myMuons.begin()+4)->phi());  
+  Mu5Phi_->push_back(0);  
+
+  Mu0En_->push_back(myMuons.begin()->energy()); 
+  Mu1En_->push_back((myMuons.begin()+1)->energy()); 
+  Mu2En_->push_back((myMuons.begin()+2)->energy());
+  Mu3En_->push_back((myMuons.begin()+3)->energy());
+  Mu4En_->push_back((myMuons.begin()+4)->energy());
+  Mu5En_->push_back(0);
+  }
+
+  else{
+        // std::cout << "end of myMuons collision "  << std::endl; //TODO
+  Mu0Pt_->push_back(myMuons.begin()->pt()); 
+          std::cout << "ele Jet 0pt: " << (myMuons.begin()->pt())   << std::endl;
+
+  Mu1Pt_->push_back((myMuons.begin()+myMuons.size()/5)->pt()); 
+        std::cout << "ele Jet 1pt: " << ((myMuons.begin()+myMuons.size()/5)->pt())    << std::endl;
+
+  Mu2Pt_->push_back((myMuons.begin()+myMuons.size()*2/5)->pt());
+        std::cout << "ele Jet 2pt: " << ((myMuons.begin()+myMuons.size()*2/5)->pt())  << std::endl;
+  
+  Mu3Pt_->push_back((myMuons.begin()+myMuons.size()*3/5)->pt());
+        std::cout << "ele Jet 3pt: " << ((myMuons.begin()+myMuons.size()*3/5)->pt())  << std::endl;
+
+  Mu4Pt_->push_back((myMuons.begin()+myMuons.size()*4/5)->pt());
+        std::cout << "ele Jet 4pt: " << ((myMuons.begin()+myMuons.size()*4/5)->pt())  << std::endl; 
+
+  Mu5Pt_->push_back((myMuons.begin()+myMuons.size()-1)->pt());
+       std::cout << "ele Jet 5pt: " << ((myMuons.begin()+myMuons.size()-1)->pt())   << std::endl;
+
+  Mu0Eta_->push_back(myMuons.begin()->eta()); 
+          std::cout << "ele Jet 0eta: " << (myMuons.begin()->eta())   << std::endl;
+
+  Mu1Eta_->push_back((myMuons.begin()+myMuons.size()/5)->eta()); 
+        std::cout << "ele Jet 1eta: " << ((myMuons.begin()+myMuons.size()/5)->eta())    << std::endl;
+
+  Mu2Eta_->push_back((myMuons.begin()+myMuons.size()*2/5)->eta());
+        std::cout << "ele Jet 2eta: " << ((myMuons.begin()+myMuons.size()*2/5)->eta())  << std::endl;
+  
+  Mu3Eta_->push_back((myMuons.begin()+myMuons.size()*3/5)->eta());
+        std::cout << "ele Jet 3eta: " << ((myMuons.begin()+myMuons.size()*3/5)->eta())  << std::endl;
+
+  Mu4Eta_->push_back((myMuons.begin()+myMuons.size()*4/5)->eta());
+        std::cout << "ele Jet 4eta: " << ((myMuons.begin()+myMuons.size()*4/5)->eta())  << std::endl; 
+
+  Mu5Eta_->push_back((myMuons.begin()+myMuons.size()-1)->eta());
+       std::cout << "ele Jet 5eta: " << ((myMuons.begin()+myMuons.size()-1)->eta())   << std::endl; 
+
+  Mu0Phi_->push_back(myMuons.begin()->phi()); 
+          std::cout << "ele Jet 0Phi: " << (myMuons.begin()->phi())   << std::endl;
+
+  Mu1Phi_->push_back((myMuons.begin()+myMuons.size()/5)->phi()); 
+        std::cout << "ele Jet 1Phi: " << ((myMuons.begin()+myMuons.size()/5)->phi())    << std::endl;
+
+  Mu2Phi_->push_back((myMuons.begin()+myMuons.size()*2/5)->phi());
+        std::cout << "ele Jet 2Phi: " << ((myMuons.begin()+myMuons.size()*2/5)->phi())  << std::endl;
+  
+  Mu3Phi_->push_back((myMuons.begin()+myMuons.size()*3/5)->phi());
+        std::cout << "ele Jet 3Phi: " << ((myMuons.begin()+myMuons.size()*3/5)->phi())  << std::endl;
+
+  Mu4Phi_->push_back((myMuons.begin()+myMuons.size()*4/5)->phi());
+        std::cout << "ele Jet 4Phi: " << ((myMuons.begin()+myMuons.size()*4/5)->phi())  << std::endl; 
+
+  Mu5Phi_->push_back((myMuons.begin()+myMuons.size()-1)->phi());
+       std::cout << "ele Jet 5Phi: " << ((myMuons.begin()+myMuons.size()-1)->phi())   << std::endl;   
+
+  Mu0En_->push_back(myMuons.begin()->energy()); 
+          std::cout << "ele Jet 0En: " << (myMuons.begin()->energy())   << std::endl;
+
+  Mu1En_->push_back((myMuons.begin()+myMuons.size()/5)->energy()); 
+        std::cout << "ele Jet 1En: " << ((myMuons.begin()+myMuons.size()/5)->energy())    << std::endl;
+
+  Mu2En_->push_back((myMuons.begin()+myMuons.size()*2/5)->energy());
+        std::cout << "ele Jet 2En: " << ((myMuons.begin()+myMuons.size()*2/5)->energy())  << std::endl;
+  
+  Mu3En_->push_back((myMuons.begin()+myMuons.size()*3/5)->energy());
+        std::cout << "ele Jet 3En: " << ((myMuons.begin()+myMuons.size()*3/5)->energy())  << std::endl;
+
+  Mu4En_->push_back((myMuons.begin()+myMuons.size()*4/5)->energy());
+        std::cout << "ele Jet 4En: " << ((myMuons.begin()+myMuons.size()*4/5)->energy())  << std::endl; 
+
+  Mu5En_->push_back((myMuons.begin()+myMuons.size()-1)->energy());
+       std::cout << "ele Jet 5En: " << ((myMuons.begin()+myMuons.size()-1)->energy())   << std::endl;                    
+     
+}
 
   return;
 
@@ -3990,47 +5918,47 @@ void AODAnalyzer::beginJob() {
   PFJetEI5Phi_  = new std::vector<float>;
 
   // //8CHSSoftDrop sorted variables
-  // PFJet8CHSSD0Pt_  = new std::vector<float>;
-  // PFJet8CHSSD1Pt_  = new std::vector<float>;
-  // PFJet8CHSSD2Pt_  = new std::vector<float>;
-  // PFJet8CHSSD3Pt_  = new std::vector<float>;
-  // PFJet8CHSSD4Pt_  = new std::vector<float>;
-  // PFJet8CHSSD5Pt_  = new std::vector<float>;
+  PFJet8CHSSD0Pt_  = new std::vector<float>;
+  PFJet8CHSSD1Pt_  = new std::vector<float>;
+  PFJet8CHSSD2Pt_  = new std::vector<float>;
+  PFJet8CHSSD3Pt_  = new std::vector<float>;
+  PFJet8CHSSD4Pt_  = new std::vector<float>;
+  PFJet8CHSSD5Pt_  = new std::vector<float>;
 
-  // PFJet8CHSSD0Eta_  = new std::vector<float>;
-  // PFJet8CHSSD1Eta_  = new std::vector<float>;
-  // PFJet8CHSSD2Eta_  = new std::vector<float>;
-  // PFJet8CHSSD3Eta_  = new std::vector<float>;
-  // PFJet8CHSSD4Eta_  = new std::vector<float>;
-  // PFJet8CHSSD5Eta_  = new std::vector<float>;
+  PFJet8CHSSD0Eta_  = new std::vector<float>;
+  PFJet8CHSSD1Eta_  = new std::vector<float>;
+  PFJet8CHSSD2Eta_  = new std::vector<float>;
+  PFJet8CHSSD3Eta_  = new std::vector<float>;
+  PFJet8CHSSD4Eta_  = new std::vector<float>;
+  PFJet8CHSSD5Eta_  = new std::vector<float>;
 
-  // PFJet8CHSSD0Phi_  = new std::vector<float>;
-  // PFJet8CHSSD1Phi_  = new std::vector<float>;
-  // PFJet8CHSSD2Phi_  = new std::vector<float>;
-  // PFJet8CHSSD3Phi_  = new std::vector<float>;
-  // PFJet8CHSSD4Phi_  = new std::vector<float>;
-  // PFJet8CHSSD5Phi_  = new std::vector<float>;
-  // //TopCHS sorted variables
-  // PFJetTopCHS0Pt_  = new std::vector<float>;
-  // PFJetTopCHS1Pt_  = new std::vector<float>;
-  // PFJetTopCHS2Pt_  = new std::vector<float>;
-  // PFJetTopCHS3Pt_  = new std::vector<float>;
-  // PFJetTopCHS4Pt_  = new std::vector<float>;
-  // PFJetTopCHS5Pt_  = new std::vector<float>;
+  PFJet8CHSSD0Phi_  = new std::vector<float>;
+  PFJet8CHSSD1Phi_  = new std::vector<float>;
+  PFJet8CHSSD2Phi_  = new std::vector<float>;
+  PFJet8CHSSD3Phi_  = new std::vector<float>;
+  PFJet8CHSSD4Phi_  = new std::vector<float>;
+  PFJet8CHSSD5Phi_  = new std::vector<float>;
+  //TopCHS sorted variables
+  PFJetTopCHS0Pt_  = new std::vector<float>;
+  PFJetTopCHS1Pt_  = new std::vector<float>;
+  PFJetTopCHS2Pt_  = new std::vector<float>;
+  PFJetTopCHS3Pt_  = new std::vector<float>;
+  PFJetTopCHS4Pt_  = new std::vector<float>;
+  PFJetTopCHS5Pt_  = new std::vector<float>;
 
-  // PFJetTopCHS0Eta_  = new std::vector<float>;
-  // PFJetTopCHS1Eta_  = new std::vector<float>;
-  // PFJetTopCHS2Eta_  = new std::vector<float>;
-  // PFJetTopCHS3Eta_  = new std::vector<float>;
-  // PFJetTopCHS4Eta_  = new std::vector<float>;
-  // PFJetTopCHS5Eta_  = new std::vector<float>;
+  PFJetTopCHS0Eta_  = new std::vector<float>;
+  PFJetTopCHS1Eta_  = new std::vector<float>;
+  PFJetTopCHS2Eta_  = new std::vector<float>;
+  PFJetTopCHS3Eta_  = new std::vector<float>;
+  PFJetTopCHS4Eta_  = new std::vector<float>;
+  PFJetTopCHS5Eta_  = new std::vector<float>;
 
-  // PFJetTopCHS0Phi_  = new std::vector<float>;
-  // PFJetTopCHS1Phi_  = new std::vector<float>;
-  // PFJetTopCHS2Phi_  = new std::vector<float>;
-  // PFJetTopCHS3Phi_  = new std::vector<float>;
-  // PFJetTopCHS4Phi_  = new std::vector<float>;
-  // PFJetTopCHS5Phi_  = new std::vector<float>;
+  PFJetTopCHS0Phi_  = new std::vector<float>;
+  PFJetTopCHS1Phi_  = new std::vector<float>;
+  PFJetTopCHS2Phi_  = new std::vector<float>;
+  PFJetTopCHS3Phi_  = new std::vector<float>;
+  PFJetTopCHS4Phi_  = new std::vector<float>;
+  PFJetTopCHS5Phi_  = new std::vector<float>;
 
 
   //CaloJet sorted variables
@@ -4507,48 +6435,48 @@ void AODAnalyzer::beginJob() {
   qPFJetEI4Phi_  = new std::vector<float>;
   qPFJetEI5Phi_  = new std::vector<float>;
 
-  // //8CHSSoftDrop sorted variables
-  // qPFJet8CHSSD0Pt_  = new std::vector<float>;
-  // qPFJet8CHSSD1Pt_  = new std::vector<float>;
-  // qPFJet8CHSSD2Pt_  = new std::vector<float>;
-  // qPFJet8CHSSD3Pt_  = new std::vector<float>;
-  // qPFJet8CHSSD4Pt_  = new std::vector<float>;
-  // qPFJet8CHSSD5Pt_  = new std::vector<float>;
+  //8CHSSoftDrop sorted variables
+  qPFJet8CHSSD0Pt_  = new std::vector<float>;
+  qPFJet8CHSSD1Pt_  = new std::vector<float>;
+  qPFJet8CHSSD2Pt_  = new std::vector<float>;
+  qPFJet8CHSSD3Pt_  = new std::vector<float>;
+  qPFJet8CHSSD4Pt_  = new std::vector<float>;
+  qPFJet8CHSSD5Pt_  = new std::vector<float>;
 
-  // qPFJet8CHSSD0Eta_  = new std::vector<float>;
-  // qPFJet8CHSSD1Eta_  = new std::vector<float>;
-  // qPFJet8CHSSD2Eta_  = new std::vector<float>;
-  // qPFJet8CHSSD3Eta_  = new std::vector<float>;
-  // qPFJet8CHSSD4Eta_  = new std::vector<float>;
-  // qPFJet8CHSSD5Eta_  = new std::vector<float>;
+  qPFJet8CHSSD0Eta_  = new std::vector<float>;
+  qPFJet8CHSSD1Eta_  = new std::vector<float>;
+  qPFJet8CHSSD2Eta_  = new std::vector<float>;
+  qPFJet8CHSSD3Eta_  = new std::vector<float>;
+  qPFJet8CHSSD4Eta_  = new std::vector<float>;
+  qPFJet8CHSSD5Eta_  = new std::vector<float>;
 
-  // qPFJet8CHSSD0Phi_  = new std::vector<float>;
-  // qPFJet8CHSSD1Phi_  = new std::vector<float>;
-  // qPFJet8CHSSD2Phi_  = new std::vector<float>;
-  // qPFJet8CHSSD3Phi_  = new std::vector<float>;
-  // qPFJet8CHSSD4Phi_  = new std::vector<float>;
-  // qPFJet8CHSSD5Phi_  = new std::vector<float>;
-  // //TopCHS sorted variables
-  // qPFJetTopCHS0Pt_  = new std::vector<float>;
-  // qPFJetTopCHS1Pt_  = new std::vector<float>;
-  // qPFJetTopCHS2Pt_  = new std::vector<float>;
-  // qPFJetTopCHS3Pt_  = new std::vector<float>;
-  // qPFJetTopCHS4Pt_  = new std::vector<float>;
-  // qPFJetTopCHS5Pt_  = new std::vector<float>;
+  qPFJet8CHSSD0Phi_  = new std::vector<float>;
+  qPFJet8CHSSD1Phi_  = new std::vector<float>;
+  qPFJet8CHSSD2Phi_  = new std::vector<float>;
+  qPFJet8CHSSD3Phi_  = new std::vector<float>;
+  qPFJet8CHSSD4Phi_  = new std::vector<float>;
+  qPFJet8CHSSD5Phi_  = new std::vector<float>;
+  //TopCHS sorted variables
+  qPFJetTopCHS0Pt_  = new std::vector<float>;
+  qPFJetTopCHS1Pt_  = new std::vector<float>;
+  qPFJetTopCHS2Pt_  = new std::vector<float>;
+  qPFJetTopCHS3Pt_  = new std::vector<float>;
+  qPFJetTopCHS4Pt_  = new std::vector<float>;
+  qPFJetTopCHS5Pt_  = new std::vector<float>;
 
-  // qPFJetTopCHS0Eta_  = new std::vector<float>;
-  // qPFJetTopCHS1Eta_  = new std::vector<float>;
-  // qPFJetTopCHS2Eta_  = new std::vector<float>;
-  // qPFJetTopCHS3Eta_  = new std::vector<float>;
-  // qPFJetTopCHS4Eta_  = new std::vector<float>;
-  // qPFJetTopCHS5Eta_  = new std::vector<float>;
+  qPFJetTopCHS0Eta_  = new std::vector<float>;
+  qPFJetTopCHS1Eta_  = new std::vector<float>;
+  qPFJetTopCHS2Eta_  = new std::vector<float>;
+  qPFJetTopCHS3Eta_  = new std::vector<float>;
+  qPFJetTopCHS4Eta_  = new std::vector<float>;
+  qPFJetTopCHS5Eta_  = new std::vector<float>;
 
-  // qPFJetTopCHS0Phi_  = new std::vector<float>;
-  // qPFJetTopCHS1Phi_  = new std::vector<float>;
-  // qPFJetTopCHS2Phi_  = new std::vector<float>;
-  // qPFJetTopCHS3Phi_  = new std::vector<float>;
-  // qPFJetTopCHS4Phi_  = new std::vector<float>;
-  // qPFJetTopCHS5Phi_  = new std::vector<float>;
+  qPFJetTopCHS0Phi_  = new std::vector<float>;
+  qPFJetTopCHS1Phi_  = new std::vector<float>;
+  qPFJetTopCHS2Phi_  = new std::vector<float>;
+  qPFJetTopCHS3Phi_  = new std::vector<float>;
+  qPFJetTopCHS4Phi_  = new std::vector<float>;
+  qPFJetTopCHS5Phi_  = new std::vector<float>;
 
 
   //CaloJet sorted variables
@@ -5020,51 +6948,51 @@ void AODAnalyzer::beginJob() {
   outTree_->Branch("qPFJetEI4Phi",     "std::vector<std::float>",       qPFJetEI4Phi_);
   outTree_->Branch("qPFJetEI5Phi",     "std::vector<std::float>",       qPFJetEI5Phi_);
 
-// //8CHSSoftDrop sorted variables
+//8CHSSoftDrop sorted variables
 
-//   outTree_->Branch("qPFJet8CHSSD0Pt",     "std::vector<std::float>",       qPFJet8CHSSD0Pt_);
-//   outTree_->Branch("qPFJet8CHSSD1Pt",     "std::vector<std::float>",       qPFJet8CHSSD1Pt_);
-//   outTree_->Branch("qPFJet8CHSSD2Pt",     "std::vector<std::float>",       qPFJet8CHSSD2Pt_);
-//   outTree_->Branch("qPFJet8CHSSD3Pt",     "std::vector<std::float>",       qPFJet8CHSSD3Pt_);
-//   outTree_->Branch("qPFJet8CHSSD4Pt",     "std::vector<std::float>",       qPFJet8CHSSD4Pt_);
-//   outTree_->Branch("qPFJet8CHSSD5Pt",     "std::vector<std::float>",       qPFJet8CHSSD5Pt_);
+  outTree_->Branch("qPFJet8CHSSD0Pt",     "std::vector<std::float>",       qPFJet8CHSSD0Pt_);
+  outTree_->Branch("qPFJet8CHSSD1Pt",     "std::vector<std::float>",       qPFJet8CHSSD1Pt_);
+  outTree_->Branch("qPFJet8CHSSD2Pt",     "std::vector<std::float>",       qPFJet8CHSSD2Pt_);
+  outTree_->Branch("qPFJet8CHSSD3Pt",     "std::vector<std::float>",       qPFJet8CHSSD3Pt_);
+  outTree_->Branch("qPFJet8CHSSD4Pt",     "std::vector<std::float>",       qPFJet8CHSSD4Pt_);
+  outTree_->Branch("qPFJet8CHSSD5Pt",     "std::vector<std::float>",       qPFJet8CHSSD5Pt_);
 
-//   outTree_->Branch("qPFJet8CHSSD0Eta",     "std::vector<std::float>",       qPFJet8CHSSD0Eta_);
-//   outTree_->Branch("qPFJet8CHSSD1Eta",     "std::vector<std::float>",       qPFJet8CHSSD1Eta_);
-//   outTree_->Branch("qPFJet8CHSSD2Eta",     "std::vector<std::float>",       qPFJet8CHSSD2Eta_);
-//   outTree_->Branch("qPFJet8CHSSD3Eta",     "std::vector<std::float>",       qPFJet8CHSSD3Eta_);
-//   outTree_->Branch("qPFJet8CHSSD4Eta",     "std::vector<std::float>",       qPFJet8CHSSD4Eta_);
-//   outTree_->Branch("qPFJet8CHSSD5Eta",     "std::vector<std::float>",       qPFJet8CHSSD5Eta_);
+  outTree_->Branch("qPFJet8CHSSD0Eta",     "std::vector<std::float>",       qPFJet8CHSSD0Eta_);
+  outTree_->Branch("qPFJet8CHSSD1Eta",     "std::vector<std::float>",       qPFJet8CHSSD1Eta_);
+  outTree_->Branch("qPFJet8CHSSD2Eta",     "std::vector<std::float>",       qPFJet8CHSSD2Eta_);
+  outTree_->Branch("qPFJet8CHSSD3Eta",     "std::vector<std::float>",       qPFJet8CHSSD3Eta_);
+  outTree_->Branch("qPFJet8CHSSD4Eta",     "std::vector<std::float>",       qPFJet8CHSSD4Eta_);
+  outTree_->Branch("qPFJet8CHSSD5Eta",     "std::vector<std::float>",       qPFJet8CHSSD5Eta_);
 
-//   outTree_->Branch("qPFJet8CHSSD0Phi",     "std::vector<std::float>",       qPFJet8CHSSD0Phi_);
-//   outTree_->Branch("qPFJet8CHSSD1Phi",     "std::vector<std::float>",       qPFJet8CHSSD1Phi_);
-//   outTree_->Branch("qPFJet8CHSSD2Phi",     "std::vector<std::float>",       qPFJet8CHSSD2Phi_);
-//   outTree_->Branch("qPFJet8CHSSD3Phi",     "std::vector<std::float>",       qPFJet8CHSSD3Phi_);
-//   outTree_->Branch("qPFJet8CHSSD4Phi",     "std::vector<std::float>",       qPFJet8CHSSD4Phi_);
-//   outTree_->Branch("qPFJet8CHSSD5Phi",     "std::vector<std::float>",       qPFJet8CHSSD5Phi_);
+  outTree_->Branch("qPFJet8CHSSD0Phi",     "std::vector<std::float>",       qPFJet8CHSSD0Phi_);
+  outTree_->Branch("qPFJet8CHSSD1Phi",     "std::vector<std::float>",       qPFJet8CHSSD1Phi_);
+  outTree_->Branch("qPFJet8CHSSD2Phi",     "std::vector<std::float>",       qPFJet8CHSSD2Phi_);
+  outTree_->Branch("qPFJet8CHSSD3Phi",     "std::vector<std::float>",       qPFJet8CHSSD3Phi_);
+  outTree_->Branch("qPFJet8CHSSD4Phi",     "std::vector<std::float>",       qPFJet8CHSSD4Phi_);
+  outTree_->Branch("qPFJet8CHSSD5Phi",     "std::vector<std::float>",       qPFJet8CHSSD5Phi_);
 
-// //TopCHS sorted variables
+//TopCHS sorted variables
 
-//   outTree_->Branch("qPFJetTopCHS0Pt",    "std::vector<std::float>",       qPFJetTopCHS0Pt_);
-//   outTree_->Branch("qPFJetTopCHS1Pt",    "std::vector<std::float>",       qPFJetTopCHS1Pt_);
-//   outTree_->Branch("qPFJetTopCHS2Pt",    "std::vector<std::float>",       qPFJetTopCHS2Pt_);
-//   outTree_->Branch("qPFJetTopCHS3Pt",    "std::vector<std::float>",       qPFJetTopCHS3Pt_);
-//   outTree_->Branch("qPFJetTopCHS4Pt",    "std::vector<std::float>",       qPFJetTopCHS4Pt_);
-//   outTree_->Branch("qPFJetTopCHS5Pt",    "std::vector<std::float>",       qPFJetTopCHS5Pt_);
+  outTree_->Branch("qPFJetTopCHS0Pt",    "std::vector<std::float>",       qPFJetTopCHS0Pt_);
+  outTree_->Branch("qPFJetTopCHS1Pt",    "std::vector<std::float>",       qPFJetTopCHS1Pt_);
+  outTree_->Branch("qPFJetTopCHS2Pt",    "std::vector<std::float>",       qPFJetTopCHS2Pt_);
+  outTree_->Branch("qPFJetTopCHS3Pt",    "std::vector<std::float>",       qPFJetTopCHS3Pt_);
+  outTree_->Branch("qPFJetTopCHS4Pt",    "std::vector<std::float>",       qPFJetTopCHS4Pt_);
+  outTree_->Branch("qPFJetTopCHS5Pt",    "std::vector<std::float>",       qPFJetTopCHS5Pt_);
 
-//   outTree_->Branch("qPFJetTopCHS0Eta",     "std::vector<std::float>",       qPFJetTopCHS0Eta_);
-//   outTree_->Branch("qPFJetTopCHS1Eta",     "std::vector<std::float>",       qPFJetTopCHS1Eta_);
-//   outTree_->Branch("qPFJetTopCHS2Eta",     "std::vector<std::float>",       qPFJetTopCHS2Eta_);
-//   outTree_->Branch("qPFJetTopCHS3Eta",     "std::vector<std::float>",       qPFJetTopCHS3Eta_);
-//   outTree_->Branch("qPFJetTopCHS4Eta",     "std::vector<std::float>",       qPFJetTopCHS4Eta_);
-//   outTree_->Branch("qPFJetTopCHS5Eta",     "std::vector<std::float>",       qPFJetTopCHS5Eta_);
+  outTree_->Branch("qPFJetTopCHS0Eta",     "std::vector<std::float>",       qPFJetTopCHS0Eta_);
+  outTree_->Branch("qPFJetTopCHS1Eta",     "std::vector<std::float>",       qPFJetTopCHS1Eta_);
+  outTree_->Branch("qPFJetTopCHS2Eta",     "std::vector<std::float>",       qPFJetTopCHS2Eta_);
+  outTree_->Branch("qPFJetTopCHS3Eta",     "std::vector<std::float>",       qPFJetTopCHS3Eta_);
+  outTree_->Branch("qPFJetTopCHS4Eta",     "std::vector<std::float>",       qPFJetTopCHS4Eta_);
+  outTree_->Branch("qPFJetTopCHS5Eta",     "std::vector<std::float>",       qPFJetTopCHS5Eta_);
 
-//   outTree_->Branch("qPFJetTopCHS0Phi",     "std::vector<std::float>",       qPFJetTopCHS0Phi_);
-//   outTree_->Branch("qPFJetTopCHS1Phi",     "std::vector<std::float>",       qPFJetTopCHS1Phi_);
-//   outTree_->Branch("qPFJetTopCHS2Phi",     "std::vector<std::float>",       qPFJetTopCHS2Phi_);
-//   outTree_->Branch("qPFJetTopCHS3Phi",     "std::vector<std::float>",       qPFJetTopCHS3Phi_);
-//   outTree_->Branch("qPFJetTopCHS4Phi",     "std::vector<std::float>",       qPFJetTopCHS4Phi_);
-//   outTree_->Branch("qPFJetTopCHS5Phi",     "std::vector<std::float>",       qPFJetTopCHS5Phi_);
+  outTree_->Branch("qPFJetTopCHS0Phi",     "std::vector<std::float>",       qPFJetTopCHS0Phi_);
+  outTree_->Branch("qPFJetTopCHS1Phi",     "std::vector<std::float>",       qPFJetTopCHS1Phi_);
+  outTree_->Branch("qPFJetTopCHS2Phi",     "std::vector<std::float>",       qPFJetTopCHS2Phi_);
+  outTree_->Branch("qPFJetTopCHS3Phi",     "std::vector<std::float>",       qPFJetTopCHS3Phi_);
+  outTree_->Branch("qPFJetTopCHS4Phi",     "std::vector<std::float>",       qPFJetTopCHS4Phi_);
+  outTree_->Branch("qPFJetTopCHS5Phi",     "std::vector<std::float>",       qPFJetTopCHS5Phi_);
 
 
 //CaloJet sorted variables
@@ -5569,48 +7497,48 @@ delete PFJetEI3Phi_;
 delete PFJetEI4Phi_;
 delete PFJetEI5Phi_;
 
-//   //8CHSSoftDrop sorted variables
-// delete PFJet8CHSSD0Pt_;
-// delete PFJet8CHSSD1Pt_;
-// delete PFJet8CHSSD2Pt_;
-// delete PFJet8CHSSD3Pt_;
-// delete PFJet8CHSSD4Pt_;
-// delete PFJet8CHSSD5Pt_;
+  //8CHSSoftDrop sorted variables
+delete PFJet8CHSSD0Pt_;
+delete PFJet8CHSSD1Pt_;
+delete PFJet8CHSSD2Pt_;
+delete PFJet8CHSSD3Pt_;
+delete PFJet8CHSSD4Pt_;
+delete PFJet8CHSSD5Pt_;
 
-// delete PFJet8CHSSD0Eta_;
-// delete PFJet8CHSSD1Eta_;
-// delete PFJet8CHSSD2Eta_;
-// delete PFJet8CHSSD3Eta_;
-// delete PFJet8CHSSD4Eta_;
-// delete PFJet8CHSSD5Eta_;
+delete PFJet8CHSSD0Eta_;
+delete PFJet8CHSSD1Eta_;
+delete PFJet8CHSSD2Eta_;
+delete PFJet8CHSSD3Eta_;
+delete PFJet8CHSSD4Eta_;
+delete PFJet8CHSSD5Eta_;
 
-// delete PFJet8CHSSD0Phi_;
-// delete PFJet8CHSSD1Phi_;
-// delete PFJet8CHSSD2Phi_;
-// delete PFJet8CHSSD3Phi_;
-// delete PFJet8CHSSD4Phi_;
-// delete PFJet8CHSSD5Phi_;
-//   //TopCHS sorted variables
-// delete PFJetTopCHS0Pt_;
-// delete PFJetTopCHS1Pt_;
-// delete PFJetTopCHS2Pt_;
-// delete PFJetTopCHS3Pt_;
-// delete PFJetTopCHS4Pt_;
-// delete PFJetTopCHS5Pt_;
+delete PFJet8CHSSD0Phi_;
+delete PFJet8CHSSD1Phi_;
+delete PFJet8CHSSD2Phi_;
+delete PFJet8CHSSD3Phi_;
+delete PFJet8CHSSD4Phi_;
+delete PFJet8CHSSD5Phi_;
+  //TopCHS sorted variables
+delete PFJetTopCHS0Pt_;
+delete PFJetTopCHS1Pt_;
+delete PFJetTopCHS2Pt_;
+delete PFJetTopCHS3Pt_;
+delete PFJetTopCHS4Pt_;
+delete PFJetTopCHS5Pt_;
 
-// delete PFJetTopCHS0Eta_;
-// delete PFJetTopCHS1Eta_;
-// delete PFJetTopCHS2Eta_;
-// delete PFJetTopCHS3Eta_;
-// delete PFJetTopCHS4Eta_;
-// delete PFJetTopCHS5Eta_;
+delete PFJetTopCHS0Eta_;
+delete PFJetTopCHS1Eta_;
+delete PFJetTopCHS2Eta_;
+delete PFJetTopCHS3Eta_;
+delete PFJetTopCHS4Eta_;
+delete PFJetTopCHS5Eta_;
 
-// delete PFJetTopCHS0Phi_;
-// delete PFJetTopCHS1Phi_;
-// delete PFJetTopCHS2Phi_;
-// delete PFJetTopCHS3Phi_;
-// delete PFJetTopCHS4Phi_;
-// delete PFJetTopCHS5Phi_;
+delete PFJetTopCHS0Phi_;
+delete PFJetTopCHS1Phi_;
+delete PFJetTopCHS2Phi_;
+delete PFJetTopCHS3Phi_;
+delete PFJetTopCHS4Phi_;
+delete PFJetTopCHS5Phi_;
 
 
   //CaloJet sorted variables
@@ -6067,48 +7995,48 @@ delete qPFJetEI3Phi_;
 delete qPFJetEI4Phi_;
 delete qPFJetEI5Phi_;
 
-//   //8CHSSoftDrop sorted variables
-// delete qPFJet8CHSSD0Pt_;
-// delete qPFJet8CHSSD1Pt_;
-// delete qPFJet8CHSSD2Pt_;
-// delete qPFJet8CHSSD3Pt_;
-// delete qPFJet8CHSSD4Pt_;
-// delete qPFJet8CHSSD5Pt_;
+  //8CHSSoftDrop sorted variables
+delete qPFJet8CHSSD0Pt_;
+delete qPFJet8CHSSD1Pt_;
+delete qPFJet8CHSSD2Pt_;
+delete qPFJet8CHSSD3Pt_;
+delete qPFJet8CHSSD4Pt_;
+delete qPFJet8CHSSD5Pt_;
 
-// delete qPFJet8CHSSD0Eta_;
-// delete qPFJet8CHSSD1Eta_;
-// delete qPFJet8CHSSD2Eta_;
-// delete qPFJet8CHSSD3Eta_;
-// delete qPFJet8CHSSD4Eta_;
-// delete qPFJet8CHSSD5Eta_;
+delete qPFJet8CHSSD0Eta_;
+delete qPFJet8CHSSD1Eta_;
+delete qPFJet8CHSSD2Eta_;
+delete qPFJet8CHSSD3Eta_;
+delete qPFJet8CHSSD4Eta_;
+delete qPFJet8CHSSD5Eta_;
 
-// delete qPFJet8CHSSD0Phi_;
-// delete qPFJet8CHSSD1Phi_;
-// delete qPFJet8CHSSD2Phi_;
-// delete qPFJet8CHSSD3Phi_;
-// delete qPFJet8CHSSD4Phi_;
-// delete qPFJet8CHSSD5Phi_;
-//   //TopCHS sorted variables
-// delete qPFJetTopCHS0Pt_;
-// delete qPFJetTopCHS1Pt_;
-// delete qPFJetTopCHS2Pt_;
-// delete qPFJetTopCHS3Pt_;
-// delete qPFJetTopCHS4Pt_;
-// delete qPFJetTopCHS5Pt_;
+delete qPFJet8CHSSD0Phi_;
+delete qPFJet8CHSSD1Phi_;
+delete qPFJet8CHSSD2Phi_;
+delete qPFJet8CHSSD3Phi_;
+delete qPFJet8CHSSD4Phi_;
+delete qPFJet8CHSSD5Phi_;
+  //TopCHS sorted variables
+delete qPFJetTopCHS0Pt_;
+delete qPFJetTopCHS1Pt_;
+delete qPFJetTopCHS2Pt_;
+delete qPFJetTopCHS3Pt_;
+delete qPFJetTopCHS4Pt_;
+delete qPFJetTopCHS5Pt_;
 
-// delete qPFJetTopCHS0Eta_;
-// delete qPFJetTopCHS1Eta_;
-// delete qPFJetTopCHS2Eta_;
-// delete qPFJetTopCHS3Eta_;
-// delete qPFJetTopCHS4Eta_;
-// delete qPFJetTopCHS5Eta_;
+delete qPFJetTopCHS0Eta_;
+delete qPFJetTopCHS1Eta_;
+delete qPFJetTopCHS2Eta_;
+delete qPFJetTopCHS3Eta_;
+delete qPFJetTopCHS4Eta_;
+delete qPFJetTopCHS5Eta_;
 
-// delete qPFJetTopCHS0Phi_;
-// delete qPFJetTopCHS1Phi_;
-// delete qPFJetTopCHS2Phi_;
-// delete qPFJetTopCHS3Phi_;
-// delete qPFJetTopCHS4Phi_;
-// delete qPFJetTopCHS5Phi_;
+delete qPFJetTopCHS0Phi_;
+delete qPFJetTopCHS1Phi_;
+delete qPFJetTopCHS2Phi_;
+delete qPFJetTopCHS3Phi_;
+delete qPFJetTopCHS4Phi_;
+delete qPFJetTopCHS5Phi_;
 
 
   //CaloJet sorted variables
@@ -6609,48 +8537,48 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeMeanAndRms(  PFJetEI4Phi_, qPFJetEI4Phi_);
   computeMeanAndRms(  PFJetEI5Phi_, qPFJetEI5Phi_);
 
-  // //8CHSSoftDrop sorted variables
-  // computeMeanAndRms(  PFJet8CHSSD0Pt_, qPFJet8CHSSD0Pt_);
-  // computeMeanAndRms(  PFJet8CHSSD1Pt_, qPFJet8CHSSD1Pt_);
-  // computeMeanAndRms(  PFJet8CHSSD2Pt_, qPFJet8CHSSD2Pt_);
-  // computeMeanAndRms(  PFJet8CHSSD3Pt_, qPFJet8CHSSD3Pt_);
-  // computeMeanAndRms(  PFJet8CHSSD4Pt_, qPFJet8CHSSD4Pt_);
-  // computeMeanAndRms(  PFJet8CHSSD5Pt_, qPFJet8CHSSD5Pt_);
+  //8CHSSoftDrop sorted variables
+  computeMeanAndRms(  PFJet8CHSSD0Pt_, qPFJet8CHSSD0Pt_);
+  computeMeanAndRms(  PFJet8CHSSD1Pt_, qPFJet8CHSSD1Pt_);
+  computeMeanAndRms(  PFJet8CHSSD2Pt_, qPFJet8CHSSD2Pt_);
+  computeMeanAndRms(  PFJet8CHSSD3Pt_, qPFJet8CHSSD3Pt_);
+  computeMeanAndRms(  PFJet8CHSSD4Pt_, qPFJet8CHSSD4Pt_);
+  computeMeanAndRms(  PFJet8CHSSD5Pt_, qPFJet8CHSSD5Pt_);
 
-  // computeMeanAndRms(  PFJet8CHSSD0Eta_, qPFJet8CHSSD0Eta_);
-  // computeMeanAndRms(  PFJet8CHSSD1Eta_, qPFJet8CHSSD1Eta_);
-  // computeMeanAndRms(  PFJet8CHSSD2Eta_, qPFJet8CHSSD2Eta_);
-  // computeMeanAndRms(  PFJet8CHSSD3Eta_, qPFJet8CHSSD3Eta_);
-  // computeMeanAndRms(  PFJet8CHSSD4Eta_, qPFJet8CHSSD4Eta_);
-  // computeMeanAndRms(  PFJet8CHSSD5Eta_, qPFJet8CHSSD5Eta_);
+  computeMeanAndRms(  PFJet8CHSSD0Eta_, qPFJet8CHSSD0Eta_);
+  computeMeanAndRms(  PFJet8CHSSD1Eta_, qPFJet8CHSSD1Eta_);
+  computeMeanAndRms(  PFJet8CHSSD2Eta_, qPFJet8CHSSD2Eta_);
+  computeMeanAndRms(  PFJet8CHSSD3Eta_, qPFJet8CHSSD3Eta_);
+  computeMeanAndRms(  PFJet8CHSSD4Eta_, qPFJet8CHSSD4Eta_);
+  computeMeanAndRms(  PFJet8CHSSD5Eta_, qPFJet8CHSSD5Eta_);
 
-  // computeMeanAndRms(  PFJet8CHSSD0Phi_, qPFJet8CHSSD0Phi_);
-  // computeMeanAndRms(  PFJet8CHSSD1Phi_, qPFJet8CHSSD1Phi_);
-  // computeMeanAndRms(  PFJet8CHSSD2Phi_, qPFJet8CHSSD2Phi_);
-  // computeMeanAndRms(  PFJet8CHSSD3Phi_, qPFJet8CHSSD3Phi_);
-  // computeMeanAndRms(  PFJet8CHSSD4Phi_, qPFJet8CHSSD4Phi_);
-  // computeMeanAndRms(  PFJet8CHSSD5Phi_, qPFJet8CHSSD5Phi_);
-  // //TopCHS sorted variables
-  // computeMeanAndRms(  PFJetTopCHS0Pt_, qPFJetTopCHS0Pt_);
-  // computeMeanAndRms(  PFJetTopCHS1Pt_, qPFJetTopCHS1Pt_);
-  // computeMeanAndRms(  PFJetTopCHS2Pt_, qPFJetTopCHS2Pt_);
-  // computeMeanAndRms(  PFJetTopCHS3Pt_, qPFJetTopCHS3Pt_);
-  // computeMeanAndRms(  PFJetTopCHS4Pt_, qPFJetTopCHS4Pt_);
-  // computeMeanAndRms(  PFJetTopCHS5Pt_, qPFJetTopCHS5Pt_);
+  computeMeanAndRms(  PFJet8CHSSD0Phi_, qPFJet8CHSSD0Phi_);
+  computeMeanAndRms(  PFJet8CHSSD1Phi_, qPFJet8CHSSD1Phi_);
+  computeMeanAndRms(  PFJet8CHSSD2Phi_, qPFJet8CHSSD2Phi_);
+  computeMeanAndRms(  PFJet8CHSSD3Phi_, qPFJet8CHSSD3Phi_);
+  computeMeanAndRms(  PFJet8CHSSD4Phi_, qPFJet8CHSSD4Phi_);
+  computeMeanAndRms(  PFJet8CHSSD5Phi_, qPFJet8CHSSD5Phi_);
+  //TopCHS sorted variables
+  computeMeanAndRms(  PFJetTopCHS0Pt_, qPFJetTopCHS0Pt_);
+  computeMeanAndRms(  PFJetTopCHS1Pt_, qPFJetTopCHS1Pt_);
+  computeMeanAndRms(  PFJetTopCHS2Pt_, qPFJetTopCHS2Pt_);
+  computeMeanAndRms(  PFJetTopCHS3Pt_, qPFJetTopCHS3Pt_);
+  computeMeanAndRms(  PFJetTopCHS4Pt_, qPFJetTopCHS4Pt_);
+  computeMeanAndRms(  PFJetTopCHS5Pt_, qPFJetTopCHS5Pt_);
 
-  // computeMeanAndRms(  PFJetTopCHS0Eta_,  qPFJetTopCHS0Eta_);
-  // computeMeanAndRms(  PFJetTopCHS1Eta_,  qPFJetTopCHS1Eta_);
-  // computeMeanAndRms(  PFJetTopCHS2Eta_,  qPFJetTopCHS2Eta_);
-  // computeMeanAndRms(  PFJetTopCHS3Eta_,  qPFJetTopCHS3Eta_);
-  // computeMeanAndRms(  PFJetTopCHS4Eta_,  qPFJetTopCHS4Eta_);
-  // computeMeanAndRms(  PFJetTopCHS5Eta_,  qPFJetTopCHS5Eta_);
+  computeMeanAndRms(  PFJetTopCHS0Eta_,  qPFJetTopCHS0Eta_);
+  computeMeanAndRms(  PFJetTopCHS1Eta_,  qPFJetTopCHS1Eta_);
+  computeMeanAndRms(  PFJetTopCHS2Eta_,  qPFJetTopCHS2Eta_);
+  computeMeanAndRms(  PFJetTopCHS3Eta_,  qPFJetTopCHS3Eta_);
+  computeMeanAndRms(  PFJetTopCHS4Eta_,  qPFJetTopCHS4Eta_);
+  computeMeanAndRms(  PFJetTopCHS5Eta_,  qPFJetTopCHS5Eta_);
 
-  // computeMeanAndRms(  PFJetTopCHS0Phi_, qPFJetTopCHS0Phi_);
-  // computeMeanAndRms(  PFJetTopCHS1Phi_, qPFJetTopCHS1Phi_);
-  // computeMeanAndRms(  PFJetTopCHS2Phi_, qPFJetTopCHS2Phi_);
-  // computeMeanAndRms(  PFJetTopCHS3Phi_, qPFJetTopCHS3Phi_);
-  // computeMeanAndRms(  PFJetTopCHS4Phi_, qPFJetTopCHS4Phi_);
-  // computeMeanAndRms(  PFJetTopCHS5Phi_, qPFJetTopCHS5Phi_);
+  computeMeanAndRms(  PFJetTopCHS0Phi_, qPFJetTopCHS0Phi_);
+  computeMeanAndRms(  PFJetTopCHS1Phi_, qPFJetTopCHS1Phi_);
+  computeMeanAndRms(  PFJetTopCHS2Phi_, qPFJetTopCHS2Phi_);
+  computeMeanAndRms(  PFJetTopCHS3Phi_, qPFJetTopCHS3Phi_);
+  computeMeanAndRms(  PFJetTopCHS4Phi_, qPFJetTopCHS4Phi_);
+  computeMeanAndRms(  PFJetTopCHS5Phi_, qPFJetTopCHS5Phi_);
 
 
   //CaloJet sorted variables
@@ -7125,48 +9053,48 @@ void AODAnalyzer::endLuminosityBlock (const edm::LuminosityBlock & lumi, const e
   computeQuantiles(  PFJetEI4Phi_, qPFJetEI4Phi_, quantiles_);
   computeQuantiles(  PFJetEI5Phi_, qPFJetEI5Phi_, quantiles_);
 
-  // //8CHSSoftDrop sorted variables
-  // computeQuantiles(  PFJet8CHSSD0Pt_, qPFJet8CHSSD0Pt_, quantiles_);
-  // computeQuantiles(  PFJet8CHSSD1Pt_, qPFJet8CHSSD1Pt_, quantiles_);
-  // computeQuantiles(  PFJet8CHSSD2Pt_, qPFJet8CHSSD2Pt_, quantiles_);
-  // computeQuantiles(  PFJet8CHSSD3Pt_, qPFJet8CHSSD3Pt_, quantiles_);
-  // computeQuantiles(  PFJet8CHSSD4Pt_, qPFJet8CHSSD4Pt_, quantiles_);
-  // computeQuantiles(  PFJet8CHSSD5Pt_, qPFJet8CHSSD5Pt_, quantiles_);
+  //8CHSSoftDrop sorted variables
+  computeQuantiles(  PFJet8CHSSD0Pt_, qPFJet8CHSSD0Pt_, quantiles_);
+  computeQuantiles(  PFJet8CHSSD1Pt_, qPFJet8CHSSD1Pt_, quantiles_);
+  computeQuantiles(  PFJet8CHSSD2Pt_, qPFJet8CHSSD2Pt_, quantiles_);
+  computeQuantiles(  PFJet8CHSSD3Pt_, qPFJet8CHSSD3Pt_, quantiles_);
+  computeQuantiles(  PFJet8CHSSD4Pt_, qPFJet8CHSSD4Pt_, quantiles_);
+  computeQuantiles(  PFJet8CHSSD5Pt_, qPFJet8CHSSD5Pt_, quantiles_);
 
-  // computeQuantiles(  PFJet8CHSSD0Eta_, qPFJet8CHSSD0Eta_, quantiles_);
-  // computeQuantiles(  PFJet8CHSSD1Eta_, qPFJet8CHSSD1Eta_, quantiles_);
-  // computeQuantiles(  PFJet8CHSSD2Eta_, qPFJet8CHSSD2Eta_, quantiles_);
-  // computeQuantiles(  PFJet8CHSSD3Eta_, qPFJet8CHSSD3Eta_, quantiles_);
-  // computeQuantiles(  PFJet8CHSSD4Eta_, qPFJet8CHSSD4Eta_, quantiles_);
-  // computeQuantiles(  PFJet8CHSSD5Eta_, qPFJet8CHSSD5Eta_, quantiles_);
+  computeQuantiles(  PFJet8CHSSD0Eta_, qPFJet8CHSSD0Eta_, quantiles_);
+  computeQuantiles(  PFJet8CHSSD1Eta_, qPFJet8CHSSD1Eta_, quantiles_);
+  computeQuantiles(  PFJet8CHSSD2Eta_, qPFJet8CHSSD2Eta_, quantiles_);
+  computeQuantiles(  PFJet8CHSSD3Eta_, qPFJet8CHSSD3Eta_, quantiles_);
+  computeQuantiles(  PFJet8CHSSD4Eta_, qPFJet8CHSSD4Eta_, quantiles_);
+  computeQuantiles(  PFJet8CHSSD5Eta_, qPFJet8CHSSD5Eta_, quantiles_);
 
-  // computeQuantiles(  PFJet8CHSSD0Phi_, qPFJet8CHSSD0Phi_, quantiles_);
-  // computeQuantiles(  PFJet8CHSSD1Phi_, qPFJet8CHSSD1Phi_, quantiles_);
-  // computeQuantiles(  PFJet8CHSSD2Phi_, qPFJet8CHSSD2Phi_, quantiles_);
-  // computeQuantiles(  PFJet8CHSSD3Phi_, qPFJet8CHSSD3Phi_, quantiles_);
-  // computeQuantiles(  PFJet8CHSSD4Phi_, qPFJet8CHSSD4Phi_, quantiles_);
-  // computeQuantiles(  PFJet8CHSSD5Phi_, qPFJet8CHSSD5Phi_, quantiles_);
-  // //TopCHS sorted variables
-  // computeQuantiles(  PFJetTopCHS0Pt_, qPFJetTopCHS0Pt_, quantiles_);
-  // computeQuantiles(  PFJetTopCHS1Pt_, qPFJetTopCHS1Pt_, quantiles_);
-  // computeQuantiles(  PFJetTopCHS2Pt_, qPFJetTopCHS2Pt_, quantiles_);
-  // computeQuantiles(  PFJetTopCHS3Pt_, qPFJetTopCHS3Pt_, quantiles_);
-  // computeQuantiles(  PFJetTopCHS4Pt_, qPFJetTopCHS4Pt_, quantiles_);
-  // computeQuantiles(  PFJetTopCHS5Pt_, qPFJetTopCHS5Pt_, quantiles_);
+  computeQuantiles(  PFJet8CHSSD0Phi_, qPFJet8CHSSD0Phi_, quantiles_);
+  computeQuantiles(  PFJet8CHSSD1Phi_, qPFJet8CHSSD1Phi_, quantiles_);
+  computeQuantiles(  PFJet8CHSSD2Phi_, qPFJet8CHSSD2Phi_, quantiles_);
+  computeQuantiles(  PFJet8CHSSD3Phi_, qPFJet8CHSSD3Phi_, quantiles_);
+  computeQuantiles(  PFJet8CHSSD4Phi_, qPFJet8CHSSD4Phi_, quantiles_);
+  computeQuantiles(  PFJet8CHSSD5Phi_, qPFJet8CHSSD5Phi_, quantiles_);
+  //TopCHS sorted variables
+  computeQuantiles(  PFJetTopCHS0Pt_, qPFJetTopCHS0Pt_, quantiles_);
+  computeQuantiles(  PFJetTopCHS1Pt_, qPFJetTopCHS1Pt_, quantiles_);
+  computeQuantiles(  PFJetTopCHS2Pt_, qPFJetTopCHS2Pt_, quantiles_);
+  computeQuantiles(  PFJetTopCHS3Pt_, qPFJetTopCHS3Pt_, quantiles_);
+  computeQuantiles(  PFJetTopCHS4Pt_, qPFJetTopCHS4Pt_, quantiles_);
+  computeQuantiles(  PFJetTopCHS5Pt_, qPFJetTopCHS5Pt_, quantiles_);
 
-  // computeQuantiles(  PFJetTopCHS0Eta_, qPFJetTopCHS0Eta_, quantiles_);
-  // computeQuantiles(  PFJetTopCHS1Eta_, qPFJetTopCHS1Eta_, quantiles_);
-  // computeQuantiles(  PFJetTopCHS2Eta_, qPFJetTopCHS2Eta_, quantiles_);
-  // computeQuantiles(  PFJetTopCHS3Eta_, qPFJetTopCHS3Eta_, quantiles_);
-  // computeQuantiles(  PFJetTopCHS4Eta_, qPFJetTopCHS4Eta_, quantiles_);
-  // computeQuantiles(  PFJetTopCHS5Eta_, qPFJetTopCHS5Eta_, quantiles_);
+  computeQuantiles(  PFJetTopCHS0Eta_, qPFJetTopCHS0Eta_, quantiles_);
+  computeQuantiles(  PFJetTopCHS1Eta_, qPFJetTopCHS1Eta_, quantiles_);
+  computeQuantiles(  PFJetTopCHS2Eta_, qPFJetTopCHS2Eta_, quantiles_);
+  computeQuantiles(  PFJetTopCHS3Eta_, qPFJetTopCHS3Eta_, quantiles_);
+  computeQuantiles(  PFJetTopCHS4Eta_, qPFJetTopCHS4Eta_, quantiles_);
+  computeQuantiles(  PFJetTopCHS5Eta_, qPFJetTopCHS5Eta_, quantiles_);
 
-  // computeQuantiles(  PFJetTopCHS0Phi_, qPFJetTopCHS0Phi_, quantiles_);
-  // computeQuantiles(  PFJetTopCHS1Phi_, qPFJetTopCHS1Phi_, quantiles_);
-  // computeQuantiles(  PFJetTopCHS2Phi_, qPFJetTopCHS2Phi_, quantiles_);
-  // computeQuantiles(  PFJetTopCHS3Phi_, qPFJetTopCHS3Phi_, quantiles_);
-  // computeQuantiles(  PFJetTopCHS4Phi_, qPFJetTopCHS4Phi_, quantiles_);
-  // computeQuantiles(  PFJetTopCHS5Phi_, qPFJetTopCHS5Phi_, quantiles_);
+  computeQuantiles(  PFJetTopCHS0Phi_, qPFJetTopCHS0Phi_, quantiles_);
+  computeQuantiles(  PFJetTopCHS1Phi_, qPFJetTopCHS1Phi_, quantiles_);
+  computeQuantiles(  PFJetTopCHS2Phi_, qPFJetTopCHS2Phi_, quantiles_);
+  computeQuantiles(  PFJetTopCHS3Phi_, qPFJetTopCHS3Phi_, quantiles_);
+  computeQuantiles(  PFJetTopCHS4Phi_, qPFJetTopCHS4Phi_, quantiles_);
+  computeQuantiles(  PFJetTopCHS5Phi_, qPFJetTopCHS5Phi_, quantiles_);
 
 
   //CaloJet sorted variables
