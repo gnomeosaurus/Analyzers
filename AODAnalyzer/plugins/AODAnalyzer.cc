@@ -11,11 +11,11 @@
 //new includes for ECAL and HCAL mapping
 
 
-#include "Geometry/CaloEventSetup/interface/CaloTopologyRecord.h"
-#include "Geometry/Records/interface/CaloGeometryRecord.h"
-#include "Geometry/CaloGeometry/interface/CaloCellGeometry.h"
-#include "Geometry/CaloGeometry/interface/CaloGeometry.h"
-#include "Geometry/CaloTopology/interface/CaloTopology.h"
+// #include "Geometry/CaloEventSetup/interface/CaloTopologyRecord.h"
+// #include "Geometry/Records/interface/CaloGeometryRecord.h"
+// #include "Geometry/CaloGeometry/interface/CaloCellGeometry.h"
+// #include "Geometry/CaloGeometry/interface/CaloGeometry.h"
+// #include "Geometry/CaloTopology/interface/CaloTopology.h"
 
 #include "DataFormats/EcalDetId/interface/EBDetId.h"
 #include "DataFormats/EcalDetId/interface/EEDetId.h"
@@ -97,7 +97,7 @@
 #include "DataFormats/EgammaReco/interface/PreshowerCluster.h"
 #include "DataFormats/EgammaReco/interface/PreshowerClusterFwd.h"
 
-#include "DataFormats/CastorReco/interface/CastorTower.h"
+// #include "DataFormats/CastorReco/interface/CastorTower.h"
 #include "DataFormats/HcalRecHit/interface/CastorRecHit.h"
 
 
@@ -4597,270 +4597,270 @@ void AODAnalyzer::fillPhotons(const edm::Handle<PhotonCollection> & photons)
         // std::cout << "end of Photons collision "  << std::endl; //TODO
   std::sort( myPhotons.begin(), myPhotons.end(), GreaterByPt<reco::Photon>());
 
-//       if ((myPhotons->size())==0){
+      if ((myPhotons.size())==0){
 
-//   Pho0Pt_->push_back(0); 
-//   Pho1Pt_->push_back(0); 
-//   Pho2Pt_->push_back(0); 
-//   Pho3Pt_->push_back(0); 
-//   Pho4Pt_->push_back(0); 
-//   Pho5Pt_->push_back(0); 
+  Pho0Pt_->push_back(0); 
+  Pho1Pt_->push_back(0); 
+  Pho2Pt_->push_back(0); 
+  Pho3Pt_->push_back(0); 
+  Pho4Pt_->push_back(0); 
+  Pho5Pt_->push_back(0); 
 
-//   Pho0Eta_->push_back(0);
-//   Pho1Eta_->push_back(0);
-//   Pho2Eta_->push_back(0);
-//   Pho3Eta_->push_back(0);
-//   Pho4Eta_->push_back(0);
-//   Pho5Eta_->push_back(0);
+  Pho0Eta_->push_back(0);
+  Pho1Eta_->push_back(0);
+  Pho2Eta_->push_back(0);
+  Pho3Eta_->push_back(0);
+  Pho4Eta_->push_back(0);
+  Pho5Eta_->push_back(0);
 
-//   Pho0Phi_->push_back(0);
-//   Pho1Phi_->push_back(0);
-//   Pho2Phi_->push_back(0);
-//   Pho3Phi_->push_back(0);
-//   Pho4Phi_->push_back(0);
-//   Pho5Phi_->push_back(0);
+  Pho0Phi_->push_back(0);
+  Pho1Phi_->push_back(0);
+  Pho2Phi_->push_back(0);
+  Pho3Phi_->push_back(0);
+  Pho4Phi_->push_back(0);
+  Pho5Phi_->push_back(0);
 
-//   Pho0En_->push_back(0);
-//   Pho1En_->push_back(0);
-//   Pho2En_->push_back(0);
-//   Pho3En_->push_back(0);
-//   Pho4En_->push_back(0);   
-//   Pho5En_->push_back(0);
-//   }
+  Pho0En_->push_back(0);
+  Pho1En_->push_back(0);
+  Pho2En_->push_back(0);
+  Pho3En_->push_back(0);
+  Pho4En_->push_back(0);   
+  Pho5En_->push_back(0);
+  }
   
   
-//   else if ((myPhotons->size())==1){
+  else if ((myPhotons.size())==1){
 
-//   Pho0Pt_->push_back(myPhotons->begin()->pt());  
-//   Pho1Pt_->push_back(0); 
-//   Pho2Pt_->push_back(0); 
-//   Pho3Pt_->push_back(0); 
-//   Pho4Pt_->push_back(0); 
-//   Pho5Pt_->push_back(0); 
+  Pho0Pt_->push_back(myPhotons.begin()->pt());  
+  Pho1Pt_->push_back(0); 
+  Pho2Pt_->push_back(0); 
+  Pho3Pt_->push_back(0); 
+  Pho4Pt_->push_back(0); 
+  Pho5Pt_->push_back(0); 
 
-//   Pho0Eta_->push_back(myPhotons->begin()->eta()); 
-//   Pho1Eta_->push_back(0);
-//   Pho2Eta_->push_back(0);
-//   Pho3Eta_->push_back(0);
-//   Pho4Eta_->push_back(0);
-//   Pho5Eta_->push_back(0);
+  Pho0Eta_->push_back(myPhotons.begin()->eta()); 
+  Pho1Eta_->push_back(0);
+  Pho2Eta_->push_back(0);
+  Pho3Eta_->push_back(0);
+  Pho4Eta_->push_back(0);
+  Pho5Eta_->push_back(0);
 
-//   Pho0Phi_->push_back(myPhotons->begin()->phi()); 
-//   Pho1Phi_->push_back(0);
-//   Pho2Phi_->push_back(0);
-//   Pho3Phi_->push_back(0);
-//   Pho4Phi_->push_back(0);
-//   Pho5Phi_->push_back(0);
+  Pho0Phi_->push_back(myPhotons.begin()->phi()); 
+  Pho1Phi_->push_back(0);
+  Pho2Phi_->push_back(0);
+  Pho3Phi_->push_back(0);
+  Pho4Phi_->push_back(0);
+  Pho5Phi_->push_back(0);
 
-//   Pho0En_->push_back(myPhotons->begin()->energy()); 
-//   Pho1En_->push_back(0);
-//   Pho2En_->push_back(0);
-//   Pho3En_->push_back(0);
-//   Pho4En_->push_back(0);   
-//   Pho5En_->push_back(0);
+  Pho0En_->push_back(myPhotons.begin()->energy()); 
+  Pho1En_->push_back(0);
+  Pho2En_->push_back(0);
+  Pho3En_->push_back(0);
+  Pho4En_->push_back(0);   
+  Pho5En_->push_back(0);
 
-//   } 
+  } 
 
-//   else if ((myPhotons->size())==2){ 
+  else if ((myPhotons.size())==2){ 
 
-//   Pho0Pt_->push_back(myPhotons->begin()->pt());  
-//   Pho1Pt_->push_back((myPhotons->begin()+1)->pt());
-//   Pho2Pt_->push_back(0); 
-//   Pho3Pt_->push_back(0); 
-//   Pho4Pt_->push_back(0); 
-//   Pho5Pt_->push_back(0); 
+  Pho0Pt_->push_back(myPhotons.begin()->pt());  
+  Pho1Pt_->push_back((myPhotons.begin()+1)->pt());
+  Pho2Pt_->push_back(0); 
+  Pho3Pt_->push_back(0); 
+  Pho4Pt_->push_back(0); 
+  Pho5Pt_->push_back(0); 
 
-//   Pho0Eta_->push_back(myPhotons->begin()->eta()); 
-//   Pho1Eta_->push_back((myPhotons->begin()+1)->eta());  
-//   Pho2Eta_->push_back(0);
-//   Pho3Eta_->push_back(0);
-//   Pho4Eta_->push_back(0);
-//   Pho5Eta_->push_back(0);
+  Pho0Eta_->push_back(myPhotons.begin()->eta()); 
+  Pho1Eta_->push_back((myPhotons.begin()+1)->eta());  
+  Pho2Eta_->push_back(0);
+  Pho3Eta_->push_back(0);
+  Pho4Eta_->push_back(0);
+  Pho5Eta_->push_back(0);
 
-//   Pho0Phi_->push_back(myPhotons->begin()->phi()); 
-//   Pho1Phi_->push_back((myPhotons->begin()+1)->phi()); 
-//   Pho2Phi_->push_back(0);
-//   Pho3Phi_->push_back(0);
-//   Pho4Phi_->push_back(0);
-//   Pho5Phi_->push_back(0);
+  Pho0Phi_->push_back(myPhotons.begin()->phi()); 
+  Pho1Phi_->push_back((myPhotons.begin()+1)->phi()); 
+  Pho2Phi_->push_back(0);
+  Pho3Phi_->push_back(0);
+  Pho4Phi_->push_back(0);
+  Pho5Phi_->push_back(0);
   
-//   Pho0En_->push_back(myPhotons->begin()->energy()); 
-//   Pho1En_->push_back((myPhotons->begin()+1)->energy()); 
-//   Pho2En_->push_back(0);
-//   Pho3En_->push_back(0);
-//   Pho4En_->push_back(0);   
-//   Pho5En_->push_back(0);    
+  Pho0En_->push_back(myPhotons.begin()->energy()); 
+  Pho1En_->push_back((myPhotons.begin()+1)->energy()); 
+  Pho2En_->push_back(0);
+  Pho3En_->push_back(0);
+  Pho4En_->push_back(0);   
+  Pho5En_->push_back(0);    
   
-//   }
+  }
 
-//   else if ((myPhotons->size())==3){
+  else if ((myPhotons.size())==3){
 
-//   Pho0Pt_->push_back(myPhotons->begin()->pt());  
-//   Pho1Pt_->push_back((myPhotons->begin()+1)->pt());   
-//   Pho2Pt_->push_back((myPhotons->begin()+2)->pt()); 
-//   Pho3Pt_->push_back(0); 
-//   Pho4Pt_->push_back(0); 
-//   Pho5Pt_->push_back(0); 
+  Pho0Pt_->push_back(myPhotons.begin()->pt());  
+  Pho1Pt_->push_back((myPhotons.begin()+1)->pt());   
+  Pho2Pt_->push_back((myPhotons.begin()+2)->pt()); 
+  Pho3Pt_->push_back(0); 
+  Pho4Pt_->push_back(0); 
+  Pho5Pt_->push_back(0); 
 
-//   Pho0Eta_->push_back(myPhotons->begin()->eta()); 
-//   Pho1Eta_->push_back((myPhotons->begin()+1)->eta()); 
-//   Pho2Eta_->push_back((myPhotons->begin()+2)->eta()); 
-//   Pho3Eta_->push_back(0);
-//   Pho4Eta_->push_back(0);
-//   Pho5Eta_->push_back(0);
+  Pho0Eta_->push_back(myPhotons.begin()->eta()); 
+  Pho1Eta_->push_back((myPhotons.begin()+1)->eta()); 
+  Pho2Eta_->push_back((myPhotons.begin()+2)->eta()); 
+  Pho3Eta_->push_back(0);
+  Pho4Eta_->push_back(0);
+  Pho5Eta_->push_back(0);
 
-//   Pho0Phi_->push_back(myPhotons->begin()->phi()); 
-//   Pho1Phi_->push_back((myPhotons->begin()+1)->phi()); 
-//   Pho2Phi_->push_back((myPhotons->begin()+2)->phi()); 
-//   Pho3Phi_->push_back(0);
-//   Pho4Phi_->push_back(0);
-//   Pho5Phi_->push_back(0);
+  Pho0Phi_->push_back(myPhotons.begin()->phi()); 
+  Pho1Phi_->push_back((myPhotons.begin()+1)->phi()); 
+  Pho2Phi_->push_back((myPhotons.begin()+2)->phi()); 
+  Pho3Phi_->push_back(0);
+  Pho4Phi_->push_back(0);
+  Pho5Phi_->push_back(0);
 
-//   Pho0En_->push_back(myPhotons->begin()->energy()); 
-//   Pho1En_->push_back((myPhotons->begin()+1)->energy()); 
-//   Pho2En_->push_back((myPhotons->begin()+2)->energy());
-//   Pho3En_->push_back(0);
-//   Pho4En_->push_back(0);   
-//   Pho5En_->push_back(0);
-//   }
+  Pho0En_->push_back(myPhotons.begin()->energy()); 
+  Pho1En_->push_back((myPhotons.begin()+1)->energy()); 
+  Pho2En_->push_back((myPhotons.begin()+2)->energy());
+  Pho3En_->push_back(0);
+  Pho4En_->push_back(0);   
+  Pho5En_->push_back(0);
+  }
 
-//   else if ((myPhotons->size())==4){
+  else if ((myPhotons.size())==4){
 
-//   Pho0Pt_->push_back(myPhotons->begin()->pt());  
-//   Pho1Pt_->push_back((myPhotons->begin()+1)->pt());  
-//   Pho2Pt_->push_back((myPhotons->begin()+2)->pt()); 
-//   Pho3Pt_->push_back((myPhotons->begin()+3)->pt());  
-//   Pho4Pt_->push_back(0); 
-//   Pho5Pt_->push_back(0); 
+  Pho0Pt_->push_back(myPhotons.begin()->pt());  
+  Pho1Pt_->push_back((myPhotons.begin()+1)->pt());  
+  Pho2Pt_->push_back((myPhotons.begin()+2)->pt()); 
+  Pho3Pt_->push_back((myPhotons.begin()+3)->pt());  
+  Pho4Pt_->push_back(0); 
+  Pho5Pt_->push_back(0); 
 
-//   Pho0Eta_->push_back(myPhotons->begin()->eta()); 
-//   Pho1Eta_->push_back((myPhotons->begin()+1)->eta()); 
-//   Pho2Eta_->push_back((myPhotons->begin()+2)->eta()); 
-//   Pho3Eta_->push_back((myPhotons->begin()+3)->eta());  
-//   Pho4Eta_->push_back(0);
-//   Pho5Eta_->push_back(0);
+  Pho0Eta_->push_back(myPhotons.begin()->eta()); 
+  Pho1Eta_->push_back((myPhotons.begin()+1)->eta()); 
+  Pho2Eta_->push_back((myPhotons.begin()+2)->eta()); 
+  Pho3Eta_->push_back((myPhotons.begin()+3)->eta());  
+  Pho4Eta_->push_back(0);
+  Pho5Eta_->push_back(0);
 
-//   Pho0Phi_->push_back(myPhotons->begin()->phi()); 
-//   Pho1Phi_->push_back((myPhotons->begin()+1)->phi()); 
-//   Pho2Phi_->push_back((myPhotons->begin()+2)->phi()); 
-//   Pho3Phi_->push_back((myPhotons->begin()+3)->phi());  
-//   Pho4Phi_->push_back(0);
-//   Pho5Phi_->push_back(0);  
+  Pho0Phi_->push_back(myPhotons.begin()->phi()); 
+  Pho1Phi_->push_back((myPhotons.begin()+1)->phi()); 
+  Pho2Phi_->push_back((myPhotons.begin()+2)->phi()); 
+  Pho3Phi_->push_back((myPhotons.begin()+3)->phi());  
+  Pho4Phi_->push_back(0);
+  Pho5Phi_->push_back(0);  
 
-//   Pho0En_->push_back(myPhotons->begin()->energy()); 
-//   Pho1En_->push_back((myPhotons->begin()+1)->energy()); 
-//   Pho2En_->push_back((myPhotons->begin()+2)->energy());
-//   Pho3En_->push_back((myPhotons->begin()+3)->energy());
-//   Pho4En_->push_back(0);   
-//   Pho5En_->push_back(0);
-//   }
+  Pho0En_->push_back(myPhotons.begin()->energy()); 
+  Pho1En_->push_back((myPhotons.begin()+1)->energy()); 
+  Pho2En_->push_back((myPhotons.begin()+2)->energy());
+  Pho3En_->push_back((myPhotons.begin()+3)->energy());
+  Pho4En_->push_back(0);   
+  Pho5En_->push_back(0);
+  }
 
-//   else if ((myPhotons->size())==5){
+  else if ((myPhotons.size())==5){
 
-//   Pho0Pt_->push_back(myPhotons->begin()->pt());  
-//   Pho1Pt_->push_back((myPhotons->begin()+1)->pt()); 
-//   Pho2Pt_->push_back((myPhotons->begin()+2)->pt()); 
-//   Pho3Pt_->push_back((myPhotons->begin()+3)->pt());  
-//   Pho4Pt_->push_back((myPhotons->begin()+4)->pt()); 
-//   Pho5Pt_->push_back(0); 
+  Pho0Pt_->push_back(myPhotons.begin()->pt());  
+  Pho1Pt_->push_back((myPhotons.begin()+1)->pt()); 
+  Pho2Pt_->push_back((myPhotons.begin()+2)->pt()); 
+  Pho3Pt_->push_back((myPhotons.begin()+3)->pt());  
+  Pho4Pt_->push_back((myPhotons.begin()+4)->pt()); 
+  Pho5Pt_->push_back(0); 
 
-//   Pho0Eta_->push_back(myPhotons->begin()->eta()); 
-//   Pho1Eta_->push_back((myPhotons->begin()+1)->eta());
-//   Pho2Eta_->push_back((myPhotons->begin()+2)->eta()); 
-//   Pho3Eta_->push_back((myPhotons->begin()+3)->eta());  
-//   Pho4Eta_->push_back((myPhotons->begin()+4)->eta());  
-//   Pho5Eta_->push_back(0);
+  Pho0Eta_->push_back(myPhotons.begin()->eta()); 
+  Pho1Eta_->push_back((myPhotons.begin()+1)->eta());
+  Pho2Eta_->push_back((myPhotons.begin()+2)->eta()); 
+  Pho3Eta_->push_back((myPhotons.begin()+3)->eta());  
+  Pho4Eta_->push_back((myPhotons.begin()+4)->eta());  
+  Pho5Eta_->push_back(0);
 
-//   Pho0Phi_->push_back(myPhotons->begin()->phi()); 
-//   Pho1Phi_->push_back((myPhotons->begin()+1)->phi());
-//   Pho2Phi_->push_back((myPhotons->begin()+2)->phi()); 
-//   Pho3Phi_->push_back((myPhotons->begin()+3)->phi()); 
-//   Pho4Phi_->push_back((myPhotons->begin()+4)->phi());  
-//   Pho5Phi_->push_back(0);  
+  Pho0Phi_->push_back(myPhotons.begin()->phi()); 
+  Pho1Phi_->push_back((myPhotons.begin()+1)->phi());
+  Pho2Phi_->push_back((myPhotons.begin()+2)->phi()); 
+  Pho3Phi_->push_back((myPhotons.begin()+3)->phi()); 
+  Pho4Phi_->push_back((myPhotons.begin()+4)->phi());  
+  Pho5Phi_->push_back(0);  
 
-//   Pho0En_->push_back(myPhotons->begin()->energy()); 
-//   Pho1En_->push_back((myPhotons->begin()+1)->energy()); 
-//   Pho2En_->push_back((myPhotons->begin()+2)->energy());
-//   Pho3En_->push_back((myPhotons->begin()+3)->energy());
-//   Pho4En_->push_back((myPhotons->begin()+4)->energy());
-//   Pho5En_->push_back(0);
-//   }
+  Pho0En_->push_back(myPhotons.begin()->energy()); 
+  Pho1En_->push_back((myPhotons.begin()+1)->energy()); 
+  Pho2En_->push_back((myPhotons.begin()+2)->energy());
+  Pho3En_->push_back((myPhotons.begin()+3)->energy());
+  Pho4En_->push_back((myPhotons.begin()+4)->energy());
+  Pho5En_->push_back(0);
+  }
 
-//   else{
-//         // std::cout << "end of myPhotons collision "  << std::endl; //TODO
-//   Pho0Pt_->push_back(myPhotons->begin()->pt()); 
-//           // std::cout << "ele Jet 0pt: " << (myPhotons->begin()->pt())   << std::endl;
+  else{
+        // std::cout << "end of myPhotons collision "  << std::endl; //TODO
+  Pho0Pt_->push_back(myPhotons.begin()->pt()); 
+          // std::cout << "ele Jet 0pt: " << (myPhotons.begin()->pt())   << std::endl;
 
-//   Pho1Pt_->push_back((myPhotons->begin()+myPhotons->size()/5)->pt()); 
-//         // std::cout << "ele Jet 1pt: " << ((myPhotons->begin()+myPhotons->size()/5)->pt())    << std::endl;
+  Pho1Pt_->push_back((myPhotons.begin()+myPhotons.size()/5)->pt()); 
+        // std::cout << "ele Jet 1pt: " << ((myPhotons.begin()+myPhotons.size()/5)->pt())    << std::endl;
 
-//   Pho2Pt_->push_back((myPhotons->begin()+myPhotons->size()*2/5)->pt());
-//         // std::cout << "ele Jet 2pt: " << ((myPhotons->begin()+myPhotons->size()*2/5)->pt())  << std::endl;
+  Pho2Pt_->push_back((myPhotons.begin()+myPhotons.size()*2/5)->pt());
+        // std::cout << "ele Jet 2pt: " << ((myPhotons.begin()+myPhotons.size()*2/5)->pt())  << std::endl;
   
-//   Pho3Pt_->push_back((myPhotons->begin()+myPhotons->size()*3/5)->pt());
-//         // std::cout << "ele Jet 3pt: " << ((myPhotons->begin()+myPhotons->size()*3/5)->pt())  << std::endl;
+  Pho3Pt_->push_back((myPhotons.begin()+myPhotons.size()*3/5)->pt());
+        // std::cout << "ele Jet 3pt: " << ((myPhotons.begin()+myPhotons.size()*3/5)->pt())  << std::endl;
 
-//   Pho4Pt_->push_back((myPhotons->begin()+myPhotons->size()*4/5)->pt());
-//         // std::cout << "ele Jet 4pt: " << ((myPhotons->begin()+myPhotons->size()*4/5)->pt())  << std::endl; 
+  Pho4Pt_->push_back((myPhotons.begin()+myPhotons.size()*4/5)->pt());
+        // std::cout << "ele Jet 4pt: " << ((myPhotons.begin()+myPhotons.size()*4/5)->pt())  << std::endl; 
 
-//   Pho5Pt_->push_back((myPhotons->begin()+myPhotons->size()-1)->pt());
-//        // std::cout << "ele Jet 5pt: " << ((myPhotons->begin()+myPhotons->size()-1)->pt())   << std::endl;
+  Pho5Pt_->push_back((myPhotons.begin()+myPhotons.size()-1)->pt());
+       // std::cout << "ele Jet 5pt: " << ((myPhotons.begin()+myPhotons.size()-1)->pt())   << std::endl;
 
-//   Pho0Eta_->push_back(myPhotons->begin()->eta()); 
-//           // std::cout << "ele Jet 0eta: " << (myPhotons->begin()->eta())   << std::endl;
+  Pho0Eta_->push_back(myPhotons.begin()->eta()); 
+          // std::cout << "ele Jet 0eta: " << (myPhotons.begin()->eta())   << std::endl;
 
-//   Pho1Eta_->push_back((myPhotons->begin()+myPhotons->size()/5)->eta()); 
-//         // std::cout << "ele Jet 1eta: " << ((myPhotons->begin()+myPhotons->size()/5)->eta())    << std::endl;
+  Pho1Eta_->push_back((myPhotons.begin()+myPhotons.size()/5)->eta()); 
+        // std::cout << "ele Jet 1eta: " << ((myPhotons.begin()+myPhotons.size()/5)->eta())    << std::endl;
 
-//   Pho2Eta_->push_back((myPhotons->begin()+myPhotons->size()*2/5)->eta());
-//         // std::cout << "ele Jet 2eta: " << ((myPhotons->begin()+myPhotons->size()*2/5)->eta())  << std::endl;
+  Pho2Eta_->push_back((myPhotons.begin()+myPhotons.size()*2/5)->eta());
+        // std::cout << "ele Jet 2eta: " << ((myPhotons.begin()+myPhotons.size()*2/5)->eta())  << std::endl;
   
-//   Pho3Eta_->push_back((myPhotons->begin()+myPhotons->size()*3/5)->eta());
-//         // std::cout << "ele Jet 3eta: " << ((myPhotons->begin()+myPhotons->size()*3/5)->eta())  << std::endl;
+  Pho3Eta_->push_back((myPhotons.begin()+myPhotons.size()*3/5)->eta());
+        // std::cout << "ele Jet 3eta: " << ((myPhotons.begin()+myPhotons.size()*3/5)->eta())  << std::endl;
 
-//   Pho4Eta_->push_back((myPhotons->begin()+myPhotons->size()*4/5)->eta());
-//         // std::cout << "ele Jet 4eta: " << ((myPhotons->begin()+myPhotons->size()*4/5)->eta())  << std::endl; 
+  Pho4Eta_->push_back((myPhotons.begin()+myPhotons.size()*4/5)->eta());
+        // std::cout << "ele Jet 4eta: " << ((myPhotons.begin()+myPhotons.size()*4/5)->eta())  << std::endl; 
 
-//   Pho5Eta_->push_back((myPhotons->begin()+myPhotons->size()-1)->eta());
-//        // std::cout << "ele Jet 5eta: " << ((myPhotons->begin()+myPhotons->size()-1)->eta())   << std::endl; 
+  Pho5Eta_->push_back((myPhotons.begin()+myPhotons.size()-1)->eta());
+       // std::cout << "ele Jet 5eta: " << ((myPhotons.begin()+myPhotons.size()-1)->eta())   << std::endl; 
 
-//   Pho0Phi_->push_back(myPhotons->begin()->phi()); 
-//           // std::cout << "ele Jet 0Phi: " << (myPhotons->begin()->phi())   << std::endl;
+  Pho0Phi_->push_back(myPhotons.begin()->phi()); 
+          // std::cout << "ele Jet 0Phi: " << (myPhotons.begin()->phi())   << std::endl;
 
-//   Pho1Phi_->push_back((myPhotons->begin()+myPhotons->size()/5)->phi()); 
-//         // std::cout << "ele Jet 1Phi: " << ((myPhotons->begin()+myPhotons->size()/5)->phi())    << std::endl;
+  Pho1Phi_->push_back((myPhotons.begin()+myPhotons.size()/5)->phi()); 
+        // std::cout << "ele Jet 1Phi: " << ((myPhotons.begin()+myPhotons.size()/5)->phi())    << std::endl;
 
-//   Pho2Phi_->push_back((myPhotons->begin()+myPhotons->size()*2/5)->phi());
-//         // std::cout << "ele Jet 2Phi: " << ((myPhotons->begin()+myPhotons->size()*2/5)->phi())  << std::endl;
+  Pho2Phi_->push_back((myPhotons.begin()+myPhotons.size()*2/5)->phi());
+        // std::cout << "ele Jet 2Phi: " << ((myPhotons.begin()+myPhotons.size()*2/5)->phi())  << std::endl;
   
-//   Pho3Phi_->push_back((myPhotons->begin()+myPhotons->size()*3/5)->phi());
-//         // std::cout << "ele Jet 3Phi: " << ((myPhotons->begin()+myPhotons->size()*3/5)->phi())  << std::endl;
+  Pho3Phi_->push_back((myPhotons.begin()+myPhotons.size()*3/5)->phi());
+        // std::cout << "ele Jet 3Phi: " << ((myPhotons.begin()+myPhotons.size()*3/5)->phi())  << std::endl;
 
-//   Pho4Phi_->push_back((myPhotons->begin()+myPhotons->size()*4/5)->phi());
-//         // std::cout << "ele Jet 4Phi: " << ((myPhotons->begin()+myPhotons->size()*4/5)->phi())  << std::endl; 
+  Pho4Phi_->push_back((myPhotons.begin()+myPhotons.size()*4/5)->phi());
+        // std::cout << "ele Jet 4Phi: " << ((myPhotons.begin()+myPhotons.size()*4/5)->phi())  << std::endl; 
 
-//   Pho5Phi_->push_back((myPhotons->begin()+myPhotons->size()-1)->phi());
-//        // std::cout << "ele Jet 5Phi: " << ((myPhotons->begin()+myPhotons->size()-1)->phi())   << std::endl;   
+  Pho5Phi_->push_back((myPhotons.begin()+myPhotons.size()-1)->phi());
+       // std::cout << "ele Jet 5Phi: " << ((myPhotons.begin()+myPhotons.size()-1)->phi())   << std::endl;   
 
-//   Pho0En_->push_back(myPhotons->begin()->energy()); 
-//           // std::cout << "ele Jet 0En: " << (myPhotons->begin()->energy())   << std::endl;
+  Pho0En_->push_back(myPhotons.begin()->energy()); 
+          // std::cout << "ele Jet 0En: " << (myPhotons.begin()->energy())   << std::endl;
 
-//   Pho1En_->push_back((myPhotons->begin()+myPhotons->size()/5)->energy()); 
-//         // std::cout << "ele Jet 1En: " << ((myPhotons->begin()+myPhotons->size()/5)->energy())    << std::endl;
+  Pho1En_->push_back((myPhotons.begin()+myPhotons.size()/5)->energy()); 
+        // std::cout << "ele Jet 1En: " << ((myPhotons.begin()+myPhotons.size()/5)->energy())    << std::endl;
 
-//   Pho2En_->push_back((myPhotons->begin()+myPhotons->size()*2/5)->energy());
-//         // std::cout << "ele Jet 2En: " << ((myPhotons->begin()+myPhotons->size()*2/5)->energy())  << std::endl;
+  Pho2En_->push_back((myPhotons.begin()+myPhotons.size()*2/5)->energy());
+        // std::cout << "ele Jet 2En: " << ((myPhotons.begin()+myPhotons.size()*2/5)->energy())  << std::endl;
   
-//   Pho3En_->push_back((myPhotons->begin()+myPhotons->size()*3/5)->energy());
-//         // std::cout << "ele Jet 3En: " << ((myPhotons->begin()+myPhotons->size()*3/5)->energy())  << std::endl;
+  Pho3En_->push_back((myPhotons.begin()+myPhotons.size()*3/5)->energy());
+        // std::cout << "ele Jet 3En: " << ((myPhotons.begin()+myPhotons.size()*3/5)->energy())  << std::endl;
 
-//   Pho4En_->push_back((myPhotons->begin()+myPhotons->size()*4/5)->energy());
-//         // std::cout << "ele Jet 4En: " << ((myPhotons->begin()+myPhotons->size()*4/5)->energy())  << std::endl; 
+  Pho4En_->push_back((myPhotons.begin()+myPhotons.size()*4/5)->energy());
+        // std::cout << "ele Jet 4En: " << ((myPhotons.begin()+myPhotons.size()*4/5)->energy())  << std::endl; 
 
-//   Pho5En_->push_back((myPhotons->begin()+myPhotons->size()-1)->energy());
-//        // std::cout << "ele Jet 5En: " << ((myPhotons->begin()+myPhotons->size()-1)->energy())   << std::endl;                    
+  Pho5En_->push_back((myPhotons.begin()+myPhotons.size()-1)->energy());
+       // std::cout << "ele Jet 5En: " << ((myPhotons.begin()+myPhotons.size()-1)->energy())   << std::endl;                    
      
-// }
+}
 
   return;
 
@@ -4897,270 +4897,270 @@ void AODAnalyzer::fillgedPhotons(const edm::Handle<PhotongedCollection> & gedpho
 
     std::sort( myGedPhotons.begin(), myGedPhotons.end(), GreaterByPt<reco::Photon>());
 
-//     if ((myGedPhotons->size())==0){
+    if ((myGedPhotons.size())==0){
 
-//   Pho0Pt_->push_back(0); 
-//   Pho1Pt_->push_back(0); 
-//   Pho2Pt_->push_back(0); 
-//   Pho3Pt_->push_back(0); 
-//   Pho4Pt_->push_back(0); 
-//   Pho5Pt_->push_back(0); 
+  gedPho0Pt_->push_back(0); 
+  gedPho1Pt_->push_back(0); 
+  gedPho2Pt_->push_back(0); 
+  gedPho3Pt_->push_back(0); 
+  gedPho4Pt_->push_back(0); 
+  gedPho5Pt_->push_back(0); 
 
-//   Pho0Eta_->push_back(0);
-//   Pho1Eta_->push_back(0);
-//   Pho2Eta_->push_back(0);
-//   Pho3Eta_->push_back(0);
-//   Pho4Eta_->push_back(0);
-//   Pho5Eta_->push_back(0);
+  gedPho0Eta_->push_back(0);
+  gedPho1Eta_->push_back(0);
+  gedPho2Eta_->push_back(0);
+  gedPho3Eta_->push_back(0);
+  gedPho4Eta_->push_back(0);
+  gedPho5Eta_->push_back(0);
 
-//   Pho0Phi_->push_back(0);
-//   Pho1Phi_->push_back(0);
-//   Pho2Phi_->push_back(0);
-//   Pho3Phi_->push_back(0);
-//   Pho4Phi_->push_back(0);
-//   Pho5Phi_->push_back(0);
+  gedPho0Phi_->push_back(0);
+  gedPho1Phi_->push_back(0);
+  gedPho2Phi_->push_back(0);
+  gedPho3Phi_->push_back(0);
+  gedPho4Phi_->push_back(0);
+  gedPho5Phi_->push_back(0);
 
-//   Pho0En_->push_back(0);
-//   Pho1En_->push_back(0);
-//   Pho2En_->push_back(0);
-//   Pho3En_->push_back(0);
-//   Pho4En_->push_back(0);   
-//   Pho5En_->push_back(0);
-//   }
+  gedPho0En_->push_back(0);
+  gedPho1En_->push_back(0);
+  gedPho2En_->push_back(0);
+  gedPho3En_->push_back(0);
+  gedPho4En_->push_back(0);   
+  gedPho5En_->push_back(0);
+  }
   
   
-//   else if ((myGedPhotons->size())==1){
+  else if ((myGedPhotons.size())==1){
 
-//   Pho0Pt_->push_back(myGedPhotons->begin()->pt());  
-//   Pho1Pt_->push_back(0); 
-//   Pho2Pt_->push_back(0); 
-//   Pho3Pt_->push_back(0); 
-//   Pho4Pt_->push_back(0); 
-//   Pho5Pt_->push_back(0); 
+  gedPho0Pt_->push_back(myGedPhotons.begin()->pt());  
+  gedPho1Pt_->push_back(0); 
+  gedPho2Pt_->push_back(0); 
+  gedPho3Pt_->push_back(0); 
+  gedPho4Pt_->push_back(0); 
+  gedPho5Pt_->push_back(0); 
 
-//   Pho0Eta_->push_back(myGedPhotons->begin()->eta()); 
-//   Pho1Eta_->push_back(0);
-//   Pho2Eta_->push_back(0);
-//   Pho3Eta_->push_back(0);
-//   Pho4Eta_->push_back(0);
-//   Pho5Eta_->push_back(0);
+  gedPho0Eta_->push_back(myGedPhotons.begin()->eta()); 
+  gedPho1Eta_->push_back(0);
+  gedPho2Eta_->push_back(0);
+  gedPho3Eta_->push_back(0);
+  gedPho4Eta_->push_back(0);
+  gedPho5Eta_->push_back(0);
 
-//   Pho0Phi_->push_back(myGedPhotons->begin()->phi()); 
-//   Pho1Phi_->push_back(0);
-//   Pho2Phi_->push_back(0);
-//   Pho3Phi_->push_back(0);
-//   Pho4Phi_->push_back(0);
-//   Pho5Phi_->push_back(0);
+  gedPho0Phi_->push_back(myGedPhotons.begin()->phi()); 
+  gedPho1Phi_->push_back(0);
+  gedPho2Phi_->push_back(0);
+  gedPho3Phi_->push_back(0);
+  gedPho4Phi_->push_back(0);
+  gedPho5Phi_->push_back(0);
 
-//   Pho0En_->push_back(myGedPhotons->begin()->energy()); 
-//   Pho1En_->push_back(0);
-//   Pho2En_->push_back(0);
-//   Pho3En_->push_back(0);
-//   Pho4En_->push_back(0);   
-//   Pho5En_->push_back(0);
+  gedPho0En_->push_back(myGedPhotons.begin()->energy()); 
+  gedPho1En_->push_back(0);
+  gedPho2En_->push_back(0);
+  gedPho3En_->push_back(0);
+  gedPho4En_->push_back(0);   
+  gedPho5En_->push_back(0);
 
-//   } 
+  } 
 
-//   else if ((myGedPhotons->size())==2){ 
+  else if ((myGedPhotons.size())==2){ 
 
-//   Pho0Pt_->push_back(myGedPhotons->begin()->pt());  
-//   Pho1Pt_->push_back((myGedPhotons->begin()+1)->pt());
-//   Pho2Pt_->push_back(0); 
-//   Pho3Pt_->push_back(0); 
-//   Pho4Pt_->push_back(0); 
-//   Pho5Pt_->push_back(0); 
+  gedPho0Pt_->push_back(myGedPhotons.begin()->pt());  
+  gedPho1Pt_->push_back((myGedPhotons.begin()+1)->pt());
+  gedPho2Pt_->push_back(0); 
+  gedPho3Pt_->push_back(0); 
+  gedPho4Pt_->push_back(0); 
+  gedPho5Pt_->push_back(0); 
 
-//   Pho0Eta_->push_back(myGedPhotons->begin()->eta()); 
-//   Pho1Eta_->push_back((myGedPhotons->begin()+1)->eta());  
-//   Pho2Eta_->push_back(0);
-//   Pho3Eta_->push_back(0);
-//   Pho4Eta_->push_back(0);
-//   Pho5Eta_->push_back(0);
+  gedPho0Eta_->push_back(myGedPhotons.begin()->eta()); 
+  gedPho1Eta_->push_back((myGedPhotons.begin()+1)->eta());  
+  gedPho2Eta_->push_back(0);
+  gedPho3Eta_->push_back(0);
+  gedPho4Eta_->push_back(0);
+  gedPho5Eta_->push_back(0);
 
-//   Pho0Phi_->push_back(myGedPhotons->begin()->phi()); 
-//   Pho1Phi_->push_back((myGedPhotons->begin()+1)->phi()); 
-//   Pho2Phi_->push_back(0);
-//   Pho3Phi_->push_back(0);
-//   Pho4Phi_->push_back(0);
-//   Pho5Phi_->push_back(0);
+  gedPho0Phi_->push_back(myGedPhotons.begin()->phi()); 
+  gedPho1Phi_->push_back((myGedPhotons.begin()+1)->phi()); 
+  gedPho2Phi_->push_back(0);
+  gedPho3Phi_->push_back(0);
+  gedPho4Phi_->push_back(0);
+  gedPho5Phi_->push_back(0);
   
-//   Pho0En_->push_back(myGedPhotons->begin()->energy()); 
-//   Pho1En_->push_back((myGedPhotons->begin()+1)->energy()); 
-//   Pho2En_->push_back(0);
-//   Pho3En_->push_back(0);
-//   Pho4En_->push_back(0);   
-//   Pho5En_->push_back(0);    
+  gedPho0En_->push_back(myGedPhotons.begin()->energy()); 
+  gedPho1En_->push_back((myGedPhotons.begin()+1)->energy()); 
+  gedPho2En_->push_back(0);
+  gedPho3En_->push_back(0);
+  gedPho4En_->push_back(0);   
+  gedPho5En_->push_back(0);    
   
-//   }
+  }
 
-//   else if ((myGedPhotons->size())==3){
+  else if ((myGedPhotons.size())==3){
 
-//   Pho0Pt_->push_back(myGedPhotons->begin()->pt());  
-//   Pho1Pt_->push_back((myGedPhotons->begin()+1)->pt());   
-//   Pho2Pt_->push_back((myGedPhotons->begin()+2)->pt()); 
-//   Pho3Pt_->push_back(0); 
-//   Pho4Pt_->push_back(0); 
-//   Pho5Pt_->push_back(0); 
+  gedPho0Pt_->push_back(myGedPhotons.begin()->pt());  
+  gedPho1Pt_->push_back((myGedPhotons.begin()+1)->pt());   
+  gedPho2Pt_->push_back((myGedPhotons.begin()+2)->pt()); 
+  gedPho3Pt_->push_back(0); 
+  gedPho4Pt_->push_back(0); 
+  gedPho5Pt_->push_back(0); 
 
-//   Pho0Eta_->push_back(myGedPhotons->begin()->eta()); 
-//   Pho1Eta_->push_back((myGedPhotons->begin()+1)->eta()); 
-//   Pho2Eta_->push_back((myGedPhotons->begin()+2)->eta()); 
-//   Pho3Eta_->push_back(0);
-//   Pho4Eta_->push_back(0);
-//   Pho5Eta_->push_back(0);
+  gedPho0Eta_->push_back(myGedPhotons.begin()->eta()); 
+  gedPho1Eta_->push_back((myGedPhotons.begin()+1)->eta()); 
+  gedPho2Eta_->push_back((myGedPhotons.begin()+2)->eta()); 
+  gedPho3Eta_->push_back(0);
+  gedPho4Eta_->push_back(0);
+  gedPho5Eta_->push_back(0);
 
-//   Pho0Phi_->push_back(myGedPhotons->begin()->phi()); 
-//   Pho1Phi_->push_back((myGedPhotons->begin()+1)->phi()); 
-//   Pho2Phi_->push_back((myGedPhotons->begin()+2)->phi()); 
-//   Pho3Phi_->push_back(0);
-//   Pho4Phi_->push_back(0);
-//   Pho5Phi_->push_back(0);
+  gedPho0Phi_->push_back(myGedPhotons.begin()->phi()); 
+  gedPho1Phi_->push_back((myGedPhotons.begin()+1)->phi()); 
+  gedPho2Phi_->push_back((myGedPhotons.begin()+2)->phi()); 
+  gedPho3Phi_->push_back(0);
+  gedPho4Phi_->push_back(0);
+  gedPho5Phi_->push_back(0);
 
-//   Pho0En_->push_back(myGedPhotons->begin()->energy()); 
-//   Pho1En_->push_back((myGedPhotons->begin()+1)->energy()); 
-//   Pho2En_->push_back((myGedPhotons->begin()+2)->energy());
-//   Pho3En_->push_back(0);
-//   Pho4En_->push_back(0);   
-//   Pho5En_->push_back(0);
-//   }
+  gedPho0En_->push_back(myGedPhotons.begin()->energy()); 
+  gedPho1En_->push_back((myGedPhotons.begin()+1)->energy()); 
+  gedPho2En_->push_back((myGedPhotons.begin()+2)->energy());
+  gedPho3En_->push_back(0);
+  gedPho4En_->push_back(0);   
+  gedPho5En_->push_back(0);
+  }
 
-//   else if ((myGedPhotons->size())==4){
+  else if ((myGedPhotons.size())==4){
 
-//   Pho0Pt_->push_back(myGedPhotons->begin()->pt());  
-//   Pho1Pt_->push_back((myGedPhotons->begin()+1)->pt());  
-//   Pho2Pt_->push_back((myGedPhotons->begin()+2)->pt()); 
-//   Pho3Pt_->push_back((myGedPhotons->begin()+3)->pt());  
-//   Pho4Pt_->push_back(0); 
-//   Pho5Pt_->push_back(0); 
+  gedPho0Pt_->push_back(myGedPhotons.begin()->pt());  
+  gedPho1Pt_->push_back((myGedPhotons.begin()+1)->pt());  
+  gedPho2Pt_->push_back((myGedPhotons.begin()+2)->pt()); 
+  gedPho3Pt_->push_back((myGedPhotons.begin()+3)->pt());  
+  gedPho4Pt_->push_back(0); 
+  gedPho5Pt_->push_back(0); 
 
-//   Pho0Eta_->push_back(myGedPhotons->begin()->eta()); 
-//   Pho1Eta_->push_back((myGedPhotons->begin()+1)->eta()); 
-//   Pho2Eta_->push_back((myGedPhotons->begin()+2)->eta()); 
-//   Pho3Eta_->push_back((myGedPhotons->begin()+3)->eta());  
-//   Pho4Eta_->push_back(0);
-//   Pho5Eta_->push_back(0);
+  gedPho0Eta_->push_back(myGedPhotons.begin()->eta()); 
+  gedPho1Eta_->push_back((myGedPhotons.begin()+1)->eta()); 
+  gedPho2Eta_->push_back((myGedPhotons.begin()+2)->eta()); 
+  gedPho3Eta_->push_back((myGedPhotons.begin()+3)->eta());  
+  gedPho4Eta_->push_back(0);
+  gedPho5Eta_->push_back(0);
 
-//   Pho0Phi_->push_back(myGedPhotons->begin()->phi()); 
-//   Pho1Phi_->push_back((myGedPhotons->begin()+1)->phi()); 
-//   Pho2Phi_->push_back((myGedPhotons->begin()+2)->phi()); 
-//   Pho3Phi_->push_back((myGedPhotons->begin()+3)->phi());  
-//   Pho4Phi_->push_back(0);
-//   Pho5Phi_->push_back(0);  
+  gedPho0Phi_->push_back(myGedPhotons.begin()->phi()); 
+  gedPho1Phi_->push_back((myGedPhotons.begin()+1)->phi()); 
+  gedPho2Phi_->push_back((myGedPhotons.begin()+2)->phi()); 
+  gedPho3Phi_->push_back((myGedPhotons.begin()+3)->phi());  
+  gedPho4Phi_->push_back(0);
+  gedPho5Phi_->push_back(0);  
 
-//   Pho0En_->push_back(myGedPhotons->begin()->energy()); 
-//   Pho1En_->push_back((myGedPhotons->begin()+1)->energy()); 
-//   Pho2En_->push_back((myGedPhotons->begin()+2)->energy());
-//   Pho3En_->push_back((myGedPhotons->begin()+3)->energy());
-//   Pho4En_->push_back(0);   
-//   Pho5En_->push_back(0);
-//   }
+  gedPho0En_->push_back(myGedPhotons.begin()->energy()); 
+  gedPho1En_->push_back((myGedPhotons.begin()+1)->energy()); 
+  gedPho2En_->push_back((myGedPhotons.begin()+2)->energy());
+  gedPho3En_->push_back((myGedPhotons.begin()+3)->energy());
+  gedPho4En_->push_back(0);   
+  gedPho5En_->push_back(0);
+  }
 
-//   else if ((myGedPhotons->size())==5){
+  else if ((myGedPhotons.size())==5){
 
-//   Pho0Pt_->push_back(myGedPhotons->begin()->pt());  
-//   Pho1Pt_->push_back((myGedPhotons->begin()+1)->pt()); 
-//   Pho2Pt_->push_back((myGedPhotons->begin()+2)->pt()); 
-//   Pho3Pt_->push_back((myGedPhotons->begin()+3)->pt());  
-//   Pho4Pt_->push_back((myGedPhotons->begin()+4)->pt()); 
-//   Pho5Pt_->push_back(0); 
+  gedPho0Pt_->push_back(myGedPhotons.begin()->pt());  
+  gedPho1Pt_->push_back((myGedPhotons.begin()+1)->pt()); 
+  gedPho2Pt_->push_back((myGedPhotons.begin()+2)->pt()); 
+  gedPho3Pt_->push_back((myGedPhotons.begin()+3)->pt());  
+  gedPho4Pt_->push_back((myGedPhotons.begin()+4)->pt()); 
+  gedPho5Pt_->push_back(0); 
 
-//   Pho0Eta_->push_back(myGedPhotons->begin()->eta()); 
-//   Pho1Eta_->push_back((myGedPhotons->begin()+1)->eta());
-//   Pho2Eta_->push_back((myGedPhotons->begin()+2)->eta()); 
-//   Pho3Eta_->push_back((myGedPhotons->begin()+3)->eta());  
-//   Pho4Eta_->push_back((myGedPhotons->begin()+4)->eta());  
-//   Pho5Eta_->push_back(0);
+  gedPho0Eta_->push_back(myGedPhotons.begin()->eta()); 
+  gedPho1Eta_->push_back((myGedPhotons.begin()+1)->eta());
+  gedPho2Eta_->push_back((myGedPhotons.begin()+2)->eta()); 
+  gedPho3Eta_->push_back((myGedPhotons.begin()+3)->eta());  
+  gedPho4Eta_->push_back((myGedPhotons.begin()+4)->eta());  
+  gedPho5Eta_->push_back(0);
 
-//   Pho0Phi_->push_back(myGedPhotons->begin()->phi()); 
-//   Pho1Phi_->push_back((myGedPhotons->begin()+1)->phi());
-//   Pho2Phi_->push_back((myGedPhotons->begin()+2)->phi()); 
-//   Pho3Phi_->push_back((myGedPhotons->begin()+3)->phi()); 
-//   Pho4Phi_->push_back((myGedPhotons->begin()+4)->phi());  
-//   Pho5Phi_->push_back(0);  
+  gedPho0Phi_->push_back(myGedPhotons.begin()->phi()); 
+  gedPho1Phi_->push_back((myGedPhotons.begin()+1)->phi());
+  gedPho2Phi_->push_back((myGedPhotons.begin()+2)->phi()); 
+  gedPho3Phi_->push_back((myGedPhotons.begin()+3)->phi()); 
+  gedPho4Phi_->push_back((myGedPhotons.begin()+4)->phi());  
+  gedPho5Phi_->push_back(0);  
 
-//   Pho0En_->push_back(myGedPhotons->begin()->energy()); 
-//   Pho1En_->push_back((myGedPhotons->begin()+1)->energy()); 
-//   Pho2En_->push_back((myGedPhotons->begin()+2)->energy());
-//   Pho3En_->push_back((myGedPhotons->begin()+3)->energy());
-//   Pho4En_->push_back((myGedPhotons->begin()+4)->energy());
-//   Pho5En_->push_back(0);
-//   }
+  gedPho0En_->push_back(myGedPhotons.begin()->energy()); 
+  gedPho1En_->push_back((myGedPhotons.begin()+1)->energy()); 
+  gedPho2En_->push_back((myGedPhotons.begin()+2)->energy());
+  gedPho3En_->push_back((myGedPhotons.begin()+3)->energy());
+  gedPho4En_->push_back((myGedPhotons.begin()+4)->energy());
+  gedPho5En_->push_back(0);
+  }
 
-//   else{
-//         // std::cout << "end of myGedPhotons collision "  << std::endl; //TODO
-//   Pho0Pt_->push_back(myGedPhotons->begin()->pt()); 
-//           // std::cout << "ele Jet 0pt: " << (myGedPhotons->begin()->pt())   << std::endl;
+  else{
+        // std::cout << "end of myGedPhotons collision "  << std::endl; //TODO
+  gedPho0Pt_->push_back(myGedPhotons.begin()->pt()); 
+          // std::cout << "ele Jet 0pt: " << (myGedPhotons.begin()->pt())   << std::endl;
 
-//   Pho1Pt_->push_back((myGedPhotons->begin()+myGedPhotons->size()/5)->pt()); 
-//         // std::cout << "ele Jet 1pt: " << ((myGedPhotons->begin()+myGedPhotons->size()/5)->pt())    << std::endl;
+  gedPho1Pt_->push_back((myGedPhotons.begin()+myGedPhotons.size()/5)->pt()); 
+        // std::cout << "ele Jet 1pt: " << ((myGedPhotons.begin()+myGedPhotons.size()/5)->pt())    << std::endl;
 
-//   Pho2Pt_->push_back((myGedPhotons->begin()+myGedPhotons->size()*2/5)->pt());
-//         // std::cout << "ele Jet 2pt: " << ((myGedPhotons->begin()+myGedPhotons->size()*2/5)->pt())  << std::endl;
+  gedPho2Pt_->push_back((myGedPhotons.begin()+myGedPhotons.size()*2/5)->pt());
+        // std::cout << "ele Jet 2pt: " << ((myGedPhotons.begin()+myGedPhotons.size()*2/5)->pt())  << std::endl;
   
-//   Pho3Pt_->push_back((myGedPhotons->begin()+myGedPhotons->size()*3/5)->pt());
-//         // std::cout << "ele Jet 3pt: " << ((myGedPhotons->begin()+myGedPhotons->size()*3/5)->pt())  << std::endl;
+  gedPho3Pt_->push_back((myGedPhotons.begin()+myGedPhotons.size()*3/5)->pt());
+        // std::cout << "ele Jet 3pt: " << ((myGedPhotons.begin()+myGedPhotons.size()*3/5)->pt())  << std::endl;
 
-//   Pho4Pt_->push_back((myGedPhotons->begin()+myGedPhotons->size()*4/5)->pt());
-//         // std::cout << "ele Jet 4pt: " << ((myGedPhotons->begin()+myGedPhotons->size()*4/5)->pt())  << std::endl; 
+  gedPho4Pt_->push_back((myGedPhotons.begin()+myGedPhotons.size()*4/5)->pt());
+        // std::cout << "ele Jet 4pt: " << ((myGedPhotons.begin()+myGedPhotons.size()*4/5)->pt())  << std::endl; 
 
-//   Pho5Pt_->push_back((myGedPhotons->begin()+myGedPhotons->size()-1)->pt());
-//        // std::cout << "ele Jet 5pt: " << ((myGedPhotons->begin()+myGedPhotons->size()-1)->pt())   << std::endl;
+  gedPho5Pt_->push_back((myGedPhotons.begin()+myGedPhotons.size()-1)->pt());
+       // std::cout << "ele Jet 5pt: " << ((myGedPhotons.begin()+myGedPhotons.size()-1)->pt())   << std::endl;
 
-//   Pho0Eta_->push_back(myGedPhotons->begin()->eta()); 
-//           // std::cout << "ele Jet 0eta: " << (myGedPhotons->begin()->eta())   << std::endl;
+  gedPho0Eta_->push_back(myGedPhotons.begin()->eta()); 
+          // std::cout << "ele Jet 0eta: " << (myGedPhotons.begin()->eta())   << std::endl;
 
-//   Pho1Eta_->push_back((myGedPhotons->begin()+myGedPhotons->size()/5)->eta()); 
-//         // std::cout << "ele Jet 1eta: " << ((myGedPhotons->begin()+myGedPhotons->size()/5)->eta())    << std::endl;
+  gedPho1Eta_->push_back((myGedPhotons.begin()+myGedPhotons.size()/5)->eta()); 
+        // std::cout << "ele Jet 1eta: " << ((myGedPhotons.begin()+myGedPhotons.size()/5)->eta())    << std::endl;
 
-//   Pho2Eta_->push_back((myGedPhotons->begin()+myGedPhotons->size()*2/5)->eta());
-//         // std::cout << "ele Jet 2eta: " << ((myGedPhotons->begin()+myGedPhotons->size()*2/5)->eta())  << std::endl;
+  gedPho2Eta_->push_back((myGedPhotons.begin()+myGedPhotons.size()*2/5)->eta());
+        // std::cout << "ele Jet 2eta: " << ((myGedPhotons.begin()+myGedPhotons.size()*2/5)->eta())  << std::endl;
   
-//   Pho3Eta_->push_back((myGedPhotons->begin()+myGedPhotons->size()*3/5)->eta());
-//         // std::cout << "ele Jet 3eta: " << ((myGedPhotons->begin()+myGedPhotons->size()*3/5)->eta())  << std::endl;
+  gedPho3Eta_->push_back((myGedPhotons.begin()+myGedPhotons.size()*3/5)->eta());
+        // std::cout << "ele Jet 3eta: " << ((myGedPhotons.begin()+myGedPhotons.size()*3/5)->eta())  << std::endl;
 
-//   Pho4Eta_->push_back((myGedPhotons->begin()+myGedPhotons->size()*4/5)->eta());
-//         // std::cout << "ele Jet 4eta: " << ((myGedPhotons->begin()+myGedPhotons->size()*4/5)->eta())  << std::endl; 
+  gedPho4Eta_->push_back((myGedPhotons.begin()+myGedPhotons.size()*4/5)->eta());
+        // std::cout << "ele Jet 4eta: " << ((myGedPhotons.begin()+myGedPhotons.size()*4/5)->eta())  << std::endl; 
 
-//   Pho5Eta_->push_back((myGedPhotons->begin()+myGedPhotons->size()-1)->eta());
-//        // std::cout << "ele Jet 5eta: " << ((myGedPhotons->begin()+myGedPhotons->size()-1)->eta())   << std::endl; 
+  gedPho5Eta_->push_back((myGedPhotons.begin()+myGedPhotons.size()-1)->eta());
+       // std::cout << "ele Jet 5eta: " << ((myGedPhotons.begin()+myGedPhotons.size()-1)->eta())   << std::endl; 
 
-//   Pho0Phi_->push_back(myGedPhotons->begin()->phi()); 
-//           // std::cout << "ele Jet 0Phi: " << (myGedPhotons->begin()->phi())   << std::endl;
+  gedPho0Phi_->push_back(myGedPhotons.begin()->phi()); 
+          // std::cout << "ele Jet 0Phi: " << (myGedPhotons.begin()->phi())   << std::endl;
 
-//   Pho1Phi_->push_back((myGedPhotons->begin()+myGedPhotons->size()/5)->phi()); 
-//         // std::cout << "ele Jet 1Phi: " << ((myGedPhotons->begin()+myGedPhotons->size()/5)->phi())    << std::endl;
+  gedPho1Phi_->push_back((myGedPhotons.begin()+myGedPhotons.size()/5)->phi()); 
+        // std::cout << "ele Jet 1Phi: " << ((myGedPhotons.begin()+myGedPhotons.size()/5)->phi())    << std::endl;
 
-//   Pho2Phi_->push_back((myGedPhotons->begin()+myGedPhotons->size()*2/5)->phi());
-//         // std::cout << "ele Jet 2Phi: " << ((myGedPhotons->begin()+myGedPhotons->size()*2/5)->phi())  << std::endl;
+  gedPho2Phi_->push_back((myGedPhotons.begin()+myGedPhotons.size()*2/5)->phi());
+        // std::cout << "ele Jet 2Phi: " << ((myGedPhotons.begin()+myGedPhotons.size()*2/5)->phi())  << std::endl;
   
-//   Pho3Phi_->push_back((myGedPhotons->begin()+myGedPhotons->size()*3/5)->phi());
-//         // std::cout << "ele Jet 3Phi: " << ((myGedPhotons->begin()+myGedPhotons->size()*3/5)->phi())  << std::endl;
+  gedPho3Phi_->push_back((myGedPhotons.begin()+myGedPhotons.size()*3/5)->phi());
+        // std::cout << "ele Jet 3Phi: " << ((myGedPhotons.begin()+myGedPhotons.size()*3/5)->phi())  << std::endl;
 
-//   Pho4Phi_->push_back((myGedPhotons->begin()+myGedPhotons->size()*4/5)->phi());
-//         // std::cout << "ele Jet 4Phi: " << ((myGedPhotons->begin()+myGedPhotons->size()*4/5)->phi())  << std::endl; 
+  gedPho4Phi_->push_back((myGedPhotons.begin()+myGedPhotons.size()*4/5)->phi());
+        // std::cout << "ele Jet 4Phi: " << ((myGedPhotons.begin()+myGedPhotons.size()*4/5)->phi())  << std::endl; 
 
-//   Pho5Phi_->push_back((myGedPhotons->begin()+myGedPhotons->size()-1)->phi());
-//        // std::cout << "ele Jet 5Phi: " << ((myGedPhotons->begin()+myGedPhotons->size()-1)->phi())   << std::endl;   
+  gedPho5Phi_->push_back((myGedPhotons.begin()+myGedPhotons.size()-1)->phi());
+       // std::cout << "ele Jet 5Phi: " << ((myGedPhotons.begin()+myGedPhotons.size()-1)->phi())   << std::endl;   
 
-//   Pho0En_->push_back(myGedPhotons->begin()->energy()); 
-//           // std::cout << "ele Jet 0En: " << (myGedPhotons->begin()->energy())   << std::endl;
+  gedPho0En_->push_back(myGedPhotons.begin()->energy()); 
+          // std::cout << "ele Jet 0En: " << (myGedPhotons.begin()->energy())   << std::endl;
 
-//   Pho1En_->push_back((myGedPhotons->begin()+myGedPhotons->size()/5)->energy()); 
-//         // std::cout << "ele Jet 1En: " << ((myGedPhotons->begin()+myGedPhotons->size()/5)->energy())    << std::endl;
+  gedPho1En_->push_back((myGedPhotons.begin()+myGedPhotons.size()/5)->energy()); 
+        // std::cout << "ele Jet 1En: " << ((myGedPhotons.begin()+myGedPhotons.size()/5)->energy())    << std::endl;
 
-//   Pho2En_->push_back((myGedPhotons->begin()+myGedPhotons->size()*2/5)->energy());
-//         // std::cout << "ele Jet 2En: " << ((myGedPhotons->begin()+myGedPhotons->size()*2/5)->energy())  << std::endl;
+  gedPho2En_->push_back((myGedPhotons.begin()+myGedPhotons.size()*2/5)->energy());
+        // std::cout << "ele Jet 2En: " << ((myGedPhotons.begin()+myGedPhotons.size()*2/5)->energy())  << std::endl;
   
-//   Pho3En_->push_back((myGedPhotons->begin()+myGedPhotons->size()*3/5)->energy());
-//         // std::cout << "ele Jet 3En: " << ((myGedPhotons->begin()+myGedPhotons->size()*3/5)->energy())  << std::endl;
+  gedPho3En_->push_back((myGedPhotons.begin()+myGedPhotons.size()*3/5)->energy());
+        // std::cout << "ele Jet 3En: " << ((myGedPhotons.begin()+myGedPhotons.size()*3/5)->energy())  << std::endl;
 
-//   Pho4En_->push_back((myGedPhotons->begin()+myGedPhotons->size()*4/5)->energy());
-//         // std::cout << "ele Jet 4En: " << ((myGedPhotons->begin()+myGedPhotons->size()*4/5)->energy())  << std::endl; 
+  gedPho4En_->push_back((myGedPhotons.begin()+myGedPhotons.size()*4/5)->energy());
+        // std::cout << "ele Jet 4En: " << ((myGedPhotons.begin()+myGedPhotons.size()*4/5)->energy())  << std::endl; 
 
-//   Pho5En_->push_back((myGedPhotons->begin()+myGedPhotons->size()-1)->energy());
-//        // std::cout << "ele Jet 5En: " << ((myGedPhotons->begin()+myGedPhotons->size()-1)->energy())   << std::endl;                    
+  gedPho5En_->push_back((myGedPhotons.begin()+myGedPhotons.size()-1)->energy());
+       // std::cout << "ele Jet 5En: " << ((myGedPhotons.begin()+myGedPhotons.size()-1)->energy())   << std::endl;                    
      
-// }
+}
 
   return;
 
@@ -5183,19 +5183,19 @@ void AODAnalyzer::fillMuons(const edm::Handle<MuonCollection> & muons)
         MuEn_->push_back(i->energy());   //GETCORRECTEDENERGY!!
         MuCh_->push_back(i->charge());
         MuChi2_->push_back(i->vertexNormalizedChi2());  
-        std::cout << "ele Muon pt: " << i->pt()   << std::endl; //TODO
-        std::cout << "ele Muon eta: "  << i->eta() << std::endl;
-        std::cout << "ele Muon phi: "  << i->phi() << std::endl;
-        std::cout << "ele Muon energy: "  << i->energy() << std::endl;
-        std::cout << "ele Muon charge: "  << i->charge() << std::endl;
-        std::cout << "ele Muon vertexNormalizedChi2: "  << i->vertexNormalizedChi2() << std::endl;
+        // std::cout << "ele Muon pt: " << i->pt()   << std::endl; //TODO
+        // std::cout << "ele Muon eta: "  << i->eta() << std::endl;
+        // std::cout << "ele Muon phi: "  << i->phi() << std::endl;
+        // std::cout << "ele Muon energy: "  << i->energy() << std::endl;
+        // std::cout << "ele Muon charge: "  << i->charge() << std::endl;
+        // std::cout << "ele Muon vertexNormalizedChi2: "  << i->vertexNormalizedChi2() << std::endl;
 
         myMuons.push_back(*i);
         // std::sort(MuPt_->begin(), MuPt_->end()); 
         // std::cout << "ele Muon in the loop pt: " << i->pt()   << std::endl; //TODO
       // }
   }
-        std::cout << "end of Muon collision "  << std::endl; //TODO
+        // std::cout << "end of Muon collision "  << std::endl; //TODO
     
 
   // typename MuonCollection::const_iterator muonsBegin = muons->begin();
@@ -5212,8 +5212,8 @@ void AODAnalyzer::fillMuons(const edm::Handle<MuonCollection> & muons)
   // } );
 
 
-         std::cout << "Muons sorted "  << std::endl; //TODO
-         std::cout << "Muons size: " << myMuons.size() << std::endl; //TODO
+         // std::cout << "Muons sorted "  << std::endl; //TODO
+         // std::cout << "Muons size: " << myMuons.size() << std::endl; //TODO
          // std::cout << "Muons 1pt: "  << myMuons.size()*1/5 << std::endl; //TODO
          // std::cout << "Muons 2pt: "  << myMuons.size()*2/5 << std::endl; //TODO
          // std::cout << "Muons 3pt: "  << myMuons.size()*3/5 << std::endl; //TODO
@@ -5287,7 +5287,11 @@ void AODAnalyzer::fillMuons(const edm::Handle<MuonCollection> & muons)
   else if ((myMuons.size())==2){ 
 
   Mu0Pt_->push_back(myMuons.begin()->pt());  
+            // std::cout << "ele Mu0pt when size is 2: " << (myMuons.begin()->pt())   << std::endl;
+
   Mu1Pt_->push_back((myMuons.begin()+1)->pt());
+          // std::cout << "ele Mu1pt when size is 2: " << ((myMuons.begin()+1)->pt())    << std::endl;
+
   Mu2Pt_->push_back(0); 
   Mu3Pt_->push_back(0); 
   Mu4Pt_->push_back(0); 
@@ -5319,7 +5323,11 @@ void AODAnalyzer::fillMuons(const edm::Handle<MuonCollection> & muons)
   else if ((myMuons.size())==3){
 
   Mu0Pt_->push_back(myMuons.begin()->pt());  
-  Mu1Pt_->push_back((myMuons.begin()+1)->pt());   
+              // std::cout << "ele Mu0pt when size is 3: " << (myMuons.begin()->pt())     << std::endl;
+
+  Mu1Pt_->push_back((myMuons.begin()+1)->pt());
+            // std::cout << "ele Mu1pt when size is 3: " << ((myMuons.begin()+1)->pt())    << std::endl;
+   
   Mu2Pt_->push_back((myMuons.begin()+2)->pt()); 
   Mu3Pt_->push_back(0); 
   Mu4Pt_->push_back(0); 
@@ -5350,7 +5358,11 @@ void AODAnalyzer::fillMuons(const edm::Handle<MuonCollection> & muons)
   else if ((myMuons.size())==4){
 
   Mu0Pt_->push_back(myMuons.begin()->pt());  
+              // std::cout << "ele Mu0pt when size is 4: " << (myMuons.begin()->pt())    << std::endl;
+
   Mu1Pt_->push_back((myMuons.begin()+1)->pt());  
+            // std::cout << "ele Mu1pt when size is 4: " << ((myMuons.begin()+1)->pt())    << std::endl;
+
   Mu2Pt_->push_back((myMuons.begin()+2)->pt()); 
   Mu3Pt_->push_back((myMuons.begin()+3)->pt());  
   Mu4Pt_->push_back(0); 
@@ -5381,7 +5393,11 @@ void AODAnalyzer::fillMuons(const edm::Handle<MuonCollection> & muons)
   else if ((myMuons.size())==5){
 
   Mu0Pt_->push_back(myMuons.begin()->pt());  
-  Mu1Pt_->push_back((myMuons.begin()+1)->pt()); 
+              // std::cout << "ele Mu0pt when size is 5: " << (myMuons.begin()->pt())     << std::endl;
+
+  Mu1Pt_->push_back((myMuons.begin()+1)->pt());
+              // std::cout << "ele Mu1pt when size is 5: " << ((myMuons.begin()+1)->pt())    << std::endl;
+ 
   Mu2Pt_->push_back((myMuons.begin()+2)->pt()); 
   Mu3Pt_->push_back((myMuons.begin()+3)->pt());  
   Mu4Pt_->push_back((myMuons.begin()+4)->pt()); 
@@ -5412,76 +5428,76 @@ void AODAnalyzer::fillMuons(const edm::Handle<MuonCollection> & muons)
   else{
         // std::cout << "end of myMuons collision "  << std::endl; //TODO
   Mu0Pt_->push_back(myMuons.begin()->pt()); 
-          std::cout << "ele Jet 0pt: " << (myMuons.begin()->pt())   << std::endl;
+          // std::cout << "ele Jet 0pt: " << (myMuons.begin()->pt())   << std::endl;
 
   Mu1Pt_->push_back((myMuons.begin()+myMuons.size()/5)->pt()); 
-        std::cout << "ele Jet 1pt: " << ((myMuons.begin()+myMuons.size()/5)->pt())    << std::endl;
+        // std::cout << "ele Jet 1pt: " << ((myMuons.begin()+myMuons.size()/5)->pt())    << std::endl;
 
   Mu2Pt_->push_back((myMuons.begin()+myMuons.size()*2/5)->pt());
-        std::cout << "ele Jet 2pt: " << ((myMuons.begin()+myMuons.size()*2/5)->pt())  << std::endl;
+        // std::cout << "ele Jet 2pt: " << ((myMuons.begin()+myMuons.size()*2/5)->pt())  << std::endl;
   
   Mu3Pt_->push_back((myMuons.begin()+myMuons.size()*3/5)->pt());
-        std::cout << "ele Jet 3pt: " << ((myMuons.begin()+myMuons.size()*3/5)->pt())  << std::endl;
+        // std::cout << "ele Jet 3pt: " << ((myMuons.begin()+myMuons.size()*3/5)->pt())  << std::endl;
 
   Mu4Pt_->push_back((myMuons.begin()+myMuons.size()*4/5)->pt());
-        std::cout << "ele Jet 4pt: " << ((myMuons.begin()+myMuons.size()*4/5)->pt())  << std::endl; 
+        // std::cout << "ele Jet 4pt: " << ((myMuons.begin()+myMuons.size()*4/5)->pt())  << std::endl; 
 
   Mu5Pt_->push_back((myMuons.begin()+myMuons.size()-1)->pt());
-       std::cout << "ele Jet 5pt: " << ((myMuons.begin()+myMuons.size()-1)->pt())   << std::endl;
+       // std::cout << "ele Jet 5pt: " << ((myMuons.begin()+myMuons.size()-1)->pt())   << std::endl;
 
   Mu0Eta_->push_back(myMuons.begin()->eta()); 
-          std::cout << "ele Jet 0eta: " << (myMuons.begin()->eta())   << std::endl;
+          // std::cout << "ele Jet 0eta: " << (myMuons.begin()->eta())   << std::endl;
 
   Mu1Eta_->push_back((myMuons.begin()+myMuons.size()/5)->eta()); 
-        std::cout << "ele Jet 1eta: " << ((myMuons.begin()+myMuons.size()/5)->eta())    << std::endl;
+        // std::cout << "ele Jet 1eta: " << ((myMuons.begin()+myMuons.size()/5)->eta())    << std::endl;
 
   Mu2Eta_->push_back((myMuons.begin()+myMuons.size()*2/5)->eta());
-        std::cout << "ele Jet 2eta: " << ((myMuons.begin()+myMuons.size()*2/5)->eta())  << std::endl;
+        // std::cout << "ele Jet 2eta: " << ((myMuons.begin()+myMuons.size()*2/5)->eta())  << std::endl;
   
   Mu3Eta_->push_back((myMuons.begin()+myMuons.size()*3/5)->eta());
-        std::cout << "ele Jet 3eta: " << ((myMuons.begin()+myMuons.size()*3/5)->eta())  << std::endl;
+        // std::cout << "ele Jet 3eta: " << ((myMuons.begin()+myMuons.size()*3/5)->eta())  << std::endl;
 
   Mu4Eta_->push_back((myMuons.begin()+myMuons.size()*4/5)->eta());
-        std::cout << "ele Jet 4eta: " << ((myMuons.begin()+myMuons.size()*4/5)->eta())  << std::endl; 
+        // std::cout << "ele Jet 4eta: " << ((myMuons.begin()+myMuons.size()*4/5)->eta())  << std::endl; 
 
   Mu5Eta_->push_back((myMuons.begin()+myMuons.size()-1)->eta());
-       std::cout << "ele Jet 5eta: " << ((myMuons.begin()+myMuons.size()-1)->eta())   << std::endl; 
+       // std::cout << "ele Jet 5eta: " << ((myMuons.begin()+myMuons.size()-1)->eta())   << std::endl; 
 
   Mu0Phi_->push_back(myMuons.begin()->phi()); 
-          std::cout << "ele Jet 0Phi: " << (myMuons.begin()->phi())   << std::endl;
+          // std::cout << "ele Jet 0Phi: " << (myMuons.begin()->phi())   << std::endl;
 
   Mu1Phi_->push_back((myMuons.begin()+myMuons.size()/5)->phi()); 
-        std::cout << "ele Jet 1Phi: " << ((myMuons.begin()+myMuons.size()/5)->phi())    << std::endl;
+        // std::cout << "ele Jet 1Phi: " << ((myMuons.begin()+myMuons.size()/5)->phi())    << std::endl;
 
   Mu2Phi_->push_back((myMuons.begin()+myMuons.size()*2/5)->phi());
-        std::cout << "ele Jet 2Phi: " << ((myMuons.begin()+myMuons.size()*2/5)->phi())  << std::endl;
+        // std::cout << "ele Jet 2Phi: " << ((myMuons.begin()+myMuons.size()*2/5)->phi())  << std::endl;
   
   Mu3Phi_->push_back((myMuons.begin()+myMuons.size()*3/5)->phi());
-        std::cout << "ele Jet 3Phi: " << ((myMuons.begin()+myMuons.size()*3/5)->phi())  << std::endl;
+        // std::cout << "ele Jet 3Phi: " << ((myMuons.begin()+myMuons.size()*3/5)->phi())  << std::endl;
 
   Mu4Phi_->push_back((myMuons.begin()+myMuons.size()*4/5)->phi());
-        std::cout << "ele Jet 4Phi: " << ((myMuons.begin()+myMuons.size()*4/5)->phi())  << std::endl; 
+        // std::cout << "ele Jet 4Phi: " << ((myMuons.begin()+myMuons.size()*4/5)->phi())  << std::endl; 
 
   Mu5Phi_->push_back((myMuons.begin()+myMuons.size()-1)->phi());
-       std::cout << "ele Jet 5Phi: " << ((myMuons.begin()+myMuons.size()-1)->phi())   << std::endl;   
+       // std::cout << "ele Jet 5Phi: " << ((myMuons.begin()+myMuons.size()-1)->phi())   << std::endl;   
 
   Mu0En_->push_back(myMuons.begin()->energy()); 
-          std::cout << "ele Jet 0En: " << (myMuons.begin()->energy())   << std::endl;
+          // std::cout << "ele Jet 0En: " << (myMuons.begin()->energy())   << std::endl;
 
   Mu1En_->push_back((myMuons.begin()+myMuons.size()/5)->energy()); 
-        std::cout << "ele Jet 1En: " << ((myMuons.begin()+myMuons.size()/5)->energy())    << std::endl;
+        // std::cout << "ele Jet 1En: " << ((myMuons.begin()+myMuons.size()/5)->energy())    << std::endl;
 
   Mu2En_->push_back((myMuons.begin()+myMuons.size()*2/5)->energy());
-        std::cout << "ele Jet 2En: " << ((myMuons.begin()+myMuons.size()*2/5)->energy())  << std::endl;
+        // std::cout << "ele Jet 2En: " << ((myMuons.begin()+myMuons.size()*2/5)->energy())  << std::endl;
   
   Mu3En_->push_back((myMuons.begin()+myMuons.size()*3/5)->energy());
-        std::cout << "ele Jet 3En: " << ((myMuons.begin()+myMuons.size()*3/5)->energy())  << std::endl;
+        // std::cout << "ele Jet 3En: " << ((myMuons.begin()+myMuons.size()*3/5)->energy())  << std::endl;
 
   Mu4En_->push_back((myMuons.begin()+myMuons.size()*4/5)->energy());
-        std::cout << "ele Jet 4En: " << ((myMuons.begin()+myMuons.size()*4/5)->energy())  << std::endl; 
+        // std::cout << "ele Jet 4En: " << ((myMuons.begin()+myMuons.size()*4/5)->energy())  << std::endl; 
 
   Mu5En_->push_back((myMuons.begin()+myMuons.size()-1)->energy());
-       std::cout << "ele Jet 5En: " << ((myMuons.begin()+myMuons.size()-1)->energy())   << std::endl;                    
+       // std::cout << "ele Jet 5En: " << ((myMuons.begin()+myMuons.size()-1)->energy())   << std::endl;                    
      
 }
 
@@ -5494,6 +5510,7 @@ void AODAnalyzer::fillMuons(const edm::Handle<MuonCollection> & muons)
 template<typename MuonCosmCollection>
 void AODAnalyzer::fillCosmMuons(const edm::Handle<MuonCosmCollection> & muonsCosm)
 {
+    std::vector<reco::Muon> myCosmMuons;
    typename MuonCosmCollection::const_iterator i = muonsCosm->begin();
    for(;i != muonsCosm->end(); i++){
      
@@ -5506,9 +5523,314 @@ void AODAnalyzer::fillCosmMuons(const edm::Handle<MuonCosmCollection> & muonsCos
         // std::cout << "ele energy: " << i->energy()   << std::endl; 
         // std::cout << "ele SCeta: "  << i->etaWidth() << std::endl;
          //  std::cout << "ele cosm charge: "  << i->charge() << std::endl;
+        myCosmMuons.push_back(*i);
 
       // }
   }
+
+
+  std::sort( myCosmMuons.begin(), myCosmMuons.end(), GreaterByPt<reco::Muon>());
+
+
+
+  //   [] ( const reco::Muon & muon1, const reco::Muon & muon2 ) { 
+  //   return (muon1.pt() > muon2.pt());
+  // } );
+
+
+         // std::cout << "Muons sorted "  << std::endl; //TODO
+         // std::cout << "Muons size: " << myCosmMuons.size() << std::endl; //TODO
+         // std::cout << "Muons 1pt: "  << myCosmMuons.size()*1/5 << std::endl; //TODO
+         // std::cout << "Muons 2pt: "  << myCosmMuons.size()*2/5 << std::endl; //TODO
+         // std::cout << "Muons 3pt: "  << myCosmMuons.size()*3/5 << std::endl; //TODO
+         // std::cout << "Muons 4pt: "  << myCosmMuons.size()*4/5 << std::endl; //TODO
+         // std::cout << "Muons 5pt: "  << myCosmMuons.size()-1 << std::endl; //TODO
+
+    if ((myCosmMuons.size())==0){
+
+  MuCosm0Pt_->push_back(0); 
+  MuCosm1Pt_->push_back(0); 
+  MuCosm2Pt_->push_back(0); 
+  MuCosm3Pt_->push_back(0); 
+  MuCosm4Pt_->push_back(0); 
+  MuCosm5Pt_->push_back(0); 
+
+  MuCosm0Eta_->push_back(0);
+  MuCosm1Eta_->push_back(0);
+  MuCosm2Eta_->push_back(0);
+  MuCosm3Eta_->push_back(0);
+  MuCosm4Eta_->push_back(0);
+  MuCosm5Eta_->push_back(0);
+
+  MuCosm0Phi_->push_back(0);
+  MuCosm1Phi_->push_back(0);
+  MuCosm2Phi_->push_back(0);
+  MuCosm3Phi_->push_back(0);
+  MuCosm4Phi_->push_back(0);
+  MuCosm5Phi_->push_back(0);
+
+  MuCosm0En_->push_back(0);
+  MuCosm1En_->push_back(0);
+  MuCosm2En_->push_back(0);
+  MuCosm3En_->push_back(0);
+  MuCosm4En_->push_back(0);   
+  MuCosm5En_->push_back(0);
+  }
+  
+  
+  else if ((myCosmMuons.size())==1){
+
+  MuCosm0Pt_->push_back(myCosmMuons.begin()->pt());  
+  MuCosm1Pt_->push_back(0); 
+  MuCosm2Pt_->push_back(0); 
+  MuCosm3Pt_->push_back(0); 
+  MuCosm4Pt_->push_back(0); 
+  MuCosm5Pt_->push_back(0); 
+
+  MuCosm0Eta_->push_back(myCosmMuons.begin()->eta()); 
+  MuCosm1Eta_->push_back(0);
+  MuCosm2Eta_->push_back(0);
+  MuCosm3Eta_->push_back(0);
+  MuCosm4Eta_->push_back(0);
+  MuCosm5Eta_->push_back(0);
+
+  MuCosm0Phi_->push_back(myCosmMuons.begin()->phi()); 
+  MuCosm1Phi_->push_back(0);
+  MuCosm2Phi_->push_back(0);
+  MuCosm3Phi_->push_back(0);
+  MuCosm4Phi_->push_back(0);
+  MuCosm5Phi_->push_back(0);
+
+  MuCosm0En_->push_back(myCosmMuons.begin()->energy()); 
+  MuCosm1En_->push_back(0);
+  MuCosm2En_->push_back(0);
+  MuCosm3En_->push_back(0);
+  MuCosm4En_->push_back(0);   
+  MuCosm5En_->push_back(0);
+
+  } 
+
+  else if ((myCosmMuons.size())==2){ 
+
+  MuCosm0Pt_->push_back(myCosmMuons.begin()->pt());  
+            // std::cout << "ele MuCosm0pt when size is 2: " << (myCosmMuons.begin()->pt())   << std::endl;
+
+  MuCosm1Pt_->push_back((myCosmMuons.begin()+1)->pt());
+          // std::cout << "ele MuCosm1pt when size is 2: " << ((myCosmMuons.begin()+1)->pt())    << std::endl;
+
+  MuCosm2Pt_->push_back(0); 
+  MuCosm3Pt_->push_back(0); 
+  MuCosm4Pt_->push_back(0); 
+  MuCosm5Pt_->push_back(0); 
+
+  MuCosm0Eta_->push_back(myCosmMuons.begin()->eta()); 
+  MuCosm1Eta_->push_back((myCosmMuons.begin()+1)->eta());  
+  MuCosm2Eta_->push_back(0);
+  MuCosm3Eta_->push_back(0);
+  MuCosm4Eta_->push_back(0);
+  MuCosm5Eta_->push_back(0);
+
+  MuCosm0Phi_->push_back(myCosmMuons.begin()->phi()); 
+  MuCosm1Phi_->push_back((myCosmMuons.begin()+1)->phi()); 
+  MuCosm2Phi_->push_back(0);
+  MuCosm3Phi_->push_back(0);
+  MuCosm4Phi_->push_back(0);
+  MuCosm5Phi_->push_back(0);
+  
+  MuCosm0En_->push_back(myCosmMuons.begin()->energy()); 
+  MuCosm1En_->push_back((myCosmMuons.begin()+1)->energy()); 
+  MuCosm2En_->push_back(0);
+  MuCosm3En_->push_back(0);
+  MuCosm4En_->push_back(0);   
+  MuCosm5En_->push_back(0);    
+  
+  }
+
+  else if ((myCosmMuons.size())==3){
+
+  MuCosm0Pt_->push_back(myCosmMuons.begin()->pt());  
+              // std::cout << "ele MuCosm0pt when size is 3: " << (myCosmMuons.begin()->pt())     << std::endl;
+
+  MuCosm1Pt_->push_back((myCosmMuons.begin()+1)->pt());
+            // std::cout << "ele MuCosm1pt when size is 3: " << ((myCosmMuons.begin()+1)->pt())    << std::endl;
+   
+  MuCosm2Pt_->push_back((myCosmMuons.begin()+2)->pt()); 
+  MuCosm3Pt_->push_back(0); 
+  MuCosm4Pt_->push_back(0); 
+  MuCosm5Pt_->push_back(0); 
+
+  MuCosm0Eta_->push_back(myCosmMuons.begin()->eta()); 
+  MuCosm1Eta_->push_back((myCosmMuons.begin()+1)->eta()); 
+  MuCosm2Eta_->push_back((myCosmMuons.begin()+2)->eta()); 
+  MuCosm3Eta_->push_back(0);
+  MuCosm4Eta_->push_back(0);
+  MuCosm5Eta_->push_back(0);
+
+  MuCosm0Phi_->push_back(myCosmMuons.begin()->phi()); 
+  MuCosm1Phi_->push_back((myCosmMuons.begin()+1)->phi()); 
+  MuCosm2Phi_->push_back((myCosmMuons.begin()+2)->phi()); 
+  MuCosm3Phi_->push_back(0);
+  MuCosm4Phi_->push_back(0);
+  MuCosm5Phi_->push_back(0);
+
+  MuCosm0En_->push_back(myCosmMuons.begin()->energy()); 
+  MuCosm1En_->push_back((myCosmMuons.begin()+1)->energy()); 
+  MuCosm2En_->push_back((myCosmMuons.begin()+2)->energy());
+  MuCosm3En_->push_back(0);
+  MuCosm4En_->push_back(0);   
+  MuCosm5En_->push_back(0);
+  }
+
+  else if ((myCosmMuons.size())==4){
+
+  MuCosm0Pt_->push_back(myCosmMuons.begin()->pt());  
+              // std::cout << "ele MuCosm0pt when size is 4: " << (myCosmMuons.begin()->pt())    << std::endl;
+
+  MuCosm1Pt_->push_back((myCosmMuons.begin()+1)->pt());  
+            // std::cout << "ele MuCosm1pt when size is 4: " << ((myCosmMuons.begin()+1)->pt())    << std::endl;
+
+  MuCosm2Pt_->push_back((myCosmMuons.begin()+2)->pt()); 
+  MuCosm3Pt_->push_back((myCosmMuons.begin()+3)->pt());  
+  MuCosm4Pt_->push_back(0); 
+  MuCosm5Pt_->push_back(0); 
+
+  MuCosm0Eta_->push_back(myCosmMuons.begin()->eta()); 
+  MuCosm1Eta_->push_back((myCosmMuons.begin()+1)->eta()); 
+  MuCosm2Eta_->push_back((myCosmMuons.begin()+2)->eta()); 
+  MuCosm3Eta_->push_back((myCosmMuons.begin()+3)->eta());  
+  MuCosm4Eta_->push_back(0);
+  MuCosm5Eta_->push_back(0);
+
+  MuCosm0Phi_->push_back(myCosmMuons.begin()->phi()); 
+  MuCosm1Phi_->push_back((myCosmMuons.begin()+1)->phi()); 
+  MuCosm2Phi_->push_back((myCosmMuons.begin()+2)->phi()); 
+  MuCosm3Phi_->push_back((myCosmMuons.begin()+3)->phi());  
+  MuCosm4Phi_->push_back(0);
+  MuCosm5Phi_->push_back(0);  
+
+  MuCosm0En_->push_back(myCosmMuons.begin()->energy()); 
+  MuCosm1En_->push_back((myCosmMuons.begin()+1)->energy()); 
+  MuCosm2En_->push_back((myCosmMuons.begin()+2)->energy());
+  MuCosm3En_->push_back((myCosmMuons.begin()+3)->energy());
+  MuCosm4En_->push_back(0);   
+  MuCosm5En_->push_back(0);
+  }
+
+  else if ((myCosmMuons.size())==5){
+
+  MuCosm0Pt_->push_back(myCosmMuons.begin()->pt());  
+              // std::cout << "ele MuCosm0pt when size is 5: " << (myCosmMuons.begin()->pt())     << std::endl;
+
+  MuCosm1Pt_->push_back((myCosmMuons.begin()+1)->pt());
+              // std::cout << "ele MuCosm1pt when size is 5: " << ((myCosmMuons.begin()+1)->pt())    << std::endl;
+ 
+  MuCosm2Pt_->push_back((myCosmMuons.begin()+2)->pt()); 
+  MuCosm3Pt_->push_back((myCosmMuons.begin()+3)->pt());  
+  MuCosm4Pt_->push_back((myCosmMuons.begin()+4)->pt()); 
+  MuCosm5Pt_->push_back(0); 
+
+  MuCosm0Eta_->push_back(myCosmMuons.begin()->eta()); 
+  MuCosm1Eta_->push_back((myCosmMuons.begin()+1)->eta());
+  MuCosm2Eta_->push_back((myCosmMuons.begin()+2)->eta()); 
+  MuCosm3Eta_->push_back((myCosmMuons.begin()+3)->eta());  
+  MuCosm4Eta_->push_back((myCosmMuons.begin()+4)->eta());  
+  MuCosm5Eta_->push_back(0);
+
+  MuCosm0Phi_->push_back(myCosmMuons.begin()->phi()); 
+  MuCosm1Phi_->push_back((myCosmMuons.begin()+1)->phi());
+  MuCosm2Phi_->push_back((myCosmMuons.begin()+2)->phi()); 
+  MuCosm3Phi_->push_back((myCosmMuons.begin()+3)->phi()); 
+  MuCosm4Phi_->push_back((myCosmMuons.begin()+4)->phi());  
+  MuCosm5Phi_->push_back(0);  
+
+  MuCosm0En_->push_back(myCosmMuons.begin()->energy()); 
+  MuCosm1En_->push_back((myCosmMuons.begin()+1)->energy()); 
+  MuCosm2En_->push_back((myCosmMuons.begin()+2)->energy());
+  MuCosm3En_->push_back((myCosmMuons.begin()+3)->energy());
+  MuCosm4En_->push_back((myCosmMuons.begin()+4)->energy());
+  MuCosm5En_->push_back(0);
+  }
+
+  else{
+        // std::cout << "end of myCosmMuons collision "  << std::endl; //TODO
+  MuCosm0Pt_->push_back(myCosmMuons.begin()->pt()); 
+          // std::cout << "ele Jet 0pt: " << (myCosmMuons.begin()->pt())   << std::endl;
+
+  MuCosm1Pt_->push_back((myCosmMuons.begin()+myCosmMuons.size()/5)->pt()); 
+        // std::cout << "ele Jet 1pt: " << ((myCosmMuons.begin()+myCosmMuons.size()/5)->pt())    << std::endl;
+
+  MuCosm2Pt_->push_back((myCosmMuons.begin()+myCosmMuons.size()*2/5)->pt());
+        // std::cout << "ele Jet 2pt: " << ((myCosmMuons.begin()+myCosmMuons.size()*2/5)->pt())  << std::endl;
+  
+  MuCosm3Pt_->push_back((myCosmMuons.begin()+myCosmMuons.size()*3/5)->pt());
+        // std::cout << "ele Jet 3pt: " << ((myCosmMuons.begin()+myCosmMuons.size()*3/5)->pt())  << std::endl;
+
+  MuCosm4Pt_->push_back((myCosmMuons.begin()+myCosmMuons.size()*4/5)->pt());
+        // std::cout << "ele Jet 4pt: " << ((myCosmMuons.begin()+myCosmMuons.size()*4/5)->pt())  << std::endl; 
+
+  MuCosm5Pt_->push_back((myCosmMuons.begin()+myCosmMuons.size()-1)->pt());
+       // std::cout << "ele Jet 5pt: " << ((myCosmMuons.begin()+myCosmMuons.size()-1)->pt())   << std::endl;
+
+  MuCosm0Eta_->push_back(myCosmMuons.begin()->eta()); 
+          // std::cout << "ele Jet 0eta: " << (myCosmMuons.begin()->eta())   << std::endl;
+
+  MuCosm1Eta_->push_back((myCosmMuons.begin()+myCosmMuons.size()/5)->eta()); 
+        // std::cout << "ele Jet 1eta: " << ((myCosmMuons.begin()+myCosmMuons.size()/5)->eta())    << std::endl;
+
+  MuCosm2Eta_->push_back((myCosmMuons.begin()+myCosmMuons.size()*2/5)->eta());
+        // std::cout << "ele Jet 2eta: " << ((myCosmMuons.begin()+myCosmMuons.size()*2/5)->eta())  << std::endl;
+  
+  MuCosm3Eta_->push_back((myCosmMuons.begin()+myCosmMuons.size()*3/5)->eta());
+        // std::cout << "ele Jet 3eta: " << ((myCosmMuons.begin()+myCosmMuons.size()*3/5)->eta())  << std::endl;
+
+  MuCosm4Eta_->push_back((myCosmMuons.begin()+myCosmMuons.size()*4/5)->eta());
+        // std::cout << "ele Jet 4eta: " << ((myCosmMuons.begin()+myCosmMuons.size()*4/5)->eta())  << std::endl; 
+
+  MuCosm5Eta_->push_back((myCosmMuons.begin()+myCosmMuons.size()-1)->eta());
+       // std::cout << "ele Jet 5eta: " << ((myCosmMuons.begin()+myCosmMuons.size()-1)->eta())   << std::endl; 
+
+  MuCosm0Phi_->push_back(myCosmMuons.begin()->phi()); 
+          // std::cout << "ele Jet 0Phi: " << (myCosmMuons.begin()->phi())   << std::endl;
+
+  MuCosm1Phi_->push_back((myCosmMuons.begin()+myCosmMuons.size()/5)->phi()); 
+        // std::cout << "ele Jet 1Phi: " << ((myCosmMuons.begin()+myCosmMuons.size()/5)->phi())    << std::endl;
+
+  MuCosm2Phi_->push_back((myCosmMuons.begin()+myCosmMuons.size()*2/5)->phi());
+        // std::cout << "ele Jet 2Phi: " << ((myCosmMuons.begin()+myCosmMuons.size()*2/5)->phi())  << std::endl;
+  
+  MuCosm3Phi_->push_back((myCosmMuons.begin()+myCosmMuons.size()*3/5)->phi());
+        // std::cout << "ele Jet 3Phi: " << ((myCosmMuons.begin()+myCosmMuons.size()*3/5)->phi())  << std::endl;
+
+  MuCosm4Phi_->push_back((myCosmMuons.begin()+myCosmMuons.size()*4/5)->phi());
+        // std::cout << "ele Jet 4Phi: " << ((myCosmMuons.begin()+myCosmMuons.size()*4/5)->phi())  << std::endl; 
+
+  MuCosm5Phi_->push_back((myCosmMuons.begin()+myCosmMuons.size()-1)->phi());
+       // std::cout << "ele Jet 5Phi: " << ((myCosmMuons.begin()+myCosmMuons.size()-1)->phi())   << std::endl;   
+
+  MuCosm0En_->push_back(myCosmMuons.begin()->energy()); 
+          // std::cout << "ele Jet 0En: " << (myCosmMuons.begin()->energy())   << std::endl;
+
+  MuCosm1En_->push_back((myCosmMuons.begin()+myCosmMuons.size()/5)->energy()); 
+        // std::cout << "ele Jet 1En: " << ((myCosmMuons.begin()+myCosmMuons.size()/5)->energy())    << std::endl;
+
+  MuCosm2En_->push_back((myCosmMuons.begin()+myCosmMuons.size()*2/5)->energy());
+        // std::cout << "ele Jet 2En: " << ((myCosmMuons.begin()+myCosmMuons.size()*2/5)->energy())  << std::endl;
+  
+  MuCosm3En_->push_back((myCosmMuons.begin()+myCosmMuons.size()*3/5)->energy());
+        // std::cout << "ele Jet 3En: " << ((myCosmMuons.begin()+myCosmMuons.size()*3/5)->energy())  << std::endl;
+
+  MuCosm4En_->push_back((myCosmMuons.begin()+myCosmMuons.size()*4/5)->energy());
+        // std::cout << "ele Jet 4En: " << ((myCosmMuons.begin()+myCosmMuons.size()*4/5)->energy())  << std::endl; 
+
+  MuCosm5En_->push_back((myCosmMuons.begin()+myCosmMuons.size()-1)->energy());
+       // std::cout << "ele Jet 5En: " << ((myCosmMuons.begin()+myCosmMuons.size()-1)->energy())   << std::endl;                    
+     
+}
+
+
+
+
+
   return;
 
 
@@ -5519,6 +5841,7 @@ void AODAnalyzer::fillCosmMuons(const edm::Handle<MuonCosmCollection> & muonsCos
 template<typename MuonCosmLegCollection>
 void AODAnalyzer::fillCosmLegMuons(const edm::Handle<MuonCosmLegCollection> & muonsCosmLeg)
 {
+      std::vector<reco::Muon> myCosmLegMuons;
    typename MuonCosmLegCollection::const_iterator i = muonsCosmLeg->begin();
    for(;i != muonsCosmLeg->end(); i++){
      
@@ -5532,9 +5855,309 @@ void AODAnalyzer::fillCosmLegMuons(const edm::Handle<MuonCosmLegCollection> & mu
         // std::cout << "ele SCeta: "  << i->etaWidth() << std::endl;
         // std::cout << "ele SCphi: "  << i->phiWidth() << std::endl;
          //std::cout << "ele cosmlegcharge: "  << i->charge() << std::endl;
+        myCosmLegMuons.push_back(*i);
 
       // }
   }
+
+
+  std::sort( myCosmLegMuons.begin(), myCosmLegMuons.end(), GreaterByPt<reco::Muon>());
+
+
+  //   [] ( const reco::Muon & muon1, const reco::Muon & muon2 ) { 
+  //   return (muon1.pt() > muon2.pt());
+  // } );
+
+
+         // std::cout << "Muons sorted "  << std::endl; //TODO
+         // std::cout << "Muons size: " << myCosmLegMuons.size() << std::endl; //TODO
+         // std::cout << "Muons 1pt: "  << myCosmLegMuons.size()*1/5 << std::endl; //TODO
+         // std::cout << "Muons 2pt: "  << myCosmLegMuons.size()*2/5 << std::endl; //TODO
+         // std::cout << "Muons 3pt: "  << myCosmLegMuons.size()*3/5 << std::endl; //TODO
+         // std::cout << "Muons 4pt: "  << myCosmLegMuons.size()*4/5 << std::endl; //TODO
+         // std::cout << "Muons 5pt: "  << myCosmLegMuons.size()-1 << std::endl; //TODO
+
+    if ((myCosmLegMuons.size())==0){
+
+  MuCosmLeg0Pt_->push_back(0); 
+  MuCosmLeg1Pt_->push_back(0); 
+  MuCosmLeg2Pt_->push_back(0); 
+  MuCosmLeg3Pt_->push_back(0); 
+  MuCosmLeg4Pt_->push_back(0); 
+  MuCosmLeg5Pt_->push_back(0); 
+
+  MuCosmLeg0Eta_->push_back(0);
+  MuCosmLeg1Eta_->push_back(0);
+  MuCosmLeg2Eta_->push_back(0);
+  MuCosmLeg3Eta_->push_back(0);
+  MuCosmLeg4Eta_->push_back(0);
+  MuCosmLeg5Eta_->push_back(0);
+
+  MuCosmLeg0Phi_->push_back(0);
+  MuCosmLeg1Phi_->push_back(0);
+  MuCosmLeg2Phi_->push_back(0);
+  MuCosmLeg3Phi_->push_back(0);
+  MuCosmLeg4Phi_->push_back(0);
+  MuCosmLeg5Phi_->push_back(0);
+
+  MuCosmLeg0En_->push_back(0);
+  MuCosmLeg1En_->push_back(0);
+  MuCosmLeg2En_->push_back(0);
+  MuCosmLeg3En_->push_back(0);
+  MuCosmLeg4En_->push_back(0);   
+  MuCosmLeg5En_->push_back(0);
+  }
+  
+  
+  else if ((myCosmLegMuons.size())==1){
+
+  MuCosmLeg0Pt_->push_back(myCosmLegMuons.begin()->pt());  
+  MuCosmLeg1Pt_->push_back(0); 
+  MuCosmLeg2Pt_->push_back(0); 
+  MuCosmLeg3Pt_->push_back(0); 
+  MuCosmLeg4Pt_->push_back(0); 
+  MuCosmLeg5Pt_->push_back(0); 
+
+  MuCosmLeg0Eta_->push_back(myCosmLegMuons.begin()->eta()); 
+  MuCosmLeg1Eta_->push_back(0);
+  MuCosmLeg2Eta_->push_back(0);
+  MuCosmLeg3Eta_->push_back(0);
+  MuCosmLeg4Eta_->push_back(0);
+  MuCosmLeg5Eta_->push_back(0);
+
+  MuCosmLeg0Phi_->push_back(myCosmLegMuons.begin()->phi()); 
+  MuCosmLeg1Phi_->push_back(0);
+  MuCosmLeg2Phi_->push_back(0);
+  MuCosmLeg3Phi_->push_back(0);
+  MuCosmLeg4Phi_->push_back(0);
+  MuCosmLeg5Phi_->push_back(0);
+
+  MuCosmLeg0En_->push_back(myCosmLegMuons.begin()->energy()); 
+  MuCosmLeg1En_->push_back(0);
+  MuCosmLeg2En_->push_back(0);
+  MuCosmLeg3En_->push_back(0);
+  MuCosmLeg4En_->push_back(0);   
+  MuCosmLeg5En_->push_back(0);
+
+  } 
+
+  else if ((myCosmLegMuons.size())==2){ 
+
+  MuCosmLeg0Pt_->push_back(myCosmLegMuons.begin()->pt());  
+            // std::cout << "ele MuCosmLeg0pt when size is 2: " << (myCosmLegMuons.begin()->pt())   << std::endl;
+
+  MuCosmLeg1Pt_->push_back((myCosmLegMuons.begin()+1)->pt());
+          // std::cout << "ele MuCosmLeg1pt when size is 2: " << ((myCosmLegMuons.begin()+1)->pt())    << std::endl;
+
+  MuCosmLeg2Pt_->push_back(0); 
+  MuCosmLeg3Pt_->push_back(0); 
+  MuCosmLeg4Pt_->push_back(0); 
+  MuCosmLeg5Pt_->push_back(0); 
+
+  MuCosmLeg0Eta_->push_back(myCosmLegMuons.begin()->eta()); 
+  MuCosmLeg1Eta_->push_back((myCosmLegMuons.begin()+1)->eta());  
+  MuCosmLeg2Eta_->push_back(0);
+  MuCosmLeg3Eta_->push_back(0);
+  MuCosmLeg4Eta_->push_back(0);
+  MuCosmLeg5Eta_->push_back(0);
+
+  MuCosmLeg0Phi_->push_back(myCosmLegMuons.begin()->phi()); 
+  MuCosmLeg1Phi_->push_back((myCosmLegMuons.begin()+1)->phi()); 
+  MuCosmLeg2Phi_->push_back(0);
+  MuCosmLeg3Phi_->push_back(0);
+  MuCosmLeg4Phi_->push_back(0);
+  MuCosmLeg5Phi_->push_back(0);
+  
+  MuCosmLeg0En_->push_back(myCosmLegMuons.begin()->energy()); 
+  MuCosmLeg1En_->push_back((myCosmLegMuons.begin()+1)->energy()); 
+  MuCosmLeg2En_->push_back(0);
+  MuCosmLeg3En_->push_back(0);
+  MuCosmLeg4En_->push_back(0);   
+  MuCosmLeg5En_->push_back(0);    
+  
+  }
+
+  else if ((myCosmLegMuons.size())==3){
+
+  MuCosmLeg0Pt_->push_back(myCosmLegMuons.begin()->pt());  
+              // std::cout << "ele MuCosmLeg0pt when size is 3: " << (myCosmLegMuons.begin()->pt())     << std::endl;
+
+  MuCosmLeg1Pt_->push_back((myCosmLegMuons.begin()+1)->pt());
+            // std::cout << "ele MuCosmLeg1pt when size is 3: " << ((myCosmLegMuons.begin()+1)->pt())    << std::endl;
+   
+  MuCosmLeg2Pt_->push_back((myCosmLegMuons.begin()+2)->pt()); 
+  MuCosmLeg3Pt_->push_back(0); 
+  MuCosmLeg4Pt_->push_back(0); 
+  MuCosmLeg5Pt_->push_back(0); 
+
+  MuCosmLeg0Eta_->push_back(myCosmLegMuons.begin()->eta()); 
+  MuCosmLeg1Eta_->push_back((myCosmLegMuons.begin()+1)->eta()); 
+  MuCosmLeg2Eta_->push_back((myCosmLegMuons.begin()+2)->eta()); 
+  MuCosmLeg3Eta_->push_back(0);
+  MuCosmLeg4Eta_->push_back(0);
+  MuCosmLeg5Eta_->push_back(0);
+
+  MuCosmLeg0Phi_->push_back(myCosmLegMuons.begin()->phi()); 
+  MuCosmLeg1Phi_->push_back((myCosmLegMuons.begin()+1)->phi()); 
+  MuCosmLeg2Phi_->push_back((myCosmLegMuons.begin()+2)->phi()); 
+  MuCosmLeg3Phi_->push_back(0);
+  MuCosmLeg4Phi_->push_back(0);
+  MuCosmLeg5Phi_->push_back(0);
+
+  MuCosmLeg0En_->push_back(myCosmLegMuons.begin()->energy()); 
+  MuCosmLeg1En_->push_back((myCosmLegMuons.begin()+1)->energy()); 
+  MuCosmLeg2En_->push_back((myCosmLegMuons.begin()+2)->energy());
+  MuCosmLeg3En_->push_back(0);
+  MuCosmLeg4En_->push_back(0);   
+  MuCosmLeg5En_->push_back(0);
+  }
+
+  else if ((myCosmLegMuons.size())==4){
+
+  MuCosmLeg0Pt_->push_back(myCosmLegMuons.begin()->pt());  
+              // std::cout << "ele MuCosmLeg0pt when size is 4: " << (myCosmLegMuons.begin()->pt())    << std::endl;
+
+  MuCosmLeg1Pt_->push_back((myCosmLegMuons.begin()+1)->pt());  
+            // std::cout << "ele MuCosmLeg1pt when size is 4: " << ((myCosmLegMuons.begin()+1)->pt())    << std::endl;
+
+  MuCosmLeg2Pt_->push_back((myCosmLegMuons.begin()+2)->pt()); 
+  MuCosmLeg3Pt_->push_back((myCosmLegMuons.begin()+3)->pt());  
+  MuCosmLeg4Pt_->push_back(0); 
+  MuCosmLeg5Pt_->push_back(0); 
+
+  MuCosmLeg0Eta_->push_back(myCosmLegMuons.begin()->eta()); 
+  MuCosmLeg1Eta_->push_back((myCosmLegMuons.begin()+1)->eta()); 
+  MuCosmLeg2Eta_->push_back((myCosmLegMuons.begin()+2)->eta()); 
+  MuCosmLeg3Eta_->push_back((myCosmLegMuons.begin()+3)->eta());  
+  MuCosmLeg4Eta_->push_back(0);
+  MuCosmLeg5Eta_->push_back(0);
+
+  MuCosmLeg0Phi_->push_back(myCosmLegMuons.begin()->phi()); 
+  MuCosmLeg1Phi_->push_back((myCosmLegMuons.begin()+1)->phi()); 
+  MuCosmLeg2Phi_->push_back((myCosmLegMuons.begin()+2)->phi()); 
+  MuCosmLeg3Phi_->push_back((myCosmLegMuons.begin()+3)->phi());  
+  MuCosmLeg4Phi_->push_back(0);
+  MuCosmLeg5Phi_->push_back(0);  
+
+  MuCosmLeg0En_->push_back(myCosmLegMuons.begin()->energy()); 
+  MuCosmLeg1En_->push_back((myCosmLegMuons.begin()+1)->energy()); 
+  MuCosmLeg2En_->push_back((myCosmLegMuons.begin()+2)->energy());
+  MuCosmLeg3En_->push_back((myCosmLegMuons.begin()+3)->energy());
+  MuCosmLeg4En_->push_back(0);   
+  MuCosmLeg5En_->push_back(0);
+  }
+
+  else if ((myCosmLegMuons.size())==5){
+
+  MuCosmLeg0Pt_->push_back(myCosmLegMuons.begin()->pt());  
+              // std::cout << "ele MuCosmLeg0pt when size is 5: " << (myCosmLegMuons.begin()->pt())     << std::endl;
+
+  MuCosmLeg1Pt_->push_back((myCosmLegMuons.begin()+1)->pt());
+              // std::cout << "ele MuCosmLeg1pt when size is 5: " << ((myCosmLegMuons.begin()+1)->pt())    << std::endl;
+ 
+  MuCosmLeg2Pt_->push_back((myCosmLegMuons.begin()+2)->pt()); 
+  MuCosmLeg3Pt_->push_back((myCosmLegMuons.begin()+3)->pt());  
+  MuCosmLeg4Pt_->push_back((myCosmLegMuons.begin()+4)->pt()); 
+  MuCosmLeg5Pt_->push_back(0); 
+
+  MuCosmLeg0Eta_->push_back(myCosmLegMuons.begin()->eta()); 
+  MuCosmLeg1Eta_->push_back((myCosmLegMuons.begin()+1)->eta());
+  MuCosmLeg2Eta_->push_back((myCosmLegMuons.begin()+2)->eta()); 
+  MuCosmLeg3Eta_->push_back((myCosmLegMuons.begin()+3)->eta());  
+  MuCosmLeg4Eta_->push_back((myCosmLegMuons.begin()+4)->eta());  
+  MuCosmLeg5Eta_->push_back(0);
+
+  MuCosmLeg0Phi_->push_back(myCosmLegMuons.begin()->phi()); 
+  MuCosmLeg1Phi_->push_back((myCosmLegMuons.begin()+1)->phi());
+  MuCosmLeg2Phi_->push_back((myCosmLegMuons.begin()+2)->phi()); 
+  MuCosmLeg3Phi_->push_back((myCosmLegMuons.begin()+3)->phi()); 
+  MuCosmLeg4Phi_->push_back((myCosmLegMuons.begin()+4)->phi());  
+  MuCosmLeg5Phi_->push_back(0);  
+
+  MuCosmLeg0En_->push_back(myCosmLegMuons.begin()->energy()); 
+  MuCosmLeg1En_->push_back((myCosmLegMuons.begin()+1)->energy()); 
+  MuCosmLeg2En_->push_back((myCosmLegMuons.begin()+2)->energy());
+  MuCosmLeg3En_->push_back((myCosmLegMuons.begin()+3)->energy());
+  MuCosmLeg4En_->push_back((myCosmLegMuons.begin()+4)->energy());
+  MuCosmLeg5En_->push_back(0);
+  }
+
+  else{
+        // std::cout << "end of myCosmLegMuons collision "  << std::endl; //TODO
+  MuCosmLeg0Pt_->push_back(myCosmLegMuons.begin()->pt()); 
+          // std::cout << "ele Jet 0pt: " << (myCosmLegMuons.begin()->pt())   << std::endl;
+
+  MuCosmLeg1Pt_->push_back((myCosmLegMuons.begin()+myCosmLegMuons.size()/5)->pt()); 
+        // std::cout << "ele Jet 1pt: " << ((myCosmLegMuons.begin()+myCosmLegMuons.size()/5)->pt())    << std::endl;
+
+  MuCosmLeg2Pt_->push_back((myCosmLegMuons.begin()+myCosmLegMuons.size()*2/5)->pt());
+        // std::cout << "ele Jet 2pt: " << ((myCosmLegMuons.begin()+myCosmLegMuons.size()*2/5)->pt())  << std::endl;
+  
+  MuCosmLeg3Pt_->push_back((myCosmLegMuons.begin()+myCosmLegMuons.size()*3/5)->pt());
+        // std::cout << "ele Jet 3pt: " << ((myCosmLegMuons.begin()+myCosmLegMuons.size()*3/5)->pt())  << std::endl;
+
+  MuCosmLeg4Pt_->push_back((myCosmLegMuons.begin()+myCosmLegMuons.size()*4/5)->pt());
+        // std::cout << "ele Jet 4pt: " << ((myCosmLegMuons.begin()+myCosmLegMuons.size()*4/5)->pt())  << std::endl; 
+
+  MuCosmLeg5Pt_->push_back((myCosmLegMuons.begin()+myCosmLegMuons.size()-1)->pt());
+       // std::cout << "ele Jet 5pt: " << ((myCosmLegMuons.begin()+myCosmLegMuons.size()-1)->pt())   << std::endl;
+
+  MuCosmLeg0Eta_->push_back(myCosmLegMuons.begin()->eta()); 
+          // std::cout << "ele Jet 0eta: " << (myCosmLegMuons.begin()->eta())   << std::endl;
+
+  MuCosmLeg1Eta_->push_back((myCosmLegMuons.begin()+myCosmLegMuons.size()/5)->eta()); 
+        // std::cout << "ele Jet 1eta: " << ((myCosmLegMuons.begin()+myCosmLegMuons.size()/5)->eta())    << std::endl;
+
+  MuCosmLeg2Eta_->push_back((myCosmLegMuons.begin()+myCosmLegMuons.size()*2/5)->eta());
+        // std::cout << "ele Jet 2eta: " << ((myCosmLegMuons.begin()+myCosmLegMuons.size()*2/5)->eta())  << std::endl;
+  
+  MuCosmLeg3Eta_->push_back((myCosmLegMuons.begin()+myCosmLegMuons.size()*3/5)->eta());
+        // std::cout << "ele Jet 3eta: " << ((myCosmLegMuons.begin()+myCosmLegMuons.size()*3/5)->eta())  << std::endl;
+
+  MuCosmLeg4Eta_->push_back((myCosmLegMuons.begin()+myCosmLegMuons.size()*4/5)->eta());
+        // std::cout << "ele Jet 4eta: " << ((myCosmLegMuons.begin()+myCosmLegMuons.size()*4/5)->eta())  << std::endl; 
+
+  MuCosmLeg5Eta_->push_back((myCosmLegMuons.begin()+myCosmLegMuons.size()-1)->eta());
+       // std::cout << "ele Jet 5eta: " << ((myCosmLegMuons.begin()+myCosmLegMuons.size()-1)->eta())   << std::endl; 
+
+  MuCosmLeg0Phi_->push_back(myCosmLegMuons.begin()->phi()); 
+          // std::cout << "ele Jet 0Phi: " << (myCosmLegMuons.begin()->phi())   << std::endl;
+
+  MuCosmLeg1Phi_->push_back((myCosmLegMuons.begin()+myCosmLegMuons.size()/5)->phi()); 
+        // std::cout << "ele Jet 1Phi: " << ((myCosmLegMuons.begin()+myCosmLegMuons.size()/5)->phi())    << std::endl;
+
+  MuCosmLeg2Phi_->push_back((myCosmLegMuons.begin()+myCosmLegMuons.size()*2/5)->phi());
+        // std::cout << "ele Jet 2Phi: " << ((myCosmLegMuons.begin()+myCosmLegMuons.size()*2/5)->phi())  << std::endl;
+  
+  MuCosmLeg3Phi_->push_back((myCosmLegMuons.begin()+myCosmLegMuons.size()*3/5)->phi());
+        // std::cout << "ele Jet 3Phi: " << ((myCosmLegMuons.begin()+myCosmLegMuons.size()*3/5)->phi())  << std::endl;
+
+  MuCosmLeg4Phi_->push_back((myCosmLegMuons.begin()+myCosmLegMuons.size()*4/5)->phi());
+        // std::cout << "ele Jet 4Phi: " << ((myCosmLegMuons.begin()+myCosmLegMuons.size()*4/5)->phi())  << std::endl; 
+
+  MuCosmLeg5Phi_->push_back((myCosmLegMuons.begin()+myCosmLegMuons.size()-1)->phi());
+       // std::cout << "ele Jet 5Phi: " << ((myCosmLegMuons.begin()+myCosmLegMuons.size()-1)->phi())   << std::endl;   
+
+  MuCosmLeg0En_->push_back(myCosmLegMuons.begin()->energy()); 
+          // std::cout << "ele Jet 0En: " << (myCosmLegMuons.begin()->energy())   << std::endl;
+
+  MuCosmLeg1En_->push_back((myCosmLegMuons.begin()+myCosmLegMuons.size()/5)->energy()); 
+        // std::cout << "ele Jet 1En: " << ((myCosmLegMuons.begin()+myCosmLegMuons.size()/5)->energy())    << std::endl;
+
+  MuCosmLeg2En_->push_back((myCosmLegMuons.begin()+myCosmLegMuons.size()*2/5)->energy());
+        // std::cout << "ele Jet 2En: " << ((myCosmLegMuons.begin()+myCosmLegMuons.size()*2/5)->energy())  << std::endl;
+  
+  MuCosmLeg3En_->push_back((myCosmLegMuons.begin()+myCosmLegMuons.size()*3/5)->energy());
+        // std::cout << "ele Jet 3En: " << ((myCosmLegMuons.begin()+myCosmLegMuons.size()*3/5)->energy())  << std::endl;
+
+  MuCosmLeg4En_->push_back((myCosmLegMuons.begin()+myCosmLegMuons.size()*4/5)->energy());
+        // std::cout << "ele Jet 4En: " << ((myCosmLegMuons.begin()+myCosmLegMuons.size()*4/5)->energy())  << std::endl; 
+
+  MuCosmLeg5En_->push_back((myCosmLegMuons.begin()+myCosmLegMuons.size()-1)->energy());
+       // std::cout << "ele Jet 5En: " << ((myCosmLegMuons.begin()+myCosmLegMuons.size()-1)->energy())   << std::endl;                    
+     
+}
+
   return;
 
 
